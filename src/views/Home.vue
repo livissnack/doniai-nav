@@ -9,7 +9,12 @@
             </b-navbar-item>
           </template>
           <template slot="start">
-            <b-navbar-item href="#" v-for="nav in navs" :key="nav.id">
+            <b-navbar-item
+              :active="nav.is_active"
+              href="#"
+              v-for="nav in navs"
+              :key="nav.id"
+            >
               {{ nav.name }}
             </b-navbar-item>
           </template>
@@ -58,297 +63,21 @@
 
         <div class="columns">
           <div class="column is-three-quarters">
-            <div class="post">
+            <div class="post" v-for="navItems in navData" :key="navItems.id">
               <div class="widget">
                 <a href="#" class="sub-title title-underline">
-                  常用网站
+                  {{ navItems.title }}
                 </a>
               </div>
               <div class="tab-item">
-                <a href="" class="box-item is-primary">谷歌</a>
-                <a href="" class="box-item is-success">百度</a>
-                <a href="" class="box-item is-danger">必应</a>
-                <a href="" class="box-item is-warning">谷歌开发者</a>
-                <a href="" class="box-item is-info">Githup</a>
-
-                <a href="" class="box-item is-primary">Stackoverflow</a>
-                <a href="" class="box-item is-success">Segmentfault</a>
-                <a href="" class="box-item is-danger">开源中国</a>
-                <a href="" class="box-item is-warning">CSDN</a>
-                <a href="" class="box-item is-info">掘金</a>
-
-                <a href="" class="box-item is-primary">简书</a>
-                <a href="" class="box-item is-success">玩Android</a>
-                <a href="" class="box-item is-danger">开发者周报</a>
-                <a href="" class="box-item is-warning">flutter中文</a>
-                <a href="" class="box-item is-info">Dart</a>
-
-                <a href="" class="box-item is-primary">AndroidBlog</a>
-                <a href="" class="box-item is-success">51CTO</a>
-                <a href="" class="box-item is-danger">Android开发网</a>
-                <a href="" class="box-item is-warning">Android面试指南</a>
-              </div>
-            </div>
-
-            <div class="post">
-              <div class="widget">
-                <a href="#" class="sub-title title-underline">
-                  经典博客
-                </a>
-              </div>
-              <div class="tab-item">
-                <a href="" class="box-item is-primary">阮一峰</a>
-                <a href="" class="box-item is-success">郭霖</a>
-                <a href="" class="box-item is-danger">kymjs张涛</a>
-                <a href="" class="box-item is-warning">任玉刚</a>
-                <a href="" class="box-item is-info">技术小黑屋</a>
-
-                <a href="" class="box-item is-primary">Weishu</a>
-              </div>
-            </div>
-
-            <div class="post">
-              <div class="widget">
-                <a href="#" class="sub-title title-underline">
-                  常用网站
-                </a>
-              </div>
-              <div class="tab-item">
-                <a href="" class="box-item is-primary">谷歌</a>
-                <a href="" class="box-item is-success">百度</a>
-                <a href="" class="box-item is-danger">必应</a>
-                <a href="" class="box-item is-warning">谷歌开发者</a>
-                <a href="" class="box-item is-info">Githup</a>
-
-                <a href="" class="box-item is-primary">Stackoverflow</a>
-                <a href="" class="box-item is-success">Segmentfault</a>
-                <a href="" class="box-item is-danger">开源中国</a>
-                <a href="" class="box-item is-warning">CSDN</a>
-                <a href="" class="box-item is-info">掘金</a>
-
-                <a href="" class="box-item is-primary">简书</a>
-                <a href="" class="box-item is-success">玩Android</a>
-                <a href="" class="box-item is-danger">开发者周报</a>
-                <a href="" class="box-item is-warning">flutter中文</a>
-                <a href="" class="box-item is-info">Dart</a>
-
-                <a href="" class="box-item is-primary">AndroidBlog</a>
-                <a href="" class="box-item is-success">51CTO</a>
-                <a href="" class="box-item is-danger">Android开发网</a>
-                <a href="" class="box-item is-warning">Android面试指南</a>
-              </div>
-            </div>
-
-            <div class="post">
-              <div class="widget">
-                <a href="#" class="sub-title title-underline">
-                  经典博客
-                </a>
-              </div>
-              <div class="tab-item">
-                <a href="" class="box-item is-primary">阮一峰</a>
-                <a href="" class="box-item is-success">郭霖</a>
-                <a href="" class="box-item is-danger">kymjs张涛</a>
-                <a href="" class="box-item is-warning">任玉刚</a>
-                <a href="" class="box-item is-info">技术小黑屋</a>
-
-                <a href="" class="box-item is-primary">Weishu</a>
-              </div>
-            </div>
-
-            <div class="post">
-              <div class="widget">
-                <a href="#" class="sub-title title-underline">
-                  常用网站
-                </a>
-              </div>
-              <div class="tab-item">
-                <a href="" class="box-item is-primary">谷歌</a>
-                <a href="" class="box-item is-success">百度</a>
-                <a href="" class="box-item is-danger">必应</a>
-                <a href="" class="box-item is-warning">谷歌开发者</a>
-                <a href="" class="box-item is-info">Githup</a>
-
-                <a href="" class="box-item is-primary">Stackoverflow</a>
-                <a href="" class="box-item is-success">Segmentfault</a>
-                <a href="" class="box-item is-danger">开源中国</a>
-                <a href="" class="box-item is-warning">CSDN</a>
-                <a href="" class="box-item is-info">掘金</a>
-
-                <a href="" class="box-item is-primary">简书</a>
-                <a href="" class="box-item is-success">玩Android</a>
-                <a href="" class="box-item is-danger">开发者周报</a>
-                <a href="" class="box-item is-warning">flutter中文</a>
-                <a href="" class="box-item is-info">Dart</a>
-
-                <a href="" class="box-item is-primary">AndroidBlog</a>
-                <a href="" class="box-item is-success">51CTO</a>
-                <a href="" class="box-item is-danger">Android开发网</a>
-                <a href="" class="box-item is-warning">Android面试指南</a>
-              </div>
-            </div>
-
-            <div class="post">
-              <div class="widget">
-                <a href="#" class="sub-title title-underline">
-                  经典博客
-                </a>
-              </div>
-              <div class="tab-item">
-                <a href="" class="box-item is-primary">阮一峰</a>
-                <a href="" class="box-item is-success">郭霖</a>
-                <a href="" class="box-item is-danger">kymjs张涛</a>
-                <a href="" class="box-item is-warning">任玉刚</a>
-                <a href="" class="box-item is-info">技术小黑屋</a>
-
-                <a href="" class="box-item is-primary">Weishu</a>
-              </div>
-            </div>
-
-            <div class="post">
-              <div class="widget">
-                <a href="#" class="sub-title title-underline">
-                  常用网站
-                </a>
-              </div>
-              <div class="tab-item">
-                <a href="" class="box-item is-primary">谷歌</a>
-                <a href="" class="box-item is-success">百度</a>
-                <a href="" class="box-item is-danger">必应</a>
-                <a href="" class="box-item is-warning">谷歌开发者</a>
-                <a href="" class="box-item is-info">Githup</a>
-
-                <a href="" class="box-item is-primary">Stackoverflow</a>
-                <a href="" class="box-item is-success">Segmentfault</a>
-                <a href="" class="box-item is-danger">开源中国</a>
-                <a href="" class="box-item is-warning">CSDN</a>
-                <a href="" class="box-item is-info">掘金</a>
-
-                <a href="" class="box-item is-primary">简书</a>
-                <a href="" class="box-item is-success">玩Android</a>
-                <a href="" class="box-item is-danger">开发者周报</a>
-                <a href="" class="box-item is-warning">flutter中文</a>
-                <a href="" class="box-item is-info">Dart</a>
-
-                <a href="" class="box-item is-primary">AndroidBlog</a>
-                <a href="" class="box-item is-success">51CTO</a>
-                <a href="" class="box-item is-danger">Android开发网</a>
-                <a href="" class="box-item is-warning">Android面试指南</a>
-              </div>
-            </div>
-
-            <div class="post">
-              <div class="widget">
-                <a href="#" class="sub-title title-underline">
-                  经典博客
-                </a>
-              </div>
-              <div class="tab-item">
-                <a href="" class="box-item is-primary">阮一峰</a>
-                <a href="" class="box-item is-success">郭霖</a>
-                <a href="" class="box-item is-danger">kymjs张涛</a>
-                <a href="" class="box-item is-warning">任玉刚</a>
-                <a href="" class="box-item is-info">技术小黑屋</a>
-
-                <a href="" class="box-item is-primary">Weishu</a>
-              </div>
-            </div>
-
-            <div class="post">
-              <div class="widget">
-                <a href="#" class="sub-title title-underline">
-                  常用网站
-                </a>
-              </div>
-              <div class="tab-item">
-                <a href="" class="box-item is-primary">谷歌</a>
-                <a href="" class="box-item is-success">百度</a>
-                <a href="" class="box-item is-danger">必应</a>
-                <a href="" class="box-item is-warning">谷歌开发者</a>
-                <a href="" class="box-item is-info">Githup</a>
-
-                <a href="" class="box-item is-primary">Stackoverflow</a>
-                <a href="" class="box-item is-success">Segmentfault</a>
-                <a href="" class="box-item is-danger">开源中国</a>
-                <a href="" class="box-item is-warning">CSDN</a>
-                <a href="" class="box-item is-info">掘金</a>
-
-                <a href="" class="box-item is-primary">简书</a>
-                <a href="" class="box-item is-success">玩Android</a>
-                <a href="" class="box-item is-danger">开发者周报</a>
-                <a href="" class="box-item is-warning">flutter中文</a>
-                <a href="" class="box-item is-info">Dart</a>
-
-                <a href="" class="box-item is-primary">AndroidBlog</a>
-                <a href="" class="box-item is-success">51CTO</a>
-                <a href="" class="box-item is-danger">Android开发网</a>
-                <a href="" class="box-item is-warning">Android面试指南</a>
-              </div>
-            </div>
-
-            <div class="post">
-              <div class="widget">
-                <a href="#" class="sub-title title-underline">
-                  经典博客
-                </a>
-              </div>
-              <div class="tab-item">
-                <a href="" class="box-item is-primary">阮一峰</a>
-                <a href="" class="box-item is-success">郭霖</a>
-                <a href="" class="box-item is-danger">kymjs张涛</a>
-                <a href="" class="box-item is-warning">任玉刚</a>
-                <a href="" class="box-item is-info">技术小黑屋</a>
-
-                <a href="" class="box-item is-primary">Weishu</a>
-              </div>
-            </div>
-
-            <div class="post">
-              <div class="widget">
-                <a href="#" class="sub-title title-underline">
-                  常用网站
-                </a>
-              </div>
-              <div class="tab-item">
-                <a href="" class="box-item is-primary">谷歌</a>
-                <a href="" class="box-item is-success">百度</a>
-                <a href="" class="box-item is-danger">必应</a>
-                <a href="" class="box-item is-warning">谷歌开发者</a>
-                <a href="" class="box-item is-info">Githup</a>
-
-                <a href="" class="box-item is-primary">Stackoverflow</a>
-                <a href="" class="box-item is-success">Segmentfault</a>
-                <a href="" class="box-item is-danger">开源中国</a>
-                <a href="" class="box-item is-warning">CSDN</a>
-                <a href="" class="box-item is-info">掘金</a>
-
-                <a href="" class="box-item is-primary">简书</a>
-                <a href="" class="box-item is-success">玩Android</a>
-                <a href="" class="box-item is-danger">开发者周报</a>
-                <a href="" class="box-item is-warning">flutter中文</a>
-                <a href="" class="box-item is-info">Dart</a>
-
-                <a href="" class="box-item is-primary">AndroidBlog</a>
-                <a href="" class="box-item is-success">51CTO</a>
-                <a href="" class="box-item is-danger">Android开发网</a>
-                <a href="" class="box-item is-warning">Android面试指南</a>
-              </div>
-            </div>
-
-            <div class="post">
-              <div class="widget">
-                <a href="#" class="sub-title title-underline">
-                  经典博客
-                </a>
-              </div>
-              <div class="tab-item">
-                <a href="" class="box-item is-primary">阮一峰</a>
-                <a href="" class="box-item is-success">郭霖</a>
-                <a href="" class="box-item is-danger">kymjs张涛</a>
-                <a href="" class="box-item is-warning">任玉刚</a>
-                <a href="" class="box-item is-info">技术小黑屋</a>
-
-                <a href="" class="box-item is-primary">Weishu</a>
+                <a
+                  :href="navItem.href"
+                  class="box-item"
+                  :class="navItem.color"
+                  v-for="navItem in navItems.items"
+                  :key="navItem.index"
+                  >{{ navItem.name }}</a
+                >
               </div>
             </div>
           </div>
@@ -449,6 +178,276 @@ export default {
           url: "https://www.iconfont.cn/search/index?searchType=icon&q=",
           is_default: false
         }
+      ],
+      navData: [
+        {
+          id: 1,
+          title: "常用网站",
+          items: [
+            {
+              name: "百度",
+              href: "https://www.baidu.com",
+              color: "is-primary"
+            },
+            {
+              name: "谷歌",
+              href: "https://www.google.com",
+              color: "is-success"
+            },
+            {
+              name: "必应",
+              href: "https://cn.bing.com",
+              color: "is-danger"
+            },
+            {
+              name: "Stackoverflow",
+              href: "https://stackoverflow.com",
+              color: "is-warning"
+            },
+            {
+              name: "Segmentfault",
+              href: "https://segmentfault.com",
+              color: "is-info"
+            },
+            {
+              name: "腾讯企业邮",
+              href:
+                "https://exmail.qq.com/cgi-bin/loginpage?t=dm_loginpage&dmtype=bizmail",
+              color: "is-primary"
+            },
+            {
+              name: "谷歌邮箱",
+              href: "https://mail.google.com/mail",
+              color: "is-success"
+            },
+            {
+              name: "Outlook邮箱",
+              href: "https://outlook.live.com/mail",
+              color: "is-danger"
+            },
+            {
+              name: "掘金",
+              href: "https://juejin.im",
+              color: "is-warning"
+            },
+            {
+              name: "V2EX",
+              href: "http://www.v2ex.com",
+              color: "is-info"
+            }
+          ]
+        },
+        {
+          id: 2,
+          title: "互联网资讯",
+          items: [
+            {
+              name: "知乎",
+              href: "https://www.zhihu.com",
+              color: "is-primary"
+            },
+            {
+              name: "36氪",
+              href: "http://36kr.com",
+              color: "is-success"
+            },
+            {
+              name: "简书",
+              href: "https://www.jianshu.com",
+              color: "is-danger"
+            },
+            {
+              name: "廖雪峰",
+              href: "https://www.liaoxuefeng.com",
+              color: "is-warning"
+            },
+            {
+              name: "泡在网上的日子",
+              href: "http://www.jcodecraeer.com",
+              color: "is-info"
+            },
+            {
+              name: "阮一峰",
+              href: "http://www.ruanyifeng.com/blog",
+              color: "is-primary"
+            },
+            {
+              name: "创业邦",
+              href: "http://www.cyzone.cn",
+              color: "is-success"
+            },
+            {
+              name: "i黑马",
+              href: "http://www.iheima.com",
+              color: "is-danger"
+            }
+          ]
+        },
+        {
+          id: 3,
+          title: "公司博客",
+          items: [
+            {
+              name: "美团点评",
+              href: "https://tech.meituan.com",
+              color: "is-primary"
+            },
+            {
+              name: "悦动圈",
+              href: "https://joyrun.github.io",
+              color: "is-success"
+            },
+            {
+              name: "网易考拉",
+              href: "https://blog.klmobile.app",
+              color: "is-danger"
+            },
+            {
+              name: "有赞",
+              href: "https://tech.youzan.com",
+              color: "is-warning"
+            },
+            {
+              name: "阿里中间件",
+              href: "http://jm.taobao.org",
+              color: "is-info"
+            },
+            {
+              name: "360",
+              href: "http://blogs.360.cn",
+              color: "is-primary"
+            },
+            {
+              name: "百度移动体验部",
+              href: "http://mux.baidu.com/case",
+              color: "is-success"
+            },
+            {
+              name: "Glow",
+              href: "http://tech.glowing.com/cn",
+              color: "is-danger"
+            }
+          ]
+        },
+        {
+          id: 4,
+          title: "代码托管",
+          items: [
+            {
+              name: "Github",
+              href: "https://github.com",
+              color: "is-primary"
+            },
+            {
+              name: "Coding",
+              href: "https://coding.net",
+              color: "is-success"
+            },
+            {
+              name: "码云",
+              href: "http://git.oschina.net",
+              color: "is-danger"
+            },
+            {
+              name: "Bitbucket",
+              href: "https://bitbucket.org",
+              color: "is-warning"
+            },
+            {
+              name: "Gitlab",
+              href: "https://about.gitlab.com",
+              color: "is-info"
+            }
+          ]
+        },
+        {
+          id: 5,
+          title: "学习平台",
+          items: [
+            {
+              name: "慕课网",
+              href: "http://www.imooc.com",
+              color: "is-primary"
+            },
+            {
+              name: "菜鸟教程",
+              href: "http://www.runoob.com",
+              color: "is-success"
+            },
+            {
+              name: "极客学院",
+              href: "http://www.jikexueyuan.com",
+              color: "is-danger"
+            },
+            {
+              name: "网易云课堂",
+              href: "https://study.163.com",
+              color: "is-warning"
+            },
+            {
+              name: "腾讯课堂",
+              href: "https://ke.qq.com/course/list",
+              color: "is-info"
+            }
+          ]
+        },
+        {
+          id: 6,
+          title: "求职招聘",
+          items: [
+            {
+              name: "拉钩网",
+              href: "https://www.lagou.com",
+              color: "is-primary"
+            },
+            {
+              name: "Boss直聘",
+              href: "https://www.zhipin.com",
+              color: "is-success"
+            },
+            {
+              name: "前程无忧",
+              href: "https://www.51job.com",
+              color: "is-danger"
+            },
+            {
+              name: "智联招聘",
+              href: "https://www.zhaopin.com",
+              color: "is-warning"
+            },
+            {
+              name: "Leetcode",
+              href: "https://leetcode-cn.com",
+              color: "is-info"
+            },
+            {
+              name: "牛客网",
+              href: "https://www.nowcoder.com/contestRoom",
+              color: "is-primary"
+            }
+          ]
+        },
+        {
+          id: 7,
+          title: "兼职网站",
+          items: [
+            {
+              name: "程序员客栈",
+              href: "https://www.proginn.com/cat/?type=4",
+              color: "is-primary"
+            },
+            {
+              name: "大鲲",
+              href: "https://pro.lagou.com/project",
+              color: "is-success"
+            },
+            {
+              name: "实现网",
+              href: "https://shixian.com",
+              color: "is-danger"
+            }
+          ]
+        }
       ]
     };
   },
@@ -534,5 +533,10 @@ export default {
   .box-item {
     box-shadow: 1px 1px 5px #ccc5c5;
   }
+}
+
+.is-active {
+  color: #7957d5 !important;
+  font-weight: bold;
 }
 </style>
