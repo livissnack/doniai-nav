@@ -118,7 +118,6 @@ export default {
       window.open(`${searchObj.url}${text}`)
     },
     clearSearchText() {
-      console.log('asda')
       this.filter.search_text = ''
     },
     handleDeleteTextEnetr() {
