@@ -15,9 +15,7 @@
               href="#"
               v-for="nav in navs"
               :key="nav.id"
-            >
-              {{ nav.name }}
-            </b-navbar-item>
+            >{{ nav.name }}</b-navbar-item>
           </template>
 
           <template slot="end">
@@ -43,9 +41,7 @@
                   placeholder="请输入搜索内容"
                   @keyup.enter.native="startSearch"
                 ></b-input>
-                <b-button type="is-success" size="is-small" @click="startSearch"
-                  >搜索</b-button
-                >
+                <b-button type="is-success" size="is-small" @click="startSearch">搜索</b-button>
               </b-field>
               <div class="block custom-input-width">
                 <b-radio
@@ -55,9 +51,7 @@
                   size="is-small"
                   :name="search.id.toString()"
                   :native-value="search.id"
-                >
-                  {{ search.name }}
-                </b-radio>
+                >{{ search.name }}</b-radio>
               </div>
             </div>
           </div>
@@ -67,9 +61,7 @@
           <div class="column is-three-quarters">
             <div class="post" v-for="navItems in navData" :key="navItems.id">
               <div class="widget">
-                <a href="#" class="sub-title title-underline">
-                  {{ navItems.title }}
-                </a>
+                <a href="#" class="sub-title title-underline">{{ navItems.title }}</a>
               </div>
               <div class="tab-item">
                 <a
@@ -79,8 +71,7 @@
                   target="_blank"
                   v-for="navItem in navItems.items"
                   :key="navItem.index"
-                  >{{ navItem.name }}</a
-                >
+                >{{ navItem.name }}</a>
               </div>
             </div>
           </div>
@@ -364,7 +355,7 @@ const navsData = [
 ];
 export default {
   name: "home",
-  data() {
+  data () {
     return {
       filter: {
         search_text: "",
@@ -457,7 +448,7 @@ export default {
       workData: [
         {
           id: 1,
-          title: "内网快捷",
+          title: "本机内网快捷",
           items: [
             {
               name: "操盘管理后台",
@@ -488,6 +479,32 @@ export default {
         },
         {
           id: 2,
+          title: "公司内网快捷",
+          items: [
+            {
+              name: "赛事后台测试",
+              href: "http://admin.ties.t",
+              color: "is-warning"
+            },
+            {
+              name: "赛事后台开发",
+              href: "http://admin.ties.d",
+              color: "is-info"
+            },
+            {
+              name: "赛事H5测试",
+              href: "http://h5.ties.t",
+              color: "is-warning"
+            },
+            {
+              name: "赛事H5开发",
+              href: "http://h5.ties.d",
+              color: "is-info"
+            }
+          ]
+        },
+        {
+          id: 3,
           title: "内网代码",
           items: [
             {
@@ -500,11 +517,11 @@ export default {
       ]
     };
   },
-  created() {
+  created () {
     this.getCurrentNavs();
   },
   methods: {
-    startSearch() {
+    startSearch () {
       let id = this.filter.search_type;
       let text = this.filter.search_text;
       if (text == "" || text == null || undefined) {
@@ -520,11 +537,11 @@ export default {
       let searchObj = this.searchs.find(el => el.id === id);
       window.open(`${searchObj.url}${text}`);
     },
-    getCurrentNavs() {
+    getCurrentNavs () {
       this.navData =
         this.current_active_menu_id === 2 ? this.workData : navsData;
     },
-    handleChangeData(menu) {
+    handleChangeData (menu) {
       this.current_active_menu_id = menu.id;
       this.getCurrentNavs();
     }
