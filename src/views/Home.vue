@@ -468,16 +468,6 @@ export default {
               name: "对接用户接口管理",
               href: "http://api.tiuc.test/api",
               color: "is-danger"
-            },
-            {
-              name: "赛事H5测试",
-              href: "http://h5.ties.t",
-              color: "is-warning"
-            },
-            {
-              name: "赛事H5开发",
-              href: "http://h5.ties.d",
-              color: "is-info"
             }
           ]
         },
