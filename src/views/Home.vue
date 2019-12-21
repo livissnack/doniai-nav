@@ -61,7 +61,11 @@
           <div class="column is-three-quarters">
             <div class="post" v-for="navItems in navData" :key="navItems.id">
               <div class="widget">
-                <a href="#" class="sub-title title-underline">{{ navItems.title }}</a>
+                <a href="#" class="sub-title title-underline">
+                  {{
+                  navItems.title
+                  }}
+                </a>
               </div>
               <div class="tab-item">
                 <a
@@ -355,7 +359,7 @@ const navsData = [
 ];
 export default {
   name: "home",
-  data () {
+  data() {
     return {
       filter: {
         search_text: "",
@@ -484,12 +488,12 @@ export default {
             {
               name: "赛事后台测试",
               href: "http://admin.ties.t",
-              color: "is-warning"
+              color: "is-primary"
             },
             {
               name: "赛事后台开发",
               href: "http://admin.ties.d",
-              color: "is-info"
+              color: "is-success"
             },
             {
               name: "赛事H5测试",
@@ -517,11 +521,11 @@ export default {
       ]
     };
   },
-  created () {
+  created() {
     this.getCurrentNavs();
   },
   methods: {
-    startSearch () {
+    startSearch() {
       let id = this.filter.search_type;
       let text = this.filter.search_text;
       if (text == "" || text == null || undefined) {
@@ -537,11 +541,11 @@ export default {
       let searchObj = this.searchs.find(el => el.id === id);
       window.open(`${searchObj.url}${text}`);
     },
-    getCurrentNavs () {
+    getCurrentNavs() {
       this.navData =
         this.current_active_menu_id === 2 ? this.workData : navsData;
     },
-    handleChangeData (menu) {
+    handleChangeData(menu) {
       this.current_active_menu_id = menu.id;
       this.getCurrentNavs();
     }
