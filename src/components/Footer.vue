@@ -132,31 +132,31 @@
 </template>
 
 <script>
-import dayjs from "dayjs";
+import dayjs from 'dayjs'
 export default {
-  name: "Footer",
+  name: 'Footer',
   data() {
     return {
       logoUrl: `${this.bucket_url}/uploads/logo/logo.png`,
       licenseUrl: `${this.bucket_url}/uploads/others/license.png`,
-      currentTime: "",
-      wechat_class_name: "wechat-hidden"
-    };
+      currentTime: '',
+      wechat_class_name: 'wechat-hidden'
+    }
   },
   mounted() {
     setInterval(() => {
-      this.currentTime = dayjs().format("YYYY-MM-DD hh:mm:ss");
-    }, 1000);
+      this.currentTime = dayjs().format('YYYY-MM-DD hh:mm:ss')
+    }, 1000)
   },
   methods: {
     showWechatQr() {
-      this.wechat_class_name = "wechat-show";
+      this.wechat_class_name = 'wechat-show'
     },
     hiddenWechatQr() {
-      this.wechat_class_name = "wechat-hidden";
+      this.wechat_class_name = 'wechat-hidden'
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

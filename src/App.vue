@@ -12,21 +12,21 @@
 
 <script>
 // @ is an alias to /src
-import Footer from "@/components/Footer.vue";
+import Footer from '@/components/Footer.vue'
 
 export default {
-  name: "app",
+  name: 'app',
   components: {
     Footer
   }
-};
+}
 </script>
 
 <style lang="less">
 #app {
-  font-family: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB",
-    "Hiragino Sans GB W3", "WenQuanYi Micro Hei", "Microsoft YaHei UI",
-    "Microsoft YaHei", sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, Arial, 'Hiragino Sans GB',
+    'Hiragino Sans GB W3', 'WenQuanYi Micro Hei', 'Microsoft YaHei UI',
+    'Microsoft YaHei', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: #ebebeb;
