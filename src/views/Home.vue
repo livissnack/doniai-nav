@@ -10,12 +10,12 @@
           </template>
           <template slot="start">
             <b-navbar-item
-              :active="nav.id === current_active_menu_id"
-              @click="handleChangeData(nav)"
+              :active="menu.id === current_active_menu_id"
+              @click="handleChangeData(menu)"
               href="#"
-              v-for="nav in navs"
-              :key="nav.id"
-              >{{ nav.name }}</b-navbar-item
+              v-for="menu in menus"
+              :key="menu.id"
+              >{{ menu.name }}</b-navbar-item
             >
           </template>
 
@@ -34,30 +34,7 @@
       <div class="container">
         <div class="columns">
           <div class="column is-three-quarters">
-            <div class="input-group">
-              <b-field class="custom-input-width">
-                <b-input
-                  v-model="filter.search_text"
-                  size="is-small"
-                  placeholder="请输入搜索内容"
-                  @keyup.enter.native="startSearch"
-                ></b-input>
-                <b-button type="is-success" size="is-small" @click="startSearch"
-                  >搜索</b-button
-                >
-              </b-field>
-              <div class="block custom-input-width">
-                <b-radio
-                  v-for="search in searchs"
-                  :key="search.id"
-                  v-model="filter.search_type"
-                  size="is-small"
-                  :name="search.id.toString()"
-                  :native-value="search.id"
-                  >{{ search.name }}</b-radio
-                >
-              </div>
-            </div>
+            <SearchInput />
           </div>
         </div>
 
@@ -360,16 +337,16 @@ const navsData = [
     ]
   }
 ]
+import SearchInput from '@/components/SearchInput.vue'
 export default {
   name: 'home',
+  components: {
+    SearchInput
+  },
   data() {
     return {
-      filter: {
-        search_text: '',
-        search_type: 1
-      },
       current_active_menu_id: 1,
-      navs: [
+      menus: [
         {
           id: 1,
           name: '首页',
@@ -404,51 +381,6 @@ export default {
           id: 7,
           name: '设计',
           is_active: false
-        }
-      ],
-      searchs: [
-        {
-          id: 1,
-          name: '百度',
-          url: 'https://www.baidu.com/s?wd=',
-          is_default: true
-        },
-        {
-          id: 2,
-          name: '谷歌',
-          url: 'https://www.google.com.hk/search?q=',
-          is_default: false
-        },
-        {
-          id: 3,
-          name: '必应',
-          url: 'https://cn.bing.com/search?q=',
-          is_default: false
-        },
-        {
-          id: 4,
-          name: '多尼爱',
-          url: 'https://www.doniai.com/search?q=',
-          is_default: false
-        },
-        {
-          id: 5,
-          name: 'githup',
-          url: 'https://github.com/search?q=',
-          is_default: false
-        },
-        {
-          id: 6,
-          name: '图片',
-          url:
-            'http://image.baidu.com/search/index?tn=baiduimage&ps=1&ct=201326592&lm=-1&cl=2&nc=1&ie=utf-8&word=',
-          is_default: false
-        },
-        {
-          id: 7,
-          name: '图标',
-          url: 'https://www.iconfont.cn/search/index?searchType=icon&q=',
-          is_default: false
         }
       ],
       navData: [],
@@ -518,22 +450,6 @@ export default {
     this.getCurrentNavs()
   },
   methods: {
-    startSearch() {
-      let id = this.filter.search_type
-      let text = this.filter.search_text
-      if (text == '' || text == null || undefined) {
-        this.$buefy.snackbar.open({
-          duration: 3000,
-          message: '输入框内容不能为空！',
-          type: 'is-danger',
-          position: 'is-bottom-right',
-          actionText: 'Msg'
-        })
-        return
-      }
-      let searchObj = this.searchs.find(el => el.id === id)
-      window.open(`${searchObj.url}${text}`)
-    },
     getCurrentNavs() {
       this.navData =
         this.current_active_menu_id === 2 ? this.workData : navsData
@@ -561,14 +477,6 @@ export default {
 
 .text-primary {
   color: #15b982;
-}
-
-.custom-input-width {
-  width: 400px;
-  margin: 0 auto;
-  .control {
-    width: 400px;
-  }
 }
 
 .post {
