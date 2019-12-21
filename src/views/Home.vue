@@ -122,6 +122,16 @@ const navsData = [
         name: 'V2EX',
         href: 'http://www.v2ex.com',
         color: 'is-info'
+      },
+      {
+        name: 'Learnku',
+        href: 'https://learnku.com',
+        color: 'is-primary'
+      },
+      {
+        name: 'Laracasts',
+        href: 'https://laracasts.com',
+        color: 'is-success'
       }
     ]
   },
