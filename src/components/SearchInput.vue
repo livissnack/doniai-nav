@@ -138,4 +138,8 @@ export default {
     width: 400px;
   }
 }
+
+.pointer-events {
+  pointer-events: auto;
+}
 </style>
