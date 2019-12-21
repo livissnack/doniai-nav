@@ -75,6 +75,7 @@
                   :href="navItem.href"
                   class="box-item"
                   :class="navItem.color"
+                  target="_blank"
                   v-for="navItem in navItems.items"
                   :key="navItem.index"
                   >{{ navItem.name }}</a
