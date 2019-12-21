@@ -1,32 +1,89 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
     <router-view />
+    <div class="backtop">
+      <back-top color="#409EFF" :size="1.1" :slow="10"> </back-top>
+    </div>
+    <div id="footer">
+      <Footer />
+    </div>
   </div>
 </template>
 
+<script>
+// @ is an alias to /src
+import Footer from "@/components/Footer.vue";
+
+export default {
+  name: "app",
+  components: {
+    Footer
+  }
+};
+</script>
+
 <style lang="less">
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB",
+    "Hiragino Sans GB W3", "WenQuanYi Micro Hei", "Microsoft YaHei UI",
+    "Microsoft YaHei", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+  background: #ebebeb;
 }
 
-#nav {
-  padding: 30px;
+.is-primary {
+  background-color: #6943d0;
+  border-color: transparent;
+  color: white;
+  &:hover {
+    background-color: #714dd2;
+    border-color: transparent;
+    color: white;
+  }
+}
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+.is-success {
+  background-color: #20bc56;
+  border-color: transparent;
+  color: #fff;
+  &:hover {
+    background-color: #22c65b;
+    border-color: transparent;
+    color: #fff;
+  }
+}
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+.is-danger {
+  background-color: #ff3860;
+  border-color: transparent;
+  color: #fff;
+  &:hover {
+    background-color: #ff3860;
+    border-color: transparent;
+    color: #fff;
+  }
+}
+
+.is-warning {
+  background-color: #ffd83d;
+  border-color: transparent;
+  color: #fff;
+  &:hover {
+    background-color: #ffdb4a;
+    border-color: transparent;
+    color: #fff;
+  }
+}
+
+.is-info {
+  background-color: #0e71de;
+  border-color: transparent;
+  color: #fff;
+  &:hover {
+    background-color: #0f77ea;
+    border-color: transparent;
+    color: #fff;
   }
 }
 </style>
