@@ -40,6 +40,7 @@
                   v-model="filter.search_text"
                   size="is-small"
                   placeholder="请输入搜索内容"
+                  @keyup.enter.native="startSearch"
                 ></b-input>
                 <b-button type="is-success" size="is-small" @click="startSearch"
                   >搜索</b-button
