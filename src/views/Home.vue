@@ -20,10 +20,10 @@
           </template>
 
           <template slot="end">
-            <b-navbar-item>
+            <b-navbar-item @click="handleLogin">
               <span class="text-primary">登录</span>
             </b-navbar-item>
-            <b-navbar-item>
+            <b-navbar-item @click="handleRegister">
               <span class="text-primary">注册</span>
             </b-navbar-item>
           </template>
@@ -619,6 +619,26 @@ export default {
     handleChangeData(menu) {
       this.current_active_menu_id = menu.id
       this.getCurrentNavs()
+    },
+    handleLogin() {
+      this.$buefy.snackbar.open({
+        duration: 3000,
+        message: '登录功能尚未开放！',
+        type: 'is-info',
+        position: 'is-bottom-right',
+        actionText: 'Msg'
+      })
+      return
+    },
+    handleRegister() {
+      this.$buefy.snackbar.open({
+        duration: 3000,
+        message: '注册该功能尚未开放！',
+        type: 'is-info',
+        position: 'is-bottom-right',
+        actionText: 'Msg'
+      })
+      return
     }
   }
 }
