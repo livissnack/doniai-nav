@@ -449,6 +449,11 @@ export default {
               name: '项目构建管理',
               href: 'http://jenkins.l',
               color: 'is-primary'
+            },
+            {
+              name: '用户api开发',
+              href: 'http://api.tiuc.d/api',
+              color: 'is-success'
             }
           ]
         },
