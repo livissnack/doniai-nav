@@ -19,15 +19,17 @@
           <span
             class="icon pointer-events is-small is-right"
             v-show="isshow_delete_icon"
+            @mouseenter="handleDeleteTextEnetr"
+            @mouseleave="handleDeleteTextLeave"
             @click="clearSearchText"
           >
             <i class="fas fa-times"></i>
           </span>
         </div>
       </div>
-      <b-button type="is-success" size="is-small" @click="startSearch"
-        >搜索</b-button
-      >
+      <b-button type="is-success" size="is-small" @click="startSearch">
+        搜索
+      </b-button>
     </b-field>
     <div class="block custom-input-width">
       <b-radio
@@ -37,8 +39,9 @@
         size="is-small"
         :name="search.id.toString()"
         :native-value="search.id"
-        >{{ search.name }}</b-radio
       >
+        {{ search.name }}
+      </b-radio>
     </div>
   </div>
 </template>
@@ -140,6 +143,6 @@ export default {
 }
 
 .pointer-events {
-  pointer-events: auto;
+  pointer-events: visible !important;
 }
 </style>
