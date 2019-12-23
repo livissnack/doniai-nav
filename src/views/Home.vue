@@ -439,6 +439,11 @@ export default {
               name: '赛事H5开发',
               href: 'http://h5.ties.d',
               color: 'is-info'
+            },
+            {
+              name: '项目管理',
+              href: 'http://zentao.l',
+              color: 'is-danger'
             }
           ]
         },
@@ -452,6 +457,122 @@ export default {
               color: 'is-primary'
             }
           ]
+        },
+        {
+          id: 4,
+          title: '个人接口管理',
+          items: [
+            {
+              name: 'Yapi接口管理',
+              href: 'https://yapi.doniai.com',
+              color: 'is-primary'
+            }
+          ]
+        }
+      ],
+      toolsData: [
+        {
+          id: 1,
+          title: '常用工具',
+          items: [
+            {
+              name: '图片压缩',
+              href: 'https://tinypng.com',
+              color: 'is-primary'
+            },
+            {
+              name: 'IP查询',
+              href: 'http://www.ip138.com',
+              color: 'is-success'
+            },
+            {
+              name: '二维码',
+              href: 'https://cli.im',
+              color: 'is-danger'
+            },
+            {
+              name: '短链接',
+              href: 'https://dwz.cn',
+              color: 'is-warning'
+            }
+          ]
+        },
+        {
+          id: 2,
+          title: '软件工具',
+          items: [
+            {
+              name: 'VSCODE',
+              href: 'https://code.visualstudio.com',
+              color: 'is-primary'
+            },
+            {
+              name: 'PHPSTROM',
+              href: 'https://www.jetbrains.com/phpstorm',
+              color: 'is-success'
+            },
+            {
+              name: 'Git Bash',
+              href: 'https://git-scm.com/downloads',
+              color: 'is-warning'
+            },
+            {
+              name: 'Fiddler',
+              href: 'https://www.telerik.com/fiddler',
+              color: 'is-info'
+            },
+            {
+              name: 'Charles',
+              href: 'https://www.charlesproxy.com/download',
+              color: 'is-danger'
+            },
+            {
+              name: 'HeidiSql',
+              href: 'https://www.heidisql.com/download.php',
+              color: 'is-primary'
+            },
+            {
+              name: '印象笔记',
+              href: 'https://www.yinxiang.com',
+              color: 'is-success'
+            },
+            {
+              name: 'SecureCRT',
+              href: 'https://www.vandyke.com/download',
+              color: 'is-warning'
+            },
+            {
+              name: 'VirtualBox',
+              href: 'https://www.virtualbox.org/wiki/Downloads',
+              color: 'is-info'
+            },
+            {
+              name: 'Foxmail',
+              href: 'https://www.foxmail.com',
+              color: 'is-danger'
+            },
+            {
+              name: 'FastStone',
+              href: 'https://www.faststone.org',
+              color: 'is-primary'
+            }
+          ]
+        },
+        {
+          id: 3,
+          title: '设计工具',
+          items: [
+            {
+              name: '蓝湖',
+              href: 'https://lanhuapp.com',
+              color: 'is-primary'
+            },
+            {
+              name: '墨刀',
+              href: 'https://modao.cc',
+              color: 'is-success'
+            }
+          ]
         }
       ]
     }
@@ -461,8 +582,13 @@ export default {
   },
   methods: {
     getCurrentNavs() {
-      this.navData =
-        this.current_active_menu_id === 2 ? this.workData : navsData
+      if (this.current_active_menu_id === 2) {
+        this.navData = this.workData
+      } else if (this.current_active_menu_id === 4) {
+        this.navData = this.toolsData
+      } else {
+        this.navData = navsData
+      }
     },
     handleChangeData(menu) {
       this.current_active_menu_id = menu.id
