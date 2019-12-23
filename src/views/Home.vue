@@ -444,6 +444,11 @@ export default {
               name: '项目管理',
               href: 'http://zentao.l',
               color: 'is-danger'
+            },
+            {
+              name: '项目构建管理',
+              href: 'http://jenkins.l',
+              color: 'is-primary'
             }
           ]
         },
