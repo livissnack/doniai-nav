@@ -470,6 +470,30 @@ export default {
           ]
         }
       ],
+      iosData: [
+        {
+          id: 1,
+          title: '常用网站',
+          items: [
+            {
+              name: '苹果开发者论坛',
+              href: 'https://forums.developer.apple.com/welcome',
+              color: 'is-primary'
+            },
+            {
+              name: '加急入口',
+              href:
+                'https://developer.apple.com/contact/app-store/?topic=expedite',
+              color: 'is-success'
+            },
+            {
+              name: 'Swift',
+              href: 'https://swift.org',
+              color: 'is-danger'
+            }
+          ]
+        }
+      ],
       toolsData: [
         {
           id: 1,
@@ -584,6 +608,8 @@ export default {
     getCurrentNavs() {
       if (this.current_active_menu_id === 2) {
         this.navData = this.workData
+      } else if (this.current_active_menu_id === 3) {
+        this.navData = this.iosData
       } else if (this.current_active_menu_id === 4) {
         this.navData = this.toolsData
       } else {
