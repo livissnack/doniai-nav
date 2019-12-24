@@ -663,7 +663,7 @@ export default {
 }
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
 .nav-box {
   text-align: center;
   background: #ffffff;
