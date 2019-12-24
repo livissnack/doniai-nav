@@ -160,6 +160,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import '~@fortawesome/fontawesome-free/css/all.min.css';
 .divider {
   border-top-color: #222426;
   border-left-color: #222426;

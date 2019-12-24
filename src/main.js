@@ -3,13 +3,10 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import Buefy from 'buefy'
-import 'buefy/dist/buefy.css'
-import '@fortawesome/fontawesome-free/css/all.min.css'
-import BackTop from '@mlqt/vue-back-top'
+import 'buefy/dist/buefy.min.css'
 
 Vue.config.productionTip = false
 Vue.use(Buefy)
-Vue.use(BackTop)
 Vue.prototype.bucket_url = 'https://hspxsteel.oss-cn-shenzhen.aliyuncs.com'
 
 new Vue({

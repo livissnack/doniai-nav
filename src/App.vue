@@ -12,7 +12,10 @@
 
 <script>
 // @ is an alias to /src
+import Vue from 'vue'
+import BackTop from '@mlqt/vue-back-top'
 import Footer from '@/components/Footer.vue'
+Vue.use(BackTop)
 
 export default {
   name: 'app',
