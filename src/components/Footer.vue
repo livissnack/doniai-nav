@@ -110,11 +110,7 @@
           >《中华人民共和国电信与信息服务业务经营许可证》</a
         >
         <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
-          <img
-            :src="licenseUrl"
-            width="20"
-            style="position: relative;top: 4px;"
-          />
+          <img :src="licenseUrl" width="20" class="license-logo" />
           粤ICP备18045314号
         </a>
         <br />
@@ -162,8 +158,6 @@ export default {
 <style lang="less" scoped>
 @import '~@fortawesome/fontawesome-free/css/all.min.css';
 .divider {
-  border-top-color: #222426;
-  border-left-color: #222426;
   border-bottom-color: hsla(0, 0%, 100%, 0.15);
   border-right-color: hsla(0, 0%, 100%, 0.15);
   margin-top: 2rem;
@@ -341,5 +335,10 @@ a {
   transform: translate(50%, -10px);
   -webkit-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.46);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.46);
+}
+
+.license-logo {
+  position: relative;
+  top: 4px;
 }
 </style>
