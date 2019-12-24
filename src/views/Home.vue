@@ -607,6 +607,17 @@ export default {
               color: 'is-success'
             }
           ]
+        },
+        {
+          id: 4,
+          title: '激活授权',
+          items: [
+            {
+              name: 'Editor授权',
+              href: 'http://lookdiv.com',
+              color: 'is-primary'
+            }
+          ]
         }
       ]
     }
@@ -638,7 +649,6 @@ export default {
         position: 'is-bottom-right',
         actionText: 'Msg'
       })
-      return
     },
     handleRegister() {
       this.$buefy.snackbar.open({
@@ -648,7 +658,6 @@ export default {
         position: 'is-bottom-right',
         actionText: 'Msg'
       })
-      return
     }
   }
 }
@@ -697,7 +706,7 @@ export default {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    margin: 10px 34px 10px 0px;
+    margin: 10px 34px 10px 0;
     text-align: center;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
