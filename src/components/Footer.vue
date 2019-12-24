@@ -110,7 +110,12 @@
           >《中华人民共和国电信与信息服务业务经营许可证》</a
         >
         <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
-          <img :src="licenseUrl" width="20" class="license-logo" />
+          <img
+            :src="licenseUrl"
+            width="20"
+            class="license-logo"
+            alt="license"
+          />
           粤ICP备18045314号
         </a>
         <br />
