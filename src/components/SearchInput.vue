@@ -133,7 +133,7 @@ export default {
 }
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
 .custom-input-width {
   width: 400px;
   margin: 0 auto;
