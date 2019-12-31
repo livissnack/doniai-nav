@@ -52,7 +52,11 @@
               </a>
             </li>
             <li class="connect-icon githup">
-              <a href="https://githup.com/livissnack" title="githup">
+              <a
+                href="https://githup.com/livissnack"
+                target="_blank"
+                title="githup"
+              >
                 <i class="fab fa-github-alt"></i>
               </a>
             </li>
@@ -62,10 +66,10 @@
           <h4 class="ft-title">友情链接</h4>
           <div class="text-center">
             <div>
-              <a href="https://www.hspxsteel.com">黄石品信</a>
+              <a href="https://www.hspxsteel.com" target="_blank">黄石品信</a>
             </div>
             <div>
-              <a href="https://www.doniai.com">多尼爱</a>
+              <a href="https://www.doniai.com" target="_blank">Doniai</a>
             </div>
           </div>
         </div>
@@ -73,7 +77,7 @@
           <h4 class="ft-title">合作伙伴</h4>
           <div class="text-center">
             <div>
-              <a href="/aboutus">努力每天都是新的开始</a>
+              <a href="#">努力每天都是新的开始</a>
             </div>
           </div>
         </div>
@@ -87,7 +91,9 @@
             <div>
               <i class="fas fa-globe-americas"></i>
               网址：
-              <a href="https://www.hspxsteel.com">www.hspxsteel.com</a>
+              <a href="https://www.hspxsteel.com" target="_blank"
+                >www.hspxsteel.com</a
+              >
             </div>
             <div>
               <i class="fab fa-usps"></i>
@@ -101,15 +107,20 @@
     <div class="content has-text-centered">
       <p>
         <strong>版权所有: </strong>
-        <a href="https://jgthms.com">黄石品信进出口贸易有限公司</a>
+        <a href="https://www.hspxsteel.com" target="_blank"
+          >黄石品信进出口贸易有限公司</a
+        >
         &nbsp;&nbsp;
         <strong>地址: </strong>
-        <a href="https://jgthms.com">黄石市黄石港区天津路商业中心1单元1304室</a>
+        <a href="#">黄石市黄石港区天津路商业中心1单元1304室</a>
         <br />
         <a href="http://opensource.org/licenses/mit-license.php"
           >《中华人民共和国电信与信息服务业务经营许可证》</a
         >
-        <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+        <a
+          href="http://creativecommons.org/licenses/by-nc-sa/4.0/"
+          target="_blank"
+        >
           <img
             :src="licenseUrl"
             width="20"
@@ -120,7 +131,7 @@
         </a>
         <br />
         <strong>由</strong>
-        <a href="https://github.com/livissnack">LivisSnack</a>
+        <a href="https://github.com/livissnack" target="_blank">LivisSnack</a>
         <strong>设计与编码</strong>
         <span class="font-heart">❤</span>
       </p>
