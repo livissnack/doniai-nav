@@ -533,6 +533,22 @@ export default {
         },
         {
           id: 2,
+          title: '镜像资源',
+          items: [
+            {
+              name: '阿里镜像',
+              href: 'https://developer.aliyun.com/mirror',
+              color: 'is-primary'
+            },
+            {
+              name: '中科镜像',
+              href: 'http://mirrors.ustc.edu.cn/',
+              color: 'is-success'
+            }
+          ]
+        },
+        {
+          id: 3,
           title: '软件工具',
           items: [
             {
@@ -593,7 +609,7 @@ export default {
           ]
         },
         {
-          id: 3,
+          id: 4,
           title: '设计工具',
           items: [
             {
@@ -609,7 +625,7 @@ export default {
           ]
         },
         {
-          id: 4,
+          id: 5,
           title: '激活授权',
           items: [
             {
