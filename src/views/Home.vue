@@ -291,6 +291,21 @@ const navsData = [
         name: '腾讯课堂',
         href: 'https://ke.qq.com/course/list',
         color: 'is-info'
+      },
+      {
+        name: 'Nodelover',
+        href: 'https://nodelover.me',
+        color: 'is-primary'
+      },
+      {
+        name: 'Udacity',
+        href: 'https://www.udacity.com',
+        color: 'is-success'
+      },
+      {
+        name: 'W3school',
+        href: 'https://www.w3schools.com',
+        color: 'is-danger'
       }
     ]
   },
@@ -790,6 +805,32 @@ export default {
               name: 'Animate-Css',
               href: 'https://daneden.github.io/animate.css',
               color: 'is-success'
+            }
+          ]
+        },
+        {
+          id: 4,
+          title: 'Js框架',
+          items: [
+            {
+              name: 'Adonisjs',
+              href: 'https://adonisjs.com',
+              color: 'is-primary'
+            },
+            {
+              name: 'Sailsjs',
+              href: 'https://sailsjs.com',
+              color: 'is-success'
+            },
+            {
+              name: 'Nestjs(TS)',
+              href: 'https://nestjs.com',
+              color: 'is-danger'
+            },
+            {
+              name: 'Eggjs',
+              href: 'https://eggjs.org',
+              color: 'is-info'
             }
           ]
         }
