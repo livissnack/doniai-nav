@@ -470,6 +470,11 @@ export default {
               name: '操盘后台管理',
               href: 'https://admin.ltdj666.com',
               color: 'is-success'
+            },
+            {
+              name: 'h5应用',
+              href: 'https://m.ltdj666.com',
+              color: 'is-warning'
             }
           ]
         },
