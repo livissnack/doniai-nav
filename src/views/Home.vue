@@ -469,7 +469,7 @@ export default {
             {
               name: '操盘后台管理',
               href: 'https://admin.ltdj666.com',
-              color: 'is-primary'
+              color: 'is-success'
             }
           ]
         },
