@@ -459,6 +459,17 @@ export default {
         },
         {
           id: 3,
+          title: '公司外网快捷',
+          items: [
+            {
+              name: '用户后台管理',
+              href: 'https://uc-admin.ltdj666.com',
+              color: 'is-primary'
+            }
+          ]
+        },
+        {
+          id: 4,
           title: '内网代码',
           items: [
             {
@@ -469,7 +480,7 @@ export default {
           ]
         },
         {
-          id: 4,
+          id: 5,
           title: '个人接口管理',
           items: [
             {
