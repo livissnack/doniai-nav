@@ -132,6 +132,11 @@ const navsData = [
         name: 'Laracasts',
         href: 'https://laracasts.com',
         color: 'is-success'
+      },
+      {
+        name: 'Reddit',
+        href: 'https://www.reddit.com',
+        color: 'is-danger'
       }
     ]
   },
@@ -497,6 +502,11 @@ export default {
               name: 'Yapi接口管理',
               href: 'https://yapi.doniai.com',
               color: 'is-primary'
+            },
+            {
+              name: 'Eolinker接口管理',
+              href: 'https://www.eolinker.com.com',
+              color: 'is-success'
             }
           ]
         }
@@ -549,6 +559,11 @@ export default {
               name: '短链接',
               href: 'https://dwz.cn',
               color: 'is-warning'
+            },
+            {
+              name: 'flaticon图标',
+              href: 'https://www.flaticon.com',
+              color: 'is-info'
             }
           ]
         },
@@ -666,6 +681,117 @@ export default {
               color: 'is-primary'
             }
           ]
+        },
+        {
+          id: 7,
+          title: '优质接口数据源',
+          items: [
+            {
+              name: '3023数据',
+              href: 'https://www.3023data.com',
+              color: 'is-primary'
+            }
+          ]
+        }
+      ],
+      frontendData: [
+        {
+          id: 1,
+          title: '优选UI',
+          items: [
+            {
+              name: 'Bulma',
+              href: 'https://bulma.io',
+              color: 'is-primary'
+            },
+            {
+              name: 'Buefy',
+              href: 'https://buefy.org',
+              color: 'is-success'
+            },
+            {
+              name: 'Materialize',
+              href: 'https://materializecss.com',
+              color: 'is-warning'
+            },
+            {
+              name: 'Bootstrap',
+              href: 'https://getbootstrap.com',
+              color: 'is-danger'
+            },
+            {
+              name: 'Semantic-UI',
+              href: 'https://semantic-ui.com',
+              color: 'is-info'
+            }
+          ]
+        },
+        {
+          id: 2,
+          title: '前端认知',
+          items: [
+            {
+              name: 'Sass',
+              href: 'https://sass-lang.com',
+              color: 'is-primary'
+            },
+            {
+              name: 'Less',
+              href: 'http://lesscss.org',
+              color: 'is-success'
+            },
+            {
+              name: 'TypeScript',
+              href: 'https://www.typescriptlang.org',
+              color: 'is-danger'
+            },
+            {
+              name: 'ES6',
+              href: 'https://es6.ruanyifeng.com',
+              color: 'is-warning'
+            },
+            {
+              name: 'Vue',
+              href: 'https://tailwindcss.com',
+              color: 'is-info'
+            },
+            {
+              name: 'Vue',
+              href: 'https://vuejs.org',
+              color: 'is-primary'
+            },
+            {
+              name: 'React',
+              href: 'https://reactjs.org',
+              color: 'is-success'
+            },
+            {
+              name: 'Angular',
+              href: 'https://angular.io',
+              color: 'is-danger'
+            },
+            {
+              name: 'Eslint',
+              href: 'https://eslint.org',
+              color: 'is-danger'
+            }
+          ]
+        },
+        {
+          id: 3,
+          title: 'CSS工具',
+          items: [
+            {
+              name: 'Tailwind-Css',
+              href: 'https://tailwindcss.com',
+              color: 'is-primary'
+            },
+            {
+              name: 'Animate-Css',
+              href: 'https://daneden.github.io/animate.css',
+              color: 'is-success'
+            }
+          ]
         }
       ]
     }
@@ -681,6 +807,8 @@ export default {
         this.navData = this.iosData
       } else if (this.current_active_menu_id === 4) {
         this.navData = this.toolsData
+      } else if (this.current_active_menu_id === 5) {
+        this.navData = this.frontendData
       } else {
         this.navData = navsData
       }
