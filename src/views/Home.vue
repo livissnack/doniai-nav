@@ -465,6 +465,11 @@ export default {
               name: '用户后台管理',
               href: 'https://uc-admin.ltdj666.com',
               color: 'is-primary'
+            },
+            {
+              name: '操盘后台管理',
+              href: 'https://admin.ltdj666.com',
+              color: 'is-primary'
             }
           ]
         },
