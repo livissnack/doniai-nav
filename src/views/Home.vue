@@ -655,6 +655,17 @@ export default {
               color: 'is-primary'
             }
           ]
+        },
+        {
+          id: 6,
+          title: '数据可视化',
+          items: [
+            {
+              name: 'AntV图表',
+              href: 'https://antv.vision',
+              color: 'is-primary'
+            }
+          ]
         }
       ]
     }
