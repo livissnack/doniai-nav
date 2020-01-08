@@ -20,18 +20,12 @@
         <div class="control dsug" v-show="is_show_dsug">
           <ul class="recommend-list">
             <li v-for="item in items" :key="item.index">
-              <div
-                class="recommend-box"
-                @mousedown="handleSelectedSearch(item)"
-              >
-                <div>
+              <div class="recommend-box">
+                <div @mousedown="handleSelectedSearch(item)">
                   <span class="icon is-small">
                     <i class="fas fa-clock"></i>
                   </span>
                   <span> {{ item.text }}</span>
-                </div>
-                <div class="remove">
-                  <span>Remove</span>
                 </div>
               </div>
             </li>
