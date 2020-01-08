@@ -20,8 +20,11 @@
         <div class="control dsug" v-show="is_show_dsug">
           <ul class="recommend-list">
             <li v-for="item in items" :key="item.index">
-              <div class="recommend-box">
-                <div @mousedown="handleSelectedSearch(item)">
+              <div
+                class="recommend-box"
+                @mousedown="handleSelectedSearch(item)"
+              >
+                <div>
                   <span class="icon is-small">
                     <i class="fas fa-clock"></i>
                   </span>
@@ -154,6 +157,7 @@ export default {
     handleSelectedSearch(item) {
       this.filter.search_text = item.text
       this.startSearch()
+      this.is_show_dsug = false
     },
     handleFocusDsug() {
       this.is_show_dsug = true
