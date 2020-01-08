@@ -137,6 +137,11 @@ const navsData = [
         name: 'Reddit',
         href: 'https://www.reddit.com',
         color: 'is-danger'
+      },
+      {
+        name: 'Web AirDroid',
+        href: 'https://web.airdroid.com',
+        color: 'is-danger'
       }
     ]
   },
