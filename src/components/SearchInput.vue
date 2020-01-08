@@ -2,29 +2,40 @@
   <div class="input-group">
     <b-field class="custom-input-width">
       <div class="field">
-        <div class="control custom-input-width has-icons-left has-icons-right">
+        <div class="control has-icons-left">
           <input
             class="input is-small"
             v-model="filter.search_text"
             size="is-small"
             placeholder="请输入搜索内容"
+            @focus="handleFocusDsug"
+            @blur="handleBlurDsug"
             @keyup.enter="startSearch"
-            @mouseenter="handleDeleteTextEnetr"
-            @mouseleave="handleDeleteTextLeave"
-            type="text"
+            type="search"
           />
           <span class="icon is-small is-left">
             <i class="fas fa-search"></i>
           </span>
-          <span
-            class="icon pointer-events is-small is-right"
-            v-show="isshow_delete_icon"
-            @mouseenter="handleDeleteTextEnetr"
-            @mouseleave="handleDeleteTextLeave"
-            @click="clearSearchText"
-          >
-            <i class="fas fa-times"></i>
-          </span>
+        </div>
+        <div class="control dsug" v-show="is_show_dsug">
+          <ul class="recommend-list">
+            <li v-for="item in items" :key="item.index">
+              <div
+                class="recommend-box"
+                @mousedown="handleSelectedSearch(item)"
+              >
+                <div>
+                  <span class="icon is-small">
+                    <i class="fas fa-clock"></i>
+                  </span>
+                  <span> {{ item.text }}</span>
+                </div>
+                <div class="remove">
+                  <span>Remove</span>
+                </div>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
       <b-button type="is-success" size="is-small" @click="startSearch">
@@ -55,7 +66,7 @@ export default {
         search_text: '',
         search_type: 1
       },
-      isshow_delete_icon: false,
+      is_show_dsug: false,
       searchs: [
         {
           id: 1,
@@ -100,6 +111,32 @@ export default {
           url: 'https://www.iconfont.cn/search/index?searchType=icon&q=',
           is_default: false
         }
+      ],
+      items: [
+        {
+          id: 1,
+          text: 'dayjs'
+        },
+        {
+          id: 2,
+          text: 'dallas cowboys'
+        },
+        {
+          id: 3,
+          text: 'david i moss'
+        },
+        {
+          id: 4,
+          text: 'daily mail'
+        },
+        {
+          id: 5,
+          text: 'daylight donuts'
+        },
+        {
+          id: 6,
+          text: 'daniel fast'
+        }
       ]
     }
   },
@@ -120,14 +157,17 @@ export default {
       let searchObj = this.searchs.find(el => el.id === id)
       window.open(`${searchObj.url}${text}`)
     },
-    clearSearchText() {
-      this.filter.search_text = ''
+    handleSelectedSearch(item) {
+      this.filter.search_text = item.text
+      this.startSearch()
     },
-    handleDeleteTextEnetr() {
-      this.isshow_delete_icon = true
+    handleFocusDsug() {
+      this.is_show_dsug = true
     },
-    handleDeleteTextLeave() {
-      this.isshow_delete_icon = false
+    handleBlurDsug() {
+      setTimeout(() => {
+        this.is_show_dsug = false
+      }, 300)
     }
   }
 }
@@ -142,7 +182,34 @@ export default {
   }
 }
 
-.pointer-events {
-  pointer-events: visible !important;
+.dsug {
+  z-index: 1;
+  position: absolute;
+}
+
+.recommend-list {
+  display: flex;
+  background: #ffffff;
+  flex-direction: column;
+  list-style-type: none;
+  box-shadow: 0 4px 6px 0 rgba(32, 33, 36, 0.28);
+  li {
+    font-size: 12px;
+    padding: 2px 5px;
+    .recommend-box {
+      display: flex;
+      justify-content: space-between;
+      .remove {
+        &:hover {
+          text-decoration: underline;
+          cursor: pointer;
+          color: #1a73e8;
+        }
+      }
+    }
+    &:hover {
+      background: #d3d5d8;
+    }
+  }
 }
 </style>
