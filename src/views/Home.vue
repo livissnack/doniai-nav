@@ -59,7 +59,9 @@
               </div>
             </div>
           </div>
-          <div class="column"></div>
+          <div class="column">
+            <WeatherTime />
+          </div>
         </div>
       </div>
     </div>
@@ -373,10 +375,12 @@ const navsData = [
   }
 ]
 import SearchInput from '@/components/SearchInput.vue'
+import WeatherTime from '@/components/WeatherTime.vue'
 export default {
   name: 'home',
   components: {
-    SearchInput
+    SearchInput,
+    WeatherTime
   },
   data() {
     return {
