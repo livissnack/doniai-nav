@@ -3,20 +3,20 @@
     <div class="card">
       <header class="card-header">
         <p class="card-header-title">
-          shenzhen
+          {{ city }}
         </p>
       </header>
       <div class="card-content">
         <div class="media">
           <div class="media-left">
             <div class="media-content">
-              <p class="title is-2"><i class="fas fa-sun"></i></p>
-              <p class="subtitle is-5">25℃</p>
+              <p class="title is-2"><i class="fas" :class="weatherIcon"></i></p>
+              <p class="subtitle is-5">{{ temperature | celsius }}</p>
             </div>
           </div>
           <div class="media-content">
-            <p class="title is-5">23℃~29℃</p>
-            <p class="subtitle is-6">北风 3级</p>
+            <p class="title is-5">{{ humidity }}</p>
+            <p class="subtitle is-6">{{ wind }} {{ windpower }}</p>
           </div>
         </div>
 
@@ -36,16 +36,45 @@
 <script>
 import dayjs from 'dayjs'
 import solarLunar from 'solarlunar'
+import request from 'axios'
+const gaodekey = '045d06aff28968d4ade448d96aef901b'
+const location_data = `114.02265,22.53764`
+
 export default {
   name: 'WeatherTime',
   data() {
     return {
+      weatherData: {},
       up_down_text: '',
       solar2lunarData: '',
       currentTime: ''
     }
   },
   computed: {
+    city() {
+      return this.weatherData.city
+    },
+    weatherIcon() {
+      const map = new Map([
+        ['多云', 'fa-cloud-sun'],
+        ['晴', 'fa-sun'],
+        ['阴', 'fa-cloud'],
+        ['小雨', 'cloud-showers-heavy']
+      ])
+      return map.get(this.weatherData.weather)
+    },
+    temperature() {
+      return this.weatherData.temperature
+    },
+    wind() {
+      return this.weatherData.winddirection + '风'
+    },
+    windpower() {
+      return this.weatherData.windpower + '级'
+    },
+    humidity() {
+      return '湿度：' + this.weatherData.humidity + '%'
+    },
     solarComputed() {
       let solar2lunarData = this.solar2lunarData
       return `${solar2lunarData.cYear}年${solar2lunarData.cMonth}月${solar2lunarData.cDay}日 ${solar2lunarData.ncWeek}`
@@ -56,7 +85,7 @@ export default {
     }
   },
   filters: {
-    Celsius: function(value) {
+    celsius: function(value) {
       if (!value) return ''
       return `${value}℃`
     }
@@ -68,7 +97,7 @@ export default {
   },
   created() {
     this.getWeekday()
-    navigator.geolocation.getCurrentPosition(this.showPosition)
+    this.getLocation()
   },
   methods: {
     getWeekday() {
@@ -80,8 +109,24 @@ export default {
       this.up_down_text = hour > 12 ? '上午' : '下午'
       this.solar2lunarData = solarLunar.solar2lunar(year, month, date)
     },
-    showPosition(position) {
-      console.log(position)
+    async getLocation() {
+      const { data } = await request(
+        `https://restapi.amap.com/v3/geocode/regeo?key=${gaodekey}&location=${location_data}`
+      )
+      if (
+        data.info === 'OK' &&
+        data.regeocode.addressComponent.adcode !== null
+      ) {
+        this.weatherData = await this.getWeather(
+          data.regeocode.addressComponent.adcode
+        )
+      }
+    },
+    async getWeather(adcode) {
+      const { data } = await request(
+        `https://restapi.amap.com/v3/weather/weatherInfo?key=${gaodekey}&city=${adcode}&extensions=base`
+      )
+      return data.info === 'OK' ? data.lives[0] : []
     }
   }
 }
