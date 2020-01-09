@@ -106,7 +106,7 @@ export default {
       const month = datetime.getMonth() + 1
       const date = datetime.getDate()
       const hour = datetime.getHours()
-      this.up_down_text = hour > 12 ? '上午' : '下午'
+      this.up_down_text = hour > 12 ? '下午' : '上午'
       this.solar2lunarData = solarLunar.solar2lunar(year, month, date)
     },
     async getLocation() {
