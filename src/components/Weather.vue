@@ -3,7 +3,7 @@
     <div class="card">
       <header class="card-header">
         <p class="card-header-title">
-          {{ city }}
+          {{ city === undefined ? '福田区' : city }}
         </p>
       </header>
       <div class="card-content">
@@ -15,19 +15,14 @@
             </div>
           </div>
           <div class="media-content">
-            <p class="title is-5">{{ humidity }}</p>
+            <p class="title is-5">
+              {{ humidity }}
+            </p>
             <p class="subtitle is-6">{{ wind }} {{ windpower }}</p>
           </div>
         </div>
 
-        <div class="content">
-          <div class="subtitle is-5 text-center">
-            {{ solarTimeComputed }}
-          </div>
-          <strong>{{ up_down_text }} {{ currentTime }}</strong>
-          <br />
-          <em>{{ solarComputed }}</em>
-        </div>
+        <LunarTime />
       </div>
     </div>
     <div id="map-box"></div>
@@ -35,13 +30,15 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
-import solarLunar from 'solarlunar'
 import request from 'axios'
+import LunarTime from '@/components/LunarTime.vue'
 const gaodekey = '045d06aff28968d4ade448d96aef901b'
 
 export default {
-  name: 'WeatherTime',
+  name: 'Weather',
+  components: {
+    LunarTime
+  },
   data() {
     return {
       weatherData: {},
@@ -74,41 +71,18 @@ export default {
     },
     humidity() {
       return '湿度：' + this.weatherData.humidity + '%'
-    },
-    solarComputed() {
-      let solar2lunarData = this.solar2lunarData
-      return `${solar2lunarData.cYear}年${solar2lunarData.cMonth}月${solar2lunarData.cDay}日 ${solar2lunarData.ncWeek}`
-    },
-    solarTimeComputed() {
-      let solar2lunarData = this.solar2lunarData
-      return `${solar2lunarData.animal}-${solar2lunarData.gzYear}年-${solar2lunarData.monthCn}${solar2lunarData.dayCn}`
     }
   },
   filters: {
     celsius: function(value) {
       if (!value) return ''
-      return `${value}℃`
+      return value + '℃'
     }
-  },
-  mounted() {
-    setInterval(() => {
-      this.currentTime = dayjs().format('hh:mm:ss')
-    }, 1000)
   },
   created() {
     this.getLocalInfo()
-    this.getWeekday()
   },
   methods: {
-    getWeekday() {
-      const datetime = new Date()
-      const year = datetime.getFullYear()
-      const month = datetime.getMonth() + 1
-      const date = datetime.getDate()
-      const hour = datetime.getHours()
-      this.up_down_text = hour > 12 ? '下午' : '上午'
-      this.solar2lunarData = solarLunar.solar2lunar(year, month, date)
-    },
     async getLocation(location_str) {
       const { data } = await request(
         `https://restapi.amap.com/v3/geocode/regeo?key=${gaodekey}&location=${location_str}`
@@ -160,7 +134,8 @@ export default {
         await this.getLocation(local_data)
       }
     },
-    onError() {
+    onError(data) {
+      console.log(data)
       this.$buefy.snackbar.open({
         duration: 3000,
         message: '高德定位失败',
@@ -178,11 +153,5 @@ export default {
   .card {
     box-shadow: 0 2px 3px #ffffff, 0 0 0 1px #ffffff;
   }
-}
-
-.text-center {
-  text-align: center;
-  font-weight: 800;
-  color: #f4645f;
 }
 </style>
