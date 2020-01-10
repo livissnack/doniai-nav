@@ -1,6 +1,6 @@
 <h1 align="center">Doniai Nav</h1>
 
-<p align="center">:rainbow: 基于VueJs的个人网址导航应用。</p>
+<p align="center">:tada: 基于VueJs的个人网址导航应用。</p>
 
 ![Build Status](https://img.shields.io/travis/livissnack/doniai-nav)
 ![Version](https://img.shields.io/github/package-json/v/livissnack/doniai-nav)
@@ -41,7 +41,7 @@ $ yarn build
 
 ### 页面效果
 
-![avatar](/example/images/1.png)
+![effect](/example/images/1.png)
 
 ## 所用技术
 
