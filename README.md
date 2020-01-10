@@ -21,8 +21,21 @@ $ yarn install
 ## 使用
 
 ```node
-yarn serve
+$ yarn serve
 ```
+
+- [浏览器访问 http://localhost:8080](http://localhost:8080)
+
+## 部署
+
+### vue 打包编译
+
+```node
+$ cd new_name
+$ yarn build
+```
+
+将打包好的静态资源放置 nginx 资源目录下，使用 nginx 静态部署即可。
 
 ### 页面效果
 
