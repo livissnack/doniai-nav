@@ -29,7 +29,7 @@ export default {
     },
     solarTimeComputed() {
       let solar2lunarData = this.solar2lunarData
-      return `${solar2lunarData.animal}-${solar2lunarData.gzYear}年-${solar2lunarData.monthCn}${solar2lunarData.dayCn}`
+      return `${solar2lunarData.gzYear}年[${solar2lunarData.animal}年]-${solar2lunarData.monthCn}${solar2lunarData.dayCn}`
     }
   },
   mounted() {

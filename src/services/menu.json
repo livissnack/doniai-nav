@@ -1,0 +1,39 @@
+{
+  "menus": [
+    {
+      "id": 1,
+      "name": "首页",
+      "is_active": true
+    },
+    {
+      "id": 2,
+      "name": "私人",
+      "is_active": false
+    },
+    {
+      "id": 3,
+      "name": "ios",
+      "is_active": false
+    },
+    {
+      "id": 4,
+      "name": "工具",
+      "is_active": false
+    },
+    {
+      "id": 5,
+      "name": "前端",
+      "is_active": false
+    },
+    {
+      "id": 6,
+      "name": "后端",
+      "is_active": false
+    },
+    {
+      "id": 7,
+      "name": "设计",
+      "is_active": false
+    }
+  ]
+}
