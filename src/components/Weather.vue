@@ -134,8 +134,7 @@ export default {
         await this.getLocation(local_data)
       }
     },
-    onError(data) {
-      console.log(data)
+    onError() {
       this.$buefy.snackbar.open({
         duration: 3000,
         message: '高德定位失败',
