@@ -138,7 +138,7 @@ export default {
       this.$buefy.snackbar.open({
         duration: 3000,
         message: '高德定位失败',
-        type: 'is-success',
+        type: 'is-danger',
         position: 'is-bottom-right',
         actionText: 'Msg'
       })
