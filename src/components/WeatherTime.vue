@@ -30,6 +30,7 @@
         </div>
       </div>
     </div>
+    <div id="map-box"></div>
   </div>
 </template>
 
@@ -38,7 +39,6 @@ import dayjs from 'dayjs'
 import solarLunar from 'solarlunar'
 import request from 'axios'
 const gaodekey = '045d06aff28968d4ade448d96aef901b'
-const location_data = `114.02265,22.53764`
 
 export default {
   name: 'WeatherTime',
@@ -96,8 +96,8 @@ export default {
     }, 1000)
   },
   created() {
+    this.getLocalInfo()
     this.getWeekday()
-    this.getLocation()
   },
   methods: {
     getWeekday() {
@@ -109,9 +109,9 @@ export default {
       this.up_down_text = hour > 12 ? '下午' : '上午'
       this.solar2lunarData = solarLunar.solar2lunar(year, month, date)
     },
-    async getLocation() {
+    async getLocation(location_str) {
       const { data } = await request(
-        `https://restapi.amap.com/v3/geocode/regeo?key=${gaodekey}&location=${location_data}`
+        `https://restapi.amap.com/v3/geocode/regeo?key=${gaodekey}&location=${location_str}`
       )
       if (
         data.info === 'OK' &&
@@ -126,7 +126,48 @@ export default {
       const { data } = await request(
         `https://restapi.amap.com/v3/weather/weatherInfo?key=${gaodekey}&city=${adcode}&extensions=base`
       )
-      return data.info === 'OK' ? data.lives[0] : []
+      if (data.info.toUpperCase() === 'OK') {
+        return data.lives[0]
+      } else {
+        return {}
+      }
+    },
+    async getLocalInfo() {
+      // eslint-disable-next-line no-undef
+      let map = new AMap.Map('map-box')
+      await map.plugin('AMap.Geolocation', () => {
+        // eslint-disable-next-line no-undef
+        let geolocation = new AMap.Geolocation({
+          enableHighAccuracy: true, //是否使用高精度定位，默认:true
+          timeout: 10000,
+          GeoLocationFirst: false,
+          maximumAge: 0 //定位结果缓存0毫秒，默认：0
+        })
+        map.addControl(geolocation)
+        geolocation.getCurrentPosition((status, result) => {
+          if (status == 'complete') {
+            this.onComplete(result)
+          } else {
+            this.onError(result)
+          }
+        })
+      })
+    },
+    async onComplete(data) {
+      if (data.info === 'SUCCESS') {
+        const location_str = `${data.position.lng},${data.position.lat}`
+        const local_data = location_str ? location_str : '114.02265,22.53764'
+        await this.getLocation(local_data)
+      }
+    },
+    onError() {
+      this.$buefy.snackbar.open({
+        duration: 3000,
+        message: '高德定位失败',
+        type: 'is-success',
+        position: 'is-bottom-right',
+        actionText: 'Msg'
+      })
     }
   }
 }
