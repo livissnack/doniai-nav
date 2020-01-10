@@ -2,6 +2,7 @@
 
 <p align="center">:rainbow: 基于VueJs的个人网址导航应用。</p>
 
+![Version](https://img.shields.io/github/package-json/v/livissnack/doniai-nav)
 ![StyleCI build status](https://github.styleci.io/repos/144818004/shield)
 [![Issues](https://img.shields.io/github/issues/livissnack/doniai-nav.svg)](https://github.com/livissnack/doniai-nav/issues)
 ![Forks](https://img.shields.io/github/forks/livissnack/doniai-nav.svg)
