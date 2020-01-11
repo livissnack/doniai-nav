@@ -722,5 +722,23 @@
         }
       ]
     }
+  ],
+  "designData": [
+    {
+      "id": 1,
+      "title": "推荐站点",
+      "items": [
+        {
+          "name": "AI生成LOGO",
+          "href": "https://app.brandmark.io/v2",
+          "color": "is-primary"
+        },
+        {
+          "name": "站酷",
+          "href": "https://www.zcool.com.cn",
+          "color": "is-success"
+        }
+      ]
+    }
   ]
 }

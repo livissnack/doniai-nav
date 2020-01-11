@@ -98,7 +98,7 @@ export default {
         [4, 'toolsData'],
         [5, 'frontendData'],
         [6, 'homeData'],
-        [7, 'homeData']
+        [7, 'designData']
       ])
       this.navData = jsonNavs[dataMap.get(this.current_active_menu_id)]
     },
