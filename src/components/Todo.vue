@@ -4,11 +4,7 @@
       今天工作任务
     </p>
 
-    <a
-      class="panel-block todo-list is-active"
-      v-for="todo in todos"
-      :key="todo.index"
-    >
+    <a class="panel-block todo-list" v-for="todo in todos" :key="todo.index">
       <div class="todo-content">
         <b-checkbox
           size="is-small"
@@ -40,14 +36,17 @@
       </div>
     </a>
     <div class="panel-block">
-      <p class="control">
+      <p class="control has-icons-left">
         <input
           class="input is-small"
           v-model="new_todo_text"
-          type="text"
+          type="search"
           @keyup.enter="newTodo"
           placeholder="新任务"
         />
+        <span class="icon is-small is-left">
+          <i class="fas fa-plus-circle"></i>
+        </span>
       </p>
     </div>
   </div>
@@ -110,12 +109,14 @@ export default {
 .panel {
   background: #ffffff;
   .todo-title {
+    background: #ffffff;
     color: #363636;
     font-weight: 700;
     padding: 0.75rem;
-    font-size: 1em;
   }
   .panel-heading {
+    padding: 0.75rem;
+    font-size: 1.05em;
     &:first-child {
       border-bottom: 1px solid #dbdbdb;
     }
@@ -127,6 +128,7 @@ export default {
   .todo-content {
     display: flex;
     align-items: center;
+    font-size: 1em;
   }
 }
 
