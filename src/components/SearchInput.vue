@@ -55,6 +55,7 @@
 </template>
 
 <script>
+import jsonSearchs from '@/services/search.json'
 export default {
   name: 'home',
   data() {
@@ -64,51 +65,7 @@ export default {
         search_type: 1
       },
       is_show_dsug: false,
-      searchs: [
-        {
-          id: 1,
-          name: '百度',
-          url: 'https://www.baidu.com/s?wd=',
-          is_default: true
-        },
-        {
-          id: 2,
-          name: '谷歌',
-          url: 'https://www.google.com.hk/search?q=',
-          is_default: false
-        },
-        {
-          id: 3,
-          name: '必应',
-          url: 'https://cn.bing.com/search?q=',
-          is_default: false
-        },
-        {
-          id: 4,
-          name: '多尼爱',
-          url: 'https://www.doniai.com/search?q=',
-          is_default: false
-        },
-        {
-          id: 5,
-          name: 'githup',
-          url: 'https://github.com/search?q=',
-          is_default: false
-        },
-        {
-          id: 6,
-          name: '图片',
-          url:
-            'http://image.baidu.com/search/index?tn=baiduimage&ps=1&ct=201326592&lm=-1&cl=2&nc=1&ie=utf-8&word=',
-          is_default: false
-        },
-        {
-          id: 7,
-          name: '图标',
-          url: 'https://www.iconfont.cn/search/index?searchType=icon&q=',
-          is_default: false
-        }
-      ],
+      searchs: jsonSearchs['searchs'],
       items: [
         {
           id: 1,
