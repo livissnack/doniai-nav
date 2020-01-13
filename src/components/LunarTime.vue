@@ -1,11 +1,11 @@
 <template>
   <div class="content">
-    <div class="subtitle is-5 text-center">
+    <div class="subtitle is-6 text-center">
       {{ solarTimeComputed }}
     </div>
-    <strong>{{ up_down_text }} {{ currentTime }}</strong>
-    <br />
-    <em>{{ solarComputed }}</em>
+    <strong class="subtitle is-7"
+      >{{ upDownTextComputed }} {{ currentTime }}</strong
+    >
   </div>
 </template>
 
@@ -29,9 +29,9 @@ export default {
     }
   },
   computed: {
-    solarComputed() {
+    upDownTextComputed() {
       let solar2lunarData = this.solar2lunarData
-      return `${solar2lunarData.cYear}年${solar2lunarData.cMonth}月${solar2lunarData.cDay}日 ${solar2lunarData.ncWeek}`
+      return `${solar2lunarData.ncWeek}[${this.up_down_text}]`
     },
     solarTimeComputed() {
       let solar2lunarData = this.solar2lunarData
@@ -58,7 +58,7 @@ export default {
 <style lang="less" scoped>
 .text-center {
   text-align: center;
-  font-weight: 800;
-  color: #f4645f;
+  font-weight: 600;
+  color: #4c9ae8;
 }
 </style>
