@@ -11,11 +11,13 @@ export function removeArr(_arr, _obj) {
 export function timeNow() {
   let time = new Date()
   let year = time.getFullYear()
-  let month = time.getMonth() + 1
-  let day = time.getDate()
+  let month =
+    time.getMonth() + 1 < 10 ? '0' + (time.getMonth() + 1) : time.getMonth() + 1
+  let day = time.getDate() < 10 ? '0' + time.getDate() : time.getDate()
   let hour = time.getHours()
   let minute = time.getMinutes()
-  let second = time.getSeconds()
+  let second =
+    time.getSeconds() < 10 ? '0' + time.getSeconds() : time.getSeconds()
   return `${year}-${month}-${day} ${hour}:${minute}:${second}`
 }
 
@@ -26,7 +28,9 @@ export function year() {
 
 export function month() {
   let time = new Date()
-  return time.getMonth() + 1
+  return time.getMonth() + 1 < 10
+    ? '0' + (time.getMonth() + 1)
+    : time.getMonth() + 1
 }
 
 export function day() {
