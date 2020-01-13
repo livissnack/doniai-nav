@@ -10,7 +10,13 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
+import {
+  timeNow,
+  year,
+  month,
+  day,
+  monningAndAfternoonText
+} from '@/utils/helper.js'
 import solarLunar from 'solarlunar'
 
 export default {
@@ -19,7 +25,7 @@ export default {
     return {
       up_down_text: '',
       solar2lunarData: '',
-      currentTime: dayjs().format('hh:mm:ss')
+      currentTime: timeNow()
     }
   },
   computed: {
@@ -34,7 +40,7 @@ export default {
   },
   mounted() {
     setInterval(() => {
-      this.currentTime = dayjs().format('hh:mm:ss')
+      this.currentTime = timeNow()
     }, 1000)
   },
   created() {
@@ -42,13 +48,8 @@ export default {
   },
   methods: {
     getWeekday() {
-      const datetime = new Date()
-      const year = datetime.getFullYear()
-      const month = datetime.getMonth() + 1
-      const date = datetime.getDate()
-      const hour = datetime.getHours()
-      this.up_down_text = hour > 12 ? '下午' : '上午'
-      this.solar2lunarData = solarLunar.solar2lunar(year, month, date)
+      this.up_down_text = monningAndAfternoonText()
+      this.solar2lunarData = solarLunar.solar2lunar(year(), month(), day())
     }
   }
 }

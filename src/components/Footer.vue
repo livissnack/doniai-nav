@@ -144,20 +144,20 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
+import { timeNow } from '@/utils/helper.js'
 export default {
   name: 'Footer',
   data() {
     return {
       logoUrl: `${this.bucket_url}/uploads/logo/logo.png`,
       licenseUrl: `${this.bucket_url}/uploads/others/license.png`,
-      currentTime: '',
+      currentTime: timeNow(),
       wechat_class_name: 'wechat-hidden'
     }
   },
   mounted() {
     setInterval(() => {
-      this.currentTime = dayjs().format('YYYY-MM-DD hh:mm:ss')
+      this.currentTime = timeNow()
     }, 1000)
   },
   methods: {
