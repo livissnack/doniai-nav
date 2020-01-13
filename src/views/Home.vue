@@ -98,7 +98,6 @@ export default {
   },
   created() {
     this.getCurrentNavs()
-    this.handleLoadProcess()
   },
   methods: {
     getCurrentNavs() {
