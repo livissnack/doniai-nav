@@ -10,6 +10,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.12.0",
     "@mlqt/vue-back-top": "^1.0.8",
+    "@moefe/vue-aplayer": "^2.0.0-beta.5",
     "axios": "^0.19.1",
     "buefy": "^0.8.8",
     "core-js": "^3.4.3",

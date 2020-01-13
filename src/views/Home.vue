@@ -61,6 +61,9 @@
           </div>
           <div class="column">
             <div class="section-box">
+              <Music />
+            </div>
+            <div class="section-box">
               <Weather />
             </div>
             <div class="section-box">
@@ -77,6 +80,7 @@
 import SearchInput from '@/components/SearchInput.vue'
 import Weather from '@/components/Weather.vue'
 import Todo from '@/components/Todo.vue'
+import Music from '@/components/Music.vue'
 import jsonNavs from '@/services/data.json'
 import jsonMenus from '@/services/menu.json'
 export default {
@@ -84,6 +88,7 @@ export default {
   components: {
     SearchInput,
     Weather,
+    Music,
     Todo
   },
   data() {
