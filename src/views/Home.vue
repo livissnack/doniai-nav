@@ -60,7 +60,12 @@
             </div>
           </div>
           <div class="column">
-            <Weather />
+            <div class="section-box">
+              <Weather />
+            </div>
+            <div class="section-box">
+              <Todo />
+            </div>
           </div>
         </div>
       </div>
@@ -71,13 +76,15 @@
 <script>
 import SearchInput from '@/components/SearchInput.vue'
 import Weather from '@/components/Weather.vue'
+import Todo from '@/components/Todo.vue'
 import jsonNavs from '@/services/data.json'
 import jsonMenus from '@/services/menu.json'
 export default {
   name: 'home',
   components: {
     SearchInput,
-    Weather
+    Weather,
+    Todo
   },
   data() {
     return {
@@ -186,5 +193,9 @@ export default {
 .is-active {
   color: #7957d5 !important;
   font-weight: bold;
+}
+
+.section-box {
+  margin-bottom: 20px;
 }
 </style>
