@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <ProcessBar />
     <div class="nav-box">
       <div class="container">
         <b-navbar>
@@ -75,6 +76,7 @@
 
 <script>
 import SearchInput from '@/components/SearchInput.vue'
+import ProcessBar from '@/components/ProcessBar.vue'
 import Weather from '@/components/Weather.vue'
 import Todo from '@/components/Todo.vue'
 import jsonNavs from '@/services/data.json'
@@ -83,6 +85,7 @@ export default {
   name: 'home',
   components: {
     SearchInput,
+    ProcessBar,
     Weather,
     Todo
   },
@@ -95,6 +98,7 @@ export default {
   },
   created() {
     this.getCurrentNavs()
+    this.handleLoadProcess()
   },
   methods: {
     getCurrentNavs() {
