@@ -77,6 +77,7 @@
 </template>
 
 <script>
+import Mixins from '@/utils/mixin.js'
 import SearchInput from '@/components/SearchInput.vue'
 import Weather from '@/components/Weather.vue'
 import Todo from '@/components/Todo.vue'
@@ -85,6 +86,7 @@ import jsonNavs from '@/services/data.json'
 import jsonMenus from '@/services/menu.json'
 export default {
   name: 'home',
+  mixins: [Mixins],
   components: {
     SearchInput,
     Weather,
@@ -117,24 +119,6 @@ export default {
     handleChangeData(menu) {
       this.current_active_menu_id = menu.id
       this.getCurrentNavs()
-    },
-    handleLogin() {
-      this.$buefy.snackbar.open({
-        duration: 3000,
-        message: '登录功能尚未开放！',
-        type: 'is-info',
-        position: 'is-bottom-right',
-        actionText: 'Msg'
-      })
-    },
-    handleRegister() {
-      this.$buefy.snackbar.open({
-        duration: 3000,
-        message: '注册该功能尚未开放！',
-        type: 'is-info',
-        position: 'is-bottom-right',
-        actionText: 'Msg'
-      })
     }
   }
 }

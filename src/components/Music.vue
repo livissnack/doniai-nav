@@ -1,7 +1,8 @@
 <template>
   <div class="music-box">
     <div class="music-title">
-      <h3>音乐播放器</h3>
+      <div><h3>音乐播放器</h3></div>
+      <div class="game-title"><h3 @click="goGame">游戏一下</h3></div>
     </div>
     <div class="music-player">
       <aplayer :audio="audio" :lrcType="3" :listFolded="is_hide_list" />
@@ -49,7 +50,17 @@ export default {
       ]
     }
   },
-  methods: {}
+  methods: {
+    goGame() {
+      this.$buefy.snackbar.open({
+        duration: 3000,
+        message: '游戏功能尚未开放！',
+        type: 'is-danger',
+        position: 'is-bottom-right',
+        actionText: 'Msg'
+      })
+    }
+  }
 }
 </script>
 
@@ -58,10 +69,24 @@ export default {
   background: #ffffff;
   padding: 10px 10px 10px 10px;
   .music-title {
-    h3 {
-      font-size: 1em;
-      font-weight: 700;
-      color: #363636;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 4px;
+    div {
+      h3 {
+        font-size: 1em;
+        font-weight: 700;
+        color: #363636;
+      }
+    }
+    .game-title {
+      h3 {
+        &:hover {
+          cursor: pointer;
+          text-decoration: underline;
+          color: #f4645f;
+        }
+      }
     }
   }
 }
