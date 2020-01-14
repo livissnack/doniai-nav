@@ -109,6 +109,7 @@ export default {
         return
       }
       let searchObj = this.searchs.find(el => el.id === id)
+      this.filter.search_text = ''
       window.open(`${searchObj.url}${text}`)
     },
     handleSelectedSearch(item) {
