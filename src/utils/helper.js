@@ -14,8 +14,9 @@ export function timeNow() {
   let month =
     time.getMonth() + 1 < 10 ? '0' + (time.getMonth() + 1) : time.getMonth() + 1
   let day = time.getDate() < 10 ? '0' + time.getDate() : time.getDate()
-  let hour = time.getHours()
-  let minute = time.getMinutes()
+  let hour = time.getHours() < 10 ? '0' + time.getHours() : time.getHours()
+  let minute =
+    time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes()
   let second =
     time.getSeconds() < 10 ? '0' + time.getSeconds() : time.getSeconds()
   return `${year}-${month}-${day} ${hour}:${minute}:${second}`
