@@ -43,10 +43,11 @@ $ yarn build
 
 ![effect](/example/images/1.png)
 
-## 所用技术
+## 所用依赖，感谢这些好用的扩展包
 
 - [高德地图 api](https://lbs.amap.com/)
 - [VueJs](https://lbs.amap.com/)
+- [Aplayer](https://aplayer.moefe.org/)
 
 ## License
 
