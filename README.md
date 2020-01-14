@@ -4,7 +4,6 @@
 
 ![Build Status](https://img.shields.io/travis/livissnack/doniai-nav)
 ![Version](https://img.shields.io/github/package-json/v/livissnack/doniai-nav)
-![StyleCI build status](https://github.styleci.io/repos/144818004/shield)
 [![Issues](https://img.shields.io/github/issues/livissnack/doniai-nav.svg)](https://github.com/livissnack/doniai-nav/issues)
 ![Forks](https://img.shields.io/github/forks/livissnack/doniai-nav.svg)
 
