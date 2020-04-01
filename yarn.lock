@@ -1906,10 +1906,10 @@ browserslist@^4.11.0, browserslist@^4.8.3, browserslist@^4.8.6, browserslist@^4.
     node-releases "^1.1.52"
     pkg-up "^3.1.0"
 
-buefy@^0.8.13:
-  version "0.8.13"
-  resolved "https://registry.npm.taobao.org/buefy/download/buefy-0.8.13.tgz#90ce1645807c15d81f584dc78a2090a0feb7a70b"
-  integrity sha1-kM4WRYB8FdgfWE3HiiCQoP63pws=
+buefy@^0.8.15:
+  version "0.8.15"
+  resolved "https://registry.npm.taobao.org/buefy/download/buefy-0.8.15.tgz#88fae2d3b3b7646abb92f23e89a2e176f2a05f7f"
+  integrity sha1-iPri07O3ZGq7kvI+iaLhdvKgX38=
   dependencies:
     bulma "0.7.5"
 

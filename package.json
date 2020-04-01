@@ -12,7 +12,7 @@
     "@mlqt/vue-back-top": "^1.0.8",
     "@moefe/vue-aplayer": "^2.0.0-beta.5",
     "axios": "^0.19.2",
-    "buefy": "^0.8.13",
+    "buefy": "^0.8.15",
     "core-js": "3.6.0",
     "solarlunar": "^2.0.7",
     "vue": "^2.6.10",
