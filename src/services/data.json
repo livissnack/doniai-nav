@@ -340,29 +340,39 @@
           "color": "is-success"
         },
         {
+          "name": "用户后台测试",
+          "href": "http://admin.tiuc.t",
+          "color": "is-warning"
+        },
+        {
+          "name": "用户后台开发",
+          "href": "http://admin.tiuc.d",
+          "color": "is-info"
+        },
+        {
           "name": "赛事H5测试",
           "href": "http://h5.ties.t",
-          "color": "is-warning"
+          "color": "is-danger"
         },
         {
           "name": "赛事H5开发",
           "href": "http://h5.ties.d",
-          "color": "is-info"
+          "color": "is-primary"
         },
         {
           "name": "项目管理",
           "href": "http://zentao.l",
-          "color": "is-danger"
+          "color": "is-success"
         },
         {
           "name": "项目构建管理",
           "href": "http://jenkins.l",
-          "color": "is-primary"
+          "color": "is-warning"
         },
         {
           "name": "用户api开发",
           "href": "http://api.tiuc.d/api",
-          "color": "is-success"
+          "color": "is-info"
         }
       ]
     },
