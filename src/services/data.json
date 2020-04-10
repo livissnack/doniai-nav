@@ -603,6 +603,11 @@
           "name": "3023数据",
           "href": "https://www.3023data.com",
           "color": "is-primary"
+        },
+        {
+          "name": "Abios Esports",
+          "href": "https://abiosgaming.com",
+          "color": "is-success"
         }
       ]
     }
