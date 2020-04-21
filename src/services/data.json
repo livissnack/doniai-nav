@@ -477,6 +477,11 @@
           "name": "flaticon图标",
           "href": "https://www.flaticon.com",
           "color": "is-info"
+        },
+        {
+          "name": "PDF转换",
+          "href": "https://lightpdf.com",
+          "color": "is-primary"
         }
       ]
     },
