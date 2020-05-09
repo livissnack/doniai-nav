@@ -620,6 +620,17 @@
           "color": "is-success"
         }
       ]
+    },
+    {
+      "id": 8,
+      "title": "系统知识学习",
+      "items": [
+        {
+          "name": "Linux基础学习",
+          "href": "https://linuxtools-rst.readthedocs.io",
+          "color": "is-primary"
+        }
+      ]
     }
   ],
   "frontendData": [
