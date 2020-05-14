@@ -94,6 +94,14 @@ export default {
       ]
     }
   },
+  watch: {
+    'filter.search_text': {
+      handler(val) {
+        this.filter.search_text = val
+      },
+      deep: true
+    }
+  },
   methods: {
     startSearch() {
       let id = this.filter.search_type

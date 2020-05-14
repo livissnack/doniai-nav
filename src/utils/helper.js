@@ -44,3 +44,47 @@ export function monningAndAfternoonText() {
   let hour = time.getHours()
   return hour > 12 ? '下午' : '上午'
 }
+
+export function baiduAiSug(content) {
+  let sugurl = 'http://suggestion.baidu.com/su?wd=#content#&cb=window.baidu.sug'
+  sugurl = sugurl.replace('#content#', content)
+  window.baidu = {
+    sug: function(json) {
+      return json.s
+    }
+  }
+  let script = document.createElement('script')
+  script.src = sugurl
+  document.getElementsByTagName('head')[0].appendChild(script)
+}
+
+export function googleAiSug(content) {
+  let sugurl =
+    'http://suggestqueries.google.com/complete/search?client=chrome&q=#content#&jsonp=window.google.sug'
+  sugurl = sugurl.replace('#content#', content)
+  window.google = {
+    sug: function(json) {
+      return json[1]
+    }
+  }
+  let script = document.createElement('script')
+  script.src = sugurl
+  document.getElementsByTagName('head')[0].appendChild(script)
+}
+
+export function bingAiSug(content) {
+  let sugurl =
+    'http://api.bing.com/qsonhs.aspx?type=cb&q=#content#&cb=window.bing.sug'
+  sugurl = sugurl.replace('#content#', content)
+  window.bing = {
+    sug: function(json) {
+      let text_arr = json.AS.Results[0].Suggests.map(obj => {
+        return obj.Txt
+      })
+      return text_arr
+    }
+  }
+  let script = document.createElement('script')
+  script.src = sugurl
+  document.getElementsByTagName('head')[0].appendChild(script)
+}
