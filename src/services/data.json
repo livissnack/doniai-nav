@@ -591,6 +591,11 @@
           "name": "Editor授权",
           "href": "http://lookdiv.com",
           "color": "is-primary"
+        },
+        {
+          "name": "System授权",
+          "href": "https://kms.cangshui.net",
+          "color": "is-success"
         }
       ]
     },
