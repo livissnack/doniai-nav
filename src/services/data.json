@@ -623,6 +623,21 @@
           "name": "Abios Esports",
           "href": "https://abiosgaming.com",
           "color": "is-success"
+        },
+        {
+          "name": "京东API",
+          "href": "https://open.jd.com",
+          "color": "is-warning"
+        },
+        {
+          "name": "淘宝API",
+          "href": "https://open.taobao.com",
+          "color": "is-info"
+        },
+        {
+          "name": "拼多多API",
+          "href": "https://open.pinduoduo.com",
+          "color": "is-danger"
         }
       ]
     },
