@@ -23,6 +23,7 @@
         </div>
 
         <LunarTime />
+        <Countdown />
       </div>
     </div>
     <div id="map-box"></div>
@@ -32,12 +33,14 @@
 <script>
 import request from 'axios'
 import LunarTime from '@/components/LunarTime.vue'
+import Countdown from '@/components/Countdown.vue'
 const gaodekey = '045d06aff28968d4ade448d96aef901b'
 
 export default {
   name: 'Weather',
   components: {
-    LunarTime
+    LunarTime,
+    Countdown
   },
   data() {
     return {
