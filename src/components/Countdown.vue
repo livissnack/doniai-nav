@@ -10,7 +10,7 @@ export default {
   data() {
     return {
       remark: '距离下班还剩：',
-      type: 'down',
+      type: 'up',
       remainTime: '18:30:00'
     }
   },
