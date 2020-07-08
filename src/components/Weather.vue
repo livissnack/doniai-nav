@@ -5,6 +5,7 @@
         <p class="card-header-title">
           {{ city === undefined ? '福田区' : city }}
         </p>
+        <Countdown />
       </header>
       <div class="card-content">
         <div class="media">
@@ -23,7 +24,6 @@
         </div>
 
         <LunarTime />
-        <Countdown />
       </div>
     </div>
     <div id="map-box"></div>
