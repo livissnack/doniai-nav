@@ -373,6 +373,11 @@
           "name": "用户api开发",
           "href": "http://api.tiuc.d/api",
           "color": "is-info"
+        },
+        {
+          "name": "直播网站",
+          "href": "http://h5.live.d",
+          "color": "is-danger"
         }
       ]
     },
