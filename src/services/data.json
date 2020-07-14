@@ -426,6 +426,11 @@
           "name": "Eolinker接口管理",
           "href": "https://www.eolinker.com",
           "color": "is-success"
+        },
+        {
+          "name": "直播源接口管理",
+          "href": "http://114.55.166.223/interface",
+          "color": "is-danger"
         }
       ]
     }
