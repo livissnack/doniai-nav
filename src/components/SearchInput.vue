@@ -139,10 +139,10 @@ export default {
 
 <style lang="less" scoped>
 .custom-input-width {
-  width: 400px;
+  width: 500px;
   margin: 0 auto;
   .control {
-    width: 400px;
+    width: 500px;
   }
 }
 
