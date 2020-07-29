@@ -41,6 +41,12 @@
       "name": "图标",
       "url": "https://www.iconfont.cn/search/index?searchType=icon&q=",
       "is_default": false
+    },
+    {
+      "id": 8,
+      "name": "npm",
+      "url": "https://www.npmjs.com/package/",
+      "is_default": false
     }
   ]
 }
