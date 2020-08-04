@@ -103,7 +103,7 @@ export default {
 <style lang="less" scope>
 .section {
   height: 100vh;
-  background: url();
+  background: url('../assets/bg.jpg');
   background-size: 100% 100%;
 }
 
