@@ -49,11 +49,12 @@
               <div class="tab-item">
                 <a
                   :href="navItem.href"
+                  @click="handleSubmit(navItem)"
                   class="box-item"
                   :class="navItem.color"
-                  target="_blank"
                   v-for="navItem in navItems.items"
                   :key="navItem.index"
+                  target="_blank"
                   >{{ navItem.name }}</a
                 >
               </div>
@@ -73,17 +74,28 @@
         </div>
       </div>
     </div>
+
+    <div class="backtop">
+      <back-top color="#409EFF" :size="1.1" :slow="10"> </back-top>
+    </div>
+    <div id="footer">
+      <Footer />
+    </div>
   </div>
 </template>
 
 <script>
+import Vue from 'vue'
 import Mixins from '@/utils/mixin.js'
 import SearchInput from '@/components/SearchInput.vue'
 import Weather from '@/components/Weather.vue'
 import Todo from '@/components/Todo.vue'
 import Music from '@/components/Music.vue'
+import BackTop from '@mlqt/vue-back-top'
+import Footer from '@/components/Footer.vue'
 import jsonNavs from '@/services/data.json'
 import jsonMenus from '@/services/menu.json'
+Vue.use(BackTop)
 export default {
   name: 'home',
   mixins: [Mixins],
@@ -91,7 +103,8 @@ export default {
     SearchInput,
     Weather,
     Music,
-    Todo
+    Todo,
+    Footer
   },
   data() {
     return {
