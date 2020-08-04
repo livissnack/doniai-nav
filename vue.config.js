@@ -1,5 +1,15 @@
 module.exports = {
-  productionSourceMap: false
+  productionSourceMap: false,
+  chainWebpack: config => {
+    config.module
+      .rule('images')
+      .use('image-webpack-loader')
+      .loader('image-webpack-loader')
+      .options({
+        bypassOnDebug: true
+      })
+      .end()
+  }
   // devServer: {
   //   port: 8097,
   //   proxy: {
