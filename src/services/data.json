@@ -811,5 +811,50 @@
         }
       ]
     }
+  ],
+  "blogData": [
+    {
+      "id": 1,
+      "title": "机器学习",
+      "items": [
+        {
+          "name": "Colah's",
+          "href": "https://colah.github.io",
+          "color": "is-primary"
+        },
+        {
+          "name": "Sebastian Ruder",
+          "href": "https://ruder.io",
+          "color": "is-success"
+        },
+        {
+          "name": "Aaditya Prakash",
+          "href": "https://iamaaditya.github.io",
+          "color": "is-warning"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Web开发",
+      "items": [
+        {
+          "name": "Jake Archibald",
+          "href": "https://jakearchibald.com",
+          "color": "is-primary"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "国外见闻",
+      "items": [
+        {
+          "name": "hateblo",
+          "href": "https://moognyk.hateblo.jp",
+          "color": "is-primary"
+        }
+      ]
+    }
   ]
 }

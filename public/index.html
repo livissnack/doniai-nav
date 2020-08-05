@@ -5,6 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
+    <!-- 使用CDN的并预加载CSS文件 -->
+    <% for (var i in htmlWebpackPlugin.options.cdn &&
+    htmlWebpackPlugin.options.cdn.css) { %>
+    <link rel="preload" href="<%= htmlWebpackPlugin.options.cdn.css[i] %>" as="style"/>
+    <% } %>
+    <!-- 使用CDN的并预加载JS文件 -->
+    <% for (var i in htmlWebpackPlugin.options.cdn &&
+    htmlWebpackPlugin.options.cdn.js) { %>
+    <link rel="preload" src="<%= htmlWebpackPlugin.options.cdn.js[i] %>" as="script"></link>
+    <% } %>
     <title>Doniai导航</title>
   </head>
   <body>
@@ -16,9 +26,12 @@
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+    <!-- 使用CDN的JS文件 -->
+    <% for (var i in htmlWebpackPlugin.options.cdn &&
+    htmlWebpackPlugin.options.cdn.js) { %>
     <script
-      type="text/javascript"
-      src="https://webapi.amap.com/maps?v=1.4.15&key=045d06aff28968d4ade448d96aef901b"
+      src="<%= htmlWebpackPlugin.options.cdn.js[i] %>"
     ></script>
+    <% } %>
   </body>
 </html>
