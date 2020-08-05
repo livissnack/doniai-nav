@@ -8,12 +8,7 @@
     <!-- 使用CDN的并预加载CSS文件 -->
     <% for (var i in htmlWebpackPlugin.options.cdn &&
     htmlWebpackPlugin.options.cdn.css) { %>
-    <link rel="preload" href="<%= htmlWebpackPlugin.options.cdn.css[i] %>" as="style"/>
-    <% } %>
-    <!-- 使用CDN的并预加载JS文件 -->
-    <% for (var i in htmlWebpackPlugin.options.cdn &&
-    htmlWebpackPlugin.options.cdn.js) { %>
-    <link rel="preload" src="<%= htmlWebpackPlugin.options.cdn.js[i] %>" as="script"></link>
+    <link rel="stylesheet preload prefetch" href="<%= htmlWebpackPlugin.options.cdn.css[i] %>" as="style" crossorigin="anonymous"/>
     <% } %>
     <title>Doniai导航</title>
   </head>
@@ -26,7 +21,7 @@
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
-    <!-- 使用CDN的JS文件 -->
+     <!-- 使用CDN的并预加载JS文件 -->
     <% for (var i in htmlWebpackPlugin.options.cdn &&
     htmlWebpackPlugin.options.cdn.js) { %>
     <script

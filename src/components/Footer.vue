@@ -172,7 +172,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import '~@fortawesome/fontawesome-free/css/all.min.css';
 .divider {
   border-bottom-color: hsla(0, 0%, 100%, 0.15);
   border-right-color: hsla(0, 0%, 100%, 0.15);

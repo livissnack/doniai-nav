@@ -17,6 +17,7 @@ module.exports = {
     config.externals = {
       vue: 'Vue',
       buefy: 'Buefy',
+      '@fortawesome/fontawesome-free': 'Fontawesome',
       'vue-router': 'VueRouter',
       axios: 'axios'
     }
@@ -34,7 +35,10 @@ module.exports = {
         gifsicle: { interlaced: false }
       })
     const cdn = {
-      css: ['//cdn.jsdelivr.net/npm/buefy@0.8.15/dist/buefy.min.css'],
+      css: [
+        '//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css',
+        '//cdn.jsdelivr.net/npm/buefy@0.8.15/dist/buefy.min.css'
+      ],
       js: [
         '//cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js',
         '//cdn.jsdelivr.net/npm/vue-router@3.3.4/dist/vue-router.min.js',
