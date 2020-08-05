@@ -1,4 +1,6 @@
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+  .BundleAnalyzerPlugin
 const productionGzipExtensions = /\.(js|css|json|txt|html|ico|svg)(\?.*)?$/i
 
 module.exports = {
@@ -24,6 +26,13 @@ module.exports = {
     config.plugins = [...config.plugins, ...plugins]
   },
   chainWebpack: config => {
+    //打包分析插件
+    config.plugin('webpack-report').use(BundleAnalyzerPlugin, [
+      {
+        analyzerMode: 'static'
+      }
+    ])
+
     config.module
       .rule('images')
       .use('image-webpack-loader')
