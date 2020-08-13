@@ -317,6 +317,27 @@
     },
     {
       "id": 2,
+      "title": "自有网站管理",
+      "items": [
+        {
+          "name": "CloudFlare",
+          "href": "https://www.cloudflare.com",
+          "color": "is-primary"
+        },
+        {
+          "name": "Vultr",
+          "href": "https://www.vultr.com",
+          "color": "is-success"
+        },
+        {
+          "name": "Aliyun",
+          "href": "https://cn.aliyun.com",
+          "color": "is-danger"
+        }
+      ]
+    },
+    {
+      "id": 3,
       "title": "本机内网快捷",
       "items": [
         {
@@ -337,7 +358,7 @@
       ]
     },
     {
-      "id": 3,
+      "id": 4,
       "title": "公司内网快捷",
       "items": [
         {
@@ -393,7 +414,7 @@
       ]
     },
     {
-      "id": 4,
+      "id": 5,
       "title": "公司外网快捷",
       "items": [
         {
@@ -414,7 +435,7 @@
       ]
     },
     {
-      "id": 5,
+      "id": 6,
       "title": "内网代码",
       "items": [
         {
@@ -425,7 +446,7 @@
       ]
     },
     {
-      "id": 6,
+      "id": 7,
       "title": "个人接口管理",
       "items": [
         {
