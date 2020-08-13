@@ -343,6 +343,11 @@
           "name": "Minio存储",
           "href": "https://minio.doniai.com",
           "color": "is-warning"
+        },
+        {
+          "name": "Api接口文档",
+          "href": "https://showdoc.doniai.com",
+          "color": "is-primary"
         }
       ]
     },
