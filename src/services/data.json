@@ -333,6 +333,16 @@
           "name": "Aliyun",
           "href": "https://cn.aliyun.com",
           "color": "is-danger"
+        },
+        {
+          "name": "Portainer容器管理",
+          "href": "https://portainer.doniai.com",
+          "color": "is-info"
+        },
+        {
+          "name": "Minio存储",
+          "href": "https://minio.doniai.com",
+          "color": "is-warning"
         }
       ]
     },
