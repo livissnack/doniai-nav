@@ -446,6 +446,11 @@
           "name": "h5应用",
           "href": "https://m.ftdj666.com",
           "color": "is-warning"
+        },
+        {
+          "name": "h5-Live",
+          "href": "https://h5live.ftdj667.com",
+          "color": "is-danger"
         }
       ]
     },
