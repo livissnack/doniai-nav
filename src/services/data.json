@@ -754,6 +754,11 @@
           "name": "Semantic-UI",
           "href": "https://semantic-ui.com",
           "color": "is-info"
+        },
+        {
+          "name": "Adobe-UI",
+          "href": "https://react-spectrum.adobe.com",
+          "color": "is-primary"
         }
       ]
     },
