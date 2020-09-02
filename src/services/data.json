@@ -353,6 +353,32 @@
     },
     {
       "id": 3,
+      "title": "风腾重构项目",
+      "items": [
+        {
+          "name": "后台-开发",
+          "href": "http://admin.ftes.d",
+          "color": "is-primary"
+        },
+        {
+          "name": "接口-开发",
+          "href": "http://api.ftes.d",
+          "color": "is-success"
+        },
+        {
+          "name": "后台-本地",
+          "href": "http://admin.ftes.test",
+          "color": "is-danger"
+        },
+        {
+          "name": "接口-本地",
+          "href": "http://api.ftes.test",
+          "color": "is-info"
+        }
+      ]
+    },
+    {
+      "id": 4,
       "title": "本机内网快捷",
       "items": [
         {
@@ -373,7 +399,7 @@
       ]
     },
     {
-      "id": 4,
+      "id": 5,
       "title": "公司内网快捷",
       "items": [
         {
@@ -429,7 +455,7 @@
       ]
     },
     {
-      "id": 5,
+      "id": 6,
       "title": "公司外网快捷",
       "items": [
         {
@@ -455,7 +481,7 @@
       ]
     },
     {
-      "id": 6,
+      "id": 7,
       "title": "内网代码",
       "items": [
         {
@@ -466,14 +492,9 @@
       ]
     },
     {
-      "id": 7,
+      "id": 8,
       "title": "个人接口管理",
       "items": [
-        {
-          "name": "Yapi接口管理",
-          "href": "https://yapi.doniai.com",
-          "color": "is-primary"
-        },
         {
           "name": "Eolinker接口管理",
           "href": "https://www.eolinker.com",
