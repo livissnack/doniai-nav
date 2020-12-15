@@ -891,6 +891,11 @@
           "name": "站酷",
           "href": "https://www.zcool.com.cn",
           "color": "is-success"
+        },
+        {
+          "name": "Iconify",
+          "href": "https://www.iconify.pro",
+          "color": "is-danger"
         }
       ]
     }
