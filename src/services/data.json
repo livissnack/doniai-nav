@@ -898,6 +898,17 @@
           "color": "is-danger"
         }
       ]
+    },
+    {
+      "id": 2,
+      "title": "免费插画",
+      "items": [
+        {
+          "name": "Pixeelture",
+          "href": "https://www.pixeltrue.com",
+          "color": "is-primary"
+        }
+      ]
     }
   ],
   "blogData": [
