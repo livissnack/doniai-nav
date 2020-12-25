@@ -901,6 +901,27 @@
     },
     {
       "id": 2,
+      "title": "图标库",
+      "items": [
+        {
+          "name": "IconPark",
+          "href": "http://iconpark.bytedance.com",
+          "color": "is-primary"
+        }, 
+        {
+          "name": "阿里巴巴图标",
+          "href": "https://www.iconfont.cn",
+          "color": "is-success"
+        }, 
+        {
+          "name": "Material Icon",
+          "href": "https://material.io/resources/icons/?style=baseline",
+          "color": "is-danger"
+        }
+      ]
+    },
+    {
+      "id": 3,
       "title": "免费插画",
       "items": [
         {
