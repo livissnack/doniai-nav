@@ -306,12 +306,17 @@
   "workData": [
     {
       "id": 1,
-      "title": "业务自媒体",
+      "title": "我的业务",
       "items": [
         {
           "name": "头条新闻号",
           "href": "http://mp.toutiao.com",
           "color": "is-primary"
+        },
+        {
+          "name": "LivisSnack博客",
+          "href": "https://livissnack.com",
+          "color": "is-success"
         }
       ]
     },
