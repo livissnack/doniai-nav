@@ -935,6 +935,17 @@
           "color": "is-primary"
         }
       ]
+    },
+    {
+      "id": 4,
+      "title": "红包设计",
+      "items": [
+        {
+          "name": "微信红包封面",
+          "href": "https://cover.weixin.qq.com",
+          "color": "is-primary"
+        }
+      ]
     }
   ],
   "blogData": [
