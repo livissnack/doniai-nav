@@ -157,14 +157,9 @@
           "color": "is-primary"
         },
         {
-          "name": "百度移动体验部",
-          "href": "http://mux.baidu.com/case",
-          "color": "is-success"
-        },
-        {
           "name": "Glow",
           "href": "http://tech.glowing.com/cn",
-          "color": "is-danger"
+          "color": "is-success"
         }
       ]
     },
@@ -350,19 +345,14 @@
           "color": "is-danger"
         },
         {
-          "name": "Portainer容器管理",
-          "href": "https://portainer.doniai.com",
-          "color": "is-info"
-        },
-        {
           "name": "Minio存储",
           "href": "https://minio.doniai.com",
-          "color": "is-warning"
+          "color": "is-info"
         },
         {
           "name": "Api接口文档",
           "href": "https://showdoc.doniai.com",
-          "color": "is-primary"
+          "color": "is-warning"
         }
       ]
     },
