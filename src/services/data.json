@@ -317,6 +317,16 @@
           "name": "LivisSnack博客",
           "href": "https://livissnack.com",
           "color": "is-success"
+        },
+        {
+          "name": "短视频解析",
+          "href": "https://parser.doniai.com",
+          "color": "is-danger"
+        },
+        {
+          "name": "站点健康监控",
+          "href": "https://ping.doniai.com",
+          "color": "is-info"
         }
       ]
     },
