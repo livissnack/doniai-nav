@@ -882,6 +882,19 @@
       ]
     }
   ],
+  "shopData": [
+    {
+      "id": 1,
+      "title": "生活助手",
+      "items": [
+        {
+          "name": "买买买",
+          "href": "https://just998.com",
+          "color": "is-primary"
+        }
+      ]
+    }
+  ],
   "designData": [
     {
       "id": 1,

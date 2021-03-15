@@ -124,7 +124,7 @@ export default {
         [3, 'iosData'],
         [4, 'toolsData'],
         [5, 'frontendData'],
-        [6, 'homeData'],
+        [6, 'shopData'],
         [7, 'designData'],
         [8, 'blogData']
       ])
