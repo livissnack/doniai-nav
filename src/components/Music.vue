@@ -24,28 +24,34 @@ export default {
       is_hide_list: true,
       audio: [
         {
-          name: '东西',
-          artist: '纳豆',
-          url: 'https://cdn.moefe.org/music/mp3/thing.mp3',
+          name: '真的爱你',
+          artist: 'Beyond',
+          url:
+            'https://doniai.oss-cn-shenzhen.aliyuncs.com/music/mp3/really-love.mp3',
           cover:
             'https://p1.music.126.net/5zs7IvmLv7KahY3BFzUmrg==/109951163635241613.jpg?param=300y300',
-          lrc: 'https://cdn.moefe.org/music/lrc/thing.lrc'
+          lrc:
+            'https://doniai.oss-cn-shenzhen.aliyuncs.com/music/lrc/really-love.lrc'
         },
         {
-          name: '响喜乱舞',
+          name: '布拉格广场',
           artist: '泠鸢yousa',
-          url: 'https://cdn.moefe.org/music/mp3/kyoukiranbu.mp3',
+          url:
+            'https://doniai.oss-cn-shenzhen.aliyuncs.com/music/mp3/prague.mp3',
           cover:
             'https://p1.music.126.net/AUGVPQ_rVrngDH9ocQrn3Q==/109951163613037822.jpg?param=300y300',
-          lrc: 'https://cdn.moefe.org/music/lrc/kyoukiranbu.lrc'
+          lrc:
+            'https://doniai.oss-cn-shenzhen.aliyuncs.com/music/lrc/prague.lrc'
         },
         {
-          name: '啵唧',
+          name: '光辉岁月',
           artist: 'Hanser',
-          url: 'https://cdn.moefe.org/music/mp3/kiss.mp3',
+          url:
+            'https://doniai.oss-cn-shenzhen.aliyuncs.com/music/mp3/old-young.mp3',
           cover:
             'https://p1.music.126.net/K0-IPcIQ9QFvA0jXTBqoWQ==/109951163636756693.jpg?param=300y300',
-          lrc: 'https://cdn.moefe.org/music/lrc/kiss.lrc'
+          lrc:
+            'https://doniai.oss-cn-shenzhen.aliyuncs.com/music/lrc/old-young.lrc'
         }
       ]
     }
