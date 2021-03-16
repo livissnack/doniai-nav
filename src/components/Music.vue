@@ -26,32 +26,26 @@ export default {
         {
           name: '真的爱你',
           artist: 'Beyond',
-          url:
-            'https://doniai.oss-cn-shenzhen.aliyuncs.com/music/mp3/really-love.mp3',
+          url: 'http://cdn.doniai.com/music/mp3/really-love.mp3',
           cover:
             'https://p1.music.126.net/5zs7IvmLv7KahY3BFzUmrg==/109951163635241613.jpg?param=300y300',
-          lrc:
-            'https://doniai.oss-cn-shenzhen.aliyuncs.com/music/lrc/really-love.lrc'
+          lrc: 'http://cdn.doniai.com/music/lrc/really-love.lrc'
         },
         {
           name: '布拉格广场',
           artist: '泠鸢yousa',
-          url:
-            'https://doniai.oss-cn-shenzhen.aliyuncs.com/music/mp3/prague.mp3',
+          url: 'http://cdn.doniai.com/music/mp3/prague.mp3',
           cover:
             'https://p1.music.126.net/AUGVPQ_rVrngDH9ocQrn3Q==/109951163613037822.jpg?param=300y300',
-          lrc:
-            'https://doniai.oss-cn-shenzhen.aliyuncs.com/music/lrc/prague.lrc'
+          lrc: 'http://cdn.doniai.com/music/lrc/prague.lrc'
         },
         {
           name: '光辉岁月',
           artist: 'Hanser',
-          url:
-            'https://doniai.oss-cn-shenzhen.aliyuncs.com/music/mp3/old-young.mp3',
+          url: 'http://cdn.doniai.com/music/mp3/old-young.mp3',
           cover:
             'https://p1.music.126.net/K0-IPcIQ9QFvA0jXTBqoWQ==/109951163636756693.jpg?param=300y300',
-          lrc:
-            'https://doniai.oss-cn-shenzhen.aliyuncs.com/music/lrc/old-young.lrc'
+          lrc: 'http://cdn.doniai.com/music/lrc/old-young.lrc'
         }
       ]
     }
