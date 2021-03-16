@@ -33,7 +33,7 @@ export default {
         },
         {
           name: '布拉格广场',
-          artist: '泠鸢yousa',
+          artist: '周杰伦',
           url: 'https://cdn.doniai.com/music/mp3/prague.mp3',
           cover:
             'https://p1.music.126.net/AUGVPQ_rVrngDH9ocQrn3Q==/109951163613037822.jpg?param=300y300',
@@ -41,7 +41,7 @@ export default {
         },
         {
           name: '光辉岁月',
-          artist: 'Hanser',
+          artist: 'Beyond',
           url: 'https://cdn.doniai.com/music/mp3/old-young.mp3',
           cover:
             'https://p1.music.126.net/K0-IPcIQ9QFvA0jXTBqoWQ==/109951163636756693.jpg?param=300y300',
