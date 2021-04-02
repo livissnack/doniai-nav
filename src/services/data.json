@@ -358,110 +358,65 @@
     },
     {
       "id": 3,
-      "title": "风腾重构项目",
+      "title": "茂业本地项目",
       "items": [
         {
-          "name": "后台-开发",
-          "href": "http://admin.ftes.d",
+          "name": "茂业-后台-开发",
+          "href": "http://www.maomei.com/admin",
           "color": "is-primary"
         },
         {
-          "name": "接口-开发",
-          "href": "http://api.ftes.d",
+          "name": "茂业-接口-开发",
+          "href": "http://www.maomei.com/api",
           "color": "is-success"
-        },
-        {
-          "name": "后台-本地",
-          "href": "http://admin.ftes.test",
-          "color": "is-danger"
-        },
-        {
-          "name": "接口-本地",
-          "href": "http://api.ftes.test",
-          "color": "is-info"
         }
       ]
     },
     {
       "id": 4,
-      "title": "本机内网快捷",
+      "title": "茂业内网项目",
       "items": [
         {
-          "name": "操盘管理后台",
-          "href": "http://admin.ties.test",
+          "name": "茂业前端H5-测试",
+          "href": "http://mztest.maoye.cn",
           "color": "is-primary"
         },
         {
-          "name": "用户管理后台",
-          "href": "http://admin.tiuc.test",
+          "name": "茂业后台Admin-测试",
+          "href": "https://makeuptest.maoye.cn",
           "color": "is-success"
         },
         {
-          "name": "对接用户接口管理",
-          "href": "http://api.tiuc.test/api",
+          "name": "茂业前端H5-开发",
+          "href": "https://mzdev.maoye.cn",
           "color": "is-danger"
+        },
+        {
+          "name": "茂业后台Admin-开发",
+          "href": "https://makeupdev1.maoye.cn",
+          "color": "is-info"
         }
       ]
     },
     {
       "id": 5,
-      "title": "公司内网快捷",
+      "title": "茂业外网项目",
       "items": [
         {
-          "name": "赛事后台测试",
-          "href": "http://admin.ties.t",
+          "name": "茂业前端H5",
+          "href": "https://mz.maoye.cn",
           "color": "is-primary"
         },
         {
-          "name": "赛事后台开发",
-          "href": "http://admin.ties.d",
+          "name": "茂业后台Admin",
+          "href": "https://makeup.maoye.cn",
           "color": "is-success"
-        },
-        {
-          "name": "用户后台测试",
-          "href": "http://admin.tiuc.t",
-          "color": "is-warning"
-        },
-        {
-          "name": "用户后台开发",
-          "href": "http://admin.tiuc.d",
-          "color": "is-info"
-        },
-        {
-          "name": "赛事H5测试",
-          "href": "http://h5.ties.t",
-          "color": "is-danger"
-        },
-        {
-          "name": "赛事H5开发",
-          "href": "http://h5.ties.d",
-          "color": "is-primary"
-        },
-        {
-          "name": "禅道项目管理",
-          "href": "http://zentao.ftdj666.com",
-          "color": "is-success"
-        },
-        {
-          "name": "项目构建管理",
-          "href": "http://jenkins.l",
-          "color": "is-warning"
-        },
-        {
-          "name": "用户api开发",
-          "href": "http://api.tiuc.d/api",
-          "color": "is-info"
-        },
-        {
-          "name": "直播网站",
-          "href": "http://h5.live.d",
-          "color": "is-danger"
         }
       ]
     },
     {
       "id": 6,
-      "title": "公司外网快捷",
+      "title": "小虎外网项目",
       "items": [
         {
           "name": "用户后台管理",
@@ -490,9 +445,9 @@
       "title": "内网代码",
       "items": [
         {
-          "name": "内网gitlab代码管理",
-          "href": "http://git.l",
-          "color": "is-primary"
+          "name": "茂业gitlab代码管理",
+          "href": "http://172.29.105.79:8888",
+          "color": "is-success"
         }
       ]
     },
@@ -501,14 +456,19 @@
       "title": "个人接口管理",
       "items": [
         {
-          "name": "Eolinker接口管理",
-          "href": "https://www.eolinker.com",
+          "name": "茂业接口文档管理",
+          "href": "http://172.29.105.77/web/#/3?page_id=2641",
           "color": "is-success"
         },
         {
           "name": "直播源接口管理",
           "href": "http://114.55.166.223/interface",
           "color": "is-danger"
+        },
+        {
+          "name": "Eolinker接口管理",
+          "href": "https://www.eolinker.com",
+          "color": "is-info"
         }
       ]
     }
