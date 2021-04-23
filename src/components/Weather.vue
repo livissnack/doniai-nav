@@ -3,7 +3,7 @@
     <div class="card">
       <header class="card-header">
         <p class="card-header-title">
-          {{ city === undefined ? '福田区' : city }}
+          {{ city === undefined ? '罗湖区' : city }}
         </p>
         <Countdown />
       </header>
