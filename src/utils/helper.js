@@ -88,3 +88,19 @@ export function bingAiSug(content) {
   script.src = sugurl
   document.getElementsByTagName('head')[0].appendChild(script)
 }
+
+export function isJSON(str) {
+  if (typeof str == 'string') {
+    try {
+      var obj = JSON.parse(str)
+      if (typeof obj == 'object' && obj) {
+        return true
+      } else {
+        return false
+      }
+    } catch (e) {
+      return false
+    }
+  }
+  return false
+}

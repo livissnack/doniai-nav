@@ -29,7 +29,8 @@ module.exports = {
     //打包分析插件
     config.plugin('webpack-report').use(BundleAnalyzerPlugin, [
       {
-        analyzerMode: 'static'
+        analyzerMode: 'disabled'
+        // analyzerMode: 'static'
       }
     ])
 
