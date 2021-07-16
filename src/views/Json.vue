@@ -164,7 +164,6 @@ export default {
       if (child !== null) {
         parent.removeChild(child)
       }
-      console.log(parent, child)
     }
   }
 }

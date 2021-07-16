@@ -117,7 +117,7 @@ export default {
 .marquee_box {
   display: block;
   position: relative;
-  width: 65%;
+  width: 100%;
   overflow: hidden;
   margin: 0 auto;
 }
@@ -137,10 +137,12 @@ export default {
   font-size: 14px;
   color: #666;
   padding-left: 20px;
+  text-overflow: ellipsis;
   a {
     color: #666;
     font-size: 14px;
     font-weight: 400;
+    text-overflow: ellipsis;
     &:hover {
       text-decoration: underline;
     }
