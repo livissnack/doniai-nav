@@ -9,7 +9,7 @@
         <div class="marquee_box" ref="marquee_box">
           <ul class="marquee_list" :class="{ marquee_top: animate }">
             <li v-for="(item, index) in list" :key="index">
-              <a :href="item.url">{{ item.title }}</a>
+              <a :href="item.url" :title="item.title">{{ item.title }}</a>
             </li>
           </ul>
         </div>
@@ -137,11 +137,13 @@ export default {
   font-size: 14px;
   color: #666;
   padding-left: 20px;
+  overflow: hidden;
   text-overflow: ellipsis;
   a {
     color: #666;
     font-size: 14px;
     font-weight: 400;
+    overflow: hidden;
     text-overflow: ellipsis;
     &:hover {
       text-decoration: underline;
