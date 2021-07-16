@@ -62,6 +62,9 @@
           </div>
           <div class="column">
             <div class="section-box">
+              <UtilDesk />
+            </div>
+            <div class="section-box">
               <Music />
             </div>
             <div class="section-box">
@@ -90,6 +93,7 @@ import Mixins from '@/utils/mixin.js'
 import SearchInput from '@/components/SearchInput.vue'
 import Weather from '@/components/Weather.vue'
 import Todo from '@/components/Todo.vue'
+import UtilDesk from '@/components/UtilDesk.vue'
 import Music from '@/components/Music.vue'
 import BackTop from '@mlqt/vue-back-top'
 import Footer from '@/components/Footer.vue'
@@ -103,6 +107,7 @@ export default {
     SearchInput,
     Weather,
     Music,
+    UtilDesk,
     Todo,
     Footer
   },

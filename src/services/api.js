@@ -11,3 +11,7 @@ const ApiVersion = 'api/v1.0'
 export async function getBgImage() {
   return request('get', `${ApiVersion}/crawler/bing`)
 }
+
+export async function getHotNews(type = 'baidu') {
+  return request('get', `${ApiVersion}/crawler/news?type=${type}`)
+}

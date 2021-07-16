@@ -9,7 +9,8 @@ module.exports = {
     const plugins = []
     plugins.push(
       new CompressionWebpackPlugin({
-        filename: '[path].gz[query]',
+        // filename: '[path].gz[query]',
+        filename: '[path][base].gz',
         algorithm: 'gzip',
         test: productionGzipExtensions,
         threshold: 10240,

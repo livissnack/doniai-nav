@@ -453,6 +453,11 @@
           "name": "茂业禅道",
           "href": "http://zt.maoye.cn",
           "color": "is-success"
+        },
+        {
+          "name": "平安云收款",
+          "href": "https://passport.orangebank.com.cn/SSOServer/login?targeturl=https%3A%2F%2Fcloudpaycm.orangebank.com.cn%2Fapi%2Forgan%2Flogin",
+          "color": "is-warning"
         }
       ]
     },
