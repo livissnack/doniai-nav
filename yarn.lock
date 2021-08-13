@@ -1121,10 +1121,10 @@
     "@babel/helper-validator-identifier" "^7.14.0"
     to-fast-properties "^2.0.0"
 
-"@fortawesome/fontawesome-free@^5.15.3":
-  version "5.15.3"
-  resolved "https://registry.npm.taobao.org/@fortawesome/fontawesome-free/download/@fortawesome/fontawesome-free-5.15.3.tgz#c36ffa64a2a239bf948541a97b6ae8d729e09a9a"
-  integrity sha1-w2/6ZKKiOb+UhUGpe2ro1yngmpo=
+"@fortawesome/fontawesome-free@^5.15.4":
+  version "5.15.4"
+  resolved "https://registry.nlark.com/@fortawesome/fontawesome-free/download/@fortawesome/fontawesome-free-5.15.4.tgz#ecda5712b61ac852c760d8b3c79c96adca5554e5"
+  integrity sha1-7NpXErYayFLHYNizx5yWrcpVVOU=
 
 "@hapi/address@2.x.x":
   version "2.1.4"

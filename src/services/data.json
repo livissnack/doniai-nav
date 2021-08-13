@@ -353,6 +353,11 @@
           "name": "Api接口文档",
           "href": "https://showdoc.doniai.com",
           "color": "is-warning"
+        },
+        {
+          "name": "代码管理",
+          "href": "https://code.doniai.com",
+          "color": "is-primary"
         }
       ]
     },
