@@ -463,6 +463,11 @@
           "name": "平安云收款",
           "href": "https://passport.orangebank.com.cn/SSOServer/login?targeturl=https%3A%2F%2Fcloudpaycm.orangebank.com.cn%2Fapi%2Forgan%2Flogin",
           "color": "is-warning"
+        },
+        {
+          "name": "茂业Kibana",
+          "href": "http://172.29.105.76:5601/app/dev_tools#/console",
+          "color": "is-danger"
         }
       ]
     },
