@@ -35,16 +35,6 @@ module.exports = {
       }
     ])
 
-    // config.module
-    //   .rule('images')
-    //   .use('image-webpack-loader')
-    //   .loader('image-webpack-loader')
-    //   .options({
-    //     mozjpeg: { progressive: true, quality: 65 },
-    //     optipng: { enabled: false },
-    //     pngquant: { quality: [0.65, 0.9], speed: 4 },
-    //     gifsicle: { interlaced: false }
-    //   })
     const cdn = {
       css: [
         '//fastly.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css',
@@ -65,18 +55,18 @@ module.exports = {
       args[0].cdn = cdn
       return args
     })
+  },
+  devServer: {
+    port: 8097,
+    proxy: {
+      '/api': {
+        target: 'https://hi.doniai.com/',
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          '^/api': '/'
+        }
+      }
+    }
   }
-  // devServer: {
-  //   port: 8097,
-  //   proxy: {
-  //     '/api': {
-  //       target: 'https://hi.doniai.com/',
-  //       changeOrigin: true,
-  //       ws: true,
-  //       pathRewrite: {
-  //         '^/api': '/'
-  //       }
-  //     }
-  //   }
-  // }
 }

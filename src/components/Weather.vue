@@ -3,12 +3,12 @@
     <div class="card">
       <header class="card-header">
         <p class="card-header-title">
-          {{ city === undefined ? '罗湖区' : city }}
+          {{ city === undefined ? '江夏区' : city }}
         </p>
         <Countdown />
       </header>
       <div class="card-content">
-        <div class="media">
+        <div class="media" v-show="temperature">
           <div class="media-left">
             <div class="media-content">
               <p class="title is-2"><i class="fas" :class="weatherIcon"></i></p>

@@ -27,16 +27,7 @@ export default {
       news_type: 'baidu',
       animate: false,
       showNum: 4,
-      list: [
-        { url: '#', title: '1111111111111111111' },
-        { url: '#', title: '22222222222222222222' },
-        { url: '#', title: '333333333333333333333' },
-        { url: '#', title: '4444444444444444444' },
-        { url: '#', title: '5555555555555555555' },
-        { url: '#', title: '666666666666666666' },
-        { url: '#', title: '777777777777777' },
-        { url: '#', title: '888888888888888888' }
-      ]
+      list: []
     }
   },
   created() {

@@ -38,6 +38,18 @@ $ yarn build
 
 将打包好的静态资源放置 nginx 资源目录下，使用 nginx 静态部署即可。
 
+### 使用docker部署
+
+```node
+$ docker-compose up -d
+```
+
+```text
+访问：127.0.0.1:4007
+```
+
+将打包好的静态资源放置 nginx 资源目录下，使用 nginx 静态部署即可。
+
 ### 页面效果
 
 ![effect](/example/images/1.png)
