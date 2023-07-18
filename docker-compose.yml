@@ -1,0 +1,11 @@
+version: "3.7"
+services:
+  hiphup:
+    container_name: hiphup-nav
+    image: nginx:latest
+    ports:
+      - ${WEB_PORT}:80
+    volumes:
+      - ./dist/:/usr/share/nginx/html/
+      - ./nginx/:/etc/nginx/conf.d/
+    restart: always
