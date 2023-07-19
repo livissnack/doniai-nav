@@ -32,9 +32,7 @@ export default {
   },
   created() {
     // 页面显示
-    if(this.list.length > 0) {
-      setInterval(this.showMarquee, 2000)
-    }
+    setInterval(this.showMarquee, 2000)
   },
   mounted() {
     this.getShowHotNews()

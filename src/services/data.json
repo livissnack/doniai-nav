@@ -73,6 +73,11 @@
           "name": "Web AirDroid",
           "href": "https://web.airdroid.com",
           "color": "is-warning"
+        },
+        {
+          "name": "恩山论坛",
+          "href": "https://www.right.com.cn",
+          "color": "is-info"
         }
       ]
     },
