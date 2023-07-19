@@ -1,5 +1,5 @@
 <template>
-  <div class="util-box">
+  <div class="util-box" v-if="list.length > 0">
     <div class="util-title">
       <div><h3>热门新闻</h3></div>
       <div class="json-title"><h3 @click="goJson">Json工具</h3></div>
@@ -32,7 +32,9 @@ export default {
   },
   created() {
     // 页面显示
-    setInterval(this.showMarquee, 2000)
+    if(this.list.length > 0) {
+      setInterval(this.showMarquee, 2000)
+    }
   },
   mounted() {
     this.getShowHotNews()

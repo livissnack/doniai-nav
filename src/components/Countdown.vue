@@ -11,7 +11,7 @@ export default {
     return {
       remark: '距离下班还剩：',
       type: 'up',
-      remainTime: '18:30:00'
+      remainTime: '18:00:00'
     }
   },
   mounted() {

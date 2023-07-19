@@ -104,3 +104,23 @@ export function isJSON(str) {
   }
   return false
 }
+
+export function jsonp(url,data,callback){
+       return new Promise((resolve, reject) => {
+          let _url = url + '?page=' + data.page + '&callback='+callback;  //一定要有一个回调函数
+          const callbackName = callback;
+          let head = document.getElementsByTagName('head')[0];
+          //设置传递给后台的回调参数名
+          let script = document.createElement('script');
+          head.appendChild(script);
+          //创建jsonp回调函数
+          window[callbackName] = json =>{
+              resolve(json)
+              head.removeChild(script);
+              clearTimeout(script.timer);
+              window[callbackName] = null;
+          }
+          //发送请求
+          script.src = _url;
+       })
+  }

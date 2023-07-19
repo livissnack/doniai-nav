@@ -8,6 +8,7 @@
             v-model="filter.search_text"
             size="is-small"
             placeholder="请输入搜索内容"
+            @input="handleChangeKeyword"
             @focus="handleFocusDsug"
             @blur="handleBlurDsug"
             @keyup.enter="startSearch"
@@ -19,7 +20,7 @@
         </div>
         <div class="control dsug" v-show="is_show_dsug">
           <ul class="recommend-list">
-            <li v-for="item in items" :key="item.index">
+            <li v-for="(item, index) in items" :key="index">
               <div
                 class="recommend-box"
                 @mousedown="handleSelectedSearch(item)"
@@ -28,7 +29,7 @@
                   <span class="icon is-small">
                     <i class="fas fa-clock"></i>
                   </span>
-                  <span> {{ item.text }}</span>
+                  <span> {{ item }}</span>
                 </div>
               </div>
             </li>
@@ -56,6 +57,7 @@
 
 <script>
 import jsonSearchs from '@/services/search.json'
+import fetchJsonp from 'fetch-jsonp'
 export default {
   name: 'home',
   data() {
@@ -67,30 +69,12 @@ export default {
       is_show_dsug: false,
       searchs: jsonSearchs['searchs'],
       items: [
-        {
-          id: 1,
-          text: 'dayjs'
-        },
-        {
-          id: 2,
-          text: 'dallas cowboys'
-        },
-        {
-          id: 3,
-          text: 'david i moss'
-        },
-        {
-          id: 4,
-          text: 'daily mail'
-        },
-        {
-          id: 5,
-          text: 'daylight donuts'
-        },
-        {
-          id: 6,
-          text: 'daniel fast'
-        }
+        'dayjs',
+        'dallas cowboys',
+        'david i moss',
+        'daily mail',
+        'daylight donuts',
+        'daniel fast',
       ]
     }
   },
@@ -121,7 +105,7 @@ export default {
       window.open(`${searchObj.url}${text}`)
     },
     handleSelectedSearch(item) {
-      this.filter.search_text = item.text
+      this.filter.search_text = item
       this.startSearch()
       this.is_show_dsug = false
     },
@@ -132,6 +116,17 @@ export default {
       setTimeout(() => {
         this.is_show_dsug = false
       }, 300)
+    },
+    async handleChangeKeyword() {
+      let keyword = this.filter.search_text
+      if(keyword === '') {
+        return
+      }
+      let response = await fetchJsonp(`https://suggestion.baidu.com/su?wd=${keyword}`, {
+        jsonpCallback: 'cb',
+      })
+      response = await response.json()
+      this.items = response.s
     }
   }
 }
@@ -173,6 +168,7 @@ export default {
     }
     &:hover {
       background: #d3d5d8;
+      text-decoration: underline;
     }
   }
 }

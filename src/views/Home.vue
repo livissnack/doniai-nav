@@ -30,10 +30,10 @@
         </b-navbar>
       </div>
     </div>
-    <div class="content-box">
+    <div class="content-box" style="background-image: url('https://epg.112114.xyz/bingimg'); background-size: cover;">
       <div class="container">
         <div class="columns">
-          <div class="column is-three-quarters">
+          <div class="column is-three-quarters mt20">
             <SearchInput />
           </div>
         </div>
@@ -148,7 +148,7 @@ export default {
   text-align: center;
   background: #ffffff;
   border-top: 1px solid #ebebeb;
-  margin-bottom: 35px;
+  margin-bottom: 12px;
   border-bottom: 2px solid #e1e1e1;
 }
 
@@ -205,5 +205,8 @@ export default {
 
 .section-box {
   margin-bottom: 20px;
+}
+.mt20 {
+  margin-top: 20px;
 }
 </style>
