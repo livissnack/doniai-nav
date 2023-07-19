@@ -4,6 +4,7 @@ node_modules
 .env.local
 .env.*.local
 .env
+dist
 
 # deploy shell
 deploy.sh
