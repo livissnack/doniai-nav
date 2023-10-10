@@ -92,12 +92,8 @@ export function bingAiSug(content) {
 export function isJSON(str) {
   if (typeof str == 'string') {
     try {
-      var obj = JSON.parse(str)
-      if (typeof obj == 'object' && obj) {
-        return true
-      } else {
-        return false
-      }
+      let obj = JSON.parse(str)
+      return !!(typeof obj == 'object' && obj);
     } catch (e) {
       return false
     }
@@ -105,22 +101,86 @@ export function isJSON(str) {
   return false
 }
 
-export function jsonp(url,data,callback){
-       return new Promise((resolve, reject) => {
-          let _url = url + '?page=' + data.page + '&callback='+callback;  //一定要有一个回调函数
-          const callbackName = callback;
-          let head = document.getElementsByTagName('head')[0];
-          //设置传递给后台的回调参数名
-          let script = document.createElement('script');
-          head.appendChild(script);
-          //创建jsonp回调函数
-          window[callbackName] = json =>{
-              resolve(json)
-              head.removeChild(script);
-              clearTimeout(script.timer);
-              window[callbackName] = null;
-          }
-          //发送请求
-          script.src = _url;
-       })
+export function jsonp(url,data,callback){
+  return new Promise((resolve, reject)=> {
+    let _url= url + '?page=' + data.page + '&callback='+callback; //一定要有一个回调函数
+    const callbackName = callback;
+    let head= document.getElementsByTagName('head')[0];
+    //设置传递给后台的回调参数名
+    let script= document.createElement('script');
+    head.appendChild(script);
+    //创建jsonp回调函数
+    window[callbackName] =json=>{
+      resolve(json)
+      head.removeChild(script);
+      clearTimeout(script.timer);
+      window[callbackName] = null;
+    }
+  //发送请求
+  script.src=_url;
+  })
+}
+
+export function getResourceType(video_url) {
+  if(isM3u8(video_url)) {
+    return "hls";
   }
+
+  if(isFlv(video_url)) {
+    return "flv";
+  }
+
+  if(isMpd(video_url)) {
+    return "mpd";
+  }
+
+  if(isPhp(video_url)) {
+    return "php";
+  }
+
+  if(isMp4(video_url) || isOgg(video_url) || isWebm(video_url) || isMkv(video_url) || is3gp(video_url) || isAvi(video_url)) {
+    return 'video';
+  }
+
+  return "unknow";
+}
+
+export function isM3u8(url) {
+  return new URL(url).pathname.endsWith('.m3u8')
+}
+
+export function isFlv(url) {
+  return new URL(url).pathname.endsWith('.flv')
+}
+
+export function isMpd(url) {
+  return new URL(url).pathname.endsWith('.mpd')
+}
+
+export function isPhp(url) {
+  return new URL(url).pathname.endsWith('.php')
+}
+
+export function isMp4(url) {
+  return new URL(url).pathname.endsWith('.mp4')
+}
+
+export function isOgg(url) {
+  return new URL(url).pathname.endsWith('.ogg')
+}
+
+export function isWebm(url) {
+  return new URL(url).pathname.endsWith('.webm')
+}
+
+export function isMkv(url) {
+  return new URL(url).pathname.endsWith('.mkv')
+}
+
+export function is3gp(url) {
+  return new URL(url).pathname.endsWith('.3gp')
+}
+
+export function isAvi(url) {
+  return new URL(url).pathname.endsWith('.avi')
+}

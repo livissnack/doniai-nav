@@ -2,7 +2,7 @@
   <div class="music-box">
     <div class="music-title">
       <div><h3>音乐播放器</h3></div>
-      <div class="game-title"><h3 @click="goGame">游戏一下</h3></div>
+      <div class="tv-title"><h3 @click="goTv">TV一下</h3></div>
     </div>
     <div class="music-player">
       <aplayer :audio="audio" :lrcType="3" :listFolded="is_hide_list" />
@@ -51,14 +51,8 @@ export default {
     }
   },
   methods: {
-    goGame() {
-      this.$buefy.snackbar.open({
-        duration: 3000,
-        message: '游戏功能尚未开放！',
-        type: 'is-danger',
-        position: 'is-bottom-right',
-        actionText: 'Msg'
-      })
+    goTv() {
+      this.$router.push({ path: '/player' })
     }
   }
 }
@@ -79,7 +73,7 @@ export default {
         color: #363636;
       }
     }
-    .game-title {
+    .tv-title {
       h3 {
         &:hover {
           cursor: pointer;

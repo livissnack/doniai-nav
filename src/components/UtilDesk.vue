@@ -1,5 +1,5 @@
 <template>
-  <div class="util-box" v-if="list.length > 0">
+  <div class="util-box">
     <div class="util-title">
       <div><h3>热门新闻</h3></div>
       <div class="json-title"><h3 @click="goJson">Json工具</h3></div>
@@ -7,7 +7,7 @@
     <div class="hot-news">
       <div class="marquee">
         <div class="marquee_box" ref="marquee_box">
-          <ul class="marquee_list" :class="{ marquee_top: animate }">
+          <ul class="marquee_list" :class="{ marquee_top: animate }" v-if="list.length > 0">
             <li v-for="(item, index) in list" :key="index">
               <a :href="item.url" :title="item.title">{{ item.title }}</a>
             </li>
@@ -30,18 +30,23 @@ export default {
       list: []
     }
   },
-  created() {
-    // 页面显示
-    setInterval(this.showMarquee, 2000)
+  async created() {
+    await this.getShowHotNews()
+    await this.lunboNew()
   },
   mounted() {
-    this.getShowHotNews()
     // 可见数据高度
     this.$refs.marquee_box.style.height = this.showNum * 30 + 'px'
   },
   methods: {
     goJson() {
       this.$router.push({ path: '/json' })
+    },
+    lunboNew() {
+      if(this.list.length > 4) {
+        // 页面显示
+        setInterval(this.showMarquee, 2000)
+      }
     },
     showMarquee() {
       this.animate = true
@@ -53,7 +58,7 @@ export default {
     },
     async getShowHotNews() {
       let type = this.news_type
-      const { data } = await getHotNews(type)
+      const { data, code } = await getHotNews(type)
       if (data.code == 200) {
         this.list = data.data
       }

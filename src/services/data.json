@@ -78,6 +78,16 @@
           "name": "恩山论坛",
           "href": "https://www.right.com.cn",
           "color": "is-info"
+        },
+        {
+          "name": "安歌源码",
+          "href": "https://angtv.cc",
+          "color": "is-primary"
+        },
+        {
+          "name": "过早客",
+          "href": "https://www.guozaoke.com",
+          "color": "is-success"
         }
       ]
     },
@@ -137,34 +147,14 @@
           "color": "is-primary"
         },
         {
-          "name": "悦动圈",
-          "href": "https://joyrun.github.io",
-          "color": "is-success"
-        },
-        {
-          "name": "网易考拉",
-          "href": "https://blog.klmobile.app",
-          "color": "is-danger"
-        },
-        {
           "name": "有赞",
           "href": "https://tech.youzan.com",
-          "color": "is-warning"
-        },
-        {
-          "name": "阿里中间件",
-          "href": "http://jm.taobao.org",
-          "color": "is-info"
-        },
-        {
-          "name": "360",
-          "href": "http://blogs.360.cn",
-          "color": "is-primary"
+          "color": "is-success"
         },
         {
           "name": "Glow",
           "href": "http://tech.glowing.com/cn",
-          "color": "is-success"
+          "color": "is-danger"
         }
       ]
     },
@@ -565,6 +555,11 @@
           "name": "直播测试",
           "href": "https://live.doniai.com",
           "color": "is-success"
+        },
+        {
+          "name": "随机大小图片",
+          "href": "https://picsum.photos",
+          "color": "is-danger"
         }
       ]
     },

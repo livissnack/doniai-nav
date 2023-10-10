@@ -66,6 +66,14 @@ module.exports = {
         pathRewrite: {
           '^/api': '/'
         }
+      },
+      '/tv': {
+        target: 'https://tv.livissnack.com/',
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          '^/tv': '/'
+        }
       }
     }
   }

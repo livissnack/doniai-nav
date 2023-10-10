@@ -1,36 +1,9 @@
 <template>
   <div class="home">
     <div class="nav-box">
-      <div class="container">
-        <b-navbar>
-          <template slot="brand">
-            <b-navbar-item tag="router-link" :to="{ path: '/' }">
-              <h3 class="nav-brand text-primary">Doniai导航</h3>
-            </b-navbar-item>
-          </template>
-          <template slot="start">
-            <b-navbar-item
-              :active="menu.id === current_active_menu_id"
-              @click="handleChangeData(menu)"
-              href="#"
-              v-for="menu in menus"
-              :key="menu.id"
-              >{{ menu.name }}</b-navbar-item
-            >
-          </template>
-
-          <template slot="end">
-            <b-navbar-item @click="handleLogin">
-              <span class="text-primary">登录</span>
-            </b-navbar-item>
-            <b-navbar-item @click="handleRegister">
-              <span class="text-primary">注册</span>
-            </b-navbar-item>
-          </template>
-        </b-navbar>
-      </div>
+      <Navbar @updateCurrentNavs="updateCurrentNavs" :currentActiveMenuId="current_active_menu_id"/>
     </div>
-    <div class="content-box" style="background-image: url('https://epg.112114.xyz/bingimg'); background-size: cover;">
+    <div class="content-box cover-bg">
       <div class="container">
         <div class="columns">
           <div class="column is-three-quarters mt20">
@@ -40,7 +13,7 @@
 
         <div class="columns">
           <div class="column is-three-quarters">
-            <div class="post" v-for="navItems in navData" :key="navItems.id">
+            <div class="post" v-for="navItems in navData" :key="navItems.title">
               <div class="widget">
                 <a href="#" class="sub-title title-underline">
                   {{ navItems.title }}
@@ -60,20 +33,7 @@
               </div>
             </div>
           </div>
-          <div class="column">
-            <div class="section-box">
-              <UtilDesk />
-            </div>
-            <div class="section-box">
-              <Music />
-            </div>
-            <div class="section-box">
-              <Weather />
-            </div>
-            <div class="section-box">
-              <Todo />
-            </div>
-          </div>
+          <Sidebar />
         </div>
       </div>
     </div>
@@ -89,40 +49,32 @@
 
 <script>
 import Vue from 'vue'
-import Mixins from '@/utils/mixin.js'
 import SearchInput from '@/components/SearchInput.vue'
-import Weather from '@/components/Weather.vue'
-import Todo from '@/components/Todo.vue'
-import UtilDesk from '@/components/UtilDesk.vue'
-import Music from '@/components/Music.vue'
+import Navbar from '@/components/Navbar.vue'
+import Sidebar from '@/components/Sidebar.vue'
 import BackTop from '@mlqt/vue-back-top'
 import Footer from '@/components/Footer.vue'
 import jsonNavs from '@/services/data.json'
-import jsonMenus from '@/services/menu.json'
 Vue.use(BackTop)
 export default {
   name: 'home',
-  mixins: [Mixins],
   components: {
     SearchInput,
-    Weather,
-    Music,
-    UtilDesk,
-    Todo,
+    Navbar,
+    Sidebar,
     Footer
   },
   data() {
     return {
       current_active_menu_id: 1,
-      menus: jsonMenus['menus'],
       navData: []
     }
   },
   created() {
-    this.getCurrentNavs()
+    this.getCurrentNavs(1)
   },
   methods: {
-    getCurrentNavs() {
+    async getCurrentNavs(menu_id) {
       const dataMap = new Map([
         [1, 'homeData'],
         [2, 'workData'],
@@ -133,12 +85,14 @@ export default {
         [7, 'designData'],
         [8, 'blogData']
       ])
-      this.navData = jsonNavs[dataMap.get(this.current_active_menu_id)]
+      let navs = await jsonNavs[dataMap.get(menu_id)]
+      this.navData = navs
+      this.$set(this, "navData", navs)
     },
-    handleChangeData(menu) {
-      this.current_active_menu_id = menu.id
-      this.getCurrentNavs()
-    }
+    updateCurrentNavs(obj) {
+      this.current_active_menu_id = obj.menu_id
+      this.getCurrentNavs(obj.menu_id)
+    },
   }
 }
 </script>
@@ -150,14 +104,6 @@ export default {
   border-top: 1px solid #ebebeb;
   margin-bottom: 12px;
   border-bottom: 2px solid #e1e1e1;
-}
-
-.nav-brand {
-  font-size: 18px;
-}
-
-.text-primary {
-  color: #15b982;
 }
 
 .post {
@@ -198,15 +144,12 @@ export default {
   }
 }
 
-.is-active {
-  color: #7957d5 !important;
-  font-weight: bold;
-}
-
-.section-box {
-  margin-bottom: 20px;
-}
 .mt20 {
   margin-top: 20px;
+}
+
+.cover-bg {
+  background-image: url('https://epg.112114.xyz/bingimg'); 
+  background-size: cover;
 }
 </style>

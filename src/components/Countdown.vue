@@ -35,7 +35,7 @@ export default {
     getWorkEndTime() {
       const time = new Date()
       const startTime = Date.parse(time)
-      const endTime = time.setHours(18, 30, 0, 0)
+      const endTime = time.setHours(18, 0, 0, 0)
 
       if (startTime > endTime) {
         this.remark = '恭喜你已经下班了'
