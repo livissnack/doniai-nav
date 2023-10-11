@@ -9,15 +9,35 @@
           <div class="column is-three-quarters">
             <div class="mt-4 play-input">
               <div class="input-box">
-                <b-input v-model="mediaSrc" placeholder="请输入播放地址" maxlength="400"></b-input>
+                <b-input type="url" v-model="mediaSrc" placeholder="请输入播放地址" maxlength="400" icon-pack="fas" icon-right="times"
+                         icon-right-clickable
+                         @icon-right-click="clearIconClick"></b-input>
               </div>
               <div class="start-play-btn">
                 <b-button type="is-success" @click="startPlay">播放</b-button>
               </div>
             </div>
-           
+
+            <div class="other-play-btn">
+              <div class="title">
+                本机软件打开：
+              </div>
+              <button class="button" @click="handleOpenPlayer(0)">
+                <img class="player-logo" src="../assets/potplayer.svg" alt="PotPlayer">
+                PotPlayer
+              </button>
+              <button class="button" @click="handleOpenPlayer(1)">
+                <img class="player-logo" src="../assets/iina.png" alt="PotPlayer">
+                Iina
+              </button>
+              <button class="button" @click="handleOpenPlayer(2)">
+                <img class="player-logo" src="../assets/vlc.svg" alt="PotPlayer">
+                Vlc
+              </button>
+            </div>
+
             <div class="lar-player">
-              <video id="larPlayer" ref="larPlayer" :src="mediaSrc" controls autoplay :preload="preload+''" :height="height" :volume="playerVolume"></video>
+              <video id="larPlayer" ref="larPlayer" :src="mediaSrc" controls autoplay :preload="preload+''" :height="height" :volume="playerVolume" @click="handlePlay"></video>
               <div class="play-btn" @click="handlePlay" v-if="pausedStatus">
                 <i class="fas play-icon" :class="pausedStatus ? 'fa-play-circle' : 'fa-pause-circle'"></i>
               </div>
@@ -28,7 +48,7 @@
                   </div>
                   <div class="control-btn">
                     <div class="txt">音量 </div>
-                    <input type="range" min="0" max="1" value="0.5" step="0.05" class="slider">
+                    <input type="range" min="0" max="1" value="0.5" step="0.05" class="slider" @input="handlePlayerVolume">
                   </div>
                   <div class="control-btn">Live</div>
                 </div>
@@ -52,7 +72,12 @@
               </div>
             </div>
           </div>
-          <Sidebar />
+          <div class="column">
+            <div class="section-box">
+              <MediaResource :resourceUrl="mediaSrc"/>
+            </div>
+            <Sidebar />
+          </div>
         </div>
       </div>
     </div>
@@ -75,11 +100,13 @@ import Footer from '@/components/Footer.vue'
 import { getResourceType } from '@/utils/helper.js'
 import Hls from 'hls.js'
 import flvjs from 'flv.js'
+import MediaResource from "@/components/MediaResource.vue";
 Vue.use(BackTop)
 const yspIp = '42.81.252.22'
 export default {
   name: 'json',
   components: {
+    MediaResource,
     Navbar,
     Sidebar,
     Footer
@@ -87,11 +114,10 @@ export default {
   data() {
     return {
       mediaSrc: 'https://www.artplayer.org/assets/sample/video.mp4',
-      //mediaSrc: '',
       pausedStatus: false,
       preload: true,
       height: 564,
-      playerVolume: 0.01,
+      playerVolume: 0.5,
       loading: false,
       currentTv: '',
       tvList: [
@@ -332,6 +358,21 @@ export default {
       await this.initPlayUrl()
       await this.loadMediaPlay()
     },
+    async clearIconClick() {
+      this.pausedStatus = false
+      this.mediaSrc = ''
+    },
+    handlePlayerVolume(vol) {
+      this.playerVolume = vol.target.value
+    },
+    handleOpenPlayer(type) {
+      let map = ['potplayer', 'iina', 'vlc', 'thunder']
+      if(type === 1) {
+        location.href = `iina://open?url=${this.mediaSrc}`
+      } else {
+        location.href = `${map[type]}://${this.mediaSrc}`
+      }
+    },
     handlePlay() {
       this.pausedStatus = !this.pausedStatus
       let larPlayer = document.getElementById('larPlayer')
@@ -368,7 +409,16 @@ export default {
       let videoSrc = this.mediaSrc
       let mediaType = getResourceType(videoSrc)
       if(["php", "unknow"].includes(mediaType)) {
-        const res = await fetch(videoSrc)
+        const res = await fetch(videoSrc, {
+          method: 'GET',
+          mode: 'no-cors',
+          cache: 'no-cache',
+          credentials: 'include',
+          referrerPolicy: 'no-referrer',
+          headers: {
+            "Accept": "application/json"
+          }
+        })
         if (res.redirected) {
           this.mediaSrc = res.url
         }
@@ -594,5 +644,25 @@ export default {
       text-decoration: underline;
     }
   }
+}
+
+.other-play-btn {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  height: 40px;
+  .title {
+    height: 40px;
+    line-height: 40px;
+    color: #15b982;
+    font-size: 16px;
+  }
+  .player-logo {
+    width: 24px;
+    height: 24px;
+  }
+}
+.section-box {
+  margin-bottom: 20px;
 }
 </style>

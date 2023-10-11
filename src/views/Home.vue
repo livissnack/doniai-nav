@@ -33,7 +33,9 @@
               </div>
             </div>
           </div>
-          <Sidebar />
+          <div class="column">
+            <Sidebar />
+          </div>
         </div>
       </div>
     </div>
