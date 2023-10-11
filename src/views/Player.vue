@@ -18,13 +18,13 @@
            
             <div class="lar-player">
               <video id="larPlayer" ref="larPlayer" :src="mediaSrc" controls autoplay :preload="preload+''" :height="height" :volume="playerVolume"></video>
-              <div class="play-btn" @click="handlePlay">
-                <i class="fas play-icon" :class="!pausedStatus ? 'fa-play-circle' : 'fa-pause-circle'"></i>
+              <div class="play-btn" @click="handlePlay" v-if="pausedStatus">
+                <i class="fas play-icon" :class="pausedStatus ? 'fa-play-circle' : 'fa-pause-circle'"></i>
               </div>
               <div class="media-controls" v-if="!loading">
                 <div class="left-controls">
                   <div class="control-btn" @click="handlePlay">
-                    <i class="fas icon-style" :class="!pausedStatus ? 'fa-play-circle' : 'fa-pause-circle'"></i>
+                    <i class="fas icon-style" :class="pausedStatus ? 'fa-play-circle' : 'fa-pause-circle'"></i>
                   </div>
                   <div class="control-btn">
                     <div class="txt">音量 </div>
@@ -33,10 +33,20 @@
                   <div class="control-btn">Live</div>
                 </div>
                 <div class="right-controls">
-                  <div class="control-btn" @click="handlePlay">播放</div>
-                  <div class="control-btn">音量</div>
+                  <div class="control-btn tv-box">
+                    <div class="title" @click="handleTvList">列表</div>
+                    <div class="tv-list-box" id="tvList">
+                      <div class="tv-item" :class="currentTv === tv.name ? 'is-active' : ''" v-for="(tv, index) in tvList" :key="index" :title="tv.url" @click="handleListPlay(tv)">{{ tv.name }}</div>
+                    </div>
+                  </div>
                   <div class="control-btn">
-                    <i class="fas fa-square-full icon-style"></i>
+                    <i class="fas fa-cog icon-style"></i>
+                  </div>
+                  <div class="control-btn">
+                    <i class="fas fa-camera icon-style"></i>
+                  </div>
+                  <div class="control-btn" @click="handleFullScreen">
+                    <i class="fas fa-expand icon-style"></i>
                   </div>
                 </div>
               </div>
@@ -66,6 +76,7 @@ import { getResourceType } from '@/utils/helper.js'
 import Hls from 'hls.js'
 import flvjs from 'flv.js'
 Vue.use(BackTop)
+const yspIp = '42.81.252.22'
 export default {
   name: 'json',
   components: {
@@ -79,13 +90,245 @@ export default {
       //mediaSrc: '',
       pausedStatus: false,
       preload: true,
-      height: 500,
+      height: 564,
       playerVolume: 0.01,
       loading: false,
+      currentTv: '',
+      tvList: [
+        {
+          name: 'CCTV-4K',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000266303.m3u8`
+        },
+        {
+          name: 'CCTV-8K',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2020603421.m3u8`
+        },
+        {
+          name: 'CCTV-1',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000210103.m3u8`
+        },
+        {
+          name: 'CCTV-2',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000203603.m3u8`
+        },
+        {
+          name: 'CCTV-3',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000203803.m3u8`
+        },
+        {
+          name: 'CCTV-4',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000204803.m3u8`
+        },
+        {
+          name: 'CCTV-5',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000205103.m3u8`
+        },
+        {
+          name: 'CCTV-5+',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000204503.m3u8`
+        },
+        {
+          name: 'CCTV-6',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000203303.m3u8`
+        },
+        {
+          name: 'CCTV-7',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000510003.m3u8`
+        },
+        {
+          name: 'CCTV-8',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000203903.m3u8`
+        },
+        {
+          name: 'CCTV-9',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000499403.m3u8`
+        },
+        {
+          name: 'CCTV-10',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000203503.m3u8`
+        },
+        {
+          name: 'CCTV-11',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000204103.m3u8`
+        },
+        {
+          name: 'CCTV-12',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000202603.m3u8`
+        },
+        {
+          name: 'CCTV-13',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000204603.m3u8`
+        },
+        {
+          name: 'CCTV-14',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000204403.m3u8`
+        },
+        {
+          name: 'CCTV-15',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000205003.m3u8`
+        },
+        {
+          name: 'CCTV-16',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2012375003.m3u8`
+        },
+        {
+          name: 'CCTV-16 4K',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2012375003.m3u8`
+        },
+        {
+          name: 'CCTV-17',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000204203.m3u8`
+        },
+        {
+          name: '兵器科技',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2012513403.m3u8`
+        },
+        {
+          name: '第一剧场',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2012514403.m3u8`
+        },
+        {
+          name: '怀旧剧场',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2012511203.m3u8`
+        },
+        {
+          name: '风云剧场',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2012513603.m3u8`
+        },
+        {
+          name: '风云音乐',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2012514103.m3u8`
+        },
+        {
+          name: '风云足球',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2012514203.m3u8`
+        },
+        {
+          name: '电视指南',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2012514003.m3u8`
+        },
+        {
+          name: '女性时尚',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2012513903.m3u8`
+        },
+        {
+          name: '央视文化精品',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2012513803.m3u8`
+        },
+        {
+          name: '世界地理',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2012513303.m3u8`
+        },
+        {
+          name: '高尔夫网球',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2012512503.m3u8`
+        },
+        {
+          name: '央视台球',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2012513703.m3u8`
+        },
+        {
+          name: '卫生健康',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2012513503.m3u8`
+        },
+        {
+          name: '北京卫视',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000272103.m3u8`
+        },
+        {
+          name: '东方卫视',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000292403.m3u8`
+        },
+        {
+          name: '天津卫视',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2019927003.m3u8`
+        },
+        {
+          name: '重庆卫视',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000297803.m3u8`
+        },
+        {
+          name: '黑龙江卫视',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000293903.m3u8`
+        },
+        {
+          name: '辽宁卫视',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000281303.m3u8`
+        },
+        {
+          name: '河北卫视',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000293403.m3u8`
+        },
+        {
+          name: '山东卫视',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000294803.m3u8`
+        },
+        {
+          name: '安徽卫视',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000298003.m3u8`
+        },
+        {
+          name: '河南卫视',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000296103.m3u8`
+        },
+        {
+          name: '湖北卫视',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000294503.m3u8`
+        },
+        {
+          name: '湖南卫视',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000296203.m3u8`
+        },
+        {
+          name: '江西卫视',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000294103.m3u8`
+        },
+        {
+          name: '江苏卫视',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000295603.m3u8`
+        },
+        {
+          name: '浙江卫视',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000295503.m3u8`
+        },
+        {
+          name: '东南卫视',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000292503.m3u8`
+        },
+        {
+          name: '广东卫视',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000292703.m3u8`
+        },
+        {
+          name: '深圳卫视',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000292203.m3u8`
+        },
+        {
+          name: '广西卫视',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000294203.m3u8`
+        },
+        {
+          name: '贵州卫视',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000293303.m3u8`
+        },
+        {
+          name: '四川卫视',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000295003.m3u8`
+        },
+        {
+          name: '新疆卫视',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2019927403.m3u8`
+        },
+        {
+          name: '海南卫视',
+          url: `http://${yspIp}/tlivecloud-ipv6.ysp.cctv.cn/ysp/2000291503.m3u8`
+        },
+      ],
     }
   },
   methods: {
     async startPlay() {
+      this.pausedStatus = false
       await this.initPlayUrl()
       await this.loadMediaPlay()
     },
@@ -97,6 +340,30 @@ export default {
       } else {
         larPlayer.pause()
       }
+      console.log(this.pausedStatus, 'ppp-----')
+    },
+    handleTvList() {
+      let tvList = document.getElementById('tvList')
+      if (tvList.style.display === 'block') {
+        tvList.style.display = 'none'
+      } else {
+        tvList.style.display = 'block'
+      }
+    },
+    hideTvList() {
+      let tvList = document.getElementById('tvList')
+      tvList.style.display = 'none'
+    },
+    async handleListPlay(tv) {
+      this.currentTv = tv.name
+      this.mediaSrc = tv.url
+      this.pausedStatus = false
+      await this.hideTvList()
+      await this.startPlay()
+    },
+    handleFullScreen() {
+      let larPlayer = document.getElementById('larPlayer')
+      larPlayer.requestFullscreen()
     },
     async initPlayUrl() {
       let videoSrc = this.mediaSrc
@@ -168,6 +435,7 @@ export default {
       width: 60px;
       height: 60px;
       color: #FFFFFF;
+      font-size: 60px;
       &:hover {
         color: #b1d4ee;
       }
@@ -176,6 +444,7 @@ export default {
   video {
     object-fit: fill;
     width: 100%;
+    height: 564px;
     border-radius: 4px;
     background: #000000;
   }
@@ -206,6 +475,7 @@ export default {
           color: #FFFFFF;
           width: 30px;
           height: 30px;
+          font-size: 30px;
         }
         .slider {
           -webkit-appearance: none;
@@ -249,6 +519,7 @@ export default {
         display: flex;
         align-items: center;
         .icon-style {
+          font-size: 30px;
           color: #FFFFFF;
           width: 30px;
           height: 30px;
@@ -269,6 +540,59 @@ export default {
       height: 80px;
       box-sizing: border-box;
       animation: loading-rotate 2s linear infinite;
+    }
+  }
+}
+
+.tv-box {
+  position: relative;
+  .title {
+    right: 0;
+    top: -6px;
+    width: 40px;
+    position: absolute;
+    font-size: 1em;
+    color: #FFFFFF;
+  }
+  .tv-list-box {
+    display: none;
+    position: absolute;
+    background: #3a3a3a;
+    width: 120px;
+    bottom: 30px;
+    right: -30px;
+    padding: 10px;
+    height: 200px;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      display: block;
+      width: 8px;
+      height: 100%;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #23d160;
+      border-radius: 30px;
+      height: 50px;
+    }
+    .tv-item {
+      text-transform: uppercase;
+      cursor: pointer;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      &:hover {
+        color: #23d160;
+        text-decoration: underline;
+      }
+    }
+    .is-active {
+      color: #23d160;
+      text-decoration: underline;
     }
   }
 }
