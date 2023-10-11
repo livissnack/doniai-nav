@@ -340,7 +340,6 @@ export default {
       } else {
         larPlayer.pause()
       }
-      console.log(this.pausedStatus, 'ppp-----')
     },
     handleTvList() {
       let tvList = document.getElementById('tvList')
