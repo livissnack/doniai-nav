@@ -56,7 +56,15 @@
                   <div class="control-btn tv-box">
                     <div class="title" @click="handleTvList">列表</div>
                     <div class="tv-list-box" id="tvList">
-                      <div class="tv-item" :class="currentTv === tv.name ? 'is-active' : ''" v-for="(tv, index) in tvList" :key="index" :title="tv.url" @click="handleListPlay(tv)">{{ tv.name }}</div>
+                      <div class="tv-item" :class="currentTv === tv.name ? 'is-active' : ''" v-for="(tv, index) in tvList" :key="index" :title="tv.url" @click="handleListPlay(tv)">
+                        <div class="tv-item-logo">
+                          <img :src="tv.logo" :alt="tv.name">
+                        </div>
+                        <div class="tv-item-name">
+                          {{ tv.name }}
+                          <small class="tv-item-group">({{ tv.group }})</small>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div class="control-btn">
@@ -101,9 +109,10 @@ import { getResourceType } from '@/utils/helper.js'
 import Hls from 'hls.js'
 import flvjs from 'flv.js'
 import MediaResource from "@/components/MediaResource.vue"
-import tvList from "@/utils/tv.json"
+import tvList from "@/services/tv.json"
 Vue.use(BackTop)
-const yspIp = '42.81.252.22'
+const yspIp = 'http://42.81.252.22'
+// const yspIp = 'http://180.97.247.27'
 export default {
   name: 'json',
   components: {
@@ -168,7 +177,8 @@ export default {
     },
     async handleListPlay(tv) {
       this.currentTv = tv.name
-      this.mediaSrc = `${yspIp}${tv.url}`
+      let tmpUrl = tv.url
+      this.mediaSrc = tmpUrl.startsWith('http') ? `${tmpUrl}` : `${yspIp}${tmpUrl}`
       this.pausedStatus = false
       await this.hideTvList()
       await this.startPlay()
@@ -379,7 +389,7 @@ export default {
     display: none;
     position: absolute;
     background: #3a3a3a;
-    width: 120px;
+    width: 220px;
     bottom: 30px;
     right: -30px;
     padding: 10px;
@@ -401,11 +411,27 @@ export default {
       height: 50px;
     }
     .tv-item {
-      text-transform: uppercase;
       cursor: pointer;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      display: flex;
+      justify-content: flex-start;
+      border-bottom: 1px solid #22c65b;
+      .tv-item-logo {
+        img {
+          width: 80px;
+          height: 30px;
+          object-fit: contain;
+        }
+      }
+      .tv-item-name {
+        text-transform: uppercase;
+        width: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        .tv-item-group {
+          margin-left: 4px;
+        }
+      }
       &:hover {
         color: #23d160;
         text-decoration: underline;
