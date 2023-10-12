@@ -19,7 +19,7 @@
             </div>
 
             <div class="lar-player">
-              <iframe id="xiami-player" class="xiami-player" :src="mediaSrc"></iframe>
+              <iframe @load="deleteAd" id="xiami-player" class="xiami-player" :src="mediaSrc" security="restricted" referrerpolicy="no-referrer" sandbox="allow-same-origin allow-forms allow-scripts"></iframe>
             </div>
           </div>
           <div class="column">
@@ -50,7 +50,7 @@ import Footer from '@/components/Footer.vue'
 import MediaResource from "@/components/MediaResource.vue";
 Vue.use(BackTop)
 export default {
-  name: 'json',
+  name: 'xiami',
   components: {
     MediaResource,
     Navbar,
@@ -62,9 +62,6 @@ export default {
       mediaSrc: 'https://jx.xmflv.com/?url=https://www.iqiyi.com/v_mzhth0ui7o.html',
     }
   },
-  mounted() {
-    this.deleteAd()
-  },
   methods: {
     clearIconClick() {
       this.mediaSrc = ''
@@ -73,8 +70,11 @@ export default {
       document.getElementById('xiami-player').contentWindow.location.reload()
     },
     deleteAd() {
-      let box = document.getElementById('adv_wrap_hh')
-      box.remove()
+      let iframe = document.getElementById('xiami-player')
+      if (iframe && iframe.contentWindow) {
+        let box2 = iframe.contentWindow.document.getElementById('adv_wrap_hh')
+        box2.remove()
+      }
     }
   }
 }
