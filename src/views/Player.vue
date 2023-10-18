@@ -191,19 +191,9 @@ export default {
       let videoSrc = this.mediaSrc
       let mediaType = getResourceType(videoSrc)
       if(["php", "unknow"].includes(mediaType)) {
-        const res = await fetch(videoSrc, {
-          method: 'GET',
-          mode: 'no-cors',
-          cache: 'no-cache',
-          credentials: 'include',
-          referrerPolicy: 'no-referrer',
-          headers: {
-            "Accept": "application/json"
-          }
-        })
-        if (res.redirected) {
-          this.mediaSrc = res.url
-        }
+        let url = `https://poly_admin.livissnack.com/api/parse?live_url=${videoSrc}`
+        const res = await fetch(url)
+        this.mediaSrc = res.url
       }
     },
     loadMediaPlay() {
