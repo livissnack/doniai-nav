@@ -184,3 +184,11 @@ export function is3gp(url) {
 export function isAvi(url) {
   return new URL(url).pathname.endsWith('.avi')
 }
+
+export function isHttps(url) {
+  return new URL(url).protocol.startsWith('https')
+}
+
+export function isEmpty(obj) {
+  return typeof obj === "undefined" || obj === null || obj === "" || obj === "0" || obj === false || obj === 0 || obj === [];
+}

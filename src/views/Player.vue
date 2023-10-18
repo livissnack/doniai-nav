@@ -105,14 +105,16 @@ import Navbar from '@/components/Navbar.vue'
 import Sidebar from '@/components/Sidebar.vue'
 import BackTop from '@mlqt/vue-back-top'
 import Footer from '@/components/Footer.vue'
-import { getResourceType } from '@/utils/helper.js'
+import {getResourceType, isEmpty, isHttps} from '@/utils/helper.js'
 import Hls from 'hls.js'
 import flvjs from 'flv.js'
 import MediaResource from "@/components/MediaResource.vue"
 import tvList from "@/services/tv.json"
+
 Vue.use(BackTop)
 const yspIp = 'http://42.81.252.22'
 // const yspIp = 'http://180.97.247.27'
+var flv
 export default {
   name: 'json',
   components: {
@@ -136,6 +138,9 @@ export default {
   methods: {
     async startPlay() {
       this.pausedStatus = false
+      if (!isEmpty(flv)) {
+        flv.destroy()
+      }
       await this.initPlayUrl()
       await this.loadMediaPlay()
     },
@@ -192,8 +197,14 @@ export default {
       let mediaType = getResourceType(videoSrc)
       if(["php", "unknow"].includes(mediaType)) {
         let url = `https://poly_admin.livissnack.com/api/parse?live_url=${videoSrc}`
-        const res = await fetch(url)
-        this.mediaSrc = res.url
+        let response = await fetch(url)
+        let res = await response.json()
+        let parseUrl = res.data
+        if (isHttps(parseUrl)) {
+          this.mediaSrc = parseUrl
+        } else {
+          this.mediaSrc = parseUrl.replace(/^http/, "https")
+        }
       }
     },
     loadMediaPlay() {
@@ -212,7 +223,7 @@ export default {
         }
       } else if (mediaType === 'flv') {
         if (flvjs.isSupported()) {
-          let flv = flvjs.createPlayer({
+          flv = flvjs.createPlayer({
             type: 'flv',
             url: videoSrc
           })
