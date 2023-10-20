@@ -192,3 +192,26 @@ export function isHttps(url) {
 export function isEmpty(obj) {
   return typeof obj === "undefined" || obj === null || obj === "" || obj === "0" || obj === false || obj === 0 || obj === [];
 }
+
+export function debounce(fn, delay) {
+  let timeout;
+  return function(){
+    clearTimeout(timeout)
+    timeout = setTimeout(()=>{
+      fn.apply(this, arguments)
+    },delay)
+  }
+}
+
+export function throttle(fn, delay) {
+  let timer;
+  return function(){
+    if(!timer) {
+      fn.apply(this, arguments)
+      timer = setTimeout(()=>{
+        clearTimeout(timer)
+        timer = null
+      },delay)
+    }
+  }
+}

@@ -38,10 +38,10 @@
 
             <div class="lar-player">
               <video id="larPlayer" ref="larPlayer" :src="mediaSrc" controls autoplay :preload="preload+''" :height="height" :volume="playerVolume" @click="handlePlay"></video>
-              <div class="play-btn" @click="handlePlay" v-if="pausedStatus">
+              <div class="play-btn" @click="handlePlay">
                 <i class="fas play-icon" :class="pausedStatus ? 'fa-play-circle' : 'fa-pause-circle'"></i>
               </div>
-              <div class="media-controls" v-if="!loading">
+              <div class="media-controls">
                 <div class="left-controls">
                   <div class="control-btn" @click="handlePlay">
                     <i class="fas icon-style" :class="pausedStatus ? 'fa-play-circle' : 'fa-pause-circle'"></i>
@@ -105,7 +105,7 @@ import Navbar from '@/components/Navbar.vue'
 import Sidebar from '@/components/Sidebar.vue'
 import BackTop from '@mlqt/vue-back-top'
 import Footer from '@/components/Footer.vue'
-import {getResourceType, isEmpty, isHttps} from '@/utils/helper.js'
+import {throttle, getResourceType, isEmpty, isHttps} from '@/utils/helper.js'
 import Hls from 'hls.js'
 import flvjs from 'flv.js'
 import MediaResource from "@/components/MediaResource.vue"
@@ -235,6 +235,12 @@ export default {
       } else {
         larPlayer.src = videoSrc
       }
+    },
+    handleMouseenter() {
+      this.loading = false
+      // throttle(() => {
+      //   this.loading = false
+      // }, 100)
     }
   }
 }
@@ -262,6 +268,7 @@ export default {
     position: absolute;
     top: 40%;
     left: 48%;
+    display: none;
     .play-icon {
       cursor: pointer;
       width: 60px;
@@ -283,13 +290,21 @@ export default {
   video::-webkit-media-controls {
     display: none !important;
   }
+  &:hover {
+    .media-controls {
+      display: flex;
+      justify-content: space-between;
+    }
+    .play-btn {
+      display: block;
+    }
+  }
   .media-controls {
     width: 100%;
     position: absolute;
-    display: flex;
-    justify-content: space-between;
     color: #FFFFFF;
     bottom: 20px;
+    display: none;
     .left-controls {
       display: flex;
       justify-content: flex-start;

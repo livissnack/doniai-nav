@@ -19,7 +19,7 @@
             </div>
 
             <div class="lar-player">
-              <iframe @load="deleteAd" id="xiami-player" class="xiami-player" :src="mediaSrc" security="restricted" referrerpolicy="no-referrer" sandbox="allow-same-origin allow-forms allow-scripts"></iframe>
+              <iframe @load="deleteAd" id="xiami-player" class="xiami-player" :src="mediaSrc" :allowfullscreen="true" security="restricted" referrerpolicy="no-referrer" sandbox="allow-same-origin allow-forms allow-scripts"></iframe>
             </div>
           </div>
           <div class="column">
