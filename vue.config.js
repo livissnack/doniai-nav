@@ -43,7 +43,7 @@ module.exports = {
       js: [
         '//fastly.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js',
         '//fastly.jsdelivr.net/npm/vue-router@3.3.4/dist/vue-router.min.js',
-        '//fastly.jsdelivr.net/npm/axios@0.19.2/dist/axios.min.js',
+        '//fastly.jsdelivr.net/npm/axios@0.21.2/dist/axios.min.js',
         '//fastly.jsdelivr.net/npm/buefy@0.8.15/dist/buefy.min.js',
         '//webapi.amap.com/maps?v=1.4.15&key=045d06aff28968d4ade448d96aef901b' //高德API接口授权
       ]

@@ -28,6 +28,11 @@ const routes = [
     path: '/xiami',
     name: 'xiami',
     component: () => import('@/views/Xiami.vue')
+  },
+  {
+    path: '/book',
+    name: 'book',
+    component: () => import('@/views/Ebook.vue')
   }
 ]
 

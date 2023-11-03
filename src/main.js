@@ -7,6 +7,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css'
 Vue.config.productionTip = false
 Vue.use(Buefy)
 Vue.prototype.bucket_url = 'https://hspxsteel.oss-cn-shenzhen.aliyuncs.com'
+Vue.prototype.OBS = "https://minio.doniai.com/doniai/"
 
 new Vue({
   router,

@@ -23,3 +23,6 @@ yarn-error.log*
 *.sln
 *.sw?
 src/services/tv.json
+src/services/book.json
+/src/assets/book/
+/test.html

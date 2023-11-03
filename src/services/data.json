@@ -560,6 +560,11 @@
           "name": "随机大小图片",
           "href": "https://picsum.photos",
           "color": "is-danger"
+        },
+        {
+          "name": "电子书下载",
+          "href": "https://iui.su/380",
+          "color": "is-warning"
         }
       ]
     },
