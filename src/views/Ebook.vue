@@ -67,6 +67,16 @@
                   <a href="#" class="dropdown-item" :class="bookName === book.name ? 'is-active' : ''" v-for="(book, index) in bookList" :key="index" @click="handleChangeBook(book)">
                     {{ book.name }} ({{ book.author }})
                   </a>
+                  <a href="#" class="dropdown-item">
+                    <b-field class="file is-danger" :class="{'has-name': !!file}">
+                      <b-upload size="small" v-model="file" class="file-label" accept=".epub" required validationMessage="Please select a file" @input="handleUploadEbook">
+                        <span class="file-cta">
+                            <b-icon class="file-icon" icon="upload"></b-icon>
+                            <span class="file-label">本地书籍 (仅支持 .epub格式)</span>
+                        </span>
+                      </b-upload>
+                    </b-field>
+                  </a>
                 </div>
               </div>
             </div>
@@ -86,8 +96,6 @@
           </div>
         </div>
       </div>
-
-
     </div>
 
     <div class="backtop">
@@ -187,7 +195,8 @@ export default {
       currentBookIndex: 2,
       bookName: '斗罗大陆1绝世唐门',
       bookUrl: '斗罗大陆1.epub',
-      bookList: bookList
+      bookList: bookList,
+      file: null
     }
   },
   computed: {
@@ -199,8 +208,13 @@ export default {
     }
   },
   methods: {
-    async init(path) {
-      let bookUrl = `${this.OBS}${path}`
+    async init(path, isLocal = false) {
+      let bookUrl
+      if (isLocal) {
+        bookUrl = path
+      } else {
+        bookUrl = `${this.OBS}${path}`
+      }
       const BOOK = new Epub(bookUrl)
       this.rendition = BOOK.renderTo('bookDom', {
         method: 'default',
@@ -216,7 +230,6 @@ export default {
       this.rendition.book.coverUrl().then((url) => {
         this.bookCoverSrc = url
       })
-      console.log(this.rendition, 'ppp--')
       let navigation = await this.rendition.book.loaded.navigation
       let directory = navigation.toc
       let curNav = directory[this.currentBookIndex]
@@ -252,7 +265,6 @@ export default {
       this.changeFontSize(this.fontSize)
     },
     changeFontSize(fontSize) {
-      console.log(fontSize, 'k-----')
       this.fontSize = fontSize
       this.rendition.themes.fontSize(this.fontSizeVal)
     },
@@ -267,7 +279,13 @@ export default {
       this.init(book.url)
       this.handleShowDropdownBook()
       this.bookName = book.name
-    }
+    },
+    handleUploadEbook(file) {
+      this.handleDestroy()
+      this.init(file, true)
+      this.handleShowDropdownBook()
+      this.bookName = file.name
+    },
   }
 }
 </script>
