@@ -186,7 +186,7 @@ export default {
       showDropdown: false,
       currentBookIndex: 2,
       bookName: '斗罗大陆1绝世唐门',
-      bookUrl: '斗罗大陆_唐家三少.epub',
+      bookUrl: '斗罗大陆1.epub',
       bookList: bookList
     }
   },
