@@ -145,6 +145,19 @@ export default {
       color: #FFFFFF;
     }
   }
+  /deep/ .check{
+    border-color: #333 !important;
+  }
+}
+
+.has-icons-left {
+  .icon {
+    color: #666;
+  }
+}
+
+.input::placeholder {
+  color: #000;
 }
 
 .dsug {

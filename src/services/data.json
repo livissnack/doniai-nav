@@ -990,5 +990,45 @@
         }
       ]
     }
+  ],
+  "foreignData": [
+    {
+      "id": 1,
+      "title": "社交",
+      "items": [
+        {
+          "name": "Facebook",
+          "href": "https://facebook.com",
+          "color": "is-primary"
+        },
+        {
+          "name": "Twitter",
+          "href": "https://twitter.com",
+          "color": "is-success"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "论坛",
+      "items": [
+        {
+          "name": "福步外贸论坛",
+          "href": "https://bbs.fobshanghai.com/",
+          "color": "is-primary"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "模具钢企业",
+      "items": [
+        {
+          "name": "天工国际",
+          "href": "http://www.tggj.cn",
+          "color": "is-primary"
+        }
+      ]
+    }
   ]
 }
