@@ -30,9 +30,14 @@ const routes = [
     component: () => import('@/views/Xiami.vue')
   },
   {
-    path: '/book',
-    name: 'book',
-    component: () => import('@/views/Ebook.vue')
+    path: '/pc-book',
+    name: 'pcBook',
+    component: () => import('@/views/ebook/Pc.vue')
+  },
+  {
+    path: '/h5-book',
+    name: 'h5Book',
+    component: () => import('@/views/ebook/H5.vue')
   }
 ]
 
@@ -40,6 +45,10 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  next()
 })
 
 export default router

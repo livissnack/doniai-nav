@@ -10,6 +10,10 @@
     htmlWebpackPlugin.options.cdn.css) { %>
     <link rel="stylesheet preload prefetch" href="<%= htmlWebpackPlugin.options.cdn.css[i] %>" as="style" crossorigin="anonymous"/>
     <% } %>
+    <% for (var i in htmlWebpackPlugin.options.cdn &&
+    htmlWebpackPlugin.options.cdn.image) { %>
+    <link rel="preload" fetchpriority="high" as="image" href="<%= htmlWebpackPlugin.options.cdn.image[i] %>" type="image/webp"/>
+    <% } %>
     <title>Doniai导航</title>
   </head>
   <body>

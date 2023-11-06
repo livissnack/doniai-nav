@@ -120,7 +120,7 @@ export default {
 .marquee_list {
   display: block;
   position: absolute;
-  top: 0px;
+  top: 0;
   left: 0;
 }
 .marquee_top {

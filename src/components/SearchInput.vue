@@ -44,6 +44,7 @@
       <b-radio
         v-for="search in searchs"
         :key="search.id"
+        type="is-white"
         v-model="filter.search_type"
         size="is-small"
         :name="search.id.toString()"
@@ -138,6 +139,11 @@ export default {
   margin: 0 auto;
   .control {
     width: 500px;
+  }
+  /deep/ .radio {
+    .control-label {
+      color: #FFFFFF;
+    }
   }
 }
 
