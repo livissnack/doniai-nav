@@ -20,8 +20,10 @@
     "hls.js": "^1.4.12",
     "json-formatter-js": "^2.3.4",
     "jszip": "^3.10.1",
+    "number2chinesenumber": "^2.0.0",
     "solarlunar": "^2.0.7",
     "vue": "^2.6.14",
+    "vue-clipboard2": "^0.3.3",
     "vue-router": "^3.5.3"
   },
   "devDependencies": {

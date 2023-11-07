@@ -38,6 +38,11 @@ const routes = [
     path: '/h5-book',
     name: 'h5Book',
     component: () => import('@/views/ebook/H5.vue')
+  },
+  {
+    path: '/foreign',
+    name: 'foreign',
+    component: () => import('@/views/foreign/Index.vue')
   }
 ]
 

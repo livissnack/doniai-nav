@@ -20,74 +20,79 @@
           "color": "is-danger"
         },
         {
+          "name": "Yandex",
+          "href": "https://yandex.com",
+          "color": "is-warning"
+        },
+        {
           "name": "Stackoverflow",
           "href": "https://stackoverflow.com",
-          "color": "is-warning"
+          "color": "is-info"
         },
         {
           "name": "Segmentfault",
           "href": "https://segmentfault.com",
-          "color": "is-info"
+          "color": "is-primary"
         },
         {
           "name": "腾讯企业邮",
           "href": "https://exmail.qq.com/cgi-bin/loginpage?t=dm_loginpage&dmtype=bizmail",
-          "color": "is-primary"
+          "color": "is-success"
         },
         {
           "name": "谷歌邮箱",
           "href": "https://mail.google.com/mail",
-          "color": "is-success"
+          "color": "is-danger"
         },
         {
           "name": "Outlook邮箱",
           "href": "https://outlook.live.com/mail",
-          "color": "is-danger"
+          "color": "is-warning"
         },
         {
           "name": "掘金",
           "href": "https://juejin.im",
-          "color": "is-warning"
+          "color": "is-info"
         },
         {
           "name": "V2EX",
           "href": "http://www.v2ex.com",
-          "color": "is-info"
+          "color": "is-primary"
         },
         {
           "name": "Learnku",
           "href": "https://learnku.com",
-          "color": "is-primary"
+          "color": "is-success"
         },
         {
           "name": "Laracasts",
           "href": "https://laracasts.com",
-          "color": "is-success"
+          "color": "is-danger"
         },
         {
           "name": "Reddit",
           "href": "https://www.reddit.com",
-          "color": "is-danger"
+          "color": "is-warning"
         },
         {
           "name": "Web AirDroid",
           "href": "https://web.airdroid.com",
-          "color": "is-warning"
+          "color": "is-info"
         },
         {
           "name": "恩山论坛",
           "href": "https://www.right.com.cn",
-          "color": "is-info"
+          "color": "is-primary"
         },
         {
           "name": "安歌源码",
           "href": "https://angtv.cc",
-          "color": "is-primary"
+          "color": "is-success"
         },
         {
           "name": "过早客",
           "href": "https://www.guozaoke.com",
-          "color": "is-success"
+          "color": "is-danger"
         }
       ]
     },
@@ -351,7 +356,7 @@
         },
         {
           "name": "代码管理",
-          "href": "https://code.doniai.com",
+          "href": "https://codeup.aliyun.com",
           "color": "is-primary"
         }
       ]
@@ -565,6 +570,11 @@
           "name": "电子书下载",
           "href": "https://iui.su/380",
           "color": "is-warning"
+        },
+        {
+          "name": "电子书阅读器",
+          "href": "https://nav.doniai.com/pc-book",
+          "color": "is-info"
         }
       ]
     },
@@ -994,6 +1004,17 @@
   "foreignData": [
     {
       "id": 1,
+      "title": "工具",
+      "items": [
+        {
+          "name": "外贸工具",
+          "href": "/foreign",
+          "color": "is-primary"
+        }
+      ]
+    },
+    {
+      "id": 2,
       "title": "社交",
       "items": [
         {
@@ -1009,24 +1030,29 @@
       ]
     },
     {
-      "id": 2,
+      "id": 3,
       "title": "论坛",
       "items": [
         {
           "name": "福步外贸论坛",
-          "href": "https://bbs.fobshanghai.com/",
+          "href": "https://bbs.fobshanghai.com",
           "color": "is-primary"
         }
       ]
     },
     {
-      "id": 3,
+      "id": 4,
       "title": "模具钢企业",
       "items": [
         {
           "name": "天工国际",
           "href": "http://www.tggj.cn",
           "color": "is-primary"
+        },
+        {
+          "name": "黄石品信",
+          "href": "http://www.pxtoolsteel.com",
+          "color": "is-success"
         }
       ]
     }

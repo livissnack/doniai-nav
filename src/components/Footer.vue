@@ -66,7 +66,7 @@
           <h4 class="ft-title">友情链接</h4>
           <div class="text-center">
             <div>
-              <a href="https://www.hspxsteel.com" target="_blank">黄石品信</a>
+              <a href="http://www.pxtoolsteel.com" target="_blank">黄石品信</a>
             </div>
             <div>
               <a href="https://www.doniai.com" target="_blank">Doniai</a>
@@ -91,8 +91,8 @@
             <div>
               <i class="fas fa-globe-americas"></i>
               网址：
-              <a href="https://www.hspxsteel.com" target="_blank"
-                >www.hspxsteel.com</a
+              <a href="http://www.pxtoolsteel.com" target="_blank"
+                >www.pxtoolsteel.com</a
               >
             </div>
             <div>
@@ -107,7 +107,7 @@
     <div class="content has-text-centered">
       <p>
         <strong>版权所有: </strong>
-        <a href="https://www.hspxsteel.com" target="_blank"
+        <a href="http://www.pxtoolsteel.com" target="_blank"
           >黄石品信进出口贸易有限公司</a
         >
         &nbsp;&nbsp;

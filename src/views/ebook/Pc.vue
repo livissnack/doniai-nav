@@ -6,15 +6,6 @@
 
     <div class="content-box">
       <div class="nav-list">
-<!--        <b-menu>-->
-<!--          <b-menu-list>-->
-<!--            <b-menu-item v-for="(item, index) in directory" :key="index" :label="item.label" :active="item.isActive" icon="link" tag="router-link">-->
-<!--              <b-menu-item icon="account" :label="sub_item.label" v-for="(sub_item, sub_index) in item.subitems" :key="sub_index"></b-menu-item>-->
-<!--            </b-menu-item>-->
-<!--          </b-menu-list>-->
-<!--        </b-menu>-->
-
-
         <article class="panel">
           <a class="directory-font panel-block" :class="currentBookIndex === index ? 'is-active' : ''" v-for="(item, index) in directory" :key="index" :id="item.id" @click="jumpPage(item, index)">
             <span class="panel-icon">
