@@ -322,6 +322,12 @@
           "name": "站点健康监控",
           "href": "https://ping.doniai.com",
           "color": "is-info"
+        },
+        {
+          "name": "软件下载",
+          "href": "/utils/software",
+          "color": "is-warning",
+          "isNotNewBlack": true
         }
       ]
     },
@@ -749,6 +755,17 @@
   "frontendData": [
     {
       "id": 1,
+      "title": "前端周刊",
+      "items": [
+        {
+          "name": "Fresh Frontend",
+          "href": "https://frontender-ua.medium.com",
+          "color": "is-primary"
+        }
+      ]
+    },
+    {
+      "id": 2,
       "title": "优选UI",
       "items": [
         {
@@ -780,11 +797,16 @@
           "name": "Adobe-UI",
           "href": "https://react-spectrum.adobe.com",
           "color": "is-primary"
+        },
+        {
+          "name": "Shoelace",
+          "href": "https://shoelace.style",
+          "color": "is-success"
         }
       ]
     },
     {
-      "id": 2,
+      "id": 3,
       "title": "前端认知",
       "items": [
         {
@@ -808,8 +830,8 @@
           "color": "is-warning"
         },
         {
-          "name": "Vue",
-          "href": "https://tailwindcss.com",
+          "name": "Deno",
+          "href": "https://deno.com",
           "color": "is-info"
         },
         {
@@ -835,7 +857,7 @@
       ]
     },
     {
-      "id": 3,
+      "id": 4,
       "title": "CSS工具",
       "items": [
         {
@@ -851,7 +873,7 @@
       ]
     },
     {
-      "id": 4,
+      "id": 5,
       "title": "Js框架",
       "items": [
         {

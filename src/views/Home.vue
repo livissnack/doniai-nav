@@ -21,13 +21,11 @@
               </div>
               <div class="tab-item">
                 <a
-                  :href="navItem.href"
                   @click="handleSubmit(navItem)"
                   class="box-item"
                   :class="navItem.color"
                   v-for="navItem in navItems.items"
                   :key="navItem.index"
-                  target="_blank"
                   >{{ navItem.name }}</a
                 >
               </div>
@@ -95,6 +93,15 @@ export default {
     updateCurrentNavs(obj) {
       this.current_active_menu_id = obj.menu_id
       this.getCurrentNavs(obj.menu_id)
+    },
+    handleSubmit(item) {
+      if (item.isNotNewBlack) {
+        this.$router.push({
+          path: `${item.href}`
+        })
+      } else {
+        window.open(item.href, '_blank')
+      }
     },
   }
 }

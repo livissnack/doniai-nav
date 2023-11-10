@@ -43,6 +43,16 @@ const routes = [
     path: '/foreign',
     name: 'foreign',
     component: () => import('@/views/foreign/Index.vue')
+  },
+  {
+    path: '/utils/software',
+    name: 'softwareList',
+    component: () => import('@/views/utils/SoftList.vue')
+  },
+  {
+    path: '/utils/software/:id',
+    name: 'softwareDetail',
+    component: () => import('@/views/utils/SoftDetail.vue')
   }
 ]
 
