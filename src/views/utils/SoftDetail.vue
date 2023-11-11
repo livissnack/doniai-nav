@@ -11,7 +11,7 @@
         </div>
         <div class="software-info">
           <div class="software-imgs">
-            <b-carousel>
+            <b-carousel icon-pack="fas" :pause-info="false">
               <b-carousel-item v-for="(carousel, i) in carousels" :key="i">
                 <img :src="carousel.imgUrl" :alt="carousel.title">
               </b-carousel-item>
@@ -122,12 +122,6 @@
                           复制
                         </b-tag>
                       </div>
-                      <div class="soft-copy-btn" @click="open(software.bt)">
-                        <b-tag type="is-success" rounded>
-                          <i class="fas fa-download"></i>
-                          下载
-                        </b-tag>
-                      </div>
                     </div>
                     <div class="soft-content-item">
                       <div class="soft-title">BT：</div>
@@ -136,12 +130,6 @@
                         <b-tag type="is-danger" rounded>
                           <i class="far fa-copy"></i>
                           复制
-                        </b-tag>
-                      </div>
-                      <div class="soft-copy-btn" @click="open(software.bt)">
-                        <b-tag type="is-success" rounded>
-                          <i class="fas fa-download"></i>
-                          下载
                         </b-tag>
                       </div>
                     </div>
@@ -398,7 +386,6 @@ export default {
         margin-top: 40px;
         .software-li {
           /deep/ .card {
-            box-shadow: none;
             /deep/ .collapse-content {
               /deep/ .card-content {
                 padding-left: 0 !important;
@@ -410,6 +397,14 @@ export default {
             display: flex;
             justify-content: flex-start;
             font-size: 14px;
+            margin-top: 4px;
+            &:not(:last-child) {
+              border-bottom: 1px solid #cecece;
+            }
+            .soft-title {
+              font-weight: bold;
+            }
+            padding: 4px 0;
             .soft-copy-btn {
               margin-left: 30px;
               cursor: pointer;

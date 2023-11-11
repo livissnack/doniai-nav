@@ -10,8 +10,10 @@
                 <b-navbar-item :active="menu.id === currentActiveMenuId" @click="handleChangeData(menu)" href="#"
                     v-for="menu in menus" :key="menu.id">{{ menu.name }}</b-navbar-item>
             </template>
+
             <template slot="start" v-if="newPage">
                 <b-navbar-item class="is-active">{{ pageTitle }}</b-navbar-item>
+                <slot name="custommenu"></slot>
             </template>
 
             <template slot="end">

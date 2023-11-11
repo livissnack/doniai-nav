@@ -112,8 +112,7 @@ import MediaResource from "@/components/MediaResource.vue"
 import tvList from "@/services/tv.json"
 
 Vue.use(BackTop)
-const yspIp = 'http://42.81.252.22'
-// const yspIp = 'http://180.97.247.27'
+const yspIp = 'http://180.97.247.27'
 var flv
 export default {
   name: 'json',
