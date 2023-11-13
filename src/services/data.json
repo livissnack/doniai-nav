@@ -328,6 +328,12 @@
           "href": "/utils/software",
           "color": "is-warning",
           "isNotNewBlack": true
+        },
+        {
+          "name": "软件下载",
+          "href": "/utils/color",
+          "color": "is-primary",
+          "isNotNewBlack": true
         }
       ]
     },
