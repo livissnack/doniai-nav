@@ -53,6 +53,16 @@ const routes = [
     path: '/utils/software/:id',
     name: 'softwareDetail',
     component: () => import('@/views/utils/SoftDetail.vue')
+  },
+  {
+    path: '/utils/color',
+    name: 'colorMatch',
+    component: () => import('@/views/utils/Color.vue')
+  },
+  {
+    path: '/utils/design-card',
+    name: 'cardDesign',
+    component: () => import('@/views/utils/CardDesign.vue')
   }
 ]
 

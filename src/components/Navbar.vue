@@ -12,7 +12,7 @@
             </template>
 
             <template slot="start" v-if="newPage">
-                <b-navbar-item class="is-active">{{ pageTitle }}</b-navbar-item>
+                <b-navbar-item class="is-active" @click="handleJumpPage(newUrl)">{{ pageTitle }}</b-navbar-item>
                 <slot name="custommenu"></slot>
             </template>
 
@@ -47,6 +47,10 @@ export default {
             type: String,
             default: '' 
         },
+        newUrl: {
+            type: String,
+            default: '' 
+        }
     },
     data() {
         return {
@@ -56,6 +60,11 @@ export default {
     methods: {
         handleChangeData(menu) {
             this.$emit("updateCurrentNavs", { menu_id: menu.id })
+        },
+        handleJumpPage(path) {
+            this.$router.push({
+                path: `${path}`
+            })
         }
     }
 }
