@@ -16,6 +16,9 @@
                       <b-dropdown-item custom aria-role="menuitem">
                         <a href="/utils/design-card">卡片设计</a>
                       </b-dropdown-item>
+                      <b-dropdown-item custom aria-role="menuitem">
+                        <a href="/utils/design-btn">Button设计</a>
+                      </b-dropdown-item>
                     </b-dropdown>
                   </div>
                 </b-navbar-item>

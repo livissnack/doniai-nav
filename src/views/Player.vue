@@ -67,10 +67,17 @@
                       </div>
                     </div>
                   </div>
-                  <div class="control-btn">
-                    <i class="fas fa-cog icon-style"></i>
+                  <div class="control-btn tv-box">
+                    <i class="fas fa-cog icon-style" @click="handleSetBox"></i>
+                    <div class="tv-list-box" id="setBox">
+                      <div class="tv-item" @click="handleRemoteList()">
+                        <div class="tv-item-name">
+                          更多操作
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="control-btn">
+                  <div class="control-btn" @click="handleScreenShot">
                     <i class="fas fa-camera icon-style"></i>
                   </div>
                   <div class="control-btn" @click="handleFullScreen">
@@ -175,9 +182,20 @@ export default {
         tvList.style.display = 'block'
       }
     },
+    handleSetBox() {
+      let tvList = document.getElementById('setBox')
+      if (tvList.style.display === 'block') {
+        tvList.style.display = 'none'
+      } else {
+        tvList.style.display = 'block'
+      }
+    },
     hideTvList() {
       let tvList = document.getElementById('tvList')
       tvList.style.display = 'none'
+    },
+    async handleRemoteList() {
+      console.log('hhhhh')
     },
     async handleListPlay(tv) {
       this.currentTv = tv.name
@@ -186,6 +204,10 @@ export default {
       this.pausedStatus = false
       await this.hideTvList()
       await this.startPlay()
+    },
+    handleScreenShot() {
+      let larPlayer = document.getElementById('larPlayer')
+      larPlayer.requestPictureInPicture()
     },
     handleFullScreen() {
       let larPlayer = document.getElementById('larPlayer')

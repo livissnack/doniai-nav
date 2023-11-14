@@ -63,6 +63,11 @@ const routes = [
     path: '/utils/design-card',
     name: 'cardDesign',
     component: () => import('@/views/utils/CardDesign.vue')
+  },
+  {
+    path: '/utils/design-btn',
+    name: 'BtnDesign',
+    component: () => import('@/views/utils/BtnDesign.vue')
   }
 ]
 
