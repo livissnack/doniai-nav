@@ -7,7 +7,7 @@
       <div class="container">
         <div class="columns">
           <div class="column is-three-quarters mt20">
-            <SearchInput />
+            <SearchInput/>
           </div>
         </div>
 
@@ -21,28 +21,28 @@
               </div>
               <div class="tab-item">
                 <a
-                  @click="handleSubmit(navItem)"
-                  class="box-item"
-                  :class="navItem.color"
-                  v-for="navItem in navItems.items"
-                  :key="navItem.index"
-                  >{{ navItem.name }}</a
+                    @click="handleSubmit(navItem)"
+                    class="box-item"
+                    :class="navItem.color"
+                    v-for="navItem in navItems.items"
+                    :key="navItem.index"
+                >{{ navItem.name }}</a
                 >
               </div>
             </div>
           </div>
           <div class="column">
-            <Sidebar />
+            <Sidebar/>
           </div>
         </div>
       </div>
     </div>
 
     <div class="backtop">
-      <back-top color="#409EFF" :size="1.1" :slow="10"> </back-top>
+      <back-top color="#409EFF" :size="1.1" :slow="10"></back-top>
     </div>
     <div id="footer">
-      <Footer />
+      <Footer/>
     </div>
   </div>
 </template>
@@ -55,6 +55,7 @@ import Sidebar from '@/components/Sidebar.vue'
 import BackTop from '@mlqt/vue-back-top'
 import Footer from '@/components/Footer.vue'
 import jsonNavs from '@/services/data.json'
+
 Vue.use(BackTop)
 export default {
   name: 'home',
@@ -149,6 +150,7 @@ export default {
     border-radius: 3px;
     text-decoration: none;
   }
+
   .box-item {
     box-shadow: 1px 1px 5px #ccc5c5;
   }
@@ -159,7 +161,7 @@ export default {
 }
 
 .cover-bg {
-  background-image: url('https://epg.112114.xyz/bingimg'); 
+  background-image: url('https://epg.112114.xyz/bingimg');
   background-size: cover;
 }
 </style>

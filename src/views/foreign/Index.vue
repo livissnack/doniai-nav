@@ -39,7 +39,8 @@
               </div>
               <div class="start-play-btn">
                 <b-button type="is-danger" v-clipboard:copy="showMoney" v-clipboard:success="onCopySuccess"
-                          v-clipboard:error="onCopyError">复制</b-button>
+                          v-clipboard:error="onCopyError">复制
+                </b-button>
               </div>
             </div>
           </div>
@@ -58,7 +59,8 @@
           </div>
 
           <div class="util-box1" v-if="currentUtil.index === 4">
-            <iframe class="shui-fei" :src="currentUtil.url" :allowfullscreen="true" security="restricted" referrerpolicy="no-referrer" sandbox="allow-same-origin allow-forms allow-scripts"></iframe>
+            <iframe class="shui-fei" :src="currentUtil.url" :allowfullscreen="true" security="restricted"
+                    referrerpolicy="no-referrer" sandbox="allow-same-origin allow-forms allow-scripts"></iframe>
           </div>
         </div>
       </div>
@@ -174,26 +176,32 @@ export default {
   display: flex;
   justify-content: center;
   height: 1000px;
+
   .container {
     display: flex;
     justify-content: flex-start;
     background: #FFFFFF;
     border-radius: 6px;
     margin: 40px 0;
+
     .left-box {
       border-right: 1px solid #ebebeb;
       width: 300px;
       padding: 20px 20px;
     }
+
     .right-box {
       flex: 1;
       padding: 20px;
+
       .mt-4 {
         margin-top: 40px;
       }
+
       .play-input {
         display: flex;
         justify-content: flex-start;
+
         .input-box {
           flex: 1;
         }
@@ -214,6 +222,7 @@ export default {
           justify-content: flex-start;
           flex-wrap: wrap;
           gap: 40px;
+
           .clock-item {
             .clock-item-title {
               .clock-title {

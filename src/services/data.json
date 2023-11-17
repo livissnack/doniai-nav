@@ -334,6 +334,12 @@
           "href": "/utils/color",
           "color": "is-primary",
           "isNotNewBlack": true
+        },
+        {
+          "name": "项目管理",
+          "href": "/utils/project",
+          "color": "is-success",
+          "isNotNewBlack": true
         }
       ]
     },

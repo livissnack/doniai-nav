@@ -94,7 +94,8 @@
                 <path d="M102 4c0 27.1-21.9 49-49 49S4 31.1 4 4"></path>
               </svg>
               <div class="author-name">
-                <div class="author-name-prefix">Author</div> Folarin Lawal
+                <div class="author-name-prefix">Author</div>
+                Folarin Lawal
               </div>
             </div>
             <div class="tags">
@@ -117,7 +118,7 @@
           <div class="card">
             <div class="content">
               <svg height="800px" width="800px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve">
+                   xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve">
                 <g>
                   <path style="fill:#D33D3D;" d="M170.207,358.652H49.942c-19.975,0-36.169,16.798-36.169,37.519v6.254
                   c0,20.721,16.194,37.519,36.169,37.519l198.511,14.958L170.207,358.652z"></path>
@@ -200,7 +201,7 @@
                   L185.031,362.143z"></path>
                 </g>
                 <path style="fill:#8C5549;"
-                  d="M498.226,346.545c0,7.294-5.913,13.208-13.208,13.208H26.982c-7.295,0-13.208-5.914-13.208-13.208
+                      d="M498.226,346.545c0,7.294-5.913,13.208-13.208,13.208H26.982c-7.295,0-13.208-5.914-13.208-13.208
                 v-20.662c0-7.294,5.913-13.208,13.208-13.208h458.037c7.295,0,13.208,5.914,13.208,13.208L498.226,346.545L498.226,346.545z"></path>
                 <path style="opacity:0.15;fill:#202020;enable-background:new    ;" d="M32.85,345.444v-20.662c0-7.294,5.914-13.208,13.208-13.208
                 H26.982c-7.295,0-13.208,5.914-13.208,13.208v20.66c0,7.294,5.913,13.208,13.208,13.208h19.077
@@ -228,31 +229,31 @@
                 <circle r="60" fill="transparent" cy="64" cx="64"></circle>
                 <circle r="48" fill="transparent" cy="64" cx="64"></circle>
                 <path fill="#191919"
-                  d="m64 14a32 32 0 0 1 32 32v41a6 6 0 0 1 -6 6h-52a6 6 0 0 1 -6-6v-41a32 32 0 0 1 32-32z"></path>
+                      d="m64 14a32 32 0 0 1 32 32v41a6 6 0 0 1 -6 6h-52a6 6 0 0 1 -6-6v-41a32 32 0 0 1 32-32z"></path>
                 <path opacity="1" fill="#191919"
-                  d="m62.73 22h2.54a23.73 23.73 0 0 1 23.73 23.73v42.82a4.45 4.45 0 0 1 -4.45 4.45h-41.1a4.45 4.45 0 0 1 -4.45-4.45v-42.82a23.73 23.73 0 0 1 23.73-23.73z">
+                      d="m62.73 22h2.54a23.73 23.73 0 0 1 23.73 23.73v42.82a4.45 4.45 0 0 1 -4.45 4.45h-41.1a4.45 4.45 0 0 1 -4.45-4.45v-42.82a23.73 23.73 0 0 1 23.73-23.73z">
                 </path>
                 <circle r="7" fill="#fbc0aa" cy="65" cx="89"></circle>
                 <path fill="#4bc190"
-                  d="m64 124a59.67 59.67 0 0 0 34.69-11.06l-3.32-9.3a10 10 0 0 0 -9.37-6.64h-43.95a10 10 0 0 0 -9.42 6.64l-3.32 9.3a59.67 59.67 0 0 0 34.69 11.06z">
+                      d="m64 124a59.67 59.67 0 0 0 34.69-11.06l-3.32-9.3a10 10 0 0 0 -9.37-6.64h-43.95a10 10 0 0 0 -9.42 6.64l-3.32 9.3a59.67 59.67 0 0 0 34.69 11.06z">
                 </path>
                 <path opacity=".3" fill="#356cb6"
-                  d="m45 110 5.55 2.92-2.55 8.92a60.14 60.14 0 0 0 9 1.74v-27.08l-12.38 10.25a2 2 0 0 0 .38 3.25z"></path>
+                      d="m45 110 5.55 2.92-2.55 8.92a60.14 60.14 0 0 0 9 1.74v-27.08l-12.38 10.25a2 2 0 0 0 .38 3.25z"></path>
                 <path opacity=".3" fill="#356cb6"
-                  d="m71 96.5v27.09a60.14 60.14 0 0 0 9-1.74l-2.54-8.93 5.54-2.92a2 2 0 0 0 .41-3.25z"></path>
+                      d="m71 96.5v27.09a60.14 60.14 0 0 0 9-1.74l-2.54-8.93 5.54-2.92a2 2 0 0 0 .41-3.25z"></path>
                 <path fill="#fff" d="m57 123.68a58.54 58.54 0 0 0 14 0v-25.68h-14z"></path>
                 <path stroke-width="14" stroke-linejoin="round" stroke-linecap="round" stroke="#fbc0aa" fill="none"
-                  d="m64 88.75v9.75"></path>
+                      d="m64 88.75v9.75"></path>
                 <circle r="7" fill="#fbc0aa" cy="65" cx="39"></circle>
                 <path fill="#ffd8ca" d="m64 91a25 25 0 0 1 -25-25v-16.48a25 25 0 1 1 50 0v16.48a25 25 0 0 1 -25 25z">
                 </path>
                 <path fill="#191919"
-                  d="m91.49 51.12v-4.72c0-14.95-11.71-27.61-26.66-28a27.51 27.51 0 0 0 -28.32 27.42v5.33a2 2 0 0 0 2 2h6.81a8 8 0 0 0 6.5-3.33l4.94-6.88a18.45 18.45 0 0 1 1.37 1.63 22.84 22.84 0 0 0 17.87 8.58h13.45a2 2 0 0 0 2.04-2.03z">
+                      d="m91.49 51.12v-4.72c0-14.95-11.71-27.61-26.66-28a27.51 27.51 0 0 0 -28.32 27.42v5.33a2 2 0 0 0 2 2h6.81a8 8 0 0 0 6.5-3.33l4.94-6.88a18.45 18.45 0 0 1 1.37 1.63 22.84 22.84 0 0 0 17.87 8.58h13.45a2 2 0 0 0 2.04-2.03z">
                 </path>
                 <path style="fill:none;stroke-linecap:round;stroke:#fff;stroke-miterlimit:10;stroke-width:2;opacity:.1"
-                  d="m62.76 36.94c4.24 8.74 10.71 10.21 16.09 10.21h5"></path>
+                      d="m62.76 36.94c4.24 8.74 10.71 10.21 16.09 10.21h5"></path>
                 <path style="fill:none;stroke-linecap:round;stroke:#fff;stroke-miterlimit:10;stroke-width:2;opacity:.1"
-                  d="m71 35c2.52 5.22 6.39 6.09 9.6 6.09h3"></path>
+                      d="m71 35c2.52 5.22 6.39 6.09 9.6 6.09h3"></path>
                 <circle r="3" fill="#515570" cy="62.28" cx="76"></circle>
                 <circle r="3" fill="#515570" cy="62.28" cx="52"></circle>
                 <ellipse ry="2.98" rx="4.58" opacity=".1" fill="#f85565" cy="69.67" cx="50.42"></ellipse>
@@ -264,7 +265,7 @@
                 </g>
                 <path opacity=".4" fill="#f85565" d="m64 84c5 0 7-3 7-3h-14s2 3 7 3z"></path>
                 <path fill="#f85565"
-                  d="m65.07 78.93-.55.55a.73.73 0 0 1 -1 0l-.55-.55c-1.14-1.14-2.93-.93-4.27.47l-1.7 1.6h14l-1.66-1.6c-1.34-1.4-3.13-1.61-4.27-.47z">
+                      d="m65.07 78.93-.55.55a.73.73 0 0 1 -1 0l-.55-.55c-1.14-1.14-2.93-.93-4.27.47l-1.7 1.6h14l-1.66-1.6c-1.34-1.4-3.13-1.61-4.27-.47z">
                 </path>
               </svg>
 
@@ -285,28 +286,34 @@
             </div>
             <div class="benefits-list">
               <ul>
-                <li><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                <li>
+                  <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                     <path
-                      d="M243.8 339.8C232.9 350.7 215.1 350.7 204.2 339.8L140.2 275.8C129.3 264.9 129.3 247.1 140.2 236.2C151.1 225.3 168.9 225.3 179.8 236.2L224 280.4L332.2 172.2C343.1 161.3 360.9 161.3 371.8 172.2C382.7 183.1 382.7 200.9 371.8 211.8L243.8 339.8zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z">
+                        d="M243.8 339.8C232.9 350.7 215.1 350.7 204.2 339.8L140.2 275.8C129.3 264.9 129.3 247.1 140.2 236.2C151.1 225.3 168.9 225.3 179.8 236.2L224 280.4L332.2 172.2C343.1 161.3 360.9 161.3 371.8 172.2C382.7 183.1 382.7 200.9 371.8 211.8L243.8 339.8zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z">
                     </path>
-                  </svg><span>Analysis</span></li>
-                <li><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                  </svg>
+                  <span>Analysis</span></li>
+                <li>
+                  <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                     <path
-                      d="M243.8 339.8C232.9 350.7 215.1 350.7 204.2 339.8L140.2 275.8C129.3 264.9 129.3 247.1 140.2 236.2C151.1 225.3 168.9 225.3 179.8 236.2L224 280.4L332.2 172.2C343.1 161.3 360.9 161.3 371.8 172.2C382.7 183.1 382.7 200.9 371.8 211.8L243.8 339.8zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z">
+                        d="M243.8 339.8C232.9 350.7 215.1 350.7 204.2 339.8L140.2 275.8C129.3 264.9 129.3 247.1 140.2 236.2C151.1 225.3 168.9 225.3 179.8 236.2L224 280.4L332.2 172.2C343.1 161.3 360.9 161.3 371.8 172.2C382.7 183.1 382.7 200.9 371.8 211.8L243.8 339.8zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z">
                     </path>
-                  </svg><span>Consulting</span></li>
-                <li><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                  </svg>
+                  <span>Consulting</span></li>
+                <li>
+                  <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                     <path
-                      d="M243.8 339.8C232.9 350.7 215.1 350.7 204.2 339.8L140.2 275.8C129.3 264.9 129.3 247.1 140.2 236.2C151.1 225.3 168.9 225.3 179.8 236.2L224 280.4L332.2 172.2C343.1 161.3 360.9 161.3 371.8 172.2C382.7 183.1 382.7 200.9 371.8 211.8L243.8 339.8zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z">
+                        d="M243.8 339.8C232.9 350.7 215.1 350.7 204.2 339.8L140.2 275.8C129.3 264.9 129.3 247.1 140.2 236.2C151.1 225.3 168.9 225.3 179.8 236.2L224 280.4L332.2 172.2C343.1 161.3 360.9 161.3 371.8 172.2C382.7 183.1 382.7 200.9 371.8 211.8L243.8 339.8zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z">
                     </path>
-                  </svg><span>Facilitate</span></li>
+                  </svg>
+                  <span>Facilitate</span></li>
               </ul>
             </div>
             <div class="button-get-plan">
               <a href="#">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-rocket">
                   <path
-                    d="M156.6 384.9L125.7 353.1C117.2 345.5 114.2 333.1 117.1 321.8C120.1 312.9 124.1 301.3 129.8 288H24C15.38 288 7.414 283.4 3.146 275.9C-1.123 268.4-1.042 259.2 3.357 251.8L55.83 163.3C68.79 141.4 92.33 127.1 117.8 127.1H200C202.4 124 204.8 120.3 207.2 116.7C289.1-4.07 411.1-8.142 483.9 5.275C495.6 7.414 504.6 16.43 506.7 28.06C520.1 100.9 516.1 222.9 395.3 304.8C391.8 307.2 387.1 309.6 384 311.1V394.2C384 419.7 370.6 443.2 348.7 456.2L260.2 508.6C252.8 513 243.6 513.1 236.1 508.9C228.6 504.6 224 496.6 224 488V380.8C209.9 385.6 197.6 389.7 188.3 392.7C177.1 396.3 164.9 393.2 156.6 384.9V384.9zM384 167.1C406.1 167.1 424 150.1 424 127.1C424 105.9 406.1 87.1 384 87.1C361.9 87.1 344 105.9 344 127.1C344 150.1 361.9 167.1 384 167.1z">
+                      d="M156.6 384.9L125.7 353.1C117.2 345.5 114.2 333.1 117.1 321.8C120.1 312.9 124.1 301.3 129.8 288H24C15.38 288 7.414 283.4 3.146 275.9C-1.123 268.4-1.042 259.2 3.357 251.8L55.83 163.3C68.79 141.4 92.33 127.1 117.8 127.1H200C202.4 124 204.8 120.3 207.2 116.7C289.1-4.07 411.1-8.142 483.9 5.275C495.6 7.414 504.6 16.43 506.7 28.06C520.1 100.9 516.1 222.9 395.3 304.8C391.8 307.2 387.1 309.6 384 311.1V394.2C384 419.7 370.6 443.2 348.7 456.2L260.2 508.6C252.8 513 243.6 513.1 236.1 508.9C228.6 504.6 224 496.6 224 488V380.8C209.9 385.6 197.6 389.7 188.3 392.7C177.1 396.3 164.9 393.2 156.6 384.9V384.9zM384 167.1C406.1 167.1 424 150.1 424 127.1C424 105.9 406.1 87.1 384 87.1C361.9 87.1 344 105.9 344 127.1C344 150.1 361.9 167.1 384 167.1z">
                   </path>
                 </svg>
                 <span>START PROJECT</span>
@@ -320,9 +327,13 @@
             <div class="title">OTP</div>
             <div class="title">Verification Code</div>
             <p class="message">We have sent a verification code to your mobile number</p>
-            <div class="inputs"> <input id="input1" type="text" maxlength="1"> <input id="input2" type="text"
-                maxlength="1"> <input id="input3" type="text" maxlength="1"> <input id="input4" type="text" maxlength="1">
-            </div> <button class="action">verify me</button>
+            <div class="inputs"><input id="input1" type="text" maxlength="1"> <input id="input2" type="text"
+                                                                                     maxlength="1"> <input id="input3"
+                                                                                                           type="text"
+                                                                                                           maxlength="1">
+              <input id="input4" type="text" maxlength="1">
+            </div>
+            <button class="action">verify me</button>
           </form>
         </div>
 
@@ -334,15 +345,16 @@
             <label for="input" class="labelforsearch">
               <svg viewBox="0 0 512 512" class="searchIcon">
                 <path
-                  d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z">
+                    d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z">
                 </path>
               </svg>
             </label>
             <div class="border"></div>
 
-            <button class="micButton"><svg viewBox="0 0 384 512" class="micIcon">
+            <button class="micButton">
+              <svg viewBox="0 0 384 512" class="micIcon">
                 <path
-                  d="M192 0C139 0 96 43 96 96V256c0 53 43 96 96 96s96-43 96-96V96c0-53-43-96-96-96zM64 216c0-13.3-10.7-24-24-24s-24 10.7-24 24v40c0 89.1 66.2 162.7 152 174.4V464H120c-13.3 0-24 10.7-24 24s10.7 24 24 24h72 72c13.3 0 24-10.7 24-24s-10.7-24-24-24H216V430.4c85.8-11.7 152-85.3 152-174.4V216c0-13.3-10.7-24-24-24s-24 10.7-24 24v40c0 70.7-57.3 128-128 128s-128-57.3-128-128V216z">
+                    d="M192 0C139 0 96 43 96 96V256c0 53 43 96 96 96s96-43 96-96V96c0-53-43-96-96-96zM64 216c0-13.3-10.7-24-24-24s-24 10.7-24 24v40c0 89.1 66.2 162.7 152 174.4V464H120c-13.3 0-24 10.7-24 24s10.7 24 24 24h72 72c13.3 0 24-10.7 24-24s-10.7-24-24-24H216V430.4c85.8-11.7 152-85.3 152-174.4V216c0-13.3-10.7-24-24-24s-24 10.7-24 24v40c0 70.7-57.3 128-128 128s-128-57.3-128-128V216z">
                 </path>
               </svg>
             </button>
@@ -437,12 +449,13 @@
             <div>
               <button>
                 <span><svg viewBox="0 0 467 512.22" clip-rule="evenodd" fill-rule="evenodd"
-                    image-rendering="optimizeQuality" text-rendering="geometricPrecision"
-                    shape-rendering="geometricPrecision" xmlns="http://www.w3.org/2000/svg" fill="#0E418F" height="12"
-                    width="12">
+                           image-rendering="optimizeQuality" text-rendering="geometricPrecision"
+                           shape-rendering="geometricPrecision" xmlns="http://www.w3.org/2000/svg" fill="#0E418F"
+                           height="12"
+                           width="12">
                     <path
-                      d="M131.07 372.11c.37 1 .57 2.08.57 3.2 0 1.13-.2 2.21-.57 3.21v75.91c0 10.74 4.41 20.53 11.5 27.62s16.87 11.49 27.62 11.49h239.02c10.75 0 20.53-4.4 27.62-11.49s11.49-16.88 11.49-27.62V152.42c0-10.55-4.21-20.15-11.02-27.18l-.47-.43c-7.09-7.09-16.87-11.5-27.62-11.5H170.19c-10.75 0-20.53 4.41-27.62 11.5s-11.5 16.87-11.5 27.61v219.69zm-18.67 12.54H57.23c-15.82 0-30.1-6.58-40.45-17.11C6.41 356.97 0 342.4 0 326.52V57.79c0-15.86 6.5-30.3 16.97-40.78l.04-.04C27.51 6.49 41.94 0 57.79 0h243.63c15.87 0 30.3 6.51 40.77 16.98l.03.03c10.48 10.48 16.99 24.93 16.99 40.78v36.85h50c15.9 0 30.36 6.5 40.82 16.96l.54.58c10.15 10.44 16.43 24.66 16.43 40.24v302.01c0 15.9-6.5 30.36-16.96 40.82-10.47 10.47-24.93 16.97-40.83 16.97H170.19c-15.9 0-30.35-6.5-40.82-16.97-10.47-10.46-16.97-24.92-16.97-40.82v-69.78zM340.54 94.64V57.79c0-10.74-4.41-20.53-11.5-27.63-7.09-7.08-16.86-11.48-27.62-11.48H57.79c-10.78 0-20.56 4.38-27.62 11.45l-.04.04c-7.06 7.06-11.45 16.84-11.45 27.62v268.73c0 10.86 4.34 20.79 11.38 27.97 6.95 7.07 16.54 11.49 27.17 11.49h55.17V152.42c0-15.9 6.5-30.35 16.97-40.82 10.47-10.47 24.92-16.96 40.82-16.96h170.35z"
-                      fill-rule="nonzero"></path>
+                        d="M131.07 372.11c.37 1 .57 2.08.57 3.2 0 1.13-.2 2.21-.57 3.21v75.91c0 10.74 4.41 20.53 11.5 27.62s16.87 11.49 27.62 11.49h239.02c10.75 0 20.53-4.4 27.62-11.49s11.49-16.88 11.49-27.62V152.42c0-10.55-4.21-20.15-11.02-27.18l-.47-.43c-7.09-7.09-16.87-11.5-27.62-11.5H170.19c-10.75 0-20.53 4.41-27.62 11.5s-11.5 16.87-11.5 27.61v219.69zm-18.67 12.54H57.23c-15.82 0-30.1-6.58-40.45-17.11C6.41 356.97 0 342.4 0 326.52V57.79c0-15.86 6.5-30.3 16.97-40.78l.04-.04C27.51 6.49 41.94 0 57.79 0h243.63c15.87 0 30.3 6.51 40.77 16.98l.03.03c10.48 10.48 16.99 24.93 16.99 40.78v36.85h50c15.9 0 30.36 6.5 40.82 16.96l.54.58c10.15 10.44 16.43 24.66 16.43 40.24v302.01c0 15.9-6.5 30.36-16.96 40.82-10.47 10.47-24.93 16.97-40.83 16.97H170.19c-15.9 0-30.35-6.5-40.82-16.97-10.47-10.46-16.97-24.92-16.97-40.82v-69.78zM340.54 94.64V57.79c0-10.74-4.41-20.53-11.5-27.63-7.09-7.08-16.86-11.48-27.62-11.48H57.79c-10.78 0-20.56 4.38-27.62 11.45l-.04.04c-7.06 7.06-11.45 16.84-11.45 27.62v268.73c0 10.86 4.34 20.79 11.38 27.97 6.95 7.07 16.54 11.49 27.17 11.49h55.17V152.42c0-15.9 6.5-30.35 16.97-40.82 10.47-10.47 24.92-16.96 40.82-16.96h170.35z"
+                        fill-rule="nonzero"></path>
                   </svg> Copy link</span>
                 <span>Copied</span>
               </button>
@@ -456,11 +469,11 @@
       <back-top color="#409EFF" :size="1.1" :slow="10"></back-top>
     </div>
     <div id="footer">
-      <Footer />
+      <Footer/>
     </div>
   </div>
 </template>
-  
+
 <script>
 import Vue from 'vue'
 import Navbar from '@/components/Navbar.vue'
@@ -475,9 +488,7 @@ export default {
     Footer
   },
   data() {
-    return {
-
-    }
+    return {}
   },
   methods: {
     onCopySuccess() {
@@ -517,7 +528,7 @@ export default {
   }
 }
 </script>
-  
+
 <style lang="less" scoped>
 .nav-box {
   text-align: center;
@@ -609,7 +620,6 @@ export default {
       }
 
 
-
       .flip-card:hover .flip-card-inner {
         transform: rotateY(180deg);
       }
@@ -631,13 +641,13 @@ export default {
 
       .flip-card-front {
         background: linear-gradient(120deg, bisque 60%, rgb(255, 231, 222) 88%,
-            rgb(255, 211, 195) 40%, rgba(255, 127, 80, 0.603) 48%);
+        rgb(255, 211, 195) 40%, rgba(255, 127, 80, 0.603) 48%);
         color: coral;
       }
 
       .flip-card-back {
         background: linear-gradient(120deg, rgb(255, 174, 145) 30%, coral 88%,
-            bisque 40%, rgb(255, 185, 160) 78%);
+        bisque 40%, rgb(255, 185, 160) 78%);
         color: white;
         transform: rotateY(180deg);
       }
@@ -685,12 +695,14 @@ export default {
       }
 
       /*Text*/
+
       .text-title {
         font-size: 1.5em;
         font-weight: bold;
       }
 
       /*Hover*/
+
       .card:hover {
         border-color: #008bf8;
         box-shadow: 0 4px 18px 0 rgba(0, 0, 0, 0.25);
@@ -947,6 +959,7 @@ export default {
       }
 
       /*Hover*/
+
       .card:hover::after {
         opacity: 0;
       }
@@ -1375,7 +1388,7 @@ export default {
         user-select: none;
       }
 
-      .ui-wrapper>input {
+      .ui-wrapper > input {
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none;
@@ -1543,7 +1556,7 @@ export default {
 
       /* actions */
 
-      #phonenumber:invalid+.invalid-msg {
+      #phonenumber:invalid + .invalid-msg {
         top: 110%;
         opacity: 1;
         visibility: visible;
@@ -1559,314 +1572,314 @@ export default {
         background-color: var(--dropdown-button-hover-color);
       }
 
-      .dropdown-checkbox:checked~.select-wrapper {
+      .dropdown-checkbox:checked ~ .select-wrapper {
         top: calc(var(--height) + 5px);
         opacity: 1;
         visibility: visible;
       }
 
-      .dropdown-checkbox:checked+.dropdown-container::after {
+      .dropdown-checkbox:checked + .dropdown-container::after {
         rotate: 180deg;
         translate: 0 -2px;
       }
 
-      .ui-wrapper input#Austria:checked~.dropdown-container::before,
-      .ui-wrapper input#Austria:checked~.select-wrapper li.Austria {
+      .ui-wrapper input#Austria:checked ~ .dropdown-container::before,
+      .ui-wrapper input#Austria:checked ~ .select-wrapper li.Austria {
         content: "🇦🇹";
         background-color: lightgray;
       }
 
-      .ui-wrapper input#Belgium:checked~.dropdown-container::before,
-      .ui-wrapper input#Belgium:checked~.select-wrapper li.Belgium {
+      .ui-wrapper input#Belgium:checked ~ .dropdown-container::before,
+      .ui-wrapper input#Belgium:checked ~ .select-wrapper li.Belgium {
         content: "🇧🇪";
         background-color: lightgray;
       }
 
-      .ui-wrapper input#Bulgaria:checked~.dropdown-container::before,
-      .ui-wrapper input#Bulgaria:checked~.select-wrapper li.Bulgaria {
+      .ui-wrapper input#Bulgaria:checked ~ .dropdown-container::before,
+      .ui-wrapper input#Bulgaria:checked ~ .select-wrapper li.Bulgaria {
         content: "🇧🇬";
         background-color: lightgray;
       }
 
-      .ui-wrapper input#Croatia:checked~.dropdown-container::before,
-      .ui-wrapper input#Croatia:checked~.select-wrapper li.Croatia {
+      .ui-wrapper input#Croatia:checked ~ .dropdown-container::before,
+      .ui-wrapper input#Croatia:checked ~ .select-wrapper li.Croatia {
         content: "🇭🇷";
         background-color: lightgray;
       }
 
-      .ui-wrapper input#Cyprus:checked~.dropdown-container::before,
-      .ui-wrapper input#Cyprus:checked~.select-wrapper li.Cyprus {
+      .ui-wrapper input#Cyprus:checked ~ .dropdown-container::before,
+      .ui-wrapper input#Cyprus:checked ~ .select-wrapper li.Cyprus {
         content: "🇨🇾";
         background-color: lightgray;
       }
 
-      .ui-wrapper input#Czech:checked~.dropdown-container::before,
-      .ui-wrapper input#Czech:checked~.select-wrapper li.Czech {
+      .ui-wrapper input#Czech:checked ~ .dropdown-container::before,
+      .ui-wrapper input#Czech:checked ~ .select-wrapper li.Czech {
         content: "🇨🇿";
         background-color: lightgray;
       }
 
-      .ui-wrapper input#Denmark:checked~.dropdown-container::before,
-      .ui-wrapper input#Denmark:checked~.select-wrapper li.Denmark {
+      .ui-wrapper input#Denmark:checked ~ .dropdown-container::before,
+      .ui-wrapper input#Denmark:checked ~ .select-wrapper li.Denmark {
         content: "🇩🇰";
         background-color: lightgray;
       }
 
-      .ui-wrapper input#Estonia:checked~.dropdown-container::before,
-      .ui-wrapper input#Estonia:checked~.select-wrapper li.Estonia {
+      .ui-wrapper input#Estonia:checked ~ .dropdown-container::before,
+      .ui-wrapper input#Estonia:checked ~ .select-wrapper li.Estonia {
         content: "🇪🇪";
         background-color: lightgray;
       }
 
-      .ui-wrapper input#Finland:checked~.dropdown-container::before,
-      .ui-wrapper input#Finland:checked~.select-wrapper li.Finland {
+      .ui-wrapper input#Finland:checked ~ .dropdown-container::before,
+      .ui-wrapper input#Finland:checked ~ .select-wrapper li.Finland {
         content: "🇫🇮";
         background-color: lightgray;
       }
 
-      .ui-wrapper input#France:checked~.dropdown-container::before,
-      .ui-wrapper input#France:checked~.select-wrapper li.France {
+      .ui-wrapper input#France:checked ~ .dropdown-container::before,
+      .ui-wrapper input#France:checked ~ .select-wrapper li.France {
         content: "🇫🇷";
         background-color: lightgray;
       }
 
-      .ui-wrapper input#Germany:checked~.dropdown-container::before,
-      .ui-wrapper input#Germany:checked~.select-wrapper li.Germany {
+      .ui-wrapper input#Germany:checked ~ .dropdown-container::before,
+      .ui-wrapper input#Germany:checked ~ .select-wrapper li.Germany {
         content: "🇩🇪";
         background-color: lightgray;
       }
 
-      .ui-wrapper input#Greece:checked~.dropdown-container::before,
-      .ui-wrapper input#Greece:checked~.select-wrapper li.Greece {
+      .ui-wrapper input#Greece:checked ~ .dropdown-container::before,
+      .ui-wrapper input#Greece:checked ~ .select-wrapper li.Greece {
         content: "🇬🇷";
         background-color: lightgray;
       }
 
-      .ui-wrapper input#Hungary:checked~.dropdown-container::before,
-      .ui-wrapper input#Hungary:checked~.select-wrapper li.Hungary {
+      .ui-wrapper input#Hungary:checked ~ .dropdown-container::before,
+      .ui-wrapper input#Hungary:checked ~ .select-wrapper li.Hungary {
         content: "🇭🇺";
         background-color: lightgray;
       }
 
-      .ui-wrapper input#Iceland:checked~.dropdown-container::before,
-      .ui-wrapper input#Iceland:checked~.select-wrapper li.Iceland {
+      .ui-wrapper input#Iceland:checked ~ .dropdown-container::before,
+      .ui-wrapper input#Iceland:checked ~ .select-wrapper li.Iceland {
         content: "🇮🇸";
         background-color: lightgray;
       }
 
-      .ui-wrapper input#Ireland:checked~.dropdown-container::before,
-      .ui-wrapper input#Ireland:checked~.select-wrapper li.Ireland {
+      .ui-wrapper input#Ireland:checked ~ .dropdown-container::before,
+      .ui-wrapper input#Ireland:checked ~ .select-wrapper li.Ireland {
         content: "🇮🇪";
         background-color: lightgray;
       }
 
-      .ui-wrapper input#Italy:checked~.dropdown-container::before,
-      .ui-wrapper input#Italy:checked~.select-wrapper li.Italy {
+      .ui-wrapper input#Italy:checked ~ .dropdown-container::before,
+      .ui-wrapper input#Italy:checked ~ .select-wrapper li.Italy {
         content: "🇮🇹";
         background-color: lightgray;
       }
 
-      .ui-wrapper input#Latvia:checked~.dropdown-container::before,
-      .ui-wrapper input#Latvia:checked~.select-wrapper li.Latvia {
+      .ui-wrapper input#Latvia:checked ~ .dropdown-container::before,
+      .ui-wrapper input#Latvia:checked ~ .select-wrapper li.Latvia {
         content: "🇱🇻";
         background-color: lightgray;
       }
 
-      .ui-wrapper input#Liechtenstein:checked~.dropdown-container::before,
-      .ui-wrapper input#Liechtenstein:checked~.select-wrapper li.Liechtenstein {
+      .ui-wrapper input#Liechtenstein:checked ~ .dropdown-container::before,
+      .ui-wrapper input#Liechtenstein:checked ~ .select-wrapper li.Liechtenstein {
         content: "🇱🇮";
         background-color: lightgray;
       }
 
-      .ui-wrapper input#Lithuania:checked~.dropdown-container::before,
-      .ui-wrapper input#Lithuania:checked~.select-wrapper li.Lithuania {
+      .ui-wrapper input#Lithuania:checked ~ .dropdown-container::before,
+      .ui-wrapper input#Lithuania:checked ~ .select-wrapper li.Lithuania {
         content: "🇱🇹";
         background-color: lightgray;
       }
 
-      .ui-wrapper input#Luxembourg:checked~.dropdown-container::before,
-      .ui-wrapper input#Luxembourg:checked~.select-wrapper li.Luxembourg {
+      .ui-wrapper input#Luxembourg:checked ~ .dropdown-container::before,
+      .ui-wrapper input#Luxembourg:checked ~ .select-wrapper li.Luxembourg {
         content: "🇱🇺";
         background-color: lightgray;
       }
 
-      .ui-wrapper input#Malta:checked~.dropdown-container::before,
-      .ui-wrapper input#Malta:checked~.select-wrapper li.Malta {
+      .ui-wrapper input#Malta:checked ~ .dropdown-container::before,
+      .ui-wrapper input#Malta:checked ~ .select-wrapper li.Malta {
         content: "🇲🇹";
         background-color: lightgray;
       }
 
-      .ui-wrapper input#Netherlands:checked~.dropdown-container::before,
-      .ui-wrapper input#Netherlands:checked~.select-wrapper li.Netherlands {
+      .ui-wrapper input#Netherlands:checked ~ .dropdown-container::before,
+      .ui-wrapper input#Netherlands:checked ~ .select-wrapper li.Netherlands {
         content: "🇳🇱";
         background-color: lightgray;
       }
 
-      .ui-wrapper input#Norway:checked~.dropdown-container::before,
-      .ui-wrapper input#Norway:checked~.select-wrapper li.Norway {
+      .ui-wrapper input#Norway:checked ~ .dropdown-container::before,
+      .ui-wrapper input#Norway:checked ~ .select-wrapper li.Norway {
         content: "🇳🇴";
         background-color: lightgray;
       }
 
-      .ui-wrapper input#Poland:checked~.dropdown-container::before,
-      .ui-wrapper input#Poland:checked~.select-wrapper li.Poland {
+      .ui-wrapper input#Poland:checked ~ .dropdown-container::before,
+      .ui-wrapper input#Poland:checked ~ .select-wrapper li.Poland {
         content: "🇵🇱";
         background-color: lightgray;
       }
 
-      .ui-wrapper input#Portugal:checked~.dropdown-container::before,
-      .ui-wrapper input#Portugal:checked~.select-wrapper li.Portugal {
+      .ui-wrapper input#Portugal:checked ~ .dropdown-container::before,
+      .ui-wrapper input#Portugal:checked ~ .select-wrapper li.Portugal {
         content: "🇵🇹";
         background-color: lightgray;
       }
 
-      .ui-wrapper input#Romania:checked~.dropdown-container::before,
-      .ui-wrapper input#Romania:checked~.select-wrapper li.Romania {
+      .ui-wrapper input#Romania:checked ~ .dropdown-container::before,
+      .ui-wrapper input#Romania:checked ~ .select-wrapper li.Romania {
         content: "🇷🇴";
         background-color: lightgray;
       }
 
-      .ui-wrapper input#Slovakia:checked~.dropdown-container::before,
-      .ui-wrapper input#Slovakia:checked~.select-wrapper li.Slovakia {
+      .ui-wrapper input#Slovakia:checked ~ .dropdown-container::before,
+      .ui-wrapper input#Slovakia:checked ~ .select-wrapper li.Slovakia {
         content: "🇸🇰";
         background-color: lightgray;
       }
 
-      .ui-wrapper input#Slovenia:checked~.dropdown-container::before,
-      .ui-wrapper input#Slovenia:checked~.select-wrapper li.Slovenia {
+      .ui-wrapper input#Slovenia:checked ~ .dropdown-container::before,
+      .ui-wrapper input#Slovenia:checked ~ .select-wrapper li.Slovenia {
         content: "🇸🇮";
         background-color: lightgray;
       }
 
-      .ui-wrapper input#Spain:checked~.dropdown-container::before,
-      .ui-wrapper input#Spain:checked~.select-wrapper li.Spain {
+      .ui-wrapper input#Spain:checked ~ .dropdown-container::before,
+      .ui-wrapper input#Spain:checked ~ .select-wrapper li.Spain {
         content: "🇪🇸";
         background-color: lightgray;
       }
 
-      .ui-wrapper input#Sweden:checked~.dropdown-container::before,
-      .ui-wrapper input#Sweden:checked~.select-wrapper li.Sweden {
+      .ui-wrapper input#Sweden:checked ~ .dropdown-container::before,
+      .ui-wrapper input#Sweden:checked ~ .select-wrapper li.Sweden {
         content: "🇸🇪";
         background-color: lightgray;
       }
 
-      .ui-wrapper input#Austria:checked~.input-wrapper .textfield::before {
+      .ui-wrapper input#Austria:checked ~ .input-wrapper .textfield::before {
         content: "+43";
       }
 
-      .ui-wrapper input#Belgium:checked~.input-wrapper .textfield::before {
+      .ui-wrapper input#Belgium:checked ~ .input-wrapper .textfield::before {
         content: "+32";
       }
 
-      .ui-wrapper input#Bulgaria:checked~.input-wrapper .textfield::before {
+      .ui-wrapper input#Bulgaria:checked ~ .input-wrapper .textfield::before {
         content: "+359";
       }
 
-      .ui-wrapper input#Croatia:checked~.input-wrapper .textfield::before {
+      .ui-wrapper input#Croatia:checked ~ .input-wrapper .textfield::before {
         content: "+385";
       }
 
-      .ui-wrapper input#Cyprus:checked~.input-wrapper .textfield::before {
+      .ui-wrapper input#Cyprus:checked ~ .input-wrapper .textfield::before {
         content: "+357";
       }
 
-      .ui-wrapper input#Czech:checked~.input-wrapper .textfield::before {
+      .ui-wrapper input#Czech:checked ~ .input-wrapper .textfield::before {
         content: "+420";
       }
 
-      .ui-wrapper input#Denmark:checked~.input-wrapper .textfield::before {
+      .ui-wrapper input#Denmark:checked ~ .input-wrapper .textfield::before {
         content: "+45";
       }
 
-      .ui-wrapper input#Estonia:checked~.input-wrapper .textfield::before {
+      .ui-wrapper input#Estonia:checked ~ .input-wrapper .textfield::before {
         content: "+372";
       }
 
-      .ui-wrapper input#Finland:checked~.input-wrapper .textfield::before {
+      .ui-wrapper input#Finland:checked ~ .input-wrapper .textfield::before {
         content: "+358";
       }
 
-      .ui-wrapper input#France:checked~.input-wrapper .textfield::before {
+      .ui-wrapper input#France:checked ~ .input-wrapper .textfield::before {
         content: "+33";
       }
 
-      .ui-wrapper input#Germany:checked~.input-wrapper .textfield::before {
+      .ui-wrapper input#Germany:checked ~ .input-wrapper .textfield::before {
         content: "+49";
       }
 
-      .ui-wrapper input#Greece:checked~.input-wrapper .textfield::before {
+      .ui-wrapper input#Greece:checked ~ .input-wrapper .textfield::before {
         content: "+30";
       }
 
-      .ui-wrapper input#Hungary:checked~.input-wrapper .textfield::before {
+      .ui-wrapper input#Hungary:checked ~ .input-wrapper .textfield::before {
         content: "+36";
       }
 
-      .ui-wrapper input#Iceland:checked~.input-wrapper .textfield::before {
+      .ui-wrapper input#Iceland:checked ~ .input-wrapper .textfield::before {
         content: "+354";
       }
 
-      .ui-wrapper input#Ireland:checked~.input-wrapper .textfield::before {
+      .ui-wrapper input#Ireland:checked ~ .input-wrapper .textfield::before {
         content: "+353";
       }
 
-      .ui-wrapper input#Italy:checked~.input-wrapper .textfield::before {
+      .ui-wrapper input#Italy:checked ~ .input-wrapper .textfield::before {
         content: "+39";
       }
 
-      .ui-wrapper input#Latvia:checked~.input-wrapper .textfield::before {
+      .ui-wrapper input#Latvia:checked ~ .input-wrapper .textfield::before {
         content: "+371";
       }
 
-      .ui-wrapper input#Liechtenstein:checked~.input-wrapper .textfield::before {
+      .ui-wrapper input#Liechtenstein:checked ~ .input-wrapper .textfield::before {
         content: "+423";
       }
 
-      .ui-wrapper input#Lithuania:checked~.input-wrapper .textfield::before {
+      .ui-wrapper input#Lithuania:checked ~ .input-wrapper .textfield::before {
         content: "+370";
       }
 
-      .ui-wrapper input#Luxembourg:checked~.input-wrapper .textfield::before {
+      .ui-wrapper input#Luxembourg:checked ~ .input-wrapper .textfield::before {
         content: "+352";
       }
 
-      .ui-wrapper input#Malta:checked~.input-wrapper .textfield::before {
+      .ui-wrapper input#Malta:checked ~ .input-wrapper .textfield::before {
         content: "+356";
       }
 
-      .ui-wrapper input#Netherlands:checked~.input-wrapper .textfield::before {
+      .ui-wrapper input#Netherlands:checked ~ .input-wrapper .textfield::before {
         content: "+31";
       }
 
-      .ui-wrapper input#Norway:checked~.input-wrapper .textfield::before {
+      .ui-wrapper input#Norway:checked ~ .input-wrapper .textfield::before {
         content: "+47";
       }
 
-      .ui-wrapper input#Poland:checked~.input-wrapper .textfield::before {
+      .ui-wrapper input#Poland:checked ~ .input-wrapper .textfield::before {
         content: "+48";
       }
 
-      .ui-wrapper input#Portugal:checked~.input-wrapper .textfield::before {
+      .ui-wrapper input#Portugal:checked ~ .input-wrapper .textfield::before {
         content: "+351";
       }
 
-      .ui-wrapper input#Romania:checked~.input-wrapper .textfield::before {
+      .ui-wrapper input#Romania:checked ~ .input-wrapper .textfield::before {
         content: "+40";
       }
 
-      .ui-wrapper input#Slovakia:checked~.input-wrapper .textfield::before {
+      .ui-wrapper input#Slovakia:checked ~ .input-wrapper .textfield::before {
         content: "+421";
       }
 
-      .ui-wrapper input#Slovenia:checked~.input-wrapper .textfield::before {
+      .ui-wrapper input#Slovenia:checked ~ .input-wrapper .textfield::before {
         content: "+386";
       }
 
-      .ui-wrapper input#Spain:checked~.input-wrapper .textfield::before {
+      .ui-wrapper input#Spain:checked ~ .input-wrapper .textfield::before {
         content: "+34";
       }
 
-      .ui-wrapper input#Sweden:checked~.input-wrapper .textfield::before {
+      .ui-wrapper input#Sweden:checked ~ .input-wrapper .textfield::before {
         content: "+46";
       }
     }

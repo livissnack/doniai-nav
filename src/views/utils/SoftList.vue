@@ -409,6 +409,7 @@ export default {
   display: flex;
   justify-content: center;
   flex-direction: column;
+
   .clear-bg {
     background: #dde2fa !important;
     margin-top: 30px !important;
@@ -416,22 +417,26 @@ export default {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
   }
+
   .clear-bg1 {
     background: #f5f5f5 !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
+
     .notice-box {
       background: #f5f5f5 !important;
     }
   }
+
   .container {
     width: 100%;
     margin: 40px auto;
     background: #F5F5F5;
     border-radius: 6px;
     padding: 20px 20px;
+
     .notice-box {
       color: #2b3978;
       background-color: #dde2fa;
@@ -441,25 +446,31 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
+
       .notice-left-box {
         display: flex;
         align-items: center;
+
         .notice-msg {
           margin-left: 20px;
         }
+
         .notice-title-box {
           display: flex;
           justify-content: flex-start;
           align-items: center;
+
           .notice-title {
             font-size: 20px;
             font-weight: bold;
           }
+
           .notice-remark {
             margin-left: 20px;
             font-size: 14px;
           }
         }
+
         .badge {
           display: inline-block;
           padding: 0.25em 0.4em;
@@ -470,7 +481,8 @@ export default {
           white-space: nowrap;
           vertical-align: baseline;
           border-radius: 0.25rem;
-          transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+          transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+
           .spinner-grow {
             width: 10px;
             height: 10px;
@@ -479,7 +491,8 @@ export default {
             background-color: #FFFFFF;
             position: relative;
             display: inline-block;
-            &:before,after {
+
+            &:before, after {
               content: "";
               position: absolute;
               top: 0;
@@ -491,6 +504,7 @@ export default {
               border-top-color: transparent;
               animation: warn 1.2s ease-out 0s infinite;
             }
+
             @keyframes warn {
               0% {
                 transform: scale(0.5);
@@ -515,6 +529,7 @@ export default {
             }
           }
         }
+
         .badge-danger {
           color: #fff;
           background-color: #ff5b5b;
@@ -541,6 +556,7 @@ export default {
         .bgcolor {
           background: #FFFFFF;
           border-radius: 2px;
+
           .info {
             height: 180px;
             display: flex;
@@ -618,6 +634,7 @@ export default {
           color: #222;
           font-size: 18px;
           font-weight: 700;
+
           &:hover {
             cursor: pointer;
             text-decoration: underline;
@@ -635,6 +652,7 @@ export default {
           display: flex;
           justify-content: flex-start;
           flex-flow: wrap;
+
           .mlt-item-tag {
             padding: 1px 4px;
             border-radius: 10px;
@@ -644,6 +662,7 @@ export default {
             font-size: 12px;
             margin-right: 8px;
             margin-bottom: 4px;
+
             &:hover {
               background: #0f77ea;
               color: #FFFFFF;
@@ -682,6 +701,7 @@ export default {
 
           .cart {
             cursor: pointer;
+
             .buy-btn {
               width: 63px;
               padding: 7px 16px;
@@ -689,6 +709,7 @@ export default {
               align-items: center;
               border-radius: 22px;
               border: 1px solid #222;
+
               .txt {
                 color: #222;
                 text-align: center;
@@ -700,6 +721,7 @@ export default {
               &:hover {
                 background: #fa5e2e;
                 border: 1px solid #cecece;
+
                 .txt {
                   color: #FFFFFF;
                   text-decoration: underline;

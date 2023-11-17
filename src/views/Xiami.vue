@@ -9,7 +9,8 @@
           <div class="column is-three-quarters">
             <div class="mt-4 play-input">
               <div class="input-box">
-                <b-input type="url" v-model="mediaSrc" placeholder="请输入播放地址" maxlength="400" icon-pack="fas" icon-right="times"
+                <b-input type="url" v-model="mediaSrc" placeholder="请输入播放地址" maxlength="400" icon-pack="fas"
+                         icon-right="times"
                          icon-right-clickable
                          @icon-right-click="clearIconClick"></b-input>
               </div>
@@ -19,24 +20,26 @@
             </div>
 
             <div class="lar-player">
-              <iframe @load="deleteAd" id="xiami-player" class="xiami-player" :src="mediaSrc" :allowfullscreen="true" security="restricted" referrerpolicy="no-referrer" sandbox="allow-same-origin allow-forms allow-scripts"></iframe>
+              <iframe @load="deleteAd" id="xiami-player" class="xiami-player" :src="mediaSrc" :allowfullscreen="true"
+                      security="restricted" referrerpolicy="no-referrer"
+                      sandbox="allow-same-origin allow-forms allow-scripts"></iframe>
             </div>
           </div>
           <div class="column">
             <div class="section-box">
               <MediaResource :resourceUrl="mediaSrc"/>
             </div>
-            <Sidebar />
+            <Sidebar/>
           </div>
         </div>
       </div>
     </div>
 
     <div class="backtop">
-      <back-top color="#409EFF" :size="1.1" :slow="10"> </back-top>
+      <back-top color="#409EFF" :size="1.1" :slow="10"></back-top>
     </div>
     <div id="footer">
-      <Footer />
+      <Footer/>
     </div>
   </div>
 </template>
@@ -48,6 +51,7 @@ import Sidebar from '@/components/Sidebar.vue'
 import BackTop from '@mlqt/vue-back-top'
 import Footer from '@/components/Footer.vue'
 import MediaResource from "@/components/MediaResource.vue";
+
 Vue.use(BackTop)
 export default {
   name: 'xiami',
@@ -88,9 +92,11 @@ export default {
   margin-bottom: 35px;
   border-bottom: 2px solid #e1e1e1;
 }
+
 .play-input {
   display: flex;
   justify-content: flex-start;
+
   .input-box {
     flex: 1;
   }
@@ -99,6 +105,7 @@ export default {
 .lar-player {
   width: 100%;
   height: 564px;
+
   iframe {
     width: 100%;
     height: 564px;

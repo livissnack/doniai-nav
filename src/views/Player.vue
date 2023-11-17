@@ -9,7 +9,8 @@
           <div class="column is-three-quarters">
             <div class="mt-4 play-input">
               <div class="input-box">
-                <b-input type="url" v-model="mediaSrc" placeholder="请输入播放地址" maxlength="400" icon-pack="fas" icon-right="times"
+                <b-input type="url" v-model="mediaSrc" placeholder="请输入播放地址" maxlength="400" icon-pack="fas"
+                         icon-right="times"
                          icon-right-clickable
                          @icon-right-click="clearIconClick"></b-input>
               </div>
@@ -37,7 +38,8 @@
             </div>
 
             <div class="lar-player">
-              <video id="larPlayer" ref="larPlayer" :src="mediaSrc" controls autoplay :preload="preload+''" :height="height" :volume="playerVolume" @click="handlePlay"></video>
+              <video id="larPlayer" ref="larPlayer" :src="mediaSrc" controls autoplay :preload="preload+''"
+                     :height="height" :volume="playerVolume" @click="handlePlay"></video>
               <div class="play-btn" @click="handlePlay">
                 <i class="fas play-icon" :class="pausedStatus ? 'fa-play-circle' : 'fa-pause-circle'"></i>
               </div>
@@ -47,8 +49,9 @@
                     <i class="fas icon-style" :class="pausedStatus ? 'fa-play-circle' : 'fa-pause-circle'"></i>
                   </div>
                   <div class="control-btn">
-                    <div class="txt">音量 </div>
-                    <input type="range" min="0" max="1" value="0.5" step="0.05" class="slider" @input="handlePlayerVolume">
+                    <div class="txt">音量</div>
+                    <input type="range" min="0" max="1" value="0.5" step="0.05" class="slider"
+                           @input="handlePlayerVolume">
                   </div>
                   <div class="control-btn">Live</div>
                 </div>
@@ -56,7 +59,8 @@
                   <div class="control-btn tv-box">
                     <div class="title" @click="handleTvList">列表</div>
                     <div class="tv-list-box" id="tvList">
-                      <div class="tv-item" :class="currentTv === tv.name ? 'is-active' : ''" v-for="(tv, index) in tvList" :key="index" :title="tv.url" @click="handleListPlay(tv)">
+                      <div class="tv-item" :class="currentTv === tv.name ? 'is-active' : ''"
+                           v-for="(tv, index) in tvList" :key="index" :title="tv.url" @click="handleListPlay(tv)">
                         <div class="tv-item-logo">
                           <img :src="tv.logo" :alt="tv.name">
                         </div>
@@ -91,17 +95,17 @@
             <div class="section-box">
               <MediaResource :resourceUrl="mediaSrc"/>
             </div>
-            <Sidebar />
+            <Sidebar/>
           </div>
         </div>
       </div>
     </div>
 
     <div class="backtop">
-      <back-top color="#409EFF" :size="1.1" :slow="10"> </back-top>
+      <back-top color="#409EFF" :size="1.1" :slow="10"></back-top>
     </div>
     <div id="footer">
-      <Footer />
+      <Footer/>
     </div>
   </div>
 </template>
@@ -120,6 +124,7 @@ import tvList from "@/services/tv.json"
 
 Vue.use(BackTop)
 const yspIp = 'http://180.97.247.27'
+const isBackup = true
 var flv
 export default {
   name: 'json',
@@ -159,7 +164,7 @@ export default {
     },
     handleOpenPlayer(type) {
       let map = ['potplayer', 'iina', 'vlc', 'thunder']
-      if(type === 1) {
+      if (type === 1) {
         location.href = `iina://open?url=${this.mediaSrc}`
       } else {
         location.href = `${map[type]}://${this.mediaSrc}`
@@ -199,8 +204,9 @@ export default {
     },
     async handleListPlay(tv) {
       this.currentTv = tv.name
-      let tmpUrl = tv.url
+      let tmpUrl = isBackup ? (isEmpty(tv.backup_url) ? tv.url : tv.backup_url) : tv.url
       this.mediaSrc = tmpUrl.startsWith('http') ? `${tmpUrl}` : `${yspIp}${tmpUrl}`
+      console.log(this.mediaSrc, 'ppp-----')
       this.pausedStatus = false
       await this.hideTvList()
       await this.startPlay()
@@ -216,7 +222,7 @@ export default {
     async initPlayUrl() {
       let videoSrc = this.mediaSrc
       let mediaType = getResourceType(videoSrc)
-      if(["php", "unknow"].includes(mediaType)) {
+      if (["php", "unknow"].includes(mediaType)) {
         let url = `https://poly_admin.livissnack.com/api/parse?live_url=${videoSrc}`
         let response = await fetch(url)
         let res = await response.json()
@@ -275,32 +281,39 @@ export default {
   margin-bottom: 35px;
   border-bottom: 2px solid #e1e1e1;
 }
+
 .play-input {
   display: flex;
   justify-content: flex-start;
+
   .input-box {
     flex: 1;
   }
 }
+
 .lar-player {
   margin: 20px 0;
   position: relative;
+
   .play-btn {
     position: absolute;
     top: 40%;
     left: 48%;
     display: none;
+
     .play-icon {
       cursor: pointer;
       width: 60px;
       height: 60px;
       color: #FFFFFF;
       font-size: 60px;
+
       &:hover {
         color: #b1d4ee;
       }
     }
   }
+
   video {
     object-fit: fill;
     width: 100%;
@@ -308,43 +321,52 @@ export default {
     border-radius: 4px;
     background: #000000;
   }
+
   video::-webkit-media-controls {
     display: none !important;
   }
+
   &:hover {
     .media-controls {
       display: flex;
       justify-content: space-between;
     }
+
     .play-btn {
       display: block;
     }
   }
+
   .media-controls {
     width: 100%;
     position: absolute;
     color: #FFFFFF;
     bottom: 20px;
     display: none;
+
     .left-controls {
       display: flex;
       justify-content: flex-start;
       align-items: center;
       margin-left: 20px;
+
       .control-btn {
         margin-right: 10px;
         cursor: pointer;
         display: flex;
         align-items: center;
+
         .txt {
           width: 52px;
         }
+
         .icon-style {
           color: #FFFFFF;
           width: 30px;
           height: 30px;
           font-size: 30px;
         }
+
         .slider {
           -webkit-appearance: none;
           width: 100%;
@@ -376,16 +398,19 @@ export default {
         }
       }
     }
+
     .right-controls {
       display: flex;
       justify-content: flex-start;
       align-items: center;
       margin-right: 20px;
+
       .control-btn {
         margin-left: 10px;
         cursor: pointer;
         display: flex;
         align-items: center;
+
         .icon-style {
           font-size: 30px;
           color: #FFFFFF;
@@ -395,6 +420,7 @@ export default {
       }
     }
   }
+
   .media-loading {
     position: absolute;
     top: 40%;
@@ -402,6 +428,7 @@ export default {
     width: 80px;
     height: 80px;
     z-index: 100000;
+
     .circular {
       display: inline;
       width: 80px;
@@ -414,6 +441,7 @@ export default {
 
 .tv-box {
   position: relative;
+
   .title {
     right: 0;
     top: -6px;
@@ -422,6 +450,7 @@ export default {
     font-size: 1em;
     color: #FFFFFF;
   }
+
   .tv-list-box {
     display: none;
     position: absolute;
@@ -432,6 +461,7 @@ export default {
     padding: 10px;
     height: 200px;
     overflow-y: auto;
+
     &::-webkit-scrollbar {
       display: block;
       width: 8px;
@@ -447,11 +477,13 @@ export default {
       border-radius: 30px;
       height: 50px;
     }
+
     .tv-item {
       cursor: pointer;
       display: flex;
       justify-content: flex-start;
       border-bottom: 1px solid #22c65b;
+
       .tv-item-logo {
         img {
           width: 80px;
@@ -459,21 +491,25 @@ export default {
           object-fit: contain;
         }
       }
+
       .tv-item-name {
         text-transform: uppercase;
         width: 120px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+
         .tv-item-group {
           margin-left: 4px;
         }
       }
+
       &:hover {
         color: #23d160;
         text-decoration: underline;
       }
     }
+
     .is-active {
       color: #23d160;
       text-decoration: underline;
@@ -486,17 +522,20 @@ export default {
   justify-content: flex-start;
   gap: 10px;
   height: 40px;
+
   .title {
     height: 40px;
     line-height: 40px;
     color: #15b982;
     font-size: 16px;
   }
+
   .player-logo {
     width: 24px;
     height: 24px;
   }
 }
+
 .section-box {
   margin-bottom: 20px;
 }

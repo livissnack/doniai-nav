@@ -1,38 +1,39 @@
 <template>
   <div class="home">
     <div class="nav-box">
-      <Navbar @updateCurrentNavs="updateCurrentNavs" :currentActiveMenuId="current_active_menu_id" :newPage="true" pageTitle="JSON工具"/>
+      <Navbar @updateCurrentNavs="updateCurrentNavs" :currentActiveMenuId="current_active_menu_id" :newPage="true"
+              pageTitle="JSON工具"/>
     </div>
     <div class="content-box">
       <div class="container">
         <div class="columns">
           <div class="column is-three-quarters">
             <textarea
-              class="json-box"
-              cols="150"
-              :placeholder="placeholder_text"
-              v-model="in_json"
+                class="json-box"
+                cols="150"
+                :placeholder="placeholder_text"
+                v-model="in_json"
             ></textarea>
             <button class="button mt14" @click="formatJsonData">转换</button>
             <div
-              id="json-loader"
-              cols="150"
-              class="json-box mt20"
-              contenteditable="true"
+                id="json-loader"
+                cols="150"
+                class="json-box mt20"
+                contenteditable="true"
             ></div>
           </div>
           <div class="column">
-            <Sidebar />
+            <Sidebar/>
           </div>
         </div>
       </div>
     </div>
 
     <div class="backtop">
-      <back-top color="#409EFF" :size="1.1" :slow="10"> </back-top>
+      <back-top color="#409EFF" :size="1.1" :slow="10"></back-top>
     </div>
     <div id="footer">
-      <Footer />
+      <Footer/>
     </div>
   </div>
 </template>
@@ -44,6 +45,7 @@ import Sidebar from '@/components/Sidebar.vue'
 import BackTop from '@mlqt/vue-back-top'
 import Footer from '@/components/Footer.vue'
 import JSONFormatter from 'json-formatter-js'
+
 Vue.use(BackTop)
 export default {
   name: 'json',
@@ -65,9 +67,9 @@ export default {
       this.deleteChildNode()
       let format_str = this.in_json
       if (
-        format_str === '' ||
-        format_str === null ||
-        format_str === undefined
+          format_str === '' ||
+          format_str === null ||
+          format_str === undefined
       ) {
         this.$buefy.snackbar.open({
           duration: 3000,
@@ -119,6 +121,7 @@ export default {
   height: 40%;
   padding: 20px;
   background-color: #ffffff !important;
+
   &::-webkit-scrollbar {
     display: block;
     width: 8px;

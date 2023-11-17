@@ -8,23 +8,23 @@
         <section class="modal-card-body">
           <b-field label="邮箱">
             <b-input
-              type="email"
-              v-model="form.email"
-              size="is-small"
-              placeholder="请输入邮箱地址"
-              required
+                type="email"
+                v-model="form.email"
+                size="is-small"
+                placeholder="请输入邮箱地址"
+                required
             >
             </b-input>
           </b-field>
 
           <b-field label="密码">
             <b-input
-              type="password"
-              v-model="form.password"
-              size="is-small"
-              password-reveal
-              placeholder="请输入密码"
-              required
+                type="password"
+                v-model="form.password"
+                size="is-small"
+                password-reveal
+                placeholder="请输入密码"
+                required
             >
             </b-input>
           </b-field>
@@ -35,10 +35,11 @@
           <div class="buttons">
             <b-button size="is-small" type="is-primary">取消</b-button>
             <b-button
-              size="is-small"
-              type="is-success"
-              @click="handleLoginSubmit"
-              >登录</b-button
+                size="is-small"
+                type="is-success"
+                @click="handleLoginSubmit"
+            >登录
+            </b-button
             >
           </div>
         </footer>
@@ -48,7 +49,8 @@
 </template>
 
 <script>
-import { getBgImage } from '../services/api'
+import {getBgImage} from '../services/api'
+
 export default {
   name: 'Login',
   data() {
@@ -65,7 +67,7 @@ export default {
   },
   methods: {
     async getBgImageUrl() {
-      const { data } = await getBgImage()
+      const {data} = await getBgImage()
       if (data.code === 500) {
         this.setLoginBgStyle()
       } else {
@@ -83,7 +85,7 @@ export default {
       if (img_url === '' && ['login', 'register'].includes(routeName)) {
         this.bacImage = {
           background:
-            'url(https://hiphup.oss-cn-hangzhou.aliyuncs.com/uploads/images/swiper6.jpg)'
+              'url(https://hiphup.oss-cn-hangzhou.aliyuncs.com/uploads/images/swiper6.jpg)'
         }
       }
     },
@@ -109,6 +111,7 @@ export default {
 
 form {
   margin-top: 8%;
+
   .modal-card {
     opacity: 0.85;
   }

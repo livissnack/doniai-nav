@@ -68,6 +68,11 @@ const routes = [
     path: '/utils/design-btn',
     name: 'BtnDesign',
     component: () => import('@/views/utils/BtnDesign.vue')
+  },
+  {
+    path: '/utils/project',
+    name: 'projectManage',
+    component: () => import('@/views/utils/Project.vue')
   }
 ]
 
