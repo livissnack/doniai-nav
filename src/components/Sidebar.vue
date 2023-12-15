@@ -9,7 +9,7 @@
     <div class="section-box">
       <Weather />
     </div>
-    <div class="section-box">
+    <div class="section-box task-todo">
       <Todo />
     </div>
   </div>

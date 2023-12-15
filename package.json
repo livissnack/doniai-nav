@@ -11,6 +11,7 @@
     "@fortawesome/fontawesome-free": "^5.15.4",
     "@mlqt/vue-back-top": "^1.0.8",
     "@moefe/vue-aplayer": "^2.0.0-beta.5",
+    "@tldraw/tldraw": "^2.0.0-alpha.18",
     "axios": "^0.21.2",
     "buefy": "^0.8.15",
     "core-js": "3.6.0",

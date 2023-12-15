@@ -48,12 +48,12 @@
                   <div class="control-btn" @click="handlePlay">
                     <i class="fas icon-style" :class="pausedStatus ? 'fa-play-circle' : 'fa-pause-circle'"></i>
                   </div>
-                  <div class="control-btn">
+                  <div class="control-btn live-volume">
                     <div class="txt">音量</div>
                     <input type="range" min="0" max="1" value="0.5" step="0.05" class="slider"
                            @input="handlePlayerVolume">
                   </div>
-                  <div class="control-btn">Live</div>
+                  <div class="control-btn live-tag">Live</div>
                 </div>
                 <div class="right-controls">
                   <div class="control-btn tv-box">
@@ -116,14 +116,14 @@ import Navbar from '@/components/Navbar.vue'
 import Sidebar from '@/components/Sidebar.vue'
 import BackTop from '@mlqt/vue-back-top'
 import Footer from '@/components/Footer.vue'
-import {throttle, getResourceType, isEmpty, isHttps} from '@/utils/helper.js'
+import {getResourceType, isEmpty, isHttps} from '@/utils/helper.js'
 import Hls from 'hls.js'
 import flvjs from 'flv.js'
 import MediaResource from "@/components/MediaResource.vue"
 import tvList from "@/services/tv.json"
 
 Vue.use(BackTop)
-const yspIp = 'http://180.97.247.27'
+const yspIp = 'https://eco.livissnack.com'
 const isBackup = true
 var flv
 export default {
@@ -263,12 +263,6 @@ export default {
         larPlayer.src = videoSrc
       }
     },
-    handleMouseenter() {
-      this.loading = false
-      // throttle(() => {
-      //   this.loading = false
-      // }, 100)
-    }
   }
 }
 </script>

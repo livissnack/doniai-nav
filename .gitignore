@@ -24,6 +24,7 @@ yarn-error.log*
 *.sln
 *.sw?
 src/services/tv.json
+src/services/tv1.json
 src/services/book.json
 /src/assets/book/
 /test.html

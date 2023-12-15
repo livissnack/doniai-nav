@@ -1,0 +1,28 @@
+.other-play-btn {
+    display: none !important;
+}
+
+#larPlayer {
+    height: 200px !important;
+}
+
+.live-volume {
+    display: none !important;
+}
+
+.live-tag {
+    display: none !important;
+}
+
+.content-box > .container {
+    padding: 0 10px !important;
+}
+
+.play-btn {
+    top: 28%!important;
+    left: 40%!important;
+}
+
+.task-todo {
+    display: none !important;
+}

@@ -73,6 +73,11 @@ const routes = [
     path: '/utils/project',
     name: 'projectManage',
     component: () => import('@/views/utils/Project.vue')
+  },
+  {
+    path: '/utils/white',
+    name: 'projectWhite',
+    component: () => import('@/views/utils/White.vue')
   }
 ]
 
