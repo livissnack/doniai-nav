@@ -38,13 +38,13 @@
             </div>
 
             <div class="lar-player">
-              <video id="larPlayer" ref="larPlayer" :playsinline="true" :webkit-playsinline="true" :src="mediaSrc" :controls="false" autoplay :preload="preload+''"
+              <video id="larPlayer" ref="larPlayer" :playsinline="true" :webkit-playsinline="true" :src="mediaSrc" :controls="true" autoplay :preload="preload+''"
                      :height="height" :volume="playerVolume" @click="handlePlay"></video>
               <div class="play-btn" @click="handlePlay" v-if="customPlayOperate">
                 <i class="fas play-icon" :class="pausedStatus ? 'fa-play-circle' : 'fa-pause-circle'"></i>
               </div>
-              <div class="media-controls" v-if="customPlayOperate">
-                <div class="left-controls">
+              <div class="media-controls" :class="customPlayOperate ? '' : 'flex-end'">
+                <div class="left-controls" v-if="customPlayOperate">
                   <div class="control-btn" @click="handlePlay">
                     <i class="fas icon-style" :class="pausedStatus ? 'fa-play-circle' : 'fa-pause-circle'"></i>
                   </div>
@@ -121,6 +121,7 @@ import Hls from 'hls.js'
 import flvjs from 'flv.js'
 import MediaResource from "@/components/MediaResource.vue"
 import tvList from "@/services/tv.json"
+var platform = require('platform')
 
 Vue.use(BackTop)
 const yspIp = 'https://eco.livissnack.com'
@@ -152,7 +153,7 @@ export default {
   },
   methods: {
     checkBrowser() {
-      if (navigator.userAgent.indexOf('Safari') === -1) {
+      if (platform.name === 'Safari') {
         this.customPlayOperate = false
       }
     },
@@ -222,6 +223,7 @@ export default {
     handleScreenShot() {
       let larPlayer = document.getElementById('larPlayer')
       larPlayer.requestPictureInPicture()
+      larPlayer.webkitEnterFullscreen()
     },
     handleFullScreen() {
       let larPlayer = document.getElementById('larPlayer')
@@ -337,6 +339,10 @@ export default {
     .play-btn {
       display: block;
     }
+  }
+
+  .flex-end {
+    justify-content: flex-end !important;
   }
 
   .media-controls {
