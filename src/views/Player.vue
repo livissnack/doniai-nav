@@ -38,12 +38,12 @@
             </div>
 
             <div class="lar-player">
-              <video id="larPlayer" ref="larPlayer" :src="mediaSrc" controls autoplay :preload="preload+''"
+              <video id="larPlayer" ref="larPlayer" :playsinline="true" :webkit-playsinline="true" :src="mediaSrc" :controls="false" autoplay :preload="preload+''"
                      :height="height" :volume="playerVolume" @click="handlePlay"></video>
-              <div class="play-btn" @click="handlePlay">
+              <div class="play-btn" @click="handlePlay" v-if="customPlayOperate">
                 <i class="fas play-icon" :class="pausedStatus ? 'fa-play-circle' : 'fa-pause-circle'"></i>
               </div>
-              <div class="media-controls">
+              <div class="media-controls" v-if="customPlayOperate">
                 <div class="left-controls">
                   <div class="control-btn" @click="handlePlay">
                     <i class="fas icon-style" :class="pausedStatus ? 'fa-play-circle' : 'fa-pause-circle'"></i>
@@ -144,9 +144,18 @@ export default {
       loading: false,
       currentTv: '',
       tvList: tvList,
+      customPlayOperate: true,
     }
   },
+  created() {
+    this.checkBrowser()
+  },
   methods: {
+    checkBrowser() {
+      if (navigator.userAgent.indexOf('Safari') === -1) {
+        this.customPlayOperate = false
+      }
+    },
     async startPlay() {
       this.pausedStatus = false
       if (!isEmpty(flv)) {
@@ -206,7 +215,6 @@ export default {
       this.currentTv = tv.name
       let tmpUrl = isBackup ? (isEmpty(tv.backup_url) ? tv.url : tv.backup_url) : tv.url
       this.mediaSrc = tmpUrl.startsWith('http') ? `${tmpUrl}` : `${yspIp}${tmpUrl}`
-      console.log(this.mediaSrc, 'ppp-----')
       this.pausedStatus = false
       await this.hideTvList()
       await this.startPlay()
