@@ -13,8 +13,8 @@
     <% } %>
     <% for (var i in htmlWebpackPlugin.options.cdn &&
     htmlWebpackPlugin.options.cdn.image) { %>
-    <link rel="preload" fetchpriority="high" as="image" href="<%= htmlWebpackPlugin.options.cdn.image[i] %>"
-          type="image/webp"/>
+    <link rel="preload" as="image" href="<%= htmlWebpackPlugin.options.cdn.image[i] %>"
+          type="image/webp" crossorigin="anonymous"/>
     <% } %>
     <link rel="stylesheet" media="screen and (max-width:600px)" href="<%= BASE_URL %>m.css" />
     <title>Doniai导航</title>

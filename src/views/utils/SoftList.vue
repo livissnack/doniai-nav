@@ -93,7 +93,55 @@
     </div>
 
     <div class="content-box">
-      <div class="container clear-bg">
+      <div class="container clear-bg1">
+        <div class="search">
+          <div class="search-box">
+            <div class="search-input-box">
+              <b-field>
+                <b-input placeholder="请输入软件名称..."
+                    type="search"
+                    icon="search"
+                    v-model="keyword"
+                    icon-pack="fa"
+                    icon-clickable
+                    @focus="handleFocus" 
+                    @blur="handleBlur" 
+                    @input="handleChangeTxt" 
+                    >
+                </b-input>
+              </b-field>
+            </div>
+            <div class="search-btn-box">
+              <b-button type="is-success is-light" @click="searchBtnClick">搜索</b-button>
+            </div>
+          </div>
+          <div class="search-content" :class="show ? 'is-active' : 'is-none'">
+            <div class="history-box">
+              <div class="history-label-box">
+                <div class="label" v-if="!emptyHistorySearch">搜索记录</div>
+                <div class="no-history" v-if="emptyHistorySearch">暂无历史搜索记录</div>
+                <div class="clear-history" v-if="!emptyHistorySearch" @click="clearHistorySearch" @mousedown.prevent>清空历史记录</div>
+              </div>
+              <div class="history-items">
+                <div class="history-item" v-for="(historyS, index) in historySearch" :key="index" @click="handleSearch(historyS)" @mousedown.prevent>{{ historyS }}</div>
+              </div>
+            </div>
+      
+            <div class="hot-box">
+              <div class="hot-label-box">
+                <div class="label">热门搜索</div>
+              </div>
+              <div class="hot-items">
+                <div class="hot-item" v-for="(hot, index) in hotList" :key="index" @click="handleSearch(hot.keyword)" @mousedown.prevent>
+                  <span class="xuhao" :class="hot.color">{{ hot.id }}</span>
+                  <span class="txt">{{ hot.keyword }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container clear-bg2">
         <div class="notice-box">
           <div class="notice-left-box">
             <div class="badge badge-danger">
@@ -132,7 +180,7 @@
         </div>
       </div>
 
-      <div class="container clear-bg1">
+      <div class="container clear-bg3">
         <div class="notice-box">
           <div class="notice-left-box">
             <div class="notice-title-box">
@@ -198,6 +246,7 @@ import Navbar from '@/components/Navbar.vue'
 import Marquee from '@/components/Marquee.vue'
 import BackTop from '@mlqt/vue-back-top'
 import Footer from '@/components/Footer.vue'
+import { isEmpty } from '@/utils/helper'
 
 Vue.use(BackTop)
 export default {
@@ -356,6 +405,15 @@ export default {
         }
       ],
       textList: ['这是第一条滚动的文字。', '这是第二条滚动的文字。', '这是第三条滚动的文字。', '这是第四条滚动的文字。', '这是第五条滚动的文字。'],
+      keyword: '',
+      show: false,
+      hotList: [],
+      historySearch: ['dadsa'],
+    }
+  },
+  computed: {
+    emptyHistorySearch() {
+      return isEmpty(this.historySearch)
     }
   },
   methods: {
@@ -393,6 +451,62 @@ export default {
         path: `/utils/software/${item.id}`
       })
     },
+    async handleFocus() {
+      let res = localStorage.getItem('doniaiNavHistorySearch')
+      this.historySearch = res ? JSON.parse(res) : []
+      this.show = true
+    },
+    handleBlur() {
+      this.show = false
+    },
+    removeBlur() {
+      this.$refs.myinput.blur()
+      this.show = false
+    },
+    clearTxt() {
+      this.keyword = ''
+    },
+    handleRemoveBlur() {
+      this.removeBlur('')
+    },
+    handleChangeTxt() {
+      console.log(this.keyword, 'l----')
+    },
+    handleSearch(keyword) {
+      if (!isEmpty(keyword)) {
+        this.keyword = keyword
+      }
+      console.log(this.keyword, 'l----')
+      this.show = false
+    },
+    searchBtnClick() {
+      let currentSearchHistory = this.historySearch
+      if (currentSearchHistory.length < 6) {
+        this.historySearch = [this.keyword].concat(currentSearchHistory)
+      } else {
+        currentSearchHistory.pop()
+        this.historySearch = [this.keyword].concat(currentSearchHistory)
+      }
+      localStorage.setItem('doniaiNavHistorySearch', JSON.stringify(this.historySearch))
+    },
+    clearHistorySearch() {
+      console.log('clearHistorySearch')
+      this.historySearch = []
+      localStorage.removeItem('doniaiNavHistorySearch')
+    },
+    getColor(index) {
+      if (index === 0) {
+        return 'is-orange'
+      } else if (index === 1) {
+        return 'is-purple'
+      } else if (index === 2) {
+        return 'is-blue'
+      } else if (index === 3) {
+        return 'is-green'
+      } else {
+        return ''
+      }
+    },
   }
 }
 </script>
@@ -410,7 +524,117 @@ export default {
   justify-content: center;
   flex-direction: column;
 
-  .clear-bg {
+  .clear-bg1 {
+    background: none!important;
+    margin-top: 30px !important;
+    margin-bottom: 30px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    display: flex;
+    justify-content: center;
+    .search {
+      position: relative;
+      .search-box {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        .search-input-box {
+          width: 600px;
+        }
+      }
+      .is-active {
+        display: block;
+      }
+      .is-none {
+        display: none !important;
+      }
+      .search-content {
+        z-index: 10;
+        position: absolute;
+        top: 38px;
+        width: 100%;
+        background: #FFFFFF;
+        padding-bottom: 20px;
+        .history-box {
+          .history-label-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px 16px 16px;
+            .label {
+              color: #222;
+              font-size: 14px;
+              font-weight: 700;
+            }
+            .no-history {
+              color: #999;
+              font-size: 12px;
+            }
+            .clear-history {
+              color: #999;
+              font-size: 12px;
+              cursor: pointer;
+            }
+          }
+          .history-items {
+            .history-item {
+              padding: 6px 0 6px 16px;
+              color: #222;
+              font-size: 14px;
+              line-height: 20px;
+              &:hover {
+                background: #F5F5F5;
+              }
+            }
+          }
+        }
+    
+        .hot-box {
+          .hot-label-box {
+            padding: 12px 16px 16px 16px;
+            .label {
+              color: #222;
+              font-size: 14px;
+              font-weight: 700;
+            }
+          }
+          .hot-items {
+            .hot-item {
+              padding: 6px 0 6px 16px;
+              color: #222;
+              font-size: 14px;
+              line-height: 20px;
+              &:hover {
+                background: #F5F5F5;
+              }
+              .xuhao {
+                color: #C5C5C5;
+                line-height: 20px;
+              }
+              .is-orange {
+                color: #FF951A;
+              }
+              .is-purple {
+                color: #E563E8;
+              }
+              .is-blue {
+                color: #1988EE;
+              }
+              .is-green {
+                color: #5AAC6C;
+              }
+              .txt {
+                margin-left: 8px;
+              }
+            }
+          }
+        }
+      }
+    }
+    
+  }
+
+  .clear-bg2 {
     background: #dde2fa !important;
     margin-top: 30px !important;
     margin-bottom: 30px !important;
@@ -418,7 +642,7 @@ export default {
     padding-bottom: 0 !important;
   }
 
-  .clear-bg1 {
+  .clear-bg3 {
     background: #f5f5f5 !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;

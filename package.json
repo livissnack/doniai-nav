@@ -1,12 +1,13 @@
 {
   "name": "doniai-nav",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
+  "engines": { "node": ">=14.21.3 <18.15.0" },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.4",
     "@mlqt/vue-back-top": "^1.0.8",
