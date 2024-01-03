@@ -759,6 +759,17 @@
     },
     {
       "id": 8,
+      "title": "IPTV探测",
+      "items": [
+        {
+          "name": "酒店列表生成器",
+          "href": "http://htl.v4u.site:88",
+          "color": "is-primary"
+        }
+      ]
+    },
+    {
+      "id": 8,
       "title": "系统知识学习",
       "items": [
         {

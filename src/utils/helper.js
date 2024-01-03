@@ -190,7 +190,7 @@ export function isHttps(url) {
 }
 
 export function isEmpty(obj) {
-  return typeof obj === "undefined" || obj === null || obj === "" || obj === "0" || obj === false || obj === 0 || obj === [];
+  return typeof obj === "undefined" || obj === null || obj === "" || obj === "0" || obj === false || obj === 0;
 }
 
 export function debounce(fn, delay) {
