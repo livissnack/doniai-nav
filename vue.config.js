@@ -41,7 +41,7 @@ module.exports = {
         '//fastly.jsdelivr.net/npm/buefy@0.8.15/dist/buefy.min.css'
       ],
       image: [
-          '//epg.112114.xyz/bingimg',
+          // '//epg.112114.xyz/bingimg',
       ],
       js: [
         '//fastly.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js',

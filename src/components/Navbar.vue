@@ -84,4 +84,12 @@ export default {
     color: #7957d5 !important;
     font-weight: bold;
 }
+
+/deep/ .navbar-start {
+  text-align: left;
+}
+
+/deep/ .navbar-end {
+  text-align: left;
+}
 </style>

@@ -21,7 +21,8 @@
               </div>
               <div class="tab-item">
                 <a
-                    @click="handleSubmit(navItem)"
+                    :href="navItem.href"
+                    :target="navItem.isNotNewBlack ? '_self' : '_blank'"
                     class="box-item"
                     :class="navItem.color"
                     v-for="navItem in navItems.items"
@@ -95,20 +96,19 @@ export default {
       this.current_active_menu_id = obj.menu_id
       this.getCurrentNavs(obj.menu_id)
     },
-    handleSubmit(item) {
-      if (item.isNotNewBlack) {
-        this.$router.push({
-          path: `${item.href}`
-        })
-      } else {
-        window.open(item.href, '_blank')
-      }
-    },
   }
 }
 </script>
 
 <style lang="less" scoped>
+@media screen and (max-width: 375px) {
+  .tab-item {
+    .box-item {
+      width: 130px !important;
+    }
+  }
+}
+
 .nav-box {
   text-align: center;
   background: #ffffff;
@@ -133,22 +133,29 @@ export default {
 }
 
 .tab-item {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 24px;
   a {
     color: #ffffff;
     font-size: 14px;
     display: inline-block;
-    width: 15%;
+    width: 140px;
     height: 35px;
     line-height: 35px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    margin: 10px 34px 10px 0;
+    //margin: 10px 34px 10px 0;
     text-align: center;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
     text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   .box-item {

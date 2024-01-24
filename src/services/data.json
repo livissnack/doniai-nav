@@ -593,6 +593,11 @@
           "name": "电子书阅读器",
           "href": "https://nav.doniai.com/pc-book",
           "color": "is-info"
+        },
+        {
+          "name": "流程绘板",
+          "href": "https://draw.livissnack.com/",
+          "color": "is-primary"
         }
       ]
     },
