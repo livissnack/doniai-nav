@@ -9,7 +9,7 @@
         <div class="marquee_box" ref="marquee_box">
           <ul class="marquee_list" :class="{ marquee_top: animate }" v-if="list.length > 0">
             <li v-for="(item, index) in list" :key="index">
-              <a :href="item.url" :title="item.title">{{ item.title }}</a>
+              <a :href="item.url" :title="item.title" target="_blank">{{ item.title }}</a>
             </li>
           </ul>
         </div>
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { getHotNews } from '../services/api'
+import { getHotNews } from '@/services/api'
 export default {
   name: 'UtilDesk',
   data() {
@@ -30,9 +30,11 @@ export default {
       list: []
     }
   },
+  beforeMount() {
+    this.getShowHotNews()
+  },
   async created() {
-    await this.getShowHotNews()
-    await this.lunboNew()
+    await this.swipeNews()
   },
   mounted() {
     // 可见数据高度
@@ -42,7 +44,7 @@ export default {
     goJson() {
       this.$router.push({ path: '/json' })
     },
-    lunboNew() {
+    swipeNews() {
       if(this.list.length > 4) {
         // 页面显示
         setInterval(this.showMarquee, 2000)
@@ -58,8 +60,8 @@ export default {
     },
     async getShowHotNews() {
       let type = this.news_type
-      const { data, code } = await getHotNews(type)
-      if (data.code == 200) {
+      const { data } = await getHotNews(type)
+      if (data.code === 200) {
         this.list = data.data
       }
     }
@@ -141,8 +143,20 @@ export default {
     font-weight: 400;
     overflow: hidden;
     text-overflow: ellipsis;
+    &:link {
+      color: #666;
+    }
+    &:visited {
+      text-decoration: underline;
+      color: #f4645f;
+    }
+    &:active {
+      text-decoration: underline;
+      color: #333;
+    }
     &:hover {
       text-decoration: underline;
+      color: #333;
     }
   }
 }
