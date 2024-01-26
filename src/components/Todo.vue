@@ -1,34 +1,48 @@
 <template>
   <div class="panel">
-    <p class="panel-heading todo-title">
-      今天工作任务
-    </p>
+    <div class="todo-title panel-heading">
+      <div><h3>今天工作任务</h3></div>
+      <div class="todo-num">任务总数：{{ todoTotal }}</div>
+    </div>
 
-    <a class="panel-block todo-list" v-for="todo in todos" :key="todo.index">
+    <a class="panel-block todo-list" v-for="(todo, index) in todos" :key="index">
       <div class="todo-content">
         <b-checkbox
           size="is-small"
           type="is-success"
           v-model="todo.is_completed"
         >
-          <span :class="todo.is_completed ? 'text-through' : ''">{{
+          <span :class="todo.is_completed ? 'text-through' : ''" v-if="!todo.is_edit">{{
             todo.remark
           }}</span>
         </b-checkbox>
+
+          <p class="control has-icons-left" v-if="todo.is_edit">
+            <input
+                class="input is-small"
+                v-model="todo.remark"
+                type="search"
+                @keyup.enter="editTodo(todo, index)"
+                :placeholder="todo.is_edit ? todo.remark : ''"
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-edit"></i>
+            </span>
+          </p>
       </div>
       <div class="todo-handle">
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link"></a>
 
           <div class="navbar-dropdown">
-            <a class="navbar-item" @click="editTodo(todo)">
-              编辑
+            <a class="navbar-item" @click="switchEditTodo(todo)">
+              {{ todo.is_edit ? '完成' : '编辑' }}
             </a>
             <a class="navbar-item">
               移动到今天
             </a>
             <hr class="navbar-divider" />
-            <a class="navbar-item" @click="deleleTodo(todo)">
+            <a class="navbar-item" @click="deleteTodo(todo)">
               删除
             </a>
           </div>
@@ -53,7 +67,8 @@
 </template>
 
 <script>
-import { removeArr } from '@/utils/helper.js'
+import {removeArr} from '@/utils/helper.js'
+
 export default {
   name: 'Todo',
   data() {
@@ -63,26 +78,41 @@ export default {
       todos: [
         {
           id: 1,
+          remark: '8点40分写日计划',
+          is_completed: true,
+          is_edit: false,
+        },
+        {
+          id: 1,
           remark: '10点喝水',
-          is_completed: true
+          is_completed: true,
+          is_edit: false,
         },
         {
           id: 2,
           remark: '11点上厕所',
-          is_completed: false
+          is_completed: false,
+          is_edit: false,
         },
         {
           id: 3,
           remark: '12点吃饭',
-          is_completed: false
+          is_completed: false,
+          is_edit: false,
         },
         {
           id: 4,
           remark: '13点午休',
-          is_completed: false
+          is_completed: false,
+          is_edit: false,
         }
       ]
     }
+  },
+  computed: {
+    todoTotal() {
+      return this.todos.length > 0 ? `${this.todos.length}` : '无'
+    },
   },
   methods: {
     newTodo() {
@@ -90,16 +120,21 @@ export default {
         let newObj = {
           id: this.todos.length + 1,
           remark: this.new_todo_text,
-          is_completed: false
+          is_completed: false,
+          is_edit: false,
         }
         this.todos.push(newObj)
       }
     },
-    deleleTodo(item) {
+    deleteTodo(item) {
       removeArr(this.todos, item)
     },
-    editTodo() {
-      this.todo_input_model = 'edit'
+    switchEditTodo(item) {
+      item.is_edit = !item.is_edit
+    },
+    editTodo(item, index) {
+      item.is_edit = !item.is_edit
+      this.todos[index] = item
     }
   }
 }
@@ -108,6 +143,22 @@ export default {
 <style lang="less" scoped>
 .panel {
   background: #ffffff;
+  .todo-title {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 4px;
+    div {
+      h3 {
+        font-size: 1em;
+        font-weight: 700;
+        color: #363636;
+      }
+    }
+    .todo-num {
+      font-size: 15px;
+    }
+  }
+
   .todo-title {
     background: #ffffff;
     color: #363636;
