@@ -49,3 +49,11 @@
 #app > .section > form {
     margin-top: 0 !important;
 }
+
+.radar-box {
+    width: 100% !important;
+}
+
+.line-box {
+    width: 100% !important;
+}

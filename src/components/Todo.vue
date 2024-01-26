@@ -1,7 +1,7 @@
 <template>
   <div class="panel">
     <div class="todo-title panel-heading">
-      <div><h3>今天工作任务（{{ todoTotal }} ）</h3></div>
+      <div><h3>今天工作任务（ {{ todoTotal }} ）</h3></div>
       <div class="todo-history">历史任务</div>
     </div>
 
