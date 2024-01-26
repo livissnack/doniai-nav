@@ -1,8 +1,8 @@
 <template>
   <div class="panel">
     <div class="todo-title panel-heading">
-      <div><h3>今天工作任务</h3></div>
-      <div class="todo-num">任务总数：{{ todoTotal }}</div>
+      <div><h3>今天工作任务（{{ todoTotal }} ）</h3></div>
+      <div class="todo-history">历史任务</div>
     </div>
 
     <a class="panel-block todo-list" v-for="(todo, index) in todos" :key="index">
@@ -154,8 +154,11 @@ export default {
         color: #363636;
       }
     }
-    .todo-num {
+    .todo-history {
       font-size: 15px;
+      &:hover {
+        color: #007bff;
+      }
     }
   }
 

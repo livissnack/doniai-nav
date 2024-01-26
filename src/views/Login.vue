@@ -1,7 +1,7 @@
 <template>
   <div class="section" :style="bacImage">
     <form action="">
-      <div class="modal-card" style="width: 460px;">
+      <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title">登录</p>
         </header>
@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import {getBgImage} from '../services/api'
+import { getBgImage } from '@/services/api'
 
 export default {
   name: 'Login',
@@ -102,7 +102,7 @@ export default {
 }
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
 .section {
   height: 100vh;
   background: url('../assets/bg.jpg');
@@ -113,6 +113,7 @@ form {
   margin-top: 8%;
 
   .modal-card {
+    margin: 0 auto !important;
     opacity: 0.85;
   }
 }

@@ -23,6 +23,29 @@
     left: 40% !important;
 }
 
-.task-todo {
-    display: none !important;
+.input-group {
+    .custom-input-width {
+        .field {
+            margin-left: -25px !important;
+        }
+    }
+}
+
+.todo-handle {
+    .navbar-item {
+        .navbar-dropdown {
+            display: none !important;
+        }
+    }
+}
+
+#app > .section {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-size: cover;
+}
+
+#app > .section > form {
+    margin-top: 0 !important;
 }
