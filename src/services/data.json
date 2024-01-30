@@ -598,6 +598,16 @@
           "name": "流程绘板",
           "href": "https://draw.livissnack.com/",
           "color": "is-primary"
+        },
+        {
+          "name": "图片压缩",
+          "href": "https://img.livissnack.com",
+          "color": "is-success"
+        },
+        {
+          "name": "键盘测试",
+          "href": "https://keyboard.livissnack.com",
+          "color": "is-danger"
         }
       ]
     },
