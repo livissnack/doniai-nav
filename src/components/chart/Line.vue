@@ -18,14 +18,14 @@ export default {
       radar.setOption({
         tooltip: {},
         xAxis: {
-          data: ['语文', '数学', '总分']
+          data: ['语文', '数学', '思想', '体育', '美术', '总分']
         },
         yAxis: {},
         series: [
           {
             name: '分数',
             type: 'bar',
-            data: [95, 80, 175]
+            data: [95, 80, 56, 89, 25, 175]
           }
         ]
       })

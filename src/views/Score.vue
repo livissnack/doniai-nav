@@ -9,39 +9,37 @@
         <div class="columns">
           <div class="column is-three-quarters">
             <ScoreInput/>
+            <div class="operate-box">
+              <b-button type="is-danger" size="is-small" icon-pack="fas" icon-left="share-alt" v-clipboard:copy="shareUrl" v-clipboard:success="onCopySuccess" v-clipboard:error="onCopyError">分享
+              </b-button>
+              <b-button type="is-primary" size="is-small" icon-pack="fas" icon-left="download" :loading="downloadStatus" @click="downloadScoreCard">
+                下载分数卡片
+              </b-button>
+            </div>
+            <div class="see-box">
+              <div class="see-content">
+                <i class="fas fa-info-circle"></i>
+                注意：查询分数卡功能只开放15天，请尽快下载分数卡片
+              </div>
+            </div>
             <div class="post" ref="score-card">
               <div class="widget">
                 <a href="#" class="sub-title title-underline">
                   分数详情
                 </a>
-                <div class="download-box" @click="downloadScoreCard">
-                  下载分数卡
-                </div>
               </div>
               <div class="tab-item">
                 <div class="item-content">
                   <div class="item-title">学生姓名：</div>
                   <div class="item-value">张三</div>
                 </div>
-                <div class="item-content">
-                  <div class="item-title">语文：</div>
-                  <div class="item-value">100</div>
-                  <div class="item-remark">
-                    <b-tooltip type="is-warning"
-                               label="张三同学：最高分（100）"
-                               multilined>
-                      <small>
-                        <i class="far fa-question-circle"></i>
-                        班级最高分
-                      </small>
-                    </b-tooltip>
+                <div class="item-content" v-for="(item, index) in list" :key="index" v-if="item.isScore">
+                  <div class="item-score">
+                    <div class="item-title">{{ item.name }}：</div>
+                    <div class="item-value">{{ item.isScore ? item.score : '' }}</div>
                   </div>
-                </div>
-                <div class="item-content">
-                  <div class="item-title">数学：</div>
-                  <div class="item-value">100</div>
                   <div class="item-remark">
-                    <b-tooltip type="is-warning"
+                    <b-tooltip v-if="item.isScore" type="is-warning"
                                label="张三同学：最高分（100）"
                                multilined>
                       <small>
@@ -53,19 +51,14 @@
                 </div>
                 <div class="item-content">
                   <div class="item-title">总分：</div>
-                  <div class="item-value">100</div>
-                  <div class="item-remark">
-                    <b-tooltip type="is-warning"
-                               label="张三同学：最高分（100）"
-                               multilined>
-                      <small>
-                        <i class="far fa-question-circle"></i>
-                        班级最高分
-                      </small>
-                    </b-tooltip>
-                  </div>
+                  <div class="item-value">{{ totalScore }}</div>
                 </div>
-                <div class="chart-box mt40">
+                <div class="study-remark">
+                    <span class="remark">
+                      {{ studyRemark }}
+                    </span>
+                </div>
+                <div class="chart-box mt20">
                   <div class="chart-title">
                     一、分数条形图
                   </div>
@@ -77,11 +70,17 @@
                   </div>
                   <ScoreRadar/>
                 </div>
+                <div class="copyright-box">
+                  <div class="copyright-content">
+                    <span>© {{ year }} Doniai</span>
+                    数据来源：第二实验小学
+                  </div>
+                </div>
               </div>
             </div>
           </div>
           <div class="column">
-            <Sidebar/>
+            <Sidebar v-if="false"/>
           </div>
         </div>
       </div>
@@ -120,9 +119,69 @@ export default {
   },
   data() {
     return {
+      year: (new Date().getFullYear()),
+      downloadStatus: false,
       current_active_menu_id: 1,
       downloadImgUrl: '',
+      list: [
+        {
+          name: '语文',
+          score: 100,
+          isScore: true,
+        },
+        {
+          name: '数学',
+          score: 90,
+          isScore: true,
+        },
+        {
+          name: '思想',
+          score: 100,
+          isScore: false,
+        },
+        {
+          name: '体育',
+          score: 100,
+          isScore: false,
+        },
+        {
+          name: '美术',
+          score: 100,
+          isScore: false,
+        },
+        {
+          name: '道法',
+          score: 100,
+          isScore: false,
+        },
+      ],
+      studyRemarks: [
+          '愿云彩、艳阳一直陪伴你走到海角天涯；鲜花、绿草相随你铺展远大的前程。',
+          '目标的坚定是性格中最必要的力量源泉之一，也是成功的武器之一。',
+          '人生的意义在于追求，在于奋斗，更在于不懈地与困难作斗争。',
+          '惟有埋头才能出头，天天学习，天天进步。',
+          '驾驭命运的舵是奋斗。不抱有一丝幻想，不放弃一点机会，不停止一日努力。',
+          '没有辛勤的汗水，就没有成功的泪水；没有艰辛的付出，激励学习的句子就没有丰硕的果实；没有刻苦的训练，就没有闪光的金牌。',
+      ],
     }
+  },
+  computed: {
+    studyRemark() {
+      return this.studyRemarks[Math.floor(Math.random() * this.studyRemarks.length)]
+    },
+    shareUrl() {
+      return window.location.href
+    },
+    totalScore() {
+      let tmpTotalScore = 0
+      this.list.map((a, b) => {
+        console.log(a, b, 'ooo-')
+        if (a.isScore) {
+          tmpTotalScore = tmpTotalScore + a.score
+        }
+      })
+      return tmpTotalScore
+    },
   },
   methods: {
     updateCurrentNavs(obj) {
@@ -130,6 +189,7 @@ export default {
       this.getCurrentNavs(obj.menu_id)
     },
     downloadScoreCard() {
+      this.downloadStatus = true
       let dom = this.$refs['score-card']
       html2canvas(dom, {
         allowTaint: true,
@@ -150,6 +210,7 @@ export default {
           position: 'is-bottom-right',
           actionText: 'Msg'
         })
+        this.downloadStatus = false
       }).catch(() => {
         this.$buefy.snackbar.open({
           duration: 3000,
@@ -158,6 +219,28 @@ export default {
           position: 'is-bottom-right',
           actionText: 'Msg'
         })
+        this.downloadStatus = false
+      })
+    },
+    onCopySuccess() {
+      this.$buefy.snackbar.open({
+        duration: 3000,
+        message: `已复制分享链接: ${this.shareUrl} !`,
+        type: 'is-success',
+        position: 'is-top',
+        actionText: 'Msg'
+      })
+    },
+    onCopyError(err) {
+      if (err.text === undefined) {
+        err.text = '复制失败'
+      }
+      this.$buefy.snackbar.open({
+        duration: 3000,
+        message: `${err.text}`,
+        type: 'is-danger',
+        position: 'is-top',
+        actionText: 'Msg'
       })
     },
   }
@@ -196,7 +279,7 @@ export default {
 
 .post {
   background: #ffffff;
-  padding: 35px;
+  padding: 16px 30px;
   margin-bottom: 35px;
 }
 
@@ -221,10 +304,15 @@ export default {
 
 .tab-item {
   .item-content {
-    width: 200px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    .item-score {
+      width: 100px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
     .item-remark {
       margin-left: 20px;
     }
@@ -241,6 +329,38 @@ export default {
 
   .box-item {
     box-shadow: 1px 1px 5px #ccc5c5;
+  }
+}
+
+.operate-box {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.study-remark {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #222222;
+  font-weight: bold;
+}
+
+.see-box {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+  .see-content {
+    font-size: 12px;
+    color: #9c9c9c;
+  }
+}
+
+.copyright-box {
+  display: flex;
+  justify-content: center;
+  .copyright-content {
+    font-size: 12px;
+    color: #9c9c9c;
   }
 }
 </style>
