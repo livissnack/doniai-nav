@@ -189,7 +189,7 @@ export default {
     },
     totalScore() {
       let tmpTotalScore = 0
-      this.data.list.map((a, b) => {
+      this.data.list.map(a => {
         if (a.isScore) {
           tmpTotalScore = tmpTotalScore + a.score
         }
@@ -198,7 +198,7 @@ export default {
     },
     scoreList() {
       let tmpScoreList = []
-      this.data.list.map((a) => {
+      this.data.list.map(a => {
         tmpScoreList.push(a.score)
       })
       return tmpScoreList
