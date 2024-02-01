@@ -6,8 +6,11 @@
 import * as echarts from 'echarts'
 export default {
   name: 'ScoreLine',
-  data() {
-    return {}
+  props: {
+    scoreList: {
+      type: Array,
+      default: []
+    }
   },
   mounted() {
     this.initRadar()
@@ -25,10 +28,10 @@ export default {
           indicator: [
             { name: '语文', max: 100 },
             { name: '数学', max: 100 },
-            { name: '总分', max: 500 },
+            { name: '思想', max: 100 },
             { name: '体育', max: 100 },
             { name: '美术', max: 100 },
-            { name: '思想', max: 100 }
+            { name: '道法', max: 100 }
           ],
           radius: 120,
           axisName: {
@@ -43,14 +46,14 @@ export default {
             type: 'radar',
             data: [
               {
-                value: [95, 86, 187, 100, 100, 100],
+                value: this.scoreList,
                 name: '分数',
                 label: {
                   show: true,
                   formatter: function (params) {
                     return params.value;
                   }
-                }
+                },
               },
             ],
           }

@@ -10,9 +10,9 @@
           <div class="column is-three-quarters">
             <ScoreInput/>
             <div class="operate-box">
-              <b-button type="is-danger" size="is-small" icon-pack="fas" icon-left="share-alt" v-clipboard:copy="shareUrl" v-clipboard:success="onCopySuccess" v-clipboard:error="onCopyError">分享
+              <b-button type="is-success" size="is-small" icon-pack="fas" icon-left="share-alt" v-clipboard:copy="shareUrl" v-clipboard:success="onCopySuccess" v-clipboard:error="onCopyError">分享
               </b-button>
-              <b-button type="is-primary" size="is-small" icon-pack="fas" icon-left="download" :loading="downloadStatus" @click="downloadScoreCard">
+              <b-button type="is-info" size="is-small" icon-pack="fas" icon-left="download" :loading="downloadStatus" @click="downloadScoreCard">
                 下载分数卡片
               </b-button>
             </div>
@@ -30,21 +30,27 @@
               </div>
               <div class="tab-item">
                 <div class="item-content">
-                  <div class="item-title">学生姓名：</div>
-                  <div class="item-value">张三</div>
+                  <div class="item-title">学校：</div>
+                  <div class="item-value">{{ data.school }}</div>
                 </div>
-                <div class="item-content" v-for="(item, index) in list" :key="index" v-if="item.isScore">
+                <div class="item-content">
+                  <div class="item-title">班级：</div>
+                  <div class="item-value">{{ data.class }}</div>
+                </div>
+                <div class="item-content">
+                  <div class="item-title">学生姓名：</div>
+                  <div class="item-value">{{ data.name }}</div>
+                </div>
+                <div class="item-content" v-for="(item, index) in data.list" :key="index" v-if="item.isScore">
                   <div class="item-score">
                     <div class="item-title">{{ item.name }}：</div>
                     <div class="item-value">{{ item.isScore ? item.score : '' }}</div>
                   </div>
                   <div class="item-remark">
-                    <b-tooltip v-if="item.isScore" type="is-warning"
-                               label="张三同学：最高分（100）"
-                               multilined>
+                    <b-tooltip class="tooltip-remark" v-if="item.isScore" type="is-danger" :label="`张三同学：最高分（${item.maxScore}）`" multilined>
                       <small>
                         <i class="far fa-question-circle"></i>
-                        班级最高分
+                        班级最高分{{ item.maxScore }}
                       </small>
                     </b-tooltip>
                   </div>
@@ -55,32 +61,32 @@
                 </div>
                 <div class="study-remark">
                     <span class="remark">
-                      {{ studyRemark }}
+                      {{ data.mailing }}
                     </span>
                 </div>
                 <div class="chart-box mt20">
                   <div class="chart-title">
                     一、分数条形图
                   </div>
-                  <ScoreLine/>
+                  <ScoreLine :scoreList="scoreList"/>
                 </div>
                 <div class="chart-box mt20">
                   <div class="chart-title">
                     二、分数雷达图
                   </div>
-                  <ScoreRadar/>
+                  <ScoreRadar :scoreList="scoreList"/>
                 </div>
                 <div class="copyright-box">
                   <div class="copyright-content">
                     <span>© {{ year }} Doniai</span>
-                    数据来源：第二实验小学
+                    数据来源：{{ data.school }}
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="column">
-            <Sidebar v-if="false"/>
+            <Sidebar />
           </div>
         </div>
       </div>
@@ -123,38 +129,50 @@ export default {
       downloadStatus: false,
       current_active_menu_id: 1,
       downloadImgUrl: '',
-      list: [
-        {
-          name: '语文',
-          score: 100,
-          isScore: true,
-        },
-        {
-          name: '数学',
-          score: 90,
-          isScore: true,
-        },
-        {
-          name: '思想',
-          score: 100,
-          isScore: false,
-        },
-        {
-          name: '体育',
-          score: 100,
-          isScore: false,
-        },
-        {
-          name: '美术',
-          score: 100,
-          isScore: false,
-        },
-        {
-          name: '道法',
-          score: 100,
-          isScore: false,
-        },
-      ],
+      data: {
+        school: '第二实验小学',
+        class: '一（22）班',
+        name: '张三',
+        list: [
+          {
+            name: '语文',
+            score: 89,
+            maxScore: 100,
+            isScore: true,
+          },
+          {
+            name: '数学',
+            score: 90,
+            maxScore: 99,
+            isScore: true,
+          },
+          {
+            name: '思想',
+            score: 94,
+            maxScore: 100,
+            isScore: false,
+          },
+          {
+            name: '体育',
+            score: 95,
+            maxScore: 100,
+            isScore: false,
+          },
+          {
+            name: '美术',
+            score: 74,
+            maxScore: 100,
+            isScore: false,
+          },
+          {
+            name: '道法',
+            score: 68,
+            maxScore: 100,
+            isScore: false,
+          },
+        ],
+        mailing: '没有辛勤的汗水，就没有成功的泪水；没有艰辛的付出，激励学习的句子就没有丰硕的果实；没有刻苦的训练，就没有闪光的金牌。',
+      },
       studyRemarks: [
           '愿云彩、艳阳一直陪伴你走到海角天涯；鲜花、绿草相随你铺展远大的前程。',
           '目标的坚定是性格中最必要的力量源泉之一，也是成功的武器之一。',
@@ -166,21 +184,24 @@ export default {
     }
   },
   computed: {
-    studyRemark() {
-      return this.studyRemarks[Math.floor(Math.random() * this.studyRemarks.length)]
-    },
     shareUrl() {
       return window.location.href
     },
     totalScore() {
       let tmpTotalScore = 0
-      this.list.map((a, b) => {
-        console.log(a, b, 'ooo-')
+      this.data.list.map((a, b) => {
         if (a.isScore) {
           tmpTotalScore = tmpTotalScore + a.score
         }
       })
       return tmpTotalScore
+    },
+    scoreList() {
+      let tmpScoreList = []
+      this.data.list.map((a) => {
+        tmpScoreList.push(a.score)
+      })
+      return tmpScoreList
     },
   },
   methods: {
@@ -307,6 +328,15 @@ export default {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    font-size: 14px;
+    margin-bottom: 4px;
+    .item-title {
+      font-weight: bold;
+    }
+    .item-value {
+      font-size: 13px;
+      color: #666;
+    }
     .item-score {
       width: 100px;
       display: flex;
@@ -315,6 +345,11 @@ export default {
     }
     .item-remark {
       margin-left: 20px;
+      .tooltip-remark {
+        font-size: 12px;
+        padding: 0 10px;
+        letter-spacing: 1.5px;
+      }
     }
   }
 
