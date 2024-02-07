@@ -778,8 +778,14 @@
       "items": [
         {
           "name": "酒店列表生成器",
-          "href": "http://htl.v4u.site:88",
-          "color": "is-primary"
+          "href": "/utils/iptv",
+          "color": "is-primary",
+          "isNotNewBlack": true
+        },
+        {
+          "name": "IPTV资源搜索引擎",
+          "href": "https://www.foodieguide.com/iptvsearch",
+          "color": "is-success"
         }
       ]
     },

@@ -83,6 +83,11 @@ const routes = [
     path: '/utils/white',
     name: 'projectWhite',
     component: () => import('@/views/utils/White.vue')
+  },
+  {
+    path: '/utils/iptv',
+    name: 'projectIptv',
+    component: () => import('@/views/utils/Iptv.vue')
   }
 ]
 
