@@ -3,7 +3,7 @@
     <div class="nav-box">
       <Navbar @updateCurrentNavs="updateCurrentNavs" :currentActiveMenuId="current_active_menu_id"/>
     </div>
-    <div class="content-box cover-bg">
+    <div class="content-box cover-bg" :style="{ backgroundImage: `url(${coverBg})` }">
       <div class="container">
         <div class="columns">
           <div class="column is-three-quarters mt20">
@@ -69,7 +69,8 @@ export default {
   data() {
     return {
       current_active_menu_id: 1,
-      navData: []
+      navData: [],
+      coverBg: 'https://epg.112114.xyz/bingimg'
     }
   },
   created() {
@@ -168,7 +169,6 @@ export default {
 }
 
 .cover-bg {
-  background-image: url('https://epg.112114.xyz/bingimg');
   background-size: cover;
 }
 </style>
