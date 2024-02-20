@@ -93,6 +93,11 @@
           "name": "过早客",
           "href": "https://www.guozaoke.com",
           "color": "is-danger"
+        },
+        {
+          "name": "日经中文网",
+          "href": "https://cn.nikkei.com",
+          "color": "is-warning"
         }
       ]
     },
