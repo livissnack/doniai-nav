@@ -85,19 +85,14 @@
           "color": "is-primary"
         },
         {
-          "name": "安歌源码",
-          "href": "https://angtv.cc",
-          "color": "is-success"
-        },
-        {
           "name": "过早客",
           "href": "https://www.guozaoke.com",
-          "color": "is-danger"
+          "color": "is-success"
         },
         {
           "name": "日经中文网",
           "href": "https://cn.nikkei.com",
-          "color": "is-warning"
+          "color": "is-danger"
         }
       ]
     },
@@ -229,19 +224,14 @@
           "color": "is-info"
         },
         {
-          "name": "Nodelover",
-          "href": "https://nodelover.me",
-          "color": "is-primary"
-        },
-        {
           "name": "Udacity",
           "href": "https://www.udacity.com",
-          "color": "is-success"
+          "color": "is-primary"
         },
         {
           "name": "W3school",
           "href": "https://www.w3schools.com",
-          "color": "is-danger"
+          "color": "is-success"
         }
       ]
     },
@@ -291,14 +281,9 @@
           "color": "is-primary"
         },
         {
-          "name": "码市",
-          "href": "https://codemart.com",
-          "color": "is-success"
-        },
-        {
           "name": "实现网",
           "href": "https://shixian.com",
-          "color": "is-danger"
+          "color": "is-success"
         }
       ]
     }
@@ -324,11 +309,6 @@
           "color": "is-danger"
         },
         {
-          "name": "站点健康监控",
-          "href": "https://ping.doniai.com",
-          "color": "is-info"
-        },
-        {
           "name": "软件下载",
           "href": "/utils/software",
           "color": "is-warning",
@@ -343,6 +323,12 @@
         {
           "name": "项目管理",
           "href": "/utils/project",
+          "color": "is-primary",
+          "isNotNewBlack": true
+        },
+        {
+          "name": "成绩卡",
+          "href": "/score",
           "color": "is-success",
           "isNotNewBlack": true
         }

@@ -121,7 +121,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@media screen and (max-width: 375px) {
+@media screen and (min-width: 375px) and (max-width: 768px){
   .custom-input-width {
     width: 280px !important;
     .control {

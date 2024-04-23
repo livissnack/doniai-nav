@@ -215,6 +215,7 @@ export default {
       html2canvas(dom, {
         allowTaint: true,
         taintTest: true,
+        scale: 2,
         // useCORS: true,
       }).then((canvas) => {
         this.downloadImgUrl = canvas.toDataURL('image/png')
