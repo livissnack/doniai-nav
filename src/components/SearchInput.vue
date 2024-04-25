@@ -4,30 +4,62 @@
       <div class="field">
         <div class="control has-icons-left">
           <input
+              ref="searchInput"
             class="input is-small"
             v-model="filter.search_text"
             size="is-small"
+            confirm-type="search"
             placeholder="请输入搜索内容"
             @input="handleChangeKeyword"
             @focus="handleFocusDsug"
             @blur="handleBlurDsug"
-            @keyup.enter="startSearch"
+            @keyup.enter="handleKeyEnter"
+            @keyup.up="handleKeyUp"
+            @keyup.down="handleKeyDown"
             type="search"
           />
           <span class="icon is-small is-left">
             <i class="fas fa-search"></i>
           </span>
         </div>
-        <div class="control dsug" v-show="is_show_dsug">
-          <ul class="recommend-list">
-            <li v-for="(item, index) in items" :key="index">
+
+        <div class="control dsug" v-show="historyShow">
+          <div class="history-header">
+            <div class="history-title">
+              <span>搜索历史</span>
+            </div>
+            <div class="history-clear">
+              <span>清空</span>
+            </div>
+          </div>
+          <ul class="recommend-list pd6">
+            <li v-for="(history, index) in historyList" :key="index">
               <div
-                class="recommend-box"
-                @mousedown="handleSelectedSearch(item)"
+                  class="recommend-box"
+                  @mousedown="handleSelectedSearch(history)"
               >
                 <div>
                   <span class="icon is-small">
                     <i class="fas fa-clock"></i>
+                  </span>
+                  <span> {{ history }}</span>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="control dsug" v-show="suggestShow">
+          <ul class="recommend-list">
+            <li v-for="(item, index) in suggestList" :key="index">
+              <div
+                class="recommend-box"
+                :class="currentItemIndex === index ? 'is-active' : ''"
+                @mousedown="handleSelectedSearch(item)"
+              >
+                <div>
+                  <span class="icon is-small">
+                    <i class="fas fa-flag"></i>
                   </span>
                   <span> {{ item }}</span>
                 </div>
@@ -59,6 +91,7 @@
 <script>
 import jsonSearchs from '@/services/search.json'
 import fetchJsonp from 'fetch-jsonp'
+import {isEmpty} from "@/utils/helper";
 export default {
   name: 'home',
   data() {
@@ -67,16 +100,25 @@ export default {
         search_text: '',
         search_type: 1
       },
-      is_show_dsug: false,
       searchs: jsonSearchs['searchs'],
-      items: [
+      suggestShow: false,
+      suggestList: [
         'dayjs',
         'dallas cowboys',
         'david i moss',
         'daily mail',
         'daylight donuts',
         'daniel fast',
-      ]
+      ],
+      historyShow: false,
+      historyList: [
+        '鼠疫传说安魂曲',
+        'steam专区',
+        '鼠疫传',
+        'steam',
+        '阿斯达',
+      ],
+      currentItemIndex: -1,
     }
   },
   watch: {
@@ -86,6 +128,9 @@ export default {
       },
       deep: true
     }
+  },
+  mounted() {
+    window.addEventListener('keydown', this.keyDown)
   },
   methods: {
     startSearch() {
@@ -101,25 +146,33 @@ export default {
         })
         return
       }
+      // this.historyList.unshift(text)
+      // let temp = this.historyList
+      // this.historyList.splice(0, 99)
+      // temp.forEach(i => {
+      //   this.historyList.push(i)
+      // })
       let searchObj = this.searchs.find(el => el.id === id)
       this.filter.search_text = ''
+      this.$refs.searchInput.blur()
       window.open(`${searchObj.url}${text}`)
     },
     handleSelectedSearch(item) {
       this.filter.search_text = item
       this.startSearch()
-      this.is_show_dsug = false
     },
     handleFocusDsug() {
-      this.is_show_dsug = true
+      this.historyShow = true
     },
     handleBlurDsug() {
       setTimeout(() => {
-        this.is_show_dsug = false
-      }, 300)
+        this.historyShow = false
+        this.suggestShow = false
+      }, 100)
     },
     async handleChangeKeyword() {
       let keyword = this.filter.search_text
+      await this.setShowContent(keyword)
       if(keyword === '') {
         return
       }
@@ -127,8 +180,61 @@ export default {
         jsonpCallback: 'cb',
       })
       response = await response.json()
-      this.items = response.s
-    }
+      this.suggestList = response.s
+    },
+    setShowContent(searchValue) {
+      if (!isEmpty(searchValue)) {
+        this.historyShow = false
+        this.suggestShow = true
+      } else {
+        this.historyShow = true
+        this.suggestShow = false
+      }
+    },
+    handleKeyEnter() {
+      if (this.currentItemIndex >= 0 && this.currentItemIndex < this.suggestList.length) {
+        this.filter.search_text = this.suggestList[this.currentItemIndex]
+      }
+      this.startSearch()
+    },
+    handleKeyUp() {
+      if (this.historyShow) {
+        return
+      }
+      if (this.currentItemIndex <= 0) {
+        this.currentItemIndex = -1
+      } else {
+        this.currentItemIndex -= 1
+      }
+    },
+    handleKeyDown() {
+      if (this.historyShow) {
+        return
+      }
+      if (this.currentItemIndex >= this.suggestList.length - 1) {
+        this.currentItemIndex = 0
+      } else {
+        this.currentItemIndex += 1
+      }
+    },
+    keyDown(event) {
+      console.log(this.historyShow, 3)
+      const e = event || window.event
+      let key = e.keyCode
+      if (key === 37) {
+        if (this.filter.search_type <= 1) {
+          this.filter.search_type = 1
+        } else {
+          this.filter.search_type -= 1
+        }
+      } else if (key === 39) {
+        if (this.filter.search_type >= this.searchs.length) {
+          this.filter.search_type = 1
+        } else {
+          this.filter.search_type += 1
+        }
+      }
+    },
   }
 }
 </script>
@@ -195,10 +301,37 @@ export default {
         }
       }
     }
+    .is-active {
+      background: #d3d5d8;
+      text-decoration: underline;
+    }
     &:hover {
       background: #d3d5d8;
       text-decoration: underline;
     }
   }
 }
+
+.history-header {
+  background: #FFFFFF;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 10px;
+  font-size: 12px;
+  border-bottom: 1px solid #d3d5d8;
+  .history-title {
+    color: #8a919f;
+  }
+  .history-clear {
+    color: #1e80ff;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}
+
+.pd6 {
+  padding-top: 6px;
+}
+
 </style>

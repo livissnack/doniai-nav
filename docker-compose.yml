@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   hiphup:
-    container_name: hiphup-nav
+    container_name: doniai-nav
     image: nginx:latest
     ports:
       - ${WEB_PORT}:80
