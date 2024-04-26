@@ -5,7 +5,7 @@
         <div class="control has-icons-left">
           <input
               ref="searchInput"
-            class="input is-small"
+            class="input search-input-placeholder-default-color is-small"
             v-model="filter.search_text"
             size="is-small"
             confirm-type="search"
@@ -28,7 +28,7 @@
             <div class="history-title">
               <span>搜索历史</span>
             </div>
-            <div class="history-clear">
+            <div class="history-clear" @click="handleClearHistory" @mousedown.prevent>
               <span>清空</span>
             </div>
           </div>
@@ -40,7 +40,7 @@
               >
                 <div>
                   <span class="icon is-small">
-                    <i class="fas fa-clock"></i>
+                    <i class="fas fa-history"></i>
                   </span>
                   <span> {{ history }}</span>
                 </div>
@@ -59,7 +59,7 @@
               >
                 <div>
                   <span class="icon is-small">
-                    <i class="fas fa-flag"></i>
+                    <i class="fas fa-paper-plane"></i>
                   </span>
                   <span> {{ item }}</span>
                 </div>
@@ -91,7 +91,7 @@
 <script>
 import jsonSearchs from '@/services/search.json'
 import fetchJsonp from 'fetch-jsonp'
-import {isEmpty} from "@/utils/helper";
+import {isEmpty} from "@/utils/helper"
 export default {
   name: 'home',
   data() {
@@ -102,22 +102,9 @@ export default {
       },
       searchs: jsonSearchs['searchs'],
       suggestShow: false,
-      suggestList: [
-        'dayjs',
-        'dallas cowboys',
-        'david i moss',
-        'daily mail',
-        'daylight donuts',
-        'daniel fast',
-      ],
+      suggestList: [],
       historyShow: false,
-      historyList: [
-        '鼠疫传说安魂曲',
-        'steam专区',
-        '鼠疫传',
-        'steam',
-        '阿斯达',
-      ],
+      historyList: [],
       currentItemIndex: -1,
     }
   },
@@ -136,7 +123,7 @@ export default {
     startSearch() {
       let id = this.filter.search_type
       let text = this.filter.search_text
-      if (text == '' || text == null || undefined) {
+      if (text === '' || text == null || undefined) {
         this.$buefy.snackbar.open({
           duration: 3000,
           message: '输入框内容不能为空！',
@@ -146,22 +133,35 @@ export default {
         })
         return
       }
-      // this.historyList.unshift(text)
-      // let temp = this.historyList
-      // this.historyList.splice(0, 99)
-      // temp.forEach(i => {
-      //   this.historyList.push(i)
-      // })
+      this.handleLocalStorageSave(text)
       let searchObj = this.searchs.find(el => el.id === id)
       this.filter.search_text = ''
       this.$refs.searchInput.blur()
       window.open(`${searchObj.url}${text}`)
+    },
+    handleLocalStorageSave(keyword) {
+      let currentSearchHistory = this.historyList
+      if (currentSearchHistory.length < 6) {
+        this.historyList = [keyword].concat(currentSearchHistory)
+      } else {
+        currentSearchHistory.pop()
+        this.historyList = [keyword].concat(currentSearchHistory)
+      }
+      this.historyList = Array.from(new Set(this.historyList))
+      localStorage.setItem('doniaiNavHistoryHomePageList', JSON.stringify(this.historyList))
+    },
+    handleClearHistory() {
+      console.log('clearHistorySearch')
+      this.historyList = []
+      localStorage.removeItem('doniaiNavHistoryHomePageList')
     },
     handleSelectedSearch(item) {
       this.filter.search_text = item
       this.startSearch()
     },
     handleFocusDsug() {
+      let res = localStorage.getItem('doniaiNavHistoryHomePageList')
+      this.historyList = res ? JSON.parse(res) : []
       this.historyShow = true
     },
     handleBlurDsug() {
@@ -334,4 +334,15 @@ export default {
   padding-top: 6px;
 }
 
+.search-input-placeholder-default-color {
+  &::-webkit-input-placeholder {
+    color: #8a919f;
+  }
+  &::-moz-input-placeholder {
+    color: #8a919f;
+  }
+  &::-ms-input-placeholder {
+    color: #8a919f;
+  }
+}
 </style>

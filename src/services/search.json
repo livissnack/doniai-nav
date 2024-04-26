@@ -2,9 +2,9 @@
   "searchs": [
     {
       "id": 1,
-      "name": "百度",
-      "url": "https://www.baidu.com/s?wd=",
-      "is_default": true
+      "name": "必应",
+      "url": "https://cn.bing.com/search?q=",
+      "is_default": false
     },
     {
       "id": 2,
@@ -14,9 +14,9 @@
     },
     {
       "id": 3,
-      "name": "必应",
-      "url": "https://cn.bing.com/search?q=",
-      "is_default": false
+      "name": "百度",
+      "url": "https://www.baidu.com/s?wd=",
+      "is_default": true
     },
     {
       "id": 4,
