@@ -9,7 +9,7 @@
         <div class="marquee_box" ref="marquee_box">
           <ul class="marquee_list" :class="{ marquee_top: animate }" v-if="list.length > 0">
             <li v-for="(item, index) in list" :key="index">
-              <a :href="item.url" :title="item.title" target="_blank">{{ item.title }}</a>
+              <a class="marquee_item_content" :href="item.url" :title="item.title" target="_blank">{{ item.title }}</a>
             </li>
           </ul>
         </div>
@@ -30,10 +30,8 @@ export default {
       list: []
     }
   },
-  beforeMount() {
-    this.getShowHotNews()
-  },
   async created() {
+    await this.getShowHotNews()
     await this.swipeNews()
   },
   mounted() {
@@ -137,7 +135,7 @@ export default {
   padding-left: 20px;
   overflow: hidden;
   text-overflow: ellipsis;
-  a {
+  .marquee_item_content {
     color: #666;
     font-size: 14px;
     font-weight: 400;
@@ -156,7 +154,7 @@ export default {
     }
     &:hover {
       text-decoration: underline;
-      color: #333;
+      color: #FF4500;
     }
   }
 }
