@@ -8,18 +8,22 @@
         <Countdown />
       </header>
       <div class="card-content">
-        <div class="media" v-show="temperature">
+        <div class="h3-box" v-if="country">
+          <div class="title">{{ country }}</div>
+        </div>
+        <div class="media" v-if="temperature > 0">
           <div class="media-left">
             <div class="media-content">
-              <p class="title is-2"><i class="fas" :class="weatherIcon"></i></p>
-              <p class="subtitle is-5">{{ temperature | celsius }}</p>
+              <p class="title is-2">
+                <img class="weather-icon" :src="weatherIcon" alt="weather_icon">
+                <span class="description">{{ description }}</span>
+              </p>
             </div>
           </div>
           <div class="media-content">
-            <p class="title is-5">
-              {{ humidity }}
-            </p>
-            <p class="subtitle is-6">{{ wind }} {{ windpower }}</p>
+            <p class="subtitle is-6">{{ temperature | celsius }}</p>
+            <p class="subtitle is-6">{{ humidity }}</p>
+            <p class="subtitle is-6">{{ windpower }}</p>
           </div>
         </div>
 
@@ -34,7 +38,8 @@
 import request from 'axios'
 import LunarTime from '@/components/LunarTime.vue'
 import Countdown from '@/components/Countdown.vue'
-const gaodekey = '045d06aff28968d4ade448d96aef901b'
+import {isEmpty} from "@/utils/helper";
+import {getWeather} from "@/services/api";
 
 export default {
   name: 'Weather',
@@ -44,173 +49,109 @@ export default {
   },
   data() {
     return {
-      weatherData: {},
+      weatherData: {
+        weather: [],
+        main: {
+          temp: '',
+        },
+        wind: {},
+        sys: {
+          country: ''
+        },
+      },
       up_down_text: '',
       solar2lunarData: '',
-      currentTime: ''
+      currentTime: '',
+      latitude: null,
+      longitude: null,
     }
   },
   computed: {
     city() {
-      return this.weatherData.city
+      if (!this.weatherData.name) {
+        return '江夏区'
+      }
+      return `${this.weatherData.name}`
     },
     weatherIcon() {
-      const weatherMap = new Map([
-        ['晴', 'fa-sun'],
-        ['少云', 'fa-sun'],
-        ['晴间多云', 'fa-sun'],
-        ['多云', 'fa-cloud-sun'],
-        ['阴', 'fa-cloud'],
-        ['有风', 'fa-sun'],
-        ['平静', 'fa-sun'],
-        ['微风', 'fa-sun'],
-        ['和风', 'fa-sun'],
-        ['清风', 'fa-sun'],
-        ['强风/劲风', 'fa-sun'],
-        ['疾风', 'fa-sun'],
-        ['大风', 'fa-sun'],
-        ['烈风', 'fa-sun'],
-        ['风暴', 'fa-sun'],
-        ['狂爆风', 'fa-sun'],
-        ['飓风', 'fa-sun'],
-        ['热带风暴', 'fa-sun'],
-        ['阵雨', 'fa-sun'],
-        ['雷阵雨', 'fa-sun'],
-        ['雷阵雨并伴有冰雹', 'fa-sun'],
-        ['小雨', 'cloud-showers-heavy'],
-        ['中雨', 'fa-sun'],
-        ['大雨', 'fa-sun'],
-        ['暴雨', 'fa-sun'],
-        ['大暴雨', 'fa-sun'],
-        ['特大暴雨', 'fa-sun'],
-        ['强阵雨', 'fa-sun'],
-        ['强雷阵雨', 'fa-sun'],
-        ['极端降雨', 'fa-sun'],
-        ['毛毛雨/细雨', 'fa-sun'],
-        ['雨', 'fa-sun'],
-        ['小雨-中雨', 'fa-sun'],
-        ['中雨-大雨', 'fa-sun'],
-        ['大雨-暴雨', 'fa-sun'],
-        ['暴雨-大暴雨', 'fa-sun'],
-        ['大暴雨-特大暴雨', 'fa-sun'],
-        ['雨雪天气', 'fa-sun'],
-        ['雨夹雪', 'fa-sun'],
-        ['阵雨夹雪', 'fa-sun'],
-        ['冻雨', 'fa-sun'],
-        ['雪', 'fa-sun'],
-        ['冻雨', 'fa-sun'],
-        ['阵雪', 'fa-sun'],
-        ['小雪', 'fa-sun'],
-        ['中雪', 'fa-sun'],
-        ['大雪', 'fa-sun'],
-        ['暴雪', 'fa-sun'],
-        ['小雪-中雪', 'fa-sun'],
-        ['中雪-大雪', 'fa-sun'],
-        ['大雪-暴雪', 'fa-sun'],
-        ['浮尘', 'fa-sun'],
-        ['扬沙', 'fa-sun'],
-        ['沙尘暴', 'fa-sun'],
-        ['强沙尘暴', 'fa-sun'],
-        ['龙卷风', 'fa-sun'],
-        ['雾', 'fa-sun'],
-        ['浓雾', 'fa-sun'],
-        ['强浓雾', 'fa-sun'],
-        ['轻雾', 'fa-sun'],
-        ['大雾', 'fa-sun'],
-        ['特强浓雾', 'fa-sun'],
-        ['霾', 'fa-sun'],
-        ['中度霾', 'fa-sun'],
-        ['重度霾', 'fa-sun'],
-        ['严重霾', 'fa-sun'],
-        ['热', 'fa-sun'],
-        ['冷', 'fa-sun'],
-        ['未知', 'fa-sun']
-      ])
-      return weatherMap.get(this.weatherData.weather)
+      if (this.weatherData.weather[0]) {
+        let icon = this.weatherData.weather[0].icon
+        return require(`../assets/weather/${icon}@2x.png`)
+      }
     },
     temperature() {
-      return this.weatherData.temperature
-    },
-    wind() {
-      return this.weatherData.winddirection + '风'
+      return this.weatherData.main.temp
     },
     windpower() {
-      return this.weatherData.windpower + '级'
+      return '风速：' + this.weatherData.wind.speed + '级'
     },
     humidity() {
-      return '湿度：' + this.weatherData.humidity + '%'
+      return '湿度：' + this.weatherData.main.humidity + '%'
+    },
+    description() {
+      if (this.weatherData.weather[0]) {
+        return this.weatherData.weather[0].description
+      }
+    },
+    country() {
+      return this.weatherData.sys.country
     }
   },
   filters: {
     celsius: function(value) {
       if (!value) return ''
-      return value + '℃'
+      return '温度：' + value + '℃'
     }
   },
-  created() {
-    this.getLocalInfo()
+  async created() {
+    await this.getLocalInfo()
   },
   methods: {
-    async getLocation(location_str) {
-      const { data } = await request(
-        `https://restapi.amap.com/v3/geocode/regeo?key=${gaodekey}&location=${location_str}`
-      )
-      if (
-        data.info === 'OK' &&
-        data.regeocode.addressComponent.adcode !== null
-      ) {
-        this.weatherData = await this.getWeather(
-          data.regeocode.addressComponent.adcode
-        )
+    async getWeather() {
+      if (isEmpty(this.latitude) || isEmpty(this.longitude)) {
+        return
       }
-    },
-    async getWeather(adcode) {
-      const { data } = await request(
-        `https://restapi.amap.com/v3/weather/weatherInfo?key=${gaodekey}&city=${adcode}&extensions=base`
-      )
-      if (data.info.toUpperCase() === 'OK') {
-        return data.lives[0]
-      } else {
-        return {}
+      const { data } = await getWeather(this.latitude, this.longitude)
+      if (data.code === 200) {
+        this.weatherData = data.data
       }
     },
     async getLocalInfo() {
-      // eslint-disable-next-line no-undef
-      let map = new AMap.Map('map-box')
-      await map.plugin('AMap.Geolocation', () => {
-        // eslint-disable-next-line no-undef
-        let geolocation = new AMap.Geolocation({
-          enableHighAccuracy: true, //是否使用高精度定位，默认:true
-          timeout: 10000,
-          GeoLocationFirst: false,
-          maximumAge: 0 //定位结果缓存0毫秒，默认：0
-        })
-        map.addControl(geolocation)
-        geolocation.getCurrentPosition((status, result) => {
-          if (status == 'complete') {
-            this.onComplete(result)
-          } else {
-            this.onError(result)
-          }
-        })
+      navigator.geolocation.getCurrentPosition((data) => {
+        this.onComplete(data)
+      }, (err) => {
+        this.onError(err)
       })
     },
     async onComplete(data) {
-      if (data.info === 'SUCCESS') {
-        const location_str = `${data.position.lng},${data.position.lat}`
-        const local_data = location_str ? location_str : '114.02265,22.53764'
-        await this.getLocation(local_data)
+      if (data && data.coords && data.coords.latitude && data.coords.longitude) {
+        this.latitude = data.coords.latitude
+        this.longitude = data.coords.longitude
+        await this.getWeather()
       }
     },
-    onError() {
+    onError(err) {
+      let errMsg = this.getErrMsg(err.code)
       this.$buefy.snackbar.open({
         duration: 3000,
-        message: '高德定位失败',
+        message: errMsg,
         type: 'is-danger',
         position: 'is-bottom-right',
         actionText: 'Msg'
       })
-    }
+    },
+    getErrMsg(code) {
+      switch (code) {
+        case 1:
+          return '定位失败，用户拒绝请求地理定位'
+        case 2:
+          return '定位失败，位置信息是不可用'
+        case 3:
+          return '定位失败，请求获取用户位置超时'
+        default:
+          return '定位失败'
+      }
+    },
   }
 }
 </script>
@@ -219,6 +160,50 @@ export default {
 .weather-box {
   .card {
     box-shadow: 0 2px 3px #ffffff, 0 0 0 1px #ffffff;
+    .card-header {
+      .card-header-title {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+    .card-content {
+      .h3-box {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 10px;
+        .title {
+          font-size: 24px;
+
+        }
+      }
+      .media {
+        .media-left {
+          margin-left: 3rem;
+          .media-content {
+            margin-top: -1rem;
+          }
+        }
+        .media-content {
+          .subtitle {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
   }
 }
+
+
+.weather-icon {
+  display: block;
+  width: 60px;
+  height: 60px;
+}
+.description {
+  display: block;
+  font-size: 12px;
+  color: #D33D3D;
+}
+
 </style>
