@@ -4,6 +4,9 @@
       <UtilDesk />
     </div>
     <div class="section-box">
+      <QuickTools />
+    </div>
+    <div class="section-box">
       <Music />
     </div>
     <div class="section-box">
@@ -20,6 +23,7 @@ import Weather from '@/components/Weather.vue'
 import Todo from '@/components/Todo.vue'
 import UtilDesk from '@/components/UtilDesk.vue'
 import Music from '@/components/Music.vue'
+import QuickTools from '@/components/tools/index.vue'
 export default {
     name: 'Sidebar',
     components: {
@@ -27,6 +31,7 @@ export default {
         Music,
         UtilDesk,
         Todo,
+        QuickTools,
     },
 }
 </script>

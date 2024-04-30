@@ -132,7 +132,6 @@ export default {
   },
   methods: {
     clearMoneyClick() {
-      console.log('ppp--')
       this.money = ''
     },
     startConverter() {

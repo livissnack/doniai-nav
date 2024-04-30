@@ -215,3 +215,101 @@ export function throttle(fn, delay) {
     }
   }
 }
+
+/**
+ * @description: 随机密码
+ * @param {*} len 密码位数
+ * @param {*} modeArr 密码难度：high(大小写数字特殊字符)、medium(大小写数字)、low(小写数字)
+ * @Author: livissnack
+ */
+export function randomPass(len = 16, modeArr = ['lower', 'number']) {
+  const lowerCaseArr = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',];
+  const upperCaseArr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+  const numberArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const specialArr = ['~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '[', '{', ']', '}', '-', '_', '=', '+', '|', ';', ':', "'", '"', ',', '.', '/', '?', '`'];
+  const passArr = [];
+  let password = '';
+
+  //指定参数随机获取一个字符
+  const specifyRandom = function (...arr) {
+    let str = "";
+    arr.forEach(item => {
+      str += item[Math.floor(Math.random() * item.length)]
+    });
+    return str;
+  }
+  modeArr = modeArr.sort()
+  let modeStr = modeArr.join('_')
+  switch (modeStr) {
+    case 'lower':
+      password += specifyRandom(lowerCaseArr);
+      passArr.push(...lowerCaseArr);
+      break;
+    case 'number':
+      password += specifyRandom(numberArr);
+      passArr.push(...numberArr);
+      break;
+    case 'special':
+      password += specifyRandom(specialArr);
+      passArr.push(...specialArr);
+      break;
+    case 'upper':
+      password += specifyRandom(upperCaseArr);
+      passArr.push(...upperCaseArr);
+      break;
+    case 'lower_number':
+      password += specifyRandom(lowerCaseArr, numberArr);
+      passArr.push(...lowerCaseArr, ...numberArr);
+      break;
+    case 'lower_special':
+      password += specifyRandom(lowerCaseArr, specialArr);
+      passArr.push(...lowerCaseArr, ...specialArr);
+      break;
+    case 'lower_upper':
+      password += specifyRandom(lowerCaseArr, upperCaseArr);
+      passArr.push(...lowerCaseArr, ...upperCaseArr);
+      break;
+    case 'number_special':
+      password += specifyRandom(numberArr, specialArr);
+      passArr.push(...numberArr, ...specialArr);
+      break;
+    case 'number_upper':
+      password += specifyRandom(numberArr, upperCaseArr);
+      passArr.push(...numberArr, ...upperCaseArr);
+      break;
+    case 'special_upper':
+      password += specifyRandom(specialArr, upperCaseArr);
+      passArr.push(...specialArr, ...upperCaseArr);
+      break;
+    case 'lower_number_special':
+      password += specifyRandom(lowerCaseArr, numberArr, specialArr);
+      passArr.push(...lowerCaseArr, ...numberArr, ...specialArr);
+      break;
+    case 'lower_number_upper':
+      password += specifyRandom(lowerCaseArr, numberArr, upperCaseArr);
+      passArr.push(...lowerCaseArr, ...numberArr, ...upperCaseArr);
+      break;
+    case 'lower_special_upper':
+      password += specifyRandom(lowerCaseArr, specialArr, upperCaseArr);
+      passArr.push(...lowerCaseArr, ...specialArr, ...upperCaseArr);
+      break;
+    case 'number_special_upper':
+      password += specifyRandom(numberArr, specialArr, upperCaseArr);
+      passArr.push(...numberArr, ...specialArr, ...upperCaseArr);
+      break;
+    case 'lower_number_special_upper':
+      password += specifyRandom(lowerCaseArr, upperCaseArr, numberArr, specialArr);
+      passArr.push(...lowerCaseArr, ...upperCaseArr, ...numberArr, ...specialArr);
+      break;
+    default:
+      password += specifyRandom(lowerCaseArr, numberArr);
+      passArr.push(...lowerCaseArr, ...numberArr);
+  }
+
+  const forLen = len - password.length;
+  for (let i = 0; i < forLen; i++) {
+    password += specifyRandom(passArr);
+  }
+
+  return password;
+}

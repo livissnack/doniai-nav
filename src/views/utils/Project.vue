@@ -642,7 +642,6 @@ export default {
     handleAddTaskPopup() {
       this.addTaskPopup = true
       this.$refs.projectAddTask.initPopupDialog()
-      console.log(this.addTaskPopup, 'ppp---', dayjs().to(dayjs('1990-01-01')))
     },
   }
 }

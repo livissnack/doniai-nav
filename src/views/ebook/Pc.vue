@@ -233,7 +233,6 @@ export default {
       let navigation = await this.rendition.book.loaded.navigation
 
       let directory = navigation.toc
-      console.log(directory, 'mm-----')
       let curNav = directory[this.currentBookIndex]
       this.directory = directory
       this.currentNav = curNav

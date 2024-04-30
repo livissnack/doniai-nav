@@ -91,10 +91,6 @@ export default {
       } else {
         this.validIpMsg = ''
       }
-
-
-
-      console.log(value, 'llll----')
     },
     async handleParse() {
       if (isEmpty(this.ip)) {

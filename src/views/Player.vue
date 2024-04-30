@@ -210,7 +210,6 @@ export default {
       tvList.style.display = 'none'
     },
     async handleRemoteList() {
-      console.log('hhhhh')
     },
     async handleListPlay(tv) {
       this.currentTv = tv.name

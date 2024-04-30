@@ -151,7 +151,6 @@ export default {
       localStorage.setItem('doniaiNavHistoryHomePageList', JSON.stringify(this.historyList))
     },
     handleClearHistory() {
-      console.log('clearHistorySearch')
       this.historyList = []
       localStorage.removeItem('doniaiNavHistoryHomePageList')
     },
@@ -218,7 +217,6 @@ export default {
       }
     },
     keyDown(event) {
-      console.log(this.historyShow, 3)
       const e = event || window.event
       let key = e.keyCode
       if (key === 37) {

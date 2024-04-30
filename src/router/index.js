@@ -88,6 +88,11 @@ const routes = [
     path: '/utils/iptv',
     name: 'projectIptv',
     component: () => import('@/views/utils/Iptv.vue')
+  },
+  {
+    path: '/utils/password',
+    name: 'projectPassword',
+    component: () => import('@/views/utils/Password.vue')
   }
 ]
 

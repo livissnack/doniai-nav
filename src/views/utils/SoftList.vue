@@ -459,24 +459,12 @@ export default {
     handleBlur() {
       this.show = false
     },
-    removeBlur() {
-      this.$refs.myinput.blur()
-      this.show = false
-    },
-    clearTxt() {
-      this.keyword = ''
-    },
-    handleRemoveBlur() {
-      this.removeBlur('')
-    },
     handleChangeTxt() {
-      console.log(this.keyword, 'l----')
     },
     handleSearch(keyword) {
       if (!isEmpty(keyword)) {
         this.keyword = keyword
       }
-      console.log(this.keyword, 'l----')
       this.show = false
     },
     searchBtnClick() {
@@ -490,22 +478,8 @@ export default {
       localStorage.setItem('doniaiNavHistorySearch', JSON.stringify(this.historySearch))
     },
     clearHistorySearch() {
-      console.log('clearHistorySearch')
       this.historySearch = []
       localStorage.removeItem('doniaiNavHistorySearch')
-    },
-    getColor(index) {
-      if (index === 0) {
-        return 'is-orange'
-      } else if (index === 1) {
-        return 'is-purple'
-      } else if (index === 2) {
-        return 'is-blue'
-      } else if (index === 3) {
-        return 'is-green'
-      } else {
-        return ''
-      }
     },
   }
 }
