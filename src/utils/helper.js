@@ -313,3 +313,18 @@ export function randomPass(len = 16, modeArr = ['lower', 'number']) {
 
   return password;
 }
+
+/**
+ * 预加载图片
+ * @param imgs
+ * @returns {*[]}
+ */
+export function preloadMulitImg(imgs) {
+  let imgList = []
+  for (let i = 0; i < imgs.length; i++) {
+    let img = new Image()
+    img.src = imgs[i]
+    imgList.push(img)
+  }
+  return imgList
+}

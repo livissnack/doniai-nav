@@ -1,19 +1,15 @@
 import axios from 'axios'
 
 // 环境的切换
-if (process.env.NODE_ENV === 'development') {
-  axios.defaults.baseURL = 'https://hi.doniai.com/'
-} else if (process.env.NODE_ENV === 'debug') {
-  axios.defaults.baseURL = 'https://hi.doniai.com/'
-} else if (process.env.NODE_ENV === 'production') {
-  axios.defaults.baseURL = 'https://hi.doniai.com/'
-}
+axios.defaults.baseURL = process.env.VUE_APP_SERVER_URL
+const secretKey = process.env.VUE_APP_SECRET_KEY
 
 // 请求超时时间
 axios.defaults.timeout = 10000
 
 // post请求头
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
+axios.defaults.headers.post['G3X-Auth-Token'] = secretKey
 
 // 请求拦截器
 axios.interceptors.request.use(

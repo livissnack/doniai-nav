@@ -9,7 +9,7 @@
         <div class="marquee_box" ref="marquee_box">
           <ul class="marquee_list" :class="{ marquee_top: animate }" v-if="list.length > 0">
             <li v-for="(item, index) in list" :key="index">
-              <a class="marquee_item_content" :href="item.url" :title="item.title" target="_blank">{{ item.title }}</a>
+              <a class="marquee_item_content" :href="item.url" :title="item.name" target="_blank">{{ item.name }}</a>
             </li>
           </ul>
         </div>

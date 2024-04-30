@@ -59,10 +59,10 @@ module.exports = {
     })
   },
   devServer: {
-    port: 8097,
+    port: process.env.VUE_APP_WEB_PORT,
     proxy: {
       '/api': {
-        target: 'https://hi.doniai.com/',
+        target: `${process.env.VUE_APP_API_URL}`,
         changeOrigin: true,
         ws: true,
         pathRewrite: {

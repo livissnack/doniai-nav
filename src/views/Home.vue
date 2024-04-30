@@ -56,6 +56,7 @@ import Sidebar from '@/components/Sidebar.vue'
 import BackTop from '@mlqt/vue-back-top'
 import Footer from '@/components/Footer.vue'
 import jsonNavs from '@/services/data.json'
+import {preloadMulitImg} from "@/utils/helper";
 
 Vue.use(BackTop)
 export default {
@@ -72,6 +73,14 @@ export default {
       navData: [],
       coverBg: 'https://epg.112114.xyz/bingimg'
     }
+  },
+  beforeCreate() {
+    setTimeout(() => {
+      let imgList = [
+        'https://epg.112114.xyz/bingimg',
+      ]
+      preloadMulitImg(imgList)
+    }, 200)
   },
   created() {
     this.getCurrentNavs(1)

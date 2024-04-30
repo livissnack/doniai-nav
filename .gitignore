@@ -4,6 +4,8 @@ node_modules
 .env.local
 .env.*.local
 .env
+.env.development
+.env.production
 dist
 dist.zip
 
