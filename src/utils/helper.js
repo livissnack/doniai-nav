@@ -328,3 +328,35 @@ export function preloadMulitImg(imgs) {
   }
   return imgList
 }
+
+
+export function isBase64(str) {
+  // 检查字符串是否为空或者全是空白字符
+  if (!str || str.trim() === '') {
+      return false;
+  }
+
+  // Base64编码只包含特定的字符集
+  const base64Chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+
+  // 检查字符串中的每个字符是否都在Base64的字符集中
+  for (let i = 0; i < str.length; i++) {
+      if (base64Chars.indexOf(str.charAt(i)) === -1) {
+          return false;
+      }
+  }
+
+  // Base64编码的字符串长度应为4的倍数，除非末尾是填充的 '='
+  if (str.length % 4 !== 0) {
+      return false;
+  }
+
+  // 检查 '=' 符号是否合法出现，只能在末尾且数量为0、1或2个
+  const equalSigns = str.split('=').pop().length;
+  if ([0, 1, 2].indexOf(equalSigns) === -1) {
+      return false;
+  }
+
+  // 上述条件都满足，则很可能是Base64编码
+  return true;
+}

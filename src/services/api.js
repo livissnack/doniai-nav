@@ -22,3 +22,8 @@ export async function getMedia(keyword) {
   })
 }
 
+export async function getBase64(str) {
+  return request('post', `${ApiVersion}/b64`, {
+    str: str,
+  })
+}

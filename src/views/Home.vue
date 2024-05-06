@@ -56,7 +56,7 @@ import Sidebar from '@/components/Sidebar.vue'
 import BackTop from '@mlqt/vue-back-top'
 import Footer from '@/components/Footer.vue'
 import jsonNavs from '@/services/data.json'
-import {preloadMulitImg} from "@/utils/helper";
+import {preloadMulitImg} from "@/utils/helper"
 
 Vue.use(BackTop)
 export default {

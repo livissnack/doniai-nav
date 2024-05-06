@@ -93,6 +93,11 @@ const routes = [
     path: '/utils/password',
     name: 'projectPassword',
     component: () => import('@/views/utils/Password.vue')
+  },
+  {
+    path: '/utils/base64',
+    name: 'projectBase64',
+    component: () => import('@/views/utils/Base64.vue')
   }
 ]
 

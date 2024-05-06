@@ -39,6 +39,11 @@ export default {
           name: 'TV一下',
           icon: 'fas fa-fire-alt',
           path: '/player'
+        },
+        {
+          name: 'Base64加解密',
+          icon: 'fas fa-fire-alt',
+          path: '/utils/base64'
         }
       ],
       showTools: true,
