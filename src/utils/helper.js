@@ -360,3 +360,102 @@ export function isBase64(str) {
   // 上述条件都满足，则很可能是Base64编码
   return true;
 }
+
+/**
+ * 等额本息计算
+ * @param loanAmount
+ * @param annualInterestRate
+ * @param loanYears
+ * @returns {string}
+ */
+export function calculateEqualInstallment(loanAmount, annualInterestRate, loanYears) {
+  // 将年利率转换为月利率
+  const monthlyInterestRate = annualInterestRate / 100 / 12;
+
+  // 计算还款总月数
+  const totalMonths = loanYears * 12;
+
+  // 使用等额本息公式计算月供
+  const monthlyPayment = loanAmount * (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, totalMonths)) /
+      (Math.pow(1 + monthlyInterestRate, totalMonths) - 1);
+  let repaymentPrincipal = 0;
+  let repaymentInterest = 0;
+  let remainingPrincipal = 0;
+  const repaymentSchedule = [];
+  for (let month = 1; month <= totalMonths; month++) {
+    const interestOfTheMonth = loanAmount * monthlyInterestRate;
+    const paymentOfTheMonth = interestOfTheMonth + monthlyPayment;
+    let paidPrincipal = 0;
+    if (loanAmount > monthlyPayment) {
+      paidPrincipal = monthlyPayment - interestOfTheMonth;
+      loanAmount -= paidPrincipal;
+    } else {
+      paidPrincipal = loanAmount;
+      loanAmount = 0;
+    }
+    const monthlyPrincipal = paidPrincipal;
+
+    repaymentPrincipal += monthlyPrincipal  //累计还款本金
+    repaymentInterest += interestOfTheMonth //累计还款利息
+    // 存储每期还款信息
+    repaymentSchedule.push({
+      month: `第${month}期`,
+      payment: monthlyPayment.toFixed(2),
+      principal: monthlyPrincipal.toFixed(2),
+      repaymentPrincipal: repaymentPrincipal.toFixed(2),
+      repaymentInterest: repaymentInterest.toFixed(2),
+      remainingPrincipal: loanAmount.toFixed(2),
+      interest: interestOfTheMonth.toFixed(2),
+    });
+  }
+
+  return repaymentSchedule; // 返回保留两位小数的月供
+}
+
+/**
+ * 等额本金计算
+ * @param loanAmount
+ * @param annualInterestRate
+ * @param loanYears
+ * @returns {*[]}
+ */
+export function calculatePrincipalInstallment(loanAmount, annualInterestRate, loanYears) {
+  // 将年利率转换为月利率
+  const monthlyInterestRate = annualInterestRate / 100 / 12;
+
+  // 计算还款总月数
+  const totalMonths = loanYears * 12;
+
+  // 每月偿还的本金
+  const monthlyPrincipal = loanAmount / totalMonths;
+
+  // 初始化已还本金累计和还款计划数组
+  let paidPrincipal = 0;
+  let paidInterest = 0;
+  const repaymentSchedule = [];
+
+  for (let month = 1; month <= totalMonths; month++) {
+    // 当月应还利息
+    const interestOfTheMonth = (loanAmount - paidPrincipal) * monthlyInterestRate;
+
+    // 当月总还款额
+    const paymentOfTheMonth = monthlyPrincipal + interestOfTheMonth;
+
+    // 累加已还本金
+    paidPrincipal += monthlyPrincipal;
+    paidInterest += interestOfTheMonth
+
+    // 存储每期还款信息
+    repaymentSchedule.push({
+      month: `第${month}期`,
+      payment: paymentOfTheMonth.toFixed(2),
+      principal: monthlyPrincipal.toFixed(2),
+      interest: interestOfTheMonth.toFixed(2),
+      repaymentPrincipal: paidPrincipal.toFixed(2),
+      repaymentInterest: paidInterest.toFixed(2),
+      remainingPrincipal: (loanAmount - paidPrincipal).toFixed(2),
+    });
+  }
+
+  return repaymentSchedule;
+}

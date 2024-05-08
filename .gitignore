@@ -8,6 +8,7 @@ node_modules
 .env.production
 dist
 dist.zip
+test
 
 # deploy shell
 deploy.sh

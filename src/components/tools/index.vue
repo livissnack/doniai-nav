@@ -44,6 +44,11 @@ export default {
           name: 'Base64加解密',
           icon: 'fas fa-fire-alt',
           path: '/utils/base64'
+        },
+        {
+          name: '贷款利率计算器',
+          icon: 'fas fa-fire-alt',
+          path: '/utils/loan-rate'
         }
       ],
       showTools: true,

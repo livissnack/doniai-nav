@@ -98,6 +98,11 @@ const routes = [
     path: '/utils/base64',
     name: 'projectBase64',
     component: () => import('@/views/utils/Base64.vue')
+  },
+  {
+    path: '/utils/loan-rate',
+    name: 'projectLoanRate',
+    component: () => import('@/views/utils/LoanRate.vue')
   }
 ]
 

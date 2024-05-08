@@ -842,6 +842,11 @@
           "name": "Shoelace",
           "href": "https://shoelace.style",
           "color": "is-success"
+        },
+        {
+          "name": "FastBootstrap",
+          "href": "https://fastbootstrap.com",
+          "color": "is-warning"
         }
       ]
     },
