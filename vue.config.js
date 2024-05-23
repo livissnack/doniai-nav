@@ -1,21 +1,7 @@
-const CompressionWebpackPlugin = require('compression-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-  .BundleAnalyzerPlugin
-const productionGzipExtensions = /\.(js|css|json|txt|html|ico|svg)(\?.*)?$/i
-
 module.exports = {
   productionSourceMap: false,
   configureWebpack: config => {
     const plugins = []
-    plugins.push(
-      new CompressionWebpackPlugin({
-        filename: '[path][base].gz',
-        algorithm: 'gzip',
-        test: productionGzipExtensions,
-        threshold: 10240,
-        minRatio: 0.8
-      })
-    )
     config.externals = {
       vue: 'Vue',
       buefy: 'Buefy',
@@ -26,14 +12,6 @@ module.exports = {
     config.plugins = [...config.plugins, ...plugins]
   },
   chainWebpack: config => {
-    //打包分析插件
-    config.plugin('webpack-report').use(BundleAnalyzerPlugin, [
-      {
-        analyzerMode: 'disabled'
-        // analyzerMode: 'static'
-      }
-    ])
-
     const cdn = {
       css: [
         '//fastly.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css',

@@ -847,6 +847,11 @@
           "name": "FastBootstrap",
           "href": "https://fastbootstrap.com",
           "color": "is-warning"
+        },
+        {
+          "name": "Daisyui",
+          "href": "https://daisyui.com",
+          "color": "is-danger"
         }
       ]
     },

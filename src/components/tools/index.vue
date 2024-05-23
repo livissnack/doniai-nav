@@ -49,6 +49,11 @@ export default {
           name: '贷款利率计算器',
           icon: 'fas fa-fire-alt',
           path: '/utils/loan-rate'
+        },
+        {
+          name: '封面生成器',
+          icon: 'fas fa-fire-alt',
+          path: '/utils/cover'
         }
       ],
       showTools: true,
@@ -90,6 +95,24 @@ export default {
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
+    max-height: 160px;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      display: block;
+      width: 10px;
+      height: 100%;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #FFFFFF;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #1E1F24;
+      border-radius: 29px;
+      height: 10px;
+    }
+
     .util-list-item {
       padding: 6px 6px;
       &:not(:last-child) {

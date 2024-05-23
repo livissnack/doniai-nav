@@ -103,6 +103,11 @@ const routes = [
     path: '/utils/loan-rate',
     name: 'projectLoanRate',
     component: () => import('@/views/utils/LoanRate.vue')
+  },
+  {
+    path: '/utils/cover',
+    name: 'projectCover',
+    component: () => import('@/views/utils/Cover.vue')
   }
 ]
 

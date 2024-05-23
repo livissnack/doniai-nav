@@ -27,3 +27,9 @@ export async function getBase64(str) {
     str: str,
   })
 }
+
+export async function getMusic(type) {
+  return request('post', `${ApiVersion}/music`, {
+    type: type,
+  })
+}
