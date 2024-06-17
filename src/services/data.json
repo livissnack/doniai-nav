@@ -1031,6 +1031,22 @@
   "blogData": [
     {
       "id": 1,
+      "title": "旅游攻略",
+      "items": [
+        {
+          "name": "Lynan",
+          "href": "https://lynan.cn/",
+          "color": "is-primary"
+        },
+        {
+          "name": "Springwood",
+          "href": "https://springwood.me/",
+          "color": "is-success"
+        }
+      ]
+    },
+    {
+      "id": 2,
       "title": "机器学习",
       "items": [
         {
@@ -1051,7 +1067,7 @@
       ]
     },
     {
-      "id": 2,
+      "id": 3,
       "title": "Web开发",
       "items": [
         {
@@ -1062,7 +1078,7 @@
       ]
     },
     {
-      "id": 3,
+      "id": 4,
       "title": "国外见闻",
       "items": [
         {
