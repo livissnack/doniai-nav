@@ -331,6 +331,11 @@
           "href": "/score",
           "color": "is-success",
           "isNotNewBlack": true
+        },
+        {
+          "name": "教育平台",
+          "href": "https://study.livissnack.com",
+          "color": "is-danger"
         }
       ]
     },
@@ -586,19 +591,24 @@
           "color": "is-info"
         },
         {
-          "name": "流程绘板",
-          "href": "https://draw.livissnack.com/",
-          "color": "is-primary"
-        },
-        {
           "name": "图片压缩",
           "href": "https://img.livissnack.com",
-          "color": "is-success"
+          "color": "is-primary"
         },
         {
           "name": "键盘测试",
           "href": "https://keyboard.livissnack.com",
+          "color": "is-success"
+        },
+        {
+          "name": "网络空间测绘",
+          "href": "https://fofa.info",
           "color": "is-danger"
+        },
+        {
+          "name": "IP INFO",
+          "href": "https://ipinfo.io",
+          "color": "is-warning"
         }
       ]
     },
@@ -787,6 +797,17 @@
         {
           "name": "Linux基础学习",
           "href": "https://linuxtools-rst.readthedocs.io",
+          "color": "is-primary"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "VPS讨论周刊",
+      "items": [
+        {
+          "name": "NodeSeek",
+          "href": "https://www.nodeseek.com",
           "color": "is-primary"
         }
       ]
