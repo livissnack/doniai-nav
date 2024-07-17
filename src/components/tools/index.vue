@@ -66,6 +66,12 @@ export default {
           icon: 'fas fa-images',
           path: '/utils/cover',
           recommend: false,
+        },
+        {
+          name: '豆瓣租房',
+          icon: 'fas fa-home',
+          path: 'https://dbzz.house/search?city=%E6%AD%A6%E6%B1%89',
+          recommend: false,
         }
       ],
       showTools: true,
