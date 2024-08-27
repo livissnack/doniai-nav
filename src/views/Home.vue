@@ -97,6 +97,7 @@ export default {
         [7, 'designData'],
         [8, 'blogData'],
         [9, 'foreignData'],
+        [10, 'studyData'],
       ])
       let navs = await jsonNavs[dataMap.get(menu_id)]
       this.navData = navs

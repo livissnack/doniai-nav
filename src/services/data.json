@@ -1176,5 +1176,34 @@
         }
       ]
     }
+  ],
+  "studyData": [
+    {
+      "id": 1,
+      "title": "数学竞赛",
+      "items": [
+        {
+          "name": "袋鼠数学竞赛",
+          "href": "https://zh.hkmkc.org",
+          "color": "is-primary"
+        },
+        {
+          "name": "华罗庚杯",
+          "href": "https://www.hkhcm.org",
+          "color": "is-success"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "教学素材",
+      "items": [
+        {
+          "name": "英国牛津大学",
+          "href": "https://home.oxfordowl.co.uk/kids-activities/",
+          "color": "is-primary"
+        }
+      ]
+    }
   ]
 }

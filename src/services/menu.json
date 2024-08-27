@@ -44,6 +44,11 @@
       "id": 9,
       "name": "外贸",
       "is_active": false
+    },
+    {
+      "id": 10,
+      "name": "教学",
+      "is_active": false
     }
   ]
 }
