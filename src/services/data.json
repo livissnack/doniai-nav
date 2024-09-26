@@ -940,6 +940,11 @@
           "name": "Animate-Css",
           "href": "https://daneden.github.io/animate.css",
           "color": "is-success"
+        },
+        {
+          "name": "Neumorphism",
+          "href": "https://neumorphism.io",
+          "color": "is-danger"
         }
       ]
     },
