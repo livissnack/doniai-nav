@@ -1028,6 +1028,11 @@
           "name": "Material Icon",
           "href": "https://material.io/resources/icons/?style=baseline",
           "color": "is-danger"
+        },
+        {
+          "name": "MingCute",
+          "href": "https://www.mingcute.com",
+          "color": "is-info"
         }
       ]
     },
