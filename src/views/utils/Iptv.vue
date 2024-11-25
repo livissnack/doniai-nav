@@ -102,7 +102,8 @@ export default {
         })
         return
       }
-      let url = `https://ecomoldsteel.com/api/hotel?ip=${this.ip}`
+      const baseUrl = process.env.VUE_APP_SERVER_URL
+      let url = `${baseUrl}/api/hotel?ip=${this.ip}`
       let response = await fetch(url)
       let m3u = await response.text()
       this.m3u = m3u
