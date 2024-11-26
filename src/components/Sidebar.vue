@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="section-box">
-      <UtilDesk />
+      <News />
     </div>
     <div class="section-box">
       <QuickTools />
@@ -24,7 +24,7 @@
 <script>
 import Weather from '@/components/Weather.vue'
 import Todo from '@/components/Todo.vue'
-import UtilDesk from '@/components/UtilDesk.vue'
+import News from '@/components/News.vue'
 import Music from '@/components/Music.vue'
 import QuickTools from '@/components/tools/index.vue'
 import SystemMonitoring from '@/components/SystemMonitoring.vue'
@@ -33,7 +33,7 @@ export default {
     components: {
         Weather,
         Music,
-        UtilDesk,
+        News,
         Todo,
         QuickTools,
       SystemMonitoring,
