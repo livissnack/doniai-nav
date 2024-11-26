@@ -811,6 +811,24 @@
           "color": "is-primary"
         }
       ]
+    },
+    {
+      "id": 11,
+      "title": "节点转化工具",
+      "items": [
+        {
+          "name": "Clash",
+          "href": "/utils/clash",
+          "color": "is-primary",
+          "isNotNewBlack": true
+        },
+        {
+          "name": "节点数据解密",
+          "href": "/utils/node_parse",
+          "color": "is-success",
+          "isNotNewBlack": true
+        }
+      ]
     }
   ],
   "frontendData": [

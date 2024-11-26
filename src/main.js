@@ -12,7 +12,6 @@ Vue.prototype.bucket_url = 'https://hspxsteel.oss-cn-shenzhen.aliyuncs.com'
 Vue.prototype.OBS = "https://minio.doniai.com/doniai/"
 
 Vue.prototype.$OPENLINK = (url) => {
-  console.log(url, 'pp----')
   let a = document.createElement("a")
   a.setAttribute("href", url)
   a.setAttribute("target", "_blank")

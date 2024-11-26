@@ -53,7 +53,7 @@ export default {
     swipeNews() {
       this.intervalId = setInterval(() => {
         this.currentIndex = (this.currentIndex + 1) % this.groupedNews.length;
-      }, 10000)
+      }, 20000)
     },
     stopCarousel() {
       clearInterval(this.intervalId);
@@ -109,20 +109,20 @@ export default {
     position: relative;
     .news-group {
       position: absolute;
-      top: 0;
+      top: 10px;
       left: 6px;
       width: 100%;
       height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
-      align-items: flex-start;
-      opacity: 0;
-      transition: opacity 0.5s ease-in-out;
+      display: none;
+      transition: 0.5s ease-in-out;
       &.active {
-        opacity: 1;
+        display: block;
       }
       .news-item {
+        &:not(:first-child) {
+          margin-top: 15px;
+        }
+        height: 22px;
         width: 290px;
         color: #666;
         font-size: 14px;
@@ -142,80 +142,13 @@ export default {
           color: #333;
         }
         &:hover {
-          text-decoration: underline !important;
+          text-decoration: underline;
           color: #FF4500;
+          cursor: pointer;
         }
       }
 
     }
   }
-}
-
-.marquee {
-  width: 100%;
-  align-items: center;
-  color: #3a3a3a;
-  background-color: white;
-  display: flex;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-.marquee_title {
-  padding: 0 20px;
-  height: 21px;
-  font-size: 14px;
-  border-right: 1px solid #d8d8d8;
-  align-items: center;
-}
-.marquee_box {
-  display: block;
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  margin: 0 auto;
-}
-.marquee_list {
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-.marquee_top {
-  transition: all 1s;
-  margin-top: -30px;
-}
-.marquee_list li {
-  height: 30px;
-  line-height: 30px;
-  font-size: 14px;
-  color: #666;
-  padding-left: 20px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  .marquee_item_content {
-    color: #666;
-    font-size: 14px;
-    font-weight: 400;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    &:link {
-      color: #666;
-    }
-    &:visited {
-      text-decoration: underline;
-      color: #f4645f;
-    }
-    &:active {
-      text-decoration: underline;
-      color: #333;
-    }
-    &:hover {
-      text-decoration: underline;
-      color: #FF4500;
-    }
-  }
-}
-.marquee_list li span {
-  padding: 0 2px;
 }
 </style>

@@ -33,3 +33,7 @@ export async function getMusic(type) {
     type: type,
   })
 }
+
+export async function getNodeSubscribe(url) {
+  return request('get', url)
+}

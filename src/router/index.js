@@ -90,6 +90,16 @@ const routes = [
     component: () => import('@/views/utils/Iptv.vue')
   },
   {
+    path: '/utils/node_parse',
+    name: 'projectNodeParse',
+    component: () => import('@/views/utils/NodeParse.vue')
+  },
+  {
+    path: '/utils/clash',
+    name: 'projectClash',
+    component: () => import('@/views/utils/Clash.vue')
+  },
+  {
     path: '/utils/password',
     name: 'projectPassword',
     component: () => import('@/views/utils/Password.vue')
