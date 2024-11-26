@@ -10,7 +10,7 @@
             <div class="mt-4 play-input">
               <div class="input-box">
                 <b-field :message="validUrlMsg">
-                <b-input @input="handleValidUrlMsg" v-model="url" placeholder="请输入酒店IP地址" maxlength="400" icon-pack="fas"
+                <b-input @input="handleValidUrlMsg" v-model="url" placeholder="请输入待解密的url地址" maxlength="1400" icon-pack="fas"
                          icon-right="times"
                          icon-right-clickable
                          @icon-right-click="clearIconClick"></b-input>
@@ -90,7 +90,7 @@ export default {
   },
   methods: {
     clearIconClick() {
-      this.ip = ''
+      this.url = ''
     },
     handleValidUrlMsg(value) {
       const regex = /^(http|https):\/\/[a-zA-Z0-9.-]+(\:[0-9]+)?(\/[^ ]*)?$/
