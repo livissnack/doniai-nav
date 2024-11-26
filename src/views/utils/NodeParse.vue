@@ -23,11 +23,11 @@
 
             <div class="operate-btn">
               <div class="btn-box">
-                <b-button type="is-danger" @click="handleToClash">转化Clash配置</b-button>
+                <b-button icon-pack="fas" icon-left="feather"  type="is-danger" @click="handleToClash">转化Clash配置</b-button>
               </div>
 
               <div class="btn-box">
-                <b-button type="is-primary" :disabled="disableDownload" :loading="loadingDownload" @click="handleDownloadYaml">下载Clash配置</b-button>
+                <b-button icon-pack="fas" icon-left="download"  type="is-info" :disabled="disableDownload" :loading="loadingDownload" @click="handleDownloadYaml">下载Clash配置</b-button>
               </div>
             </div>
 
@@ -200,6 +200,7 @@ export default {
   margin-bottom: 20px;
   display: flex;
   justify-content: flex-end;
+  gap: 20px;
   .btn-box {
     display: flex;
     justify-content: flex-start;

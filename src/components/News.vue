@@ -7,8 +7,8 @@
     <div class="hot-news">
       <div class="news-carousel">
         <div class="news-group" v-for="(group, index) in groupedNews" :key="index" :class="{ active: currentIndex === index }">
-          <div class="news-item" v-for="item in group" :key="item.id" @click="handleOpenLink(item)">
-            {{ item.name }} {{ item.url }}
+          <div class="news-item" v-for="item in group" :key="item.id" @click="handleOpenLink(item)" :title="item.title">
+            {{ item.name }}
           </div>
         </div>
       </div>
