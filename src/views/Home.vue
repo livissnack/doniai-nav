@@ -4,6 +4,7 @@
       <Navbar @updateCurrentNavs="updateCurrentNavs" :currentActiveMenuId="current_active_menu_id"/>
     </div>
     <div class="content-box cover-bg" :style="{ backgroundImage: `url(${coverBg})` }">
+      <img :src="coverBg" alt="" width="0" height="0" style="display: none !important;" />
       <div class="container">
         <div class="columns">
           <div class="column is-three-quarters mt20">

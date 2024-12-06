@@ -377,6 +377,32 @@
     },
     {
       "id": 3,
+      "title": "名龙堂造项目",
+      "items": [
+        {
+          "name": "接口文档-后台-开发",
+          "href": "http://192.168.10.9:8083/backEnd/doc.html#/home",
+          "color": "is-primary"
+        },
+        {
+          "name": "接口文档-前台-开发",
+          "href": "http://192.168.10.9:8801/front/doc.html#/home",
+          "color": "is-success"
+        },
+        {
+          "name": "国内-应用-站点",
+          "href": "https://www.mltzao.com",
+          "color": "is-danger"
+        },
+        {
+          "name": "海外-应用-站点",
+          "href": "https://www.mloongbld.sg",
+          "color": "is-info"
+        }
+      ]
+    },
+    {
+      "id": 4,
       "title": "茂业本地项目",
       "items": [
         {
@@ -392,7 +418,7 @@
       ]
     },
     {
-      "id": 4,
+      "id": 5,
       "title": "茂业内网项目",
       "items": [
         {
@@ -418,7 +444,7 @@
       ]
     },
     {
-      "id": 5,
+      "id": 6,
       "title": "茂业外网项目",
       "items": [
         {
@@ -434,7 +460,7 @@
       ]
     },
     {
-      "id": 6,
+      "id": 7,
       "title": "小虎外网项目",
       "items": [
         {
@@ -460,7 +486,7 @@
       ]
     },
     {
-      "id": 7,
+      "id": 8,
       "title": "相关应用",
       "items": [
         {
@@ -486,7 +512,7 @@
       ]
     },
     {
-      "id": 8,
+      "id": 9,
       "title": "个人接口管理",
       "items": [
         {
