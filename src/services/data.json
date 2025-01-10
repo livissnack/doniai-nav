@@ -635,6 +635,12 @@
           "name": "IP INFO",
           "href": "https://ipinfo.io",
           "color": "is-warning"
+        },
+        {
+          "name": "二维码制作",
+          "href": "/utils/qrcode",
+          "color": "is-info",
+          "isNotNewBlack": true
         }
       ]
     },

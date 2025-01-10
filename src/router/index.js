@@ -118,6 +118,11 @@ const routes = [
     path: '/utils/cover',
     name: 'projectCover',
     component: () => import('@/views/utils/Cover.vue')
+  },
+  {
+    path: '/utils/qrcode',
+    name: 'projectQrcode',
+    component: () => import('@/views/utils/Qrcode.vue')
   }
 ]
 

@@ -25,6 +25,7 @@ module.exports = {
         '//fastly.jsdelivr.net/npm/vue-router@3.3.4/dist/vue-router.min.js',
         '//fastly.jsdelivr.net/npm/axios@0.21.2/dist/axios.min.js',
         '//fastly.jsdelivr.net/npm/buefy@0.8.15/dist/buefy.min.js',
+        '//fastly.jsdelivr.net/npm/widget-qrcode@1.0.4/dist/widget-qrcode.min.js',
       ]
     }
 
