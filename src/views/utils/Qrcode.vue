@@ -317,15 +317,15 @@
         </div>
 
         <div class="qrcodes">
-          <widget-qrcode class="qrcode-widget" template="fusion" level="M" background-image="./assets/qrcode/girl.jpeg"
+          <widget-qrcode class="qrcode-widget" template="fusion" level="M" background-image="https://minio.doniai.com/minio/hiphup/qrcode/girl.jpeg"
                          background-color="#ffcc60"></widget-qrcode>
           <widget-qrcode class="qrcode-widget" id="show" template="fusion"
-                         background-image="./assets/qrcode/monkey.jpeg" background-color="#ece8dd"
+                         background-image="https://minio.doniai.com/minio/hiphup/qrcode/monkey.jpeg" background-color="#ece8dd"
                          foreground-color="#000000" text="" text-color="#2c2b2e" text-stroke="#ece8dd"></widget-qrcode>
-          <widget-qrcode class="qrcode-widget" template="diamond" logo="./assets/qrcode/snail.png"
+          <widget-qrcode class="qrcode-widget" template="diamond" logo="https://minio.doniai.com/minio/hiphup/qrcode/snail.png"
                          foreground-image="https://minio.doniai.com/minio/hiphup/qrcode/grass.png"
                          background-color="#fff2dc" inner-color="#094304"></widget-qrcode>
-          <widget-qrcode class="qrcode-widget" template="water" logo="./assets/qrcode/earth.png"
+          <widget-qrcode class="qrcode-widget" template="water" logo="https://minio.doniai.com/minio/hiphup/qrcode/earth.png"
                          foreground-color="#6d327c,#485DA6,#00a1ba,#00BF98,#36C486" background-color="#f1f8ff"
                          inner-color="#845EC2"></widget-qrcode>
           <widget-qrcode class="qrcode-widget" template="heart"
