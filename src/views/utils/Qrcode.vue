@@ -390,17 +390,17 @@ export default {
       foregroundColorMode: false,
       qrcode: {
         value: 'https://nav.doniai.com/',
-        template: 'fusion',
+        template: 'diamond',
         level: 'M',
         width: 300,
         height: 300,
-        backgroundColor: '#ffcc60',
-        foregroundColor: '#000000',
-        innerColor: '#000000',
-        outerColor: '#000000',
+        backgroundColor: '#fff2dc',
+        foregroundColor: '',
+        innerColor: '#094304',
+        outerColor: '',
         backgroundImage: '',
-        foregroundImage: '',
-        logo: '',
+        foregroundImage: 'https://minio.doniai.com/hiphup/qrcode/grass.png',
+        logo: 'https://minio.doniai.com/hiphup/qrcode/snail.png',
         text: '',
         textColor: '#2c2b2e',
         textStroke: '',
@@ -432,6 +432,7 @@ export default {
       if (['png', 'svg'].includes(type)) {
         const qrcodeWidget = document.getElementsByClassName('qrcode-generate')
         const canvas = qrcodeWidget[0].$canvas;
+        console.log(canvas)
         if (canvas && canvas instanceof HTMLCanvasElement) {
           // 创建一个 a 标签，并设置 href 和 download 属性
           const el = document.createElement('a')
