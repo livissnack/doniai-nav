@@ -40,7 +40,7 @@
             </div>
             <div class="buttons">
               <button class="button is-info" @click="downloadImg('png')">下载PNG</button>
-              <button class="button is-danger" @click="downloadImg('JPG')">下载JPG</button>
+              <button class="button is-danger" @click="downloadImg('jpg')">下载JPG</button>
             </div>
           </div>
           <div class="input-box">
