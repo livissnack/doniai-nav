@@ -15,9 +15,9 @@
     <div class="section-box task-todo">
       <Todo />
     </div>
-    <div class="section-box">
-      <SystemMonitoring />
-    </div>
+<!--    <div class="section-box">-->
+<!--      <SystemMonitoring />-->
+<!--    </div>-->
   </div>
 </template>
   
@@ -27,7 +27,7 @@ import Todo from '@/components/Todo.vue'
 import News from '@/components/News.vue'
 import Music from '@/components/Music.vue'
 import QuickTools from '@/components/tools/index.vue'
-import SystemMonitoring from '@/components/SystemMonitoring.vue'
+// import SystemMonitoring from '@/components/SystemMonitoring.vue'
 export default {
     name: 'Sidebar',
     components: {
@@ -36,7 +36,7 @@ export default {
         News,
         Todo,
         QuickTools,
-      SystemMonitoring,
+      // SystemMonitoring,
     },
 }
 </script>

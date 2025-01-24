@@ -58,6 +58,7 @@ import BackTop from '@mlqt/vue-back-top'
 import Footer from '@/components/Footer.vue'
 import jsonNavs from '@/services/data.json'
 import {preloadMulitImg} from "@/utils/helper"
+import {getBgImage} from "@/services/api";
 
 Vue.use(BackTop)
 export default {
@@ -78,13 +79,14 @@ export default {
   beforeCreate() {
     setTimeout(() => {
       let imgList = [
-        'https://epg.112114.xyz/bingimg',
+        this.coverBg,
       ]
       preloadMulitImg(imgList)
     }, 200)
   },
   created() {
     this.getCurrentNavs(1)
+    this.getBingImg()
   },
   methods: {
     async getCurrentNavs(menu_id) {
@@ -107,6 +109,12 @@ export default {
     updateCurrentNavs(obj) {
       this.current_active_menu_id = obj.menu_id
       this.getCurrentNavs(obj.menu_id)
+    },
+    async getBingImg() {
+      const { data } = await getBgImage()
+      if (data.code === 200) {
+        this.coverBg = data.data
+      }
     },
   }
 }
