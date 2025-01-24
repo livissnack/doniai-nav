@@ -20,7 +20,7 @@
           <div class="show-box">
             <div class="set-qrcode">
               <widget-qrcode
-                  class="qrcode-generate"
+                  id="qrcode-generate"
                   :value="qrcode.value"
                   :template="qrcode.template"
                   :level="qrcode.level"
@@ -40,7 +40,7 @@
             </div>
             <div class="buttons">
               <button class="button is-info" @click="downloadImg('png')">下载PNG</button>
-              <button v-if="false" class="button is-danger" @click="downloadImg('svg')">下载SVG</button>
+              <button class="button is-danger" @click="downloadImg('JPG')">下载JPG</button>
             </div>
           </div>
           <div class="input-box">
@@ -377,6 +377,8 @@ import Vue from 'vue'
 import Navbar from '@/components/Navbar.vue'
 import BackTop from '@mlqt/vue-back-top'
 import Footer from '@/components/Footer.vue'
+import * as htmlToImage from 'html-to-image'
+import FileSaver from 'file-saver'
 
 Vue.use(BackTop)
 export default {
@@ -399,8 +401,10 @@ export default {
         innerColor: '#094304',
         outerColor: '',
         backgroundImage: '',
-        foregroundImage: 'https://minio.doniai.com/hiphup/qrcode/grass.png',
-        logo: 'https://minio.doniai.com/hiphup/qrcode/snail.png',
+        // foregroundImage: 'https://doniai.oss-cn-shenzhen.aliyuncs.com/qrcode-bg/grass.png',
+        foregroundImage: '',
+        // logo: 'https://doniai.oss-cn-shenzhen.aliyuncs.com/qrcode-bg/snail.png',
+        logo: '',
         text: '',
         textColor: '#2c2b2e',
         textStroke: '',
@@ -429,22 +433,16 @@ export default {
       })
     },
     downloadImg(type) {
-      if (['png', 'svg'].includes(type)) {
-        const qrcodeWidget = document.getElementsByClassName('qrcode-generate')
-        const canvas = qrcodeWidget[0].$canvas;
-        console.log(canvas)
-        if (canvas && canvas instanceof HTMLCanvasElement) {
-          // 创建一个 a 标签，并设置 href 和 download 属性
-          const el = document.createElement('a')
-          // 设置 href 为图片经过 base64 编码后的字符串，默认为 png 格式
-          el.href = canvas.toDataURL()
-          el.download = `${new Date().getTime()}.${type}`
-          // 创建一个点击事件并对 a 标签进行触发
-          const event = new MouseEvent('click')
-          el.dispatchEvent(event)
-        } else {
-          console.error('The selected element is not a valid canvas.')
-        }
+      if (['png', 'jpg'].includes(type)) {
+        const qrcodeWidget = document.getElementById('qrcode-generate')
+        htmlToImage.toBlob(qrcodeWidget).then(function (blob) {
+          let fileName = `${new Date().getTime()}.${type}`
+          if (window.saveAs) {
+            window.saveAs(blob, fileName)
+          } else {
+            FileSaver.saveAs(blob, fileName)
+          }
+        })
       } else {
         this.$buefy.snackbar.open({
           duration: 3000,
