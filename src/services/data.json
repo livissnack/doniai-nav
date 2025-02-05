@@ -835,6 +835,11 @@
           "name": "IPTV资源搜索引擎",
           "href": "https://www.foodieguide.com/iptvsearch",
           "color": "is-success"
+        },
+        {
+          "name": "中文寻星",
+          "href": "http://www.saoing.com/",
+          "color": "is-danger"
         }
       ]
     },
