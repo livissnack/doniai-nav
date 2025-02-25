@@ -371,12 +371,12 @@
         },
         {
           "name": "Minio存储",
-          "href": "https://minio.doniai.com",
+          "href": "https://minio.doniai.cn",
           "color": "is-info"
         },
         {
           "name": "Api接口文档",
-          "href": "https://showdoc.doniai.com",
+          "href": "https://doc.doniai.cn",
           "color": "is-warning"
         },
         {
@@ -529,17 +529,12 @@
         {
           "name": "茂业接口文档管理",
           "href": "http://172.29.105.77/web/#/3?page_id=2641",
-          "color": "is-success"
-        },
-        {
-          "name": "直播源接口管理",
-          "href": "http://114.55.166.223/interface",
-          "color": "is-danger"
+          "color": "is-primary"
         },
         {
           "name": "Eolinker接口管理",
           "href": "https://www.eolinker.com",
-          "color": "is-info"
+          "color": "is-success"
         }
       ]
     }
@@ -608,55 +603,66 @@
           "color": "is-primary"
         },
         {
-          "name": "直播测试",
-          "href": "https://live.doniai.com",
-          "color": "is-success"
-        },
-        {
           "name": "随机大小图片",
           "href": "https://picsum.photos",
-          "color": "is-danger"
+          "color": "is-success"
         },
         {
           "name": "电子书下载",
           "href": "https://iui.su/380",
-          "color": "is-warning"
+          "color": "is-danger"
         },
         {
           "name": "电子书阅读器",
-          "href": "https://nav.doniai.com/pc-book",
-          "color": "is-info"
+          "href": "/pc-book",
+          "color": "is-warning"
         },
         {
           "name": "图片压缩",
           "href": "https://img.livissnack.com",
-          "color": "is-primary"
+          "color": "is-info"
         },
         {
           "name": "键盘测试",
           "href": "https://keyboard.livissnack.com",
-          "color": "is-success"
+          "color": "is-primary"
         },
         {
           "name": "网络空间测绘",
           "href": "https://fofa.info",
-          "color": "is-danger"
+          "color": "is-success"
         },
         {
           "name": "IP INFO",
           "href": "https://ipinfo.io",
-          "color": "is-warning"
+          "color": "is-danger"
         },
         {
           "name": "二维码制作",
           "href": "/utils/qrcode",
-          "color": "is-info",
+          "color": "is-warning",
           "isNotNewBlack": true
         }
       ]
     },
     {
       "id": 2,
+      "title": "AI应用",
+      "items": [
+        {
+          "name": "DeepSeek(语言模型)",
+          "href": "https://deepseek.com",
+          "color": "is-primary"
+        },
+        {
+          "name": "即梦AI(图片生成)",
+          "href": "https://jimeng.jianying.com/",
+          "color": "is-success"
+        }
+      ]
+    },
+    {
+      "id": 3,
       "title": "镜像资源",
       "items": [
         {
@@ -677,7 +683,7 @@
       ]
     },
     {
-      "id": 3,
+      "id": 4,
       "title": "软件工具",
       "items": [
         {
@@ -743,7 +749,7 @@
       ]
     },
     {
-      "id": 4,
+      "id": 5,
       "title": "设计工具",
       "items": [
         {
@@ -759,7 +765,7 @@
       ]
     },
     {
-      "id": 5,
+      "id": 6,
       "title": "激活授权",
       "items": [
         {
@@ -775,7 +781,7 @@
       ]
     },
     {
-      "id": 6,
+      "id": 7,
       "title": "数据可视化",
       "items": [
         {
@@ -786,7 +792,7 @@
       ]
     },
     {
-      "id": 7,
+      "id": 8,
       "title": "优质接口数据源",
       "items": [
         {
@@ -822,8 +828,8 @@
       ]
     },
     {
-      "id": 8,
-      "title": "IPTV探测",
+      "id": 9,
+      "title": "IPTV",
       "items": [
         {
           "name": "酒店列表生成器",
@@ -839,7 +845,12 @@
         {
           "name": "中文寻星",
           "href": "http://www.saoing.com/",
-          "color": "is-danger"
+          "color": "is-warning"
+        },
+        {
+          "name": "EPG应用",
+          "href": "http://epg.114156.xyz/",
+          "color": "is-info"
         }
       ]
     },

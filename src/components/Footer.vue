@@ -144,8 +144,6 @@ export default {
   name: 'Footer',
   data() {
     return {
-      logoUrl: `${this.bucket_url}/uploads/logo/logo.png`,
-      licenseUrl: `${this.bucket_url}/uploads/others/license.png`,
       currentTime: timeNow(),
       wechat_class_name: 'wechat-hidden'
     }
