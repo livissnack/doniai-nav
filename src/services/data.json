@@ -376,7 +376,7 @@
         },
         {
           "name": "Api接口文档",
-          "href": "https://doc.doniai.cn",
+          "href": "https://doc.doniai.com",
           "color": "is-warning"
         },
         {
@@ -838,8 +838,13 @@
           "isNotNewBlack": true
         },
         {
-          "name": "IPTV资源搜索引擎",
+          "name": "直播源搜索引擎",
           "href": "https://www.foodieguide.com/iptvsearch",
+          "color": "is-success"
+        },
+        {
+          "name": "IPTV搜索",
+          "href": "https://www.iptv-search.com/zh-hans/",
           "color": "is-success"
         },
         {
