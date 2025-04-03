@@ -15,9 +15,9 @@
     <div class="section-box task-todo">
       <Todo />
     </div>
-<!--    <div class="section-box">-->
+    <div class="section-box">
 <!--      <SystemMonitoring />-->
-<!--    </div>-->
+    </div>
   </div>
 </template>
   
@@ -36,7 +36,7 @@ export default {
         News,
         Todo,
         QuickTools,
-      // SystemMonitoring,
+        // SystemMonitoring,
     },
 }
 </script>

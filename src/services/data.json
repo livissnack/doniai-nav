@@ -528,7 +528,7 @@
       "items": [
         {
           "name": "茂业接口文档管理",
-          "href": "http://172.29.105.77/web/#/3?page_id=2641",
+          "href": "https://172.29.105.77/web/#/3?page_id=2641",
           "color": "is-primary"
         },
         {
@@ -642,11 +642,27 @@
           "href": "/utils/qrcode",
           "color": "is-warning",
           "isNotNewBlack": true
+        },
+        {
+          "name": "IT开发工具集合",
+          "href": "https://tools.doniai.com",
+          "color": "is-info"
         }
       ]
     },
     {
       "id": 2,
+      "title": "写作",
+      "items": [
+        {
+          "name": "微信MD编辑器",
+          "href": "https://md.doocs.org/",
+          "color": "is-primary"
+        }
+      ]
+    },
+    {
+      "id": 3,
       "title": "AI应用",
       "items": [
         {
@@ -662,7 +678,7 @@
       ]
     },
     {
-      "id": 3,
+      "id": 4,
       "title": "镜像资源",
       "items": [
         {
@@ -683,7 +699,7 @@
       ]
     },
     {
-      "id": 4,
+      "id": 5,
       "title": "软件工具",
       "items": [
         {
@@ -749,7 +765,7 @@
       ]
     },
     {
-      "id": 5,
+      "id": 6,
       "title": "设计工具",
       "items": [
         {
@@ -765,7 +781,7 @@
       ]
     },
     {
-      "id": 6,
+      "id": 7,
       "title": "激活授权",
       "items": [
         {
@@ -781,7 +797,7 @@
       ]
     },
     {
-      "id": 7,
+      "id": 8,
       "title": "数据可视化",
       "items": [
         {
@@ -792,7 +808,7 @@
       ]
     },
     {
-      "id": 8,
+      "id": 9,
       "title": "优质接口数据源",
       "items": [
         {
@@ -828,7 +844,7 @@
       ]
     },
     {
-      "id": 9,
+      "id": 10,
       "title": "IPTV",
       "items": [
         {
@@ -860,7 +876,7 @@
       ]
     },
     {
-      "id": 9,
+      "id": 11,
       "title": "系统知识学习",
       "items": [
         {
@@ -871,7 +887,7 @@
       ]
     },
     {
-      "id": 10,
+      "id": 12,
       "title": "VPS讨论周刊",
       "items": [
         {
@@ -882,7 +898,7 @@
       ]
     },
     {
-      "id": 11,
+      "id": 13,
       "title": "节点转化工具",
       "items": [
         {
