@@ -65,6 +65,11 @@ const routes = [
     component: () => import('@/views/utils/Color.vue')
   },
   {
+    path: '/utils/docker',
+    name: 'dockerMirrors',
+    component: () => import('@/views/utils/Docker.vue')
+  },
+  {
     path: '/utils/design-card',
     name: 'cardDesign',
     component: () => import('@/views/utils/CardDesign.vue')

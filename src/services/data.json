@@ -688,13 +688,14 @@
         },
         {
           "name": "中科镜像",
-          "href": "http://mirrors.ustc.edu.cn/",
+          "href": "https://mirrors.ustc.edu.cn/",
           "color": "is-success"
         },
         {
           "name": "Docker镜像加速监控",
-          "href": "http://status.kggzs.cn/status/docker",
-          "color": "is-danger"
+          "href": "/utils/docker",
+          "color": "is-danger",
+          "isNotNewBlack": true
         }
       ]
     },
