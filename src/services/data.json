@@ -383,6 +383,16 @@
           "name": "代码管理",
           "href": "https://codeup.aliyun.com",
           "color": "is-primary"
+        },
+        {
+          "name": "图床应用",
+          "href": "https://ne.livissnack.com",
+          "color": "is-success"
+        },
+        {
+          "name": "NodePass中转",
+          "href": "https://nodepass.livissnack.com/",
+          "color": "is-danger"
         }
       ]
     },
@@ -392,12 +402,12 @@
       "items": [
         {
           "name": "接口文档-后台-开发",
-          "href": "http://192.168.10.9:8083/backEnd/doc.html#/home",
+          "href": "http://192.168.50.217:8083/backEnd/doc.html#/home",
           "color": "is-primary"
         },
         {
           "name": "接口文档-前台-开发",
-          "href": "http://192.168.10.9:8801/front/doc.html#/home",
+          "href": "http://192.168.50.217:8801/front/doc.html#/home",
           "color": "is-success"
         },
         {
