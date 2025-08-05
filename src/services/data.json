@@ -419,6 +419,11 @@
           "name": "海外-应用-站点",
           "href": "https://www.mloongbld.sg",
           "color": "is-info"
+        },
+        {
+          "name": "海外-应用-管理后台",
+          "href": "https://ab8a384ac645f337.mloongbld.sg/",
+          "color": "is-warning"
         }
       ]
     },
@@ -923,6 +928,17 @@
           "href": "/utils/node_parse",
           "color": "is-success",
           "isNotNewBlack": true
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "title": "固件刷机",
+      "items": [
+        {
+          "name": "华硕路由固件",
+          "href": "https://www.asusgo.com/firmware",
+          "color": "is-primary"
         }
       ]
     }
