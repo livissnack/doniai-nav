@@ -689,6 +689,16 @@
           "name": "即梦AI(图片生成)",
           "href": "https://jimeng.jianying.com/",
           "color": "is-success"
+        },
+        {
+          "name": "豆包(AI模型)",
+          "href": "https://www.doubao.com/chat/",
+          "color": "is-danger"
+        },
+        {
+          "name": "Kimi(ppt生成)",
+          "href": "https://kimi.com/",
+          "color": "is-info"
         }
       ]
     },
