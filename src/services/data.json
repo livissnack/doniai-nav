@@ -971,12 +971,12 @@
         {
           "name": "Materialize",
           "href": "https://materializecss.com",
-          "color": "is-warning"
+          "color": "is-danger"
         },
         {
           "name": "Bootstrap",
           "href": "https://getbootstrap.com",
-          "color": "is-danger"
+          "color": "is-warning"
         },
         {
           "name": "Semantic-UI",
@@ -996,12 +996,12 @@
         {
           "name": "FastBootstrap",
           "href": "https://fastbootstrap.com",
-          "color": "is-warning"
+          "color": "is-danger"
         },
         {
           "name": "Daisyui",
           "href": "https://daisyui.com",
-          "color": "is-danger"
+          "color": "is-warning"
         }
       ]
     },
@@ -1052,7 +1052,7 @@
         {
           "name": "Eslint",
           "href": "https://eslint.org",
-          "color": "is-danger"
+          "color": "is-warning"
         }
       ]
     },
@@ -1099,7 +1099,7 @@
         {
           "name": "Eggjs",
           "href": "https://eggjs.org",
-          "color": "is-info"
+          "color": "is-warning"
         }
       ]
     }
@@ -1337,6 +1337,11 @@
           "href": "/rollcall",
           "color": "is-danger",
           "isNotNewBlack": true
+        },
+        {
+          "name": "趣味点名",
+          "href": "https://study.livissnack.com",
+          "color": "is-warning"
         }
       ]
     },
