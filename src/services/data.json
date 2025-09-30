@@ -325,17 +325,6 @@
           "href": "/utils/project",
           "color": "is-primary",
           "isNotNewBlack": true
-        },
-        {
-          "name": "成绩卡",
-          "href": "/score",
-          "color": "is-success",
-          "isNotNewBlack": true
-        },
-        {
-          "name": "教育平台",
-          "href": "https://study.livissnack.com",
-          "color": "is-danger"
         }
       ]
     },
@@ -1333,14 +1322,21 @@
       "title": "数学竞赛",
       "items": [
         {
-          "name": "袋鼠数学竞赛",
-          "href": "https://zh.hkmkc.org",
-          "color": "is-primary"
+          "name": "成绩卡",
+          "href": "/score",
+          "color": "is-primary",
+          "isNotNewBlack": true
         },
         {
-          "name": "华罗庚杯",
-          "href": "https://www.hkhcm.org",
+          "name": "教育平台",
+          "href": "https://study.livissnack.com",
           "color": "is-success"
+        },
+        {
+          "name": "点名系统",
+          "href": "/rollcall",
+          "color": "is-danger",
+          "isNotNewBlack": true
         }
       ]
     },
@@ -1352,6 +1348,11 @@
           "name": "英国牛津大学",
           "href": "https://home.oxfordowl.co.uk/kids-activities/",
           "color": "is-primary"
+        },
+        {
+          "name": "华罗庚杯",
+          "href": "https://www.hkhcm.org",
+          "color": "is-success"
         }
       ]
     }

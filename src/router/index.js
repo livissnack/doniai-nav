@@ -25,6 +25,11 @@ const routes = [
     component: () => import('@/views/Score.vue')
   },
   {
+    path: '/rollcall',
+    name: 'rollcall',
+    component: () => import('@/views/Rollcall.vue')
+  },
+  {
     path: '/player',
     name: 'player',
     component: () => import('@/views/Player.vue')
