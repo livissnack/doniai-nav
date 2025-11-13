@@ -334,8 +334,9 @@
       "items": [
         {
           "name": "LivisSnack监控",
-          "href": "https://status.livissnack.com",
-          "color": "is-primary"
+          "href": "/utils/monitor",
+          "color": "is-primary",
+          "isNotNewBlack": true
         }
       ]
     },
@@ -413,6 +414,16 @@
           "name": "海外-应用-管理后台",
           "href": "https://ab8a384ac645f337.mloongbld.sg/",
           "color": "is-warning"
+        },
+        {
+          "name": "国内-应用-装机星球",
+          "href": "https://diyplanets.com/",
+          "color": "is-primary"
+        },
+        {
+          "name": "国内-应用-装机龙工具",
+          "href": "https://tools.diyplanets.com/",
+          "color": "is-success"
         }
       ]
     },
