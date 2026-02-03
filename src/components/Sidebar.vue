@@ -15,6 +15,9 @@
     <div class="section-box task-todo">
       <Todo />
     </div>
+    <div class="section-box task-todo">
+      <PricePannel />
+    </div>
     <div class="section-box">
 <!--      <SystemMonitoring />-->
     </div>
@@ -26,16 +29,18 @@ import Weather from '@/components/Weather.vue'
 import Todo from '@/components/Todo.vue'
 import News from '@/components/News.vue'
 import Music from '@/components/Music.vue'
+import PricePannel from '@/components/PricePannel.vue'
 import QuickTools from '@/components/tools/index.vue'
 // import SystemMonitoring from '@/components/SystemMonitoring.vue'
 export default {
     name: 'Sidebar',
     components: {
-        Weather,
-        Music,
-        News,
-        Todo,
-        QuickTools,
+      Weather,
+      Music,
+      News,
+      Todo,
+      QuickTools,
+      PricePannel,
         // SystemMonitoring,
     },
 }

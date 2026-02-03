@@ -376,13 +376,18 @@
         },
         {
           "name": "图床应用",
-          "href": "https://ne.livissnack.com",
+          "href": "https://pic.114156.xyz",
           "color": "is-success"
         },
         {
           "name": "NodePass中转",
-          "href": "https://nodepass.livissnack.com/",
+          "href": "https://nd.livissnack.com/",
           "color": "is-danger"
+        },
+        {
+          "name": "个人工具集",
+          "href": "https://ut.doniai.com/",
+          "color": "is-info"
         }
       ]
     },

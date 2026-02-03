@@ -13,7 +13,7 @@
 <script>
 import Vue from 'vue'
 import APlayer from '@moefe/vue-aplayer'
-import {getMusic} from "@/services/api"
+import {getVikiRandomMusic, getVikiRandomMusicDetail} from "@/services/api1";
 Vue.use(APlayer, {
   defaultCover: 'https://github.com/u3u.png',
   productionTip: true
@@ -34,19 +34,19 @@ export default {
       this.$router.push({ path: '/player' })
     },
     async getMusicList() {
-      const { data } = await getMusic('netease')
-      if (data.code === 200) {
-        let musicList = data.data
-        musicList.forEach(item => {
-          this.audio.push({
-            name: item.name,
-            artist: item.artist,
-            url: item.url,
-            cover: item.pic,
-            lrc: item.lrc,
-          })
+      const { data: list } = await getVikiRandomMusic()
+      const rankId = list[0].id
+      const { data: musicList } = await getVikiRandomMusicDetail(rankId)
+      musicList.forEach(item => {
+        this.audio.push({
+          name: item.title,
+          artist: item.artist[0].name,
+          url: item.link,
+          cover: item.album.cover,
+          lrc: `https://60s.viki.moe/v2/lyric?query=${item.title}`,
         })
-      }
+      })
+      console.log(this.audio, 'kkkk---')
     },
   }
 }

@@ -35,11 +35,11 @@
 </template>
 
 <script>
-import request from 'axios'
 import LunarTime from '@/components/LunarTime.vue'
 import Countdown from '@/components/Countdown.vue'
 import {isEmpty} from "@/utils/helper";
 import {getWeather} from "@/services/api";
+import {getVikiWeatherData} from "@/services/api1";
 
 export default {
   name: 'Weather',
@@ -50,14 +50,8 @@ export default {
   data() {
     return {
       weatherData: {
-        weather: [],
-        main: {
-          temp: '',
-        },
-        wind: {},
-        sys: {
-          country: ''
-        },
+        weather: {},
+        location: { country: '' },
       },
       up_down_text: '',
       solar2lunarData: '',
@@ -74,27 +68,27 @@ export default {
       return `${this.weatherData.name}`
     },
     weatherIcon() {
-      if (this.weatherData.weather[0]) {
-        let icon = this.weatherData.weather[0].icon
-        return require(`../assets/weather/${icon}@2x.png`)
+      if (this.weatherData.weather) {
+        const currentHour = new Date().getHours();
+        const timeSuffix = currentHour >= 6 && currentHour < 18 ? 'd' : 'n';
+        let icon = this.weatherData.weather.condition_code + timeSuffix;
+        return require(`../assets/weather/${icon}@2x.png`);
       }
     },
     temperature() {
-      return this.weatherData.main.temp
+      return this.weatherData.weather.temperature
     },
     windpower() {
-      return '风速：' + this.weatherData.wind.speed + '级'
+      return '风速：' + this.weatherData.weather.wind_power + '级'
     },
     humidity() {
-      return '湿度：' + this.weatherData.main.humidity + '%'
+      return '湿度：' + this.weatherData.weather.humidity + '%'
     },
     description() {
-      if (this.weatherData.weather[0]) {
-        return this.weatherData.weather[0].description
-      }
+      return this.weatherData.weather.wind_direction
     },
     country() {
-      return this.weatherData.sys.country
+      return this.weatherData.location.country
     }
   },
   filters: {
@@ -104,41 +98,13 @@ export default {
     }
   },
   async created() {
-    await this.getLocalInfo()
+    await this.getWeather()
   },
   methods: {
     async getWeather() {
-      if (isEmpty(this.latitude) || isEmpty(this.longitude)) {
-        return
-      }
-      const { data } = await getWeather(this.latitude, this.longitude)
-      if (data.code === 200) {
-        this.weatherData = data.data
-      }
-    },
-    async getLocalInfo() {
-      navigator.geolocation.getCurrentPosition((data) => {
-        this.onComplete(data)
-      }, (err) => {
-        this.onError(err)
-      })
-    },
-    async onComplete(data) {
-      if (data && data.coords && data.coords.latitude && data.coords.longitude) {
-        this.latitude = data.coords.latitude
-        this.longitude = data.coords.longitude
-        await this.getWeather()
-      }
-    },
-    onError(err) {
-      let errMsg = this.getErrMsg(err.code)
-      this.$buefy.snackbar.open({
-        duration: 3000,
-        message: errMsg,
-        type: 'is-danger',
-        position: 'is-bottom-right',
-        actionText: 'Msg'
-      })
+      const data = await getVikiWeatherData({ query: this.city })
+      console.log(data.data, 'lll---')
+      this.weatherData = data.data
     },
     getErrMsg(code) {
       switch (code) {
