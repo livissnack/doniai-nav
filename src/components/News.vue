@@ -7,8 +7,8 @@
     <div class="hot-news">
       <div class="news-carousel">
         <div class="news-group" v-for="(group, index) in groupedNews" :key="index" :class="{ active: currentIndex === index }">
-          <div class="news-item" v-for="item in group" :key="item.id" @click="handleOpenLink(item)" :title="item.title">
-            {{ item.title }}
+          <div class="news-item" v-for="item in group" :key="item.id" @click="handleOpenLink(item)" :title="item.name">
+            {{ item.name }}
           </div>
         </div>
       </div>
@@ -18,7 +18,6 @@
 
 <script>
 import { getHotNews } from '@/services/api'
-import {getVikiAiNews} from "@/services/api1";
 export default {
   name: 'News',
   data() {
@@ -60,11 +59,10 @@ export default {
       clearInterval(this.intervalId);
     },
     async getShowHotNews() {
-      // let type = this.news_type
-      // const { data } = await getHotNews(type)
-      const { data } = await getVikiAiNews()
-      console.log(data, 'mmm---')
-      this.list = data.news
+      let type = this.news_type
+      const { data } = await getHotNews(type)
+      console.log(data, 'll---')
+      this.list = data.data
     },
     handleOpenLink(item) {
       let url = item.link

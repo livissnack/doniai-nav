@@ -5,7 +5,7 @@ export async function getVikiAiNews() {
 }
 
 export async function getVikiExchangeRate() {
-  return request('https://60s.viki.moe/v2/exchange-rate');
+  return request('https://60s.viki.moe/v2/exchange-rate?currency=USD');
 }
 
 export async function getVikiRandomMusic() {
@@ -14,6 +14,10 @@ export async function getVikiRandomMusic() {
 
 export async function getVikiRandomMusicDetail(id) {
   return request(`https://60s.viki.moe/v2/ncm-rank/${id}`);
+}
+
+export async function getVikiFuelPrice(region) {
+  return request(`https://60s.viki.moe/v2/fuel-price?region=${region}`);
 }
 
 export async function getVikiWeatherData(params = {}) {

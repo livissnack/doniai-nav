@@ -70,7 +70,7 @@ export default {
     weatherIcon() {
       if (this.weatherData.weather) {
         const currentHour = new Date().getHours();
-        const timeSuffix = currentHour >= 6 && currentHour < 18 ? 'd' : 'n';
+        const timeSuffix = currentHour >= 6 && currentHour < 18 ? '' : '';
         let icon = this.weatherData.weather.condition_code + timeSuffix;
         return require(`../assets/weather/${icon}@2x.png`);
       }
@@ -85,7 +85,7 @@ export default {
       return '湿度：' + this.weatherData.weather.humidity + '%'
     },
     description() {
-      return this.weatherData.weather.wind_direction
+      return `${this.weatherData.weather.wind_direction} - ${this.weatherData.weather.condition}`
     },
     country() {
       return this.weatherData.location.country

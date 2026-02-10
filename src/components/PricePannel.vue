@@ -19,12 +19,10 @@
       <div class="info-item">
         <div class="info-label">
           <i class="fas fa-gas-pump icon-oil"></i>
-          今日油价 (北京)
+          今日油价 ({{ region }})
         </div>
         <div class="info-grid">
-          <div class="gas-type">92# <span>6.77</span></div>
-          <div class="gas-type">95# <span>7.21</span></div>
-          <div class="gas-type">0# <span>6.77</span></div>
+          <div class="gas-type" v-for="(fuel, index) in fuelList" :key="index">{{ fuel.name}} <span>{{ fuel.price }}</span></div>
         </div>
       </div>
 
@@ -36,16 +34,29 @@
 </template>
 
 <script>
+import {getVikiExchangeRate, getVikiFuelPrice} from "@/services/api1";
+
 export default {
   name: 'LiveInfoCard',
   data() {
     return {
       showInfo: true,
+      region: '蕲春',
+      rateList: [],
+      fuelList: [],
     }
   },
   created() {
+    this.getData()
   },
   methods: {
+    async getData() {
+      let res1 = await getVikiExchangeRate()
+      let res2 = await getVikiFuelPrice(this.region)
+      this.rateList = res1.data.rates
+      this.fuelList = res2.data.items
+      console.log(res1, this.fuelList, 'kkk---')
+    }
   }
 }
 </script>
