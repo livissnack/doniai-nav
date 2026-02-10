@@ -16,7 +16,7 @@
       <Todo />
     </div>
     <div class="section-box task-todo">
-      <PricePannel />
+      <PricePanel />
     </div>
     <div class="section-box">
 <!--      <SystemMonitoring />-->
@@ -29,7 +29,7 @@ import Weather from '@/components/Weather.vue'
 import Todo from '@/components/Todo.vue'
 import News from '@/components/News.vue'
 import Music from '@/components/Music.vue'
-import PricePannel from '@/components/PricePannel.vue'
+import PricePanel from '@/components/PricePanel.vue'
 import QuickTools from '@/components/tools/index.vue'
 // import SystemMonitoring from '@/components/SystemMonitoring.vue'
 export default {
@@ -40,7 +40,7 @@ export default {
       News,
       Todo,
       QuickTools,
-      PricePannel,
+      PricePanel,
         // SystemMonitoring,
     },
 }

@@ -1,25 +1,16 @@
 import request from '../utils/request'
-const ApiVersion = 'api/v1.0'
+const ApiVersion = ''
 
 export async function getBgImage() {
-  return request('post', `${ApiVersion}/bing`)
+  return request('get', `${ApiVersion}/all?type=bing`)
 }
 
 export async function getHotNews(t) {
-  return request('post', `${ApiVersion}/news`)
+  return request('get', `${ApiVersion}/all?type=news`)
 }
 
-export async function getWeather(lat, lon) {
-  return request('post', `${ApiVersion}/weather`, {
-    latitude: lat,
-    longitude: lon
-  })
-}
-
-export async function getMedia(keyword) {
-  return request('post', `${ApiVersion}/media`, {
-    keyword: keyword,
-  })
+export async function getWeather() {
+  return request('get', `${ApiVersion}/all?type=weather`)
 }
 
 export async function getBase64(str) {
@@ -28,12 +19,18 @@ export async function getBase64(str) {
   })
 }
 
-export async function getMusic(type) {
-  return request('post', `${ApiVersion}/music`, {
-    type: type,
-  })
+export async function getMusic() {
+  return request('get', `${ApiVersion}/all?type=music`)
 }
 
 export async function getNodeSubscribe(url) {
   return request('get', url)
+}
+
+export async function getExchangeRate() {
+  return request('get', `${ApiVersion}/all?type=rate`);
+}
+
+export async function getFuelPrice() {
+  return request('get', `${ApiVersion}/all?type=fuel`);
 }

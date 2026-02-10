@@ -7,7 +7,8 @@
     <div class="hot-news">
       <div class="news-carousel">
         <div class="news-group" v-for="(group, index) in groupedNews" :key="index" :class="{ active: currentIndex === index }">
-          <div class="news-item" v-for="item in group" :key="item.id" @click="handleOpenLink(item)" :title="item.name">
+          <div class="news-item" v-for="item in group" :key="item.id" @click="handleOpenLink(item)" :title="`${item.name}`">
+            <img :src="newsIcon(item)" :alt="item.source" width="20" height="20">
             {{ item.name }}
           </div>
         </div>
@@ -35,7 +36,7 @@ export default {
         result.push(this.list.slice(i, i + 5));
       }
       return result;
-    }
+    },
   },
   async created() {
     await this.getShowHotNews()
@@ -61,13 +62,21 @@ export default {
     async getShowHotNews() {
       let type = this.news_type
       const { data } = await getHotNews(type)
-      console.log(data, 'll---')
-      this.list = data.data
+      this.list = [
+        ...(data?.baidu_list || []).map(item => ({ ...item, source: 'baidu' })),
+        ...(data?.nodeseek_list || []).map(item => ({ ...item, source: 'nodeseek' })),
+        ...(data?.nikkei_list || []).map(item => ({ ...item, source: 'nikkei' }))
+      ].filter(item => item && item.name && item.url)
     },
     handleOpenLink(item) {
-      let url = item.link
+      let url = item.url
       this.$OPENLINK(url)
-    }
+    },
+    newsIcon(item) {
+      if (item && item.source) {
+        return require(`../assets/news/${item.source}.png`);
+      }
+    },
   }
 }
 </script>

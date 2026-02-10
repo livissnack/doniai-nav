@@ -113,7 +113,7 @@ export default {
     async getBingImg() {
       const { data } = await getBgImage()
       if (data.code === 200) {
-        this.coverBg = data.data
+        this.coverBg = data.data.cover_4k
       }
     },
   }

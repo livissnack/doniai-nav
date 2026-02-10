@@ -37,9 +37,7 @@
 <script>
 import LunarTime from '@/components/LunarTime.vue'
 import Countdown from '@/components/Countdown.vue'
-import {isEmpty} from "@/utils/helper";
 import {getWeather} from "@/services/api";
-import {getVikiWeatherData} from "@/services/api1";
 
 export default {
   name: 'Weather',
@@ -88,7 +86,7 @@ export default {
       return `${this.weatherData.weather.wind_direction} - ${this.weatherData.weather.condition}`
     },
     country() {
-      return this.weatherData.location.country
+      return this.weatherData.location.city || ''
     }
   },
   filters: {
@@ -102,8 +100,7 @@ export default {
   },
   methods: {
     async getWeather() {
-      const data = await getVikiWeatherData({ query: this.city })
-      console.log(data.data, 'lll---')
+      const { data } = await getWeather({ query: this.city })
       this.weatherData = data.data
     },
     getErrMsg(code) {

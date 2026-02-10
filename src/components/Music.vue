@@ -14,6 +14,7 @@
 import Vue from 'vue'
 import APlayer from '@moefe/vue-aplayer'
 import {getMusic} from "@/services/api"
+import {isEmpty} from "@/utils/helper";
 Vue.use(APlayer, {
   defaultCover: 'https://github.com/u3u.png',
   productionTip: true
@@ -34,9 +35,8 @@ export default {
       this.$router.push({ path: '/player' })
     },
     async getMusicList() {
-      const { data } = await getMusic('netease')
-      if (data.code === 200) {
-        let musicList = data.data
+      const { data: musicList } = await getMusic()
+      if (!isEmpty(musicList)) {
         musicList.forEach(item => {
           this.audio.push({
             name: item.name,

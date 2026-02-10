@@ -4,15 +4,15 @@
       <div><h3>实时快讯</h3></div>
     </div>
 
-    <div class="info-content" v-if="showInfo">
+    <div class="info-content" v-if="currentCurrency">
       <div class="info-item">
         <div class="info-label">
           <i class="fas fa-chart-line icon-rate"></i>
-          汇率 (USD/CNY)
+          汇率 ({{ currentCurrency }}/{{ targetCurrency }})
         </div>
         <div class="info-value">
-          <span class="price">7.2458</span>
-          <span class="trend up"><i class="fas fa-caret-up"></i> 0.12%</span>
+          <span class="price">{{ targetCurrencyValue }}</span>
+<!--          <span class="trend up"><i class="fas fa-caret-up"></i> 0.12%</span>-->
         </div>
       </div>
 
@@ -27,23 +27,26 @@
       </div>
 
       <div class="info-footer">
-        数据更新于：2026-02-03
+        数据更新于：{{ updatedTime }}
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import {getVikiExchangeRate, getVikiFuelPrice} from "@/services/api1";
+import {getExchangeRate, getFuelPrice} from "@/services/api";
 
 export default {
-  name: 'LiveInfoCard',
+  name: 'PricePanel',
   data() {
     return {
-      showInfo: true,
       region: '蕲春',
       rateList: [],
       fuelList: [],
+      currentCurrency: '',
+      targetCurrency: '',
+      targetCurrencyValue: null,
+      updatedTime: '',
     }
   },
   created() {
@@ -51,11 +54,15 @@ export default {
   },
   methods: {
     async getData() {
-      let res1 = await getVikiExchangeRate()
-      let res2 = await getVikiFuelPrice(this.region)
-      this.rateList = res1.data.rates
-      this.fuelList = res2.data.items
-      console.log(res1, this.fuelList, 'kkk---')
+      let { data: rateData } = await getExchangeRate()
+      let { data: fuelData } = await getFuelPrice(this.region)
+      this.rateList = rateData.data.rates
+      this.fuelList = fuelData.data.items
+      this.currentCurrency = rateData.data.base_code
+      this.updatedTime = rateData.data.updated
+      let rmbData = rateData.data.rates.find(item => item.currency === 'CNY')
+      this.targetCurrency = rmbData.currency
+      this.targetCurrencyValue = rmbData.rate
     }
   }
 }

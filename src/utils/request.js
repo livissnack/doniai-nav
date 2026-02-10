@@ -2,28 +2,29 @@ import axios from 'axios'
 
 // 环境的切换
 axios.defaults.baseURL = process.env.VUE_APP_SERVER_URL
-const secretKey = process.env.VUE_APP_SECRET_KEY
 
 // 请求超时时间
 axios.defaults.timeout = 10000
 
 // post请求头
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
-axios.defaults.headers.post['G3X-Auth-Token'] = secretKey
 
 // 请求拦截器
 axios.interceptors.request.use(
-  config => {
-    // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token，不用每次请求都手动添加了
-    // 即使本地存在token，也有可能token是过期的，所以在响应拦截器中要对返回状态进行判断
-    const token = ''
-    token && (config.headers.Authorization = token)
-    return config
-  },
-  error => {
-    return Promise.error(error)
-  }
-)
+    config => {
+      const token = process.env.VUE_APP_SECRET_KEY;
+
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+
+      return config;
+    },
+    error => {
+      return Promise.reject(error);
+    }
+);
+
 
 // 响应拦截器
 axios.interceptors.response.use(
@@ -34,12 +35,11 @@ axios.interceptors.response.use(
       return Promise.reject(response)
     }
   },
-  // 服务器状态码不是200的情况
   error => {
     if (error && error.response) {
       let res = {}
       res.code = error.response.status
-      res.msg = throwErr(error.response.status, error.response) //throwErr 捕捉服务端的http状态码 定义在utils工具类的方法
+      res.msg = throwErr(error.response.status, error.response)
       return Promise.reject(res)
     }
     return Promise.reject(error)
@@ -47,13 +47,12 @@ axios.interceptors.response.use(
 )
 
 export default function request(method, url, data) {
-  //暴露 request 给我们好API 管理
-  method = method.toLocaleLowerCase() //封装RESTful API的各种请求方式 以 post get delete为例
+  method = method.toLocaleLowerCase()
   if (method === 'get') {
     return axios.get(url, { params: data })
   } else if (method === 'post') {
     if (data instanceof FormData) {
-      var config = {}
+      let config = {}
       config.headers = { 'Content-Type': 'multipart/form-data' }
       return axios.post(url, data, config)
     } else {
