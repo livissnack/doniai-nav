@@ -55,7 +55,6 @@ import Navbar from '@/components/Navbar.vue'
 import Sidebar from '@/components/Sidebar.vue'
 import BackTop from '@mlqt/vue-back-top'
 import Footer from '@/components/Footer.vue'
-import { getBase64 } from '@/services/api'
 import { isBase64 } from '@/utils/helper'
 
 Vue.use(BackTop)
@@ -97,10 +96,32 @@ export default {
     handleClearBase64() {
       this.content = ''
     },
-    async handleBase64() {
-      const { data } = await getBase64(this.content)
-      if (data.code === 200) {
-        this.result = data.data
+    handleBase64() {
+      const val = this.content ? this.content.trim() : '';
+      if (!val) {
+        this.$buefy.toast.open({ message: '请输入内容', type: 'is-warning' });
+        return;
+      }
+
+      const base64Regex = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/;
+
+      try {
+        if (base64Regex.test(val)) {
+          const decoded = atob(val);
+          this.result = decodeURIComponent(Array.prototype.map.call(decoded, (c) => {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+          }).join(''));
+
+          this.$buefy.toast.open({ message: '检测到 Base64，已为您解密', type: 'is-success' });
+        } else {
+          throw new Error("Not Base64");
+        }
+      } catch (e) {
+        this.result = btoa(encodeURIComponent(val).replace(/%([0-9A-F]{2})/g, (match, p1) => {
+          return String.fromCharCode('0x' + p1);
+        }));
+
+        this.$buefy.toast.open({ message: '非 Base64 格式，已为您加密', type: 'is-info' });
       }
     },
     onCopySuccess() {

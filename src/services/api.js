@@ -13,12 +13,6 @@ export async function getWeather() {
   return request('get', `${ApiVersion}/all?type=weather`)
 }
 
-export async function getBase64(str) {
-  return request('post', `${ApiVersion}/b64`, {
-    str: str,
-  })
-}
-
 export async function getMusic() {
   return request('get', `${ApiVersion}/all?type=music`)
 }
