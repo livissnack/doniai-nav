@@ -15,7 +15,9 @@ module.exports = {
     const cdn = {
       css: [
         '//fastly.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css',
-        '//fastly.jsdelivr.net/npm/buefy@0.8.15/dist/buefy.min.css'
+        '//fastly.jsdelivr.net/npm/buefy@0.8.15/dist/buefy.min.css',
+        '//fastly.jsdelivr.net/npm/codemirror@5.65.12/lib/codemirror.css',
+        '//fastly.jsdelivr.net/npm/codemirror@5.65.12/theme/base16-light.css'
       ],
       image: [
           // '//epg.112114.xyz/bingimg',
@@ -26,6 +28,9 @@ module.exports = {
         '//fastly.jsdelivr.net/npm/axios@0.21.2/dist/axios.min.js',
         '//fastly.jsdelivr.net/npm/buefy@0.8.15/dist/buefy.min.js',
         '//fastly.jsdelivr.net/npm/widget-qrcode@1.0.4/dist/widget-qrcode.min.js',
+        '//fastly.jsdelivr.net/npm/codemirror@5.65.12/lib/codemirror.js',
+        '//fastly.jsdelivr.net/npm/codemirror@5.65.12/mode/yaml/yaml.js',
+        '//fastly.jsdelivr.net/npm/vue-codemirror@4.0.6/dist/vue-codemirror.js'
       ]
     }
 

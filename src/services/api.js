@@ -34,3 +34,11 @@ export async function getExchangeRate() {
 export async function getFuelPrice() {
   return request('get', `${ApiVersion}/all?type=fuel`);
 }
+
+export async function getHotelIptvM3u(ip) {
+  return request('get', `${ApiVersion}/hotel?ip=${ip}`);
+}
+
+export async function getNodeParse(links) {
+  return request('post', `${ApiVersion}/convert`, links);
+}

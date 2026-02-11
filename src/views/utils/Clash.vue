@@ -9,26 +9,35 @@
           <div class="column is-three-quarters">
             <div class="mt-4 play-input">
               <div class="input-box">
-                <b-field :message="validIpMsg">
-                <b-input @input="handleValidIpMsg" v-model="ip" placeholder="请输入酒店IP地址" maxlength="400" icon-pack="fas"
+                <b-field :message="validClashMsg">
+                <b-input class="custom-min-height" @input="handleValidClashMsg" v-model="nodeList" placeholder="请输入节点数据" type="textarea" maxlength="2000" icon-pack="fas"
                          icon-right="times"
                          icon-right-clickable
                          @icon-right-click="clearIconClick"></b-input>
                 </b-field>
               </div>
-              <div class="start-play-btn">
-                <b-button type="is-success" :disabled="validIpMsg !== ''" @click="handleParse">解析</b-button>
-              </div>
             </div>
 
             <div class="operate-btn">
+              <div class="start-play-btn">
+                <b-button type="is-success" :disabled="validClashMsg !== ''" @click="handleParse">解析</b-button>
+              </div>
               <div class="btn-box">
-                <b-button type="is-danger" :disabled="disableDownload" :loading="loadingDownload" @click="handleDownloadM3u">下载m3u</b-button>
+                <b-button type="is-danger" :disabled="disableDownload" :loading="loadingDownload" @click="handleDownloadClash">下载Clash</b-button>
               </div>
             </div>
 
             <div class="parse-content">
-              <div class="html" v-html="m3u"></div>
+              <div class="parse-header">
+                <b-icon icon="code" size="is-small" pack="fas"></b-icon>
+                <span>YAML 配置预览</span>
+              </div>
+
+              <codemirror
+                  v-model="parseConfig"
+                  :options="cmOptions"
+                  ref="myCm"
+              ></codemirror>
             </div>
           </div>
           <div class="column">
@@ -57,7 +66,9 @@ import Sidebar from '@/components/Sidebar.vue'
 import BackTop from '@mlqt/vue-back-top'
 import Footer from '@/components/Footer.vue'
 import MediaResource from "@/components/MediaResource.vue"
+import { codemirror } from 'vue-codemirror'
 import {isEmpty} from "@/utils/helper"
+import {getNodeParse} from "@/services/api";
 
 Vue.use(BackTop)
 export default {
@@ -66,15 +77,30 @@ export default {
     MediaResource,
     Navbar,
     Sidebar,
-    Footer
+    Footer,
+    codemirror
   },
   data() {
     return {
-      validIpMsg: '',
-      ip: '61.136.172.236:9901',
-      m3u: '暂无解析数据~',
+      validClashMsg: '',
+      nodeList: 'vless://06a0a567-4e14-4b19-9bf8-70eccbba1ddb@80.75.218.223:47833?encryption=none&security=reality&flow=xtls-rprx-vision&type=tcp&sni=www.amazon.com&pbk=QWbn09eWFDcBnck72-kcdLMWchaZ9zLGNpUlwz1BGQE&fp=chrome#[自建] 德国 01\n' +
+          'hysteria://1.2.3.4:12854?protocol=udp&auth=pekopeko&peer=wechat.com&insecure=1&upmbps=50&downmbps=250&alpn=h3#hysteria\n' +
+          'ss://YWVzLTI1Ni1nY206cjROQndqczFxOWRWenJ0cWxNZUpzcDdlWnlDaTY4bEVyVms1dURzbw==@151.242.189.239:33560#[自建] 台湾 01\n' +
+          'hysteria2://P%40ssw0rd1234@example.com:443/?protocol=udp&obfs=salamander&obfs-password=obfs_pwd&sni=www.example.com&insecure=0&pinSHA256=BA%3A88%3A45%3A17%3AA1%3A&up=100Mbps&down=200Mbps#MyHysteria',
+      parseConfig: '暂无解析数据~',
       disableDownload: true,
       loadingDownload: false,
+      cmOptions: {
+        tabSize: 2,
+        mode: 'text/x-yaml',
+        theme: 'base16-light',
+        lineNumbers: true,
+        readOnly: false,
+        lineWrapping: true,
+        viewportMargin: Infinity,
+        cursorHeight: 0.85,
+        autofocus: false,
+      }
     }
   },
   created() {
@@ -82,47 +108,84 @@ export default {
   },
   methods: {
     clearIconClick() {
-      this.ip = ''
+      this.nodeList = ''
     },
-    handleValidIpMsg(value) {
-      let reg = /^((25[0-5]|2[0-4]\d|1\d{2}|[1-9]\d|\d)\.){3}(25[0-5]|2[0-4]\d|1\d{2}|[1-9]\d|\d):([1-9]|[1-9]\d{1,3}|[1-6][0-5][0-5][0-3][0-5])$/
-      if (!reg.test(value)) {
-        this.validIpMsg = '请输入正确的IP地址~'
+    handleValidClashMsg(value) {
+      const val = value.trim();
+
+      if (!val) {
+        this.validClashMsg = '节点信息不能为空哦~';
+        return;
+      }
+
+      const supportedProtocols = ['vmess://', 'vless://', 'hysteria', 'ss://', 'trojan://'];
+
+      const lines = val.split('\n');
+      const isValid = lines.some(line =>
+          supportedProtocols.some(proto => line.trim().toLowerCase().startsWith(proto))
+      );
+
+      if (!isValid) {
+        this.validClashMsg = '未能识别有效的节点链接 (支持 vmess/vless/hysteria)~';
       } else {
-        this.validIpMsg = ''
+        this.validClashMsg = '';
       }
     },
     async handleParse() {
-      if (isEmpty(this.ip)) {
+      if (isEmpty(this.nodeList)) {
         this.$buefy.snackbar.open({
-          message: '酒店IP地址不能为空！',
+          message: '节点数据不能为空！',
           type: 'is-danger',
           position: 'is-top',
           actionText: 'Msg'
         })
         return
       }
-      const baseUrl = process.env.VUE_APP_SERVER_URL
-      let url = `${baseUrl}/api/hotel?ip=${this.ip}`
-      let response = await fetch(url)
-      let m3u = await response.text()
-      this.m3u = m3u
-      if (!isEmpty(m3u)) {
+      const { data } = await getNodeParse(this.nodeList)
+      this.parseConfig = data
+      if (!isEmpty(data)) {
         this.disableDownload = false
+        this.$nextTick(() => {
+          if (this.$refs.myCm && this.$refs.myCm.codemirror) {
+            this.$refs.myCm.codemirror.refresh()
+          }
+        })
       }
     },
-    async handleDownloadM3u() {
-      this.loadingDownload = true
-      let eleLink = document.createElement('a')
-      let wait_str = this.m3u
-      let filenamePrefix = this.randomFileName()
-      let filename = `${filenamePrefix}.m3u`
-      let blob = new Blob([wait_str], {type: 'text/plain'})
-      eleLink.href = URL.createObjectURL(blob)
-      eleLink.download = filename
-      document.body.appendChild(eleLink)
-      eleLink.click()
-      this.loadingDownload = false
+    async handleDownloadClash() {
+      if (!this.parseConfig || this.parseConfig === '暂无解析数据~') {
+        return;
+      }
+
+      this.loadingDownload = true;
+      try {
+        const filenamePrefix = this.randomFileName();
+        const filename = `${filenamePrefix}.yaml`;
+
+        const blob = new Blob([this.parseConfig], { type: 'text/yaml;charset=utf-8' });
+        const objectUrl = URL.createObjectURL(blob);
+
+        const eleLink = document.createElement('a');
+        eleLink.style.display = 'none';
+        eleLink.href = objectUrl;
+        eleLink.download = filename;
+
+        document.body.appendChild(eleLink);
+        eleLink.click();
+
+        document.body.removeChild(eleLink);
+        URL.revokeObjectURL(objectUrl);
+
+      } catch (error) {
+        this.$buefy.snackbar.open({
+          message: '下载配置失败！',
+          type: 'is-danger',
+          position: 'is-top',
+          actionText: 'Msg'
+        })
+      } finally {
+        this.loadingDownload = false;
+      }
     },
     randomFileName() {
       return Math.random().toString(36).slice(-8)
@@ -168,13 +231,58 @@ export default {
   margin-bottom: 40px;
   background: #FFFFFF;
   border-radius: 8px;
-  .html {
-    min-height: 800px;
-    color: #000000;
+  border: 1px solid #e1e1e1;
+  overflow: hidden;
+  transition: border-color 0.3s;
+  &:focus-within {
+    border-color: #409EFF;
+    box-shadow: 0 0 4px rgba(64, 158, 255, 0.2);
+  }
+  .parse-header {
+    padding: 10px 15px;
+    background: #f9f9f9;
+    border-bottom: 1px solid #e1e1e1;
+    font-size: 0.9rem;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  // 深度选择器修改 CodeMirror 样式
+  ::v-deep(.CodeMirror) {
+    max-height: 800px;
+    min-height: 600px; // 设定最小高度
+    font-family: 'Fira Code', 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
     font-size: 14px;
-    font-weight: 500;
-    white-space: pre-line;
-    padding: 20px;
+    background: #FFFFFF !important; // 确保背景色统一
+    .CodeMirror-cursor {
+      border-left: 2px solid #409EFF;
+    }
+    // 让滚动更平滑
+    .CodeMirror-scroll {
+      max-height: 800px;
+      min-height: 600px;
+    }
+  }
+
+  // 如果有滚动条，美化一下
+  ::v-deep(.CodeMirror-hscrollbar), ::v-deep(.CodeMirror-vscrollbar) {
+    &::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #dbdbdb;
+      border-radius: 3px;
+    }
   }
 }
+
+.custom-min-height {
+  ::v-deep(.textarea) {
+    min-height: 300px;
+  }
+}
+
 </style>

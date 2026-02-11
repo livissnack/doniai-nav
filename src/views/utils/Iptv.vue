@@ -58,6 +58,7 @@ import BackTop from '@mlqt/vue-back-top'
 import Footer from '@/components/Footer.vue'
 import MediaResource from "@/components/MediaResource.vue"
 import {isEmpty} from "@/utils/helper"
+import {getHotelIptvM3u} from "@/services/api";
 
 Vue.use(BackTop)
 export default {
@@ -102,10 +103,7 @@ export default {
         })
         return
       }
-      const baseUrl = process.env.VUE_APP_SERVER_URL
-      let url = `${baseUrl}/api/hotel?ip=${this.ip}`
-      let response = await fetch(url)
-      let m3u = await response.text()
+      const { data: m3u } = await getHotelIptvM3u(this.ip)
       this.m3u = m3u
       if (!isEmpty(m3u)) {
         this.disableDownload = false
