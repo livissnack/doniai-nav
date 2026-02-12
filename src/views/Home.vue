@@ -73,7 +73,7 @@ export default {
     return {
       current_active_menu_id: 1,
       navData: [],
-      coverBg: 'https://epg.112114.xyz/bingimg'
+      coverBg: ''
     }
   },
   beforeCreate() {

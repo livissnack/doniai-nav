@@ -12,7 +12,7 @@
         </div>
         <div class="info-value">
           <span class="price">{{ targetCurrencyValue }}</span>
-<!--          <span class="trend up"><i class="fas fa-caret-up"></i> 0.12%</span>-->
+          <span class="trend up"><i class="fas fa-caret-up"></i> 0.12%</span>
         </div>
       </div>
 
@@ -22,12 +22,21 @@
           今日油价 ({{ region }})
         </div>
         <div class="info-grid">
-          <div class="gas-type" v-for="(fuel, index) in fuelList" :key="index">{{ fuel.name}} <span>{{ fuel.price }}</span></div>
+          <div class="gas-type" v-for="(fuel, index) in fuelList" :key="index">
+            {{ fuel.name}}
+            <span>{{ fuel.price }}</span>
+            <span :class="['trend', trend > 0 ? 'up' : 'down']">
+              <i :class="['fas', trend > 0 ? 'fa-caret-up' : 'fa-caret-down']"></i>
+            </span>
+          </div>
         </div>
       </div>
 
       <div class="info-footer">
         数据更新于：{{ updatedTime }}
+      </div>
+      <div class="info-footer">
+        {{ trendDescription }}
       </div>
     </div>
   </div>
@@ -47,6 +56,8 @@ export default {
       targetCurrency: '',
       targetCurrencyValue: null,
       updatedTime: '',
+      trend: null,
+      trendDescription: '',
     }
   },
   created() {
@@ -58,6 +69,8 @@ export default {
       let { data: fuelData } = await getFuelPrice(this.region)
       this.rateList = rateData.data.rates
       this.fuelList = fuelData.data.items
+      this.trend = fuelData.data.trend.change_liter_max
+      this.trendDescription = fuelData.data.trend.description
       this.currentCurrency = rateData.data.base_code
       this.updatedTime = rateData.data.updated
       let rmbData = rateData.data.rates.find(item => item.currency === 'CNY')
@@ -139,4 +152,15 @@ export default {
     }
   }
 }
+
+.trend {
+  font-size: 12px;
+  &.up {
+    color: #cf1322 !important;
+  }
+  &.down {
+    color: #389e0d !important;
+  }
+}
+
 </style>
