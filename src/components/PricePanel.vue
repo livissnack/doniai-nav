@@ -4,19 +4,18 @@
       <div><h3>实时快讯</h3></div>
     </div>
 
-    <div class="info-content" v-if="currentCurrency">
-      <div class="info-item">
+    <div class="info-content" v-if="currentCurrency || fuelList.length">
+      <div class="info-item" v-if="currentCurrency && targetCurrencyValue != null">
         <div class="info-label">
           <i class="fas fa-chart-line icon-rate"></i>
           汇率 ({{ currentCurrency }}/{{ targetCurrency }})
         </div>
         <div class="info-value">
           <span class="price">{{ targetCurrencyValue }}</span>
-          <span class="trend up"><i class="fas fa-caret-up"></i> 0.12%</span>
         </div>
       </div>
 
-      <div class="info-item">
+      <div class="info-item" v-if="fuelList.length">
         <div class="info-label">
           <i class="fas fa-gas-pump icon-oil"></i>
           今日油价 ({{ region }})
@@ -25,8 +24,11 @@
           <div class="gas-type" v-for="(fuel, index) in fuelList" :key="index">
             {{ fuel.name}}
             <span>{{ fuel.price }}</span>
-            <span :class="['trend', trend > 0 ? 'up' : 'down']">
-              <i :class="['fas', trend > 0 ? 'fa-caret-up' : 'fa-caret-down']"></i>
+            <span
+              v-if="fuelTrend !== null"
+              :class="['trend', fuelTrend > 0 ? 'up' : 'down']"
+            >
+              <i :class="['fas', fuelTrend > 0 ? 'fa-caret-up' : 'fa-caret-down']"></i>
             </span>
           </div>
         </div>
@@ -35,7 +37,7 @@
       <div class="info-footer">
         数据更新于：{{ updatedTime }}
       </div>
-      <div class="info-footer">
+      <div class="info-footer" v-if="trendDescription">
         {{ trendDescription }}
       </div>
     </div>
@@ -43,7 +45,12 @@
 </template>
 
 <script>
-import {getExchangeRate, getFuelPrice} from "@/services/api";
+import { getExchangeRate, getFuelPrice } from '@/services/api'
+import { readCache, writeCache } from '@/utils/apiCache'
+
+const RATE_KEY = 'doniaiNavCacheRate'
+const FUEL_KEY = 'doniaiNavCacheFuel'
+const PRICE_TTL = 15 * 60 * 1000
 
 export default {
   name: 'PricePanel',
@@ -56,7 +63,7 @@ export default {
       targetCurrency: '',
       targetCurrencyValue: null,
       updatedTime: '',
-      trend: null,
+      fuelTrend: null,
       trendDescription: '',
     }
   },
@@ -64,18 +71,50 @@ export default {
     this.getData()
   },
   methods: {
+    applyPayload(rateRes, fuelRes) {
+      const rateData = rateRes?.data
+      const fuelData = fuelRes?.data
+
+      if (rateData?.rates) {
+        this.rateList = rateData.rates
+        this.currentCurrency = rateData.base_code
+        this.updatedTime = rateData.updated
+        const rmb = rateData.rates.find((item) => item.currency === 'CNY')
+        if (rmb) {
+          this.targetCurrency = rmb.currency
+          this.targetCurrencyValue = rmb.rate
+        }
+      }
+
+      if (fuelData?.items) {
+        this.fuelList = fuelData.items
+        if (fuelData.region) this.region = fuelData.region
+        if (fuelData.updated) this.updatedTime = fuelData.updated
+        const trend = fuelData.trend
+        if (trend && trend.change_liter_max != null) {
+          this.fuelTrend = trend.change_liter_max
+          this.trendDescription = trend.description || ''
+        }
+      }
+    },
     async getData() {
-      let { data: rateData } = await getExchangeRate()
-      let { data: fuelData } = await getFuelPrice(this.region)
-      this.rateList = rateData.data.rates
-      this.fuelList = fuelData.data.items
-      this.trend = fuelData.data.trend.change_liter_max
-      this.trendDescription = fuelData.data.trend.description
-      this.currentCurrency = rateData.data.base_code
-      this.updatedTime = rateData.data.updated
-      let rmbData = rateData.data.rates.find(item => item.currency === 'CNY')
-      this.targetCurrency = rmbData.currency
-      this.targetCurrencyValue = rmbData.rate
+      const cachedRate = readCache(RATE_KEY, PRICE_TTL)
+      const cachedFuel = readCache(FUEL_KEY, PRICE_TTL)
+      if (cachedRate || cachedFuel) {
+        this.applyPayload(cachedRate, cachedFuel)
+      }
+
+      try {
+        const [{ data: rateRes }, { data: fuelRes }] = await Promise.all([
+          getExchangeRate(),
+          getFuelPrice(),
+        ])
+        writeCache(RATE_KEY, rateRes)
+        writeCache(FUEL_KEY, fuelRes)
+        this.applyPayload(rateRes, fuelRes)
+      } catch (e) {
+        console.error('PricePanel getData failed:', e)
+      }
     }
   }
 }

@@ -85,7 +85,7 @@
               </div>
             </div>
           </div>
-          <div class="column">
+          <div class="column sidebar-column">
             <Sidebar />
           </div>
         </div>

@@ -1,0 +1,231 @@
+import Vue from 'vue'
+import {
+  loginApi,
+  registerApi,
+  fetchMeApi,
+  updatePanelsApi,
+  logoutApi,
+  changePasswordApi,
+} from '@/services/authApi'
+
+const TOKEN_KEY = 'doniaiNavAuthToken'
+const PRIVATE_MENU_ID = 2
+/** 生产临时免登录：.env 中 VUE_APP_SKIP_AUTH=true */
+const SKIP_AUTH = process.env.VUE_APP_SKIP_AUTH === 'true'
+
+const ADMIN_USER = {
+  id: 1,
+  username: 'admin',
+  email: 'admin@doniai.com',
+  displayName: '管理员',
+}
+
+export const SIDEBAR_PANELS = [
+  { id: 'news', title: '热门新闻' },
+  { id: 'tools', title: '常用工具' },
+  { id: 'music', title: '音乐播放器' },
+  { id: 'weather', title: '天气' },
+  { id: 'todo', title: '工作任务' },
+  { id: 'price', title: '实时快讯' },
+]
+
+const DEFAULT_PANELS = {
+  news: true,
+  tools: true,
+  music: true,
+  weather: true,
+  todo: true,
+  price: true,
+}
+
+function normalizePanels(panels) {
+  return { ...DEFAULT_PANELS, ...(panels || {}) }
+}
+
+function getToken() {
+  return localStorage.getItem(TOKEN_KEY) || ''
+}
+
+function setToken(token) {
+  if (token) {
+    localStorage.setItem(TOKEN_KEY, token)
+  } else {
+    localStorage.removeItem(TOKEN_KEY)
+  }
+}
+
+export const authStore = Vue.observable({
+  user: null,
+  sidebarPanels: { ...DEFAULT_PANELS },
+})
+
+let authReadyResolve
+export const authReady = new Promise((resolve) => {
+  authReadyResolve = resolve
+})
+
+function applySession(data) {
+  if (data.user) {
+    authStore.user = data.user
+  }
+  if (data.sidebarPanels) {
+    authStore.sidebarPanels = normalizePanels(data.sidebarPanels)
+  }
+}
+
+function clearSession() {
+  authStore.user = null
+  authStore.sidebarPanels = { ...DEFAULT_PANELS }
+  setToken('')
+}
+
+function bootstrapAdmin() {
+  authStore.user = { ...ADMIN_USER }
+  authStore.sidebarPanels = { ...DEFAULT_PANELS }
+  setToken('skip-auth')
+}
+
+function mapApiError(err, fallback = '请求失败') {
+  const body = err?.response?.data
+  if (body?.message) return body.message
+  if (err?.msg) return err.msg
+  return fallback
+}
+
+export async function initAuth() {
+  if (SKIP_AUTH) {
+    bootstrapAdmin()
+    authReadyResolve()
+    return
+  }
+  const token = getToken()
+  if (!token) {
+    authReadyResolve()
+    return
+  }
+  try {
+    const { data } = await fetchMeApi()
+    if (data?.ok && data.user) {
+      applySession(data)
+    } else {
+      clearSession()
+    }
+  } catch {
+    clearSession()
+  } finally {
+    authReadyResolve()
+  }
+}
+
+export function isLoggedIn() {
+  if (SKIP_AUTH) return !!authStore.user
+  return !!authStore.user && !!getToken()
+}
+
+export function isSkipAuthMode() {
+  return SKIP_AUTH
+}
+
+export function isPrivateMenu(menuId) {
+  return Number(menuId) === PRIVATE_MENU_ID
+}
+
+export function canAccessMenu(menuId) {
+  if (SKIP_AUTH) return true
+  if (!isPrivateMenu(menuId)) return true
+  return isLoggedIn()
+}
+
+export function isPanelVisible(panelId) {
+  return authStore.sidebarPanels[panelId] !== false
+}
+
+export const authActions = {
+  async register({ username, email, password, displayName }) {
+    try {
+      const { data } = await registerApi({
+        username,
+        email,
+        password,
+        displayName,
+      })
+      if (data?.ok) {
+        setToken(data.token)
+        applySession(data)
+        return { ok: true, message: data.message || '注册成功', user: data.user }
+      }
+      return { ok: false, message: data?.message || '注册失败' }
+    } catch (err) {
+      return { ok: false, message: mapApiError(err, '注册失败，请检查网络或后端服务') }
+    }
+  },
+
+  async login({ email, password }) {
+    try {
+      const { data } = await loginApi({ email, password })
+      if (data?.ok) {
+        setToken(data.token)
+        applySession(data)
+        return { ok: true, message: data.message || '登录成功', user: data.user }
+      }
+      return { ok: false, message: data?.message || '登录失败' }
+    } catch (err) {
+      return { ok: false, message: mapApiError(err, '登录失败，请检查网络或后端服务') }
+    }
+  },
+
+  async logout() {
+    if (SKIP_AUTH) {
+      bootstrapAdmin()
+      return { ok: true, message: '当前为免登录模式，已恢复管理员会话' }
+    }
+    try {
+      await logoutApi()
+    } catch {
+      // 客户端清除即可
+    }
+    clearSession()
+    return { ok: true }
+  },
+
+  async setPanelVisible(panelId, visible) {
+    if (!authStore.user) return
+    Vue.set(authStore.sidebarPanels, panelId, visible)
+    try {
+      const { data } = await updatePanelsApi({ ...authStore.sidebarPanels })
+      if (data?.ok && data.sidebarPanels) {
+        authStore.sidebarPanels = normalizePanels(data.sidebarPanels)
+      }
+    } catch (e) {
+      console.warn('save panels failed', e)
+    }
+  },
+
+  async resetPanels() {
+    if (!authStore.user) return
+    authStore.sidebarPanels = { ...DEFAULT_PANELS }
+    try {
+      const { data } = await updatePanelsApi({ ...DEFAULT_PANELS })
+      if (data?.ok && data.sidebarPanels) {
+        authStore.sidebarPanels = normalizePanels(data.sidebarPanels)
+      }
+    } catch (e) {
+      console.warn('reset panels failed', e)
+    }
+  },
+
+  async changePassword({ currentPassword, newPassword }) {
+    try {
+      const { data } = await changePasswordApi({
+        currentPassword,
+        newPassword,
+      })
+      if (data?.ok) {
+        return { ok: true, message: data.message || '密码已修改' }
+      }
+      return { ok: false, message: data?.message || '修改失败' }
+    } catch (err) {
+      return { ok: false, message: mapApiError(err, '修改失败，请检查网络或后端服务') }
+    }
+  },
+}

@@ -44,7 +44,9 @@ export default {
   }
 }
 
-.is-danger {
+/* 按钮、Toast 通知等实心样式 */
+.button.is-danger,
+.notification.is-danger {
   background-color: #ff3860;
   border-color: transparent;
   color: #fff;
@@ -52,6 +54,33 @@ export default {
   &:hover {
     background-color: #ff3860;
     border-color: transparent;
+    color: #fff;
+  }
+}
+
+/* 表单校验：红框 + 可读文字，避免整块红底盖住输入内容 */
+.input.is-danger,
+.textarea.is-danger,
+.select.is-danger select {
+  background-color: #fff;
+  border-color: #ef4444;
+  color: #1f2937;
+}
+
+.help.is-danger {
+  background: transparent;
+  color: #ef4444;
+}
+
+/* 首页导航卡片（data.json 的 color 类名） */
+.tab-item a.is-danger,
+a.box-item.is-danger {
+  background-color: #ff3860;
+  border-color: transparent;
+  color: #fff;
+
+  &:hover {
+    background-color: #f14668;
     color: #fff;
   }
 }
@@ -77,6 +106,22 @@ export default {
     background-color: #0f77ea;
     border-color: transparent;
     color: #fff;
+  }
+}
+
+/* 所有带 Sidebar 的页面：侧栏列与卡片宽度 */
+.columns > .column {
+  min-width: 0;
+}
+
+.column .sidebar {
+  width: 100%;
+  max-width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .columns > .column {
+    width: 100% !important;
   }
 }
 </style>

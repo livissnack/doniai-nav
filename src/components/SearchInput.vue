@@ -1,15 +1,16 @@
 <template>
   <div class="input-group">
-    <b-field class="custom-input-width">
-      <div class="field">
-        <div class="control has-icons-left">
+    <div class="search-wrap custom-input-width">
+      <div class="search-bar">
+        <label class="search-field">
+          <i class="fas fa-search search-icon" aria-hidden="true"></i>
           <input
-              ref="searchInput"
-            class="input search-input-placeholder-default-color is-small"
+            ref="searchInput"
+            class="search-input"
             v-model="filter.search_text"
-            size="is-small"
             confirm-type="search"
             placeholder="请输入搜索内容"
+            autocomplete="off"
             @input="handleChangeKeyword"
             @focus="handleFocusDsug"
             @blur="handleBlurDsug"
@@ -18,72 +19,61 @@
             @keyup.down="handleKeyDown"
             type="search"
           />
-          <span class="icon is-small is-left">
-            <i class="fas fa-search"></i>
-          </span>
-        </div>
-
-        <div class="control dsug" v-show="historyShow">
-          <div class="history-header">
-            <div class="history-title">
-              <span>搜索历史</span>
-            </div>
-            <div class="history-clear" @click="handleClearHistory" @mousedown.prevent>
-              <span>清空</span>
-            </div>
-          </div>
-          <ul class="recommend-list pd6">
-            <li v-for="(history, index) in historyList" :key="index">
-              <div
-                  class="recommend-box"
-                  @mousedown="handleSelectedSearch(history)"
-              >
-                <div>
-                  <span class="icon is-small">
-                    <i class="fas fa-history"></i>
-                  </span>
-                  <span> {{ history }}</span>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </div>
-
-        <div class="control dsug" v-show="suggestShow">
-          <ul class="recommend-list">
-            <li v-for="(item, index) in suggestList" :key="index">
-              <div
-                class="recommend-box"
-                :class="currentItemIndex === index ? 'is-active' : ''"
-                @mousedown="handleSelectedSearch(item)"
-              >
-                <div>
-                  <span class="icon is-small">
-                    <i class="fas fa-paper-plane"></i>
-                  </span>
-                  <span> {{ item }}</span>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </div>
+        </label>
+        <button type="button" class="search-btn" @click="startSearch">
+          <i class="fas fa-search"></i>
+          <span>搜索</span>
+        </button>
       </div>
-      <b-button type="is-success" size="is-small" @click="startSearch">
-        搜索
-      </b-button>
-    </b-field>
-    <div class="block custom-input-width">
-      <b-radio
+
+      <div class="dsug-panel" v-show="historyShow">
+        <div class="history-header">
+          <span class="history-title">搜索历史</span>
+          <button type="button" class="history-clear" @mousedown.prevent @click="handleClearHistory">
+            清空
+          </button>
+        </div>
+        <ul class="recommend-list">
+          <li v-for="(history, index) in historyList" :key="'h-' + index">
+            <button
+              type="button"
+              class="recommend-item"
+              @mousedown.prevent="handleSelectedSearch(history)"
+            >
+              <i class="fas fa-history"></i>
+              <span>{{ history }}</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <div class="dsug-panel" v-show="suggestShow">
+        <ul class="recommend-list">
+          <li v-for="(item, index) in suggestList" :key="'s-' + index">
+            <button
+              type="button"
+              class="recommend-item"
+              :class="{ 'is-active': currentItemIndex === index }"
+              @mousedown.prevent="handleSelectedSearch(item)"
+            >
+              <i class="fas fa-paper-plane"></i>
+              <span>{{ item }}</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="engine-list custom-input-width">
+      <button
         v-for="search in searchs"
         :key="search.id"
-        type="is-white"
-        v-model="filter.search_type"
-        size="is-small"
-        :name="search.id.toString()"
-        :native-value="search.id"
+        type="button"
+        class="engine-chip"
+        :class="{ 'is-active': filter.search_type === search.id }"
+        @click="selectEngine(search.id)"
       >
         {{ search.name }}
-      </b-radio>
+      </button>
     </div>
   </div>
 </template>
@@ -119,7 +109,13 @@ export default {
   mounted() {
     window.addEventListener('keydown', this.keyDown)
   },
+  beforeDestroy() {
+    window.removeEventListener('keydown', this.keyDown)
+  },
   methods: {
+    selectEngine(id) {
+      this.filter.search_type = id
+    },
     startSearch() {
       let id = this.filter.search_type
       let text = this.filter.search_text
@@ -238,109 +234,282 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@media screen and (min-width: 375px) and (max-width: 768px){
-  .custom-input-width {
-    width: 280px !important;
-    .control {
-      width: 280px !important;
-    }
-  }
+.input-group {
+  width: 100%;
 }
-
 
 .custom-input-width {
-  width: 500px;
+  width: 560px;
+  max-width: 100%;
   margin: 0 auto;
-  .control {
-    width: 500px;
-  }
-  /deep/ .radio {
-    .control-label {
-      color: #FFFFFF;
-    }
-  }
-  /deep/ .check{
-    border-color: #333 !important;
+  box-sizing: border-box;
+}
+
+.search-wrap {
+  position: relative;
+}
+
+.search-bar {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  min-height: 44px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 22px;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.18);
+  overflow: hidden;
+  transition: box-shadow 0.2s, border-color 0.2s;
+
+  &:focus-within {
+    border-color: #20bc56;
+    box-shadow: 0 4px 22px rgba(32, 188, 86, 0.28);
   }
 }
 
-.has-icons-left {
-  .icon {
-    color: #666;
+.search-field {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  cursor: text;
+}
+
+.search-icon {
+  flex-shrink: 0;
+  margin-left: 14px;
+  font-size: 14px;
+  color: #8a919f;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  padding: 0 12px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 15px;
+  color: #1f2937;
+
+  &::placeholder {
+    color: #8a919f;
+  }
+
+  &::-webkit-search-cancel-button {
+    -webkit-appearance: none;
   }
 }
 
-.input::placeholder {
-  color: #000;
+.search-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 44px;
+  padding: 0 20px;
+  border: none;
+  background: linear-gradient(135deg, #22c65b, #20bc56);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+
+  i {
+    font-size: 13px;
+  }
+
+  &:hover {
+    background: linear-gradient(135deg, #2dd36f, #22c65b);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
 }
 
-.dsug {
-  z-index: 1;
+.dsug-panel {
   position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.16);
+  overflow: hidden;
+}
+
+.engine-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 0 4px;
+}
+
+.engine-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 52px;
+  height: 28px;
+  padding: 0 12px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.15s;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.32);
+    border-color: rgba(255, 255, 255, 0.7);
+  }
+
+  &.is-active {
+    background: #20bc56;
+    border-color: #20bc56;
+    color: #fff;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(32, 188, 86, 0.45);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
 }
 
 .recommend-list {
-  display: flex;
-  background: #ffffff;
-  flex-direction: column;
-  list-style-type: none;
-  box-shadow: 0 4px 6px 0 rgba(32, 33, 36, 0.28);
+  margin: 0;
+  padding: 4px 0;
+  list-style: none;
+  max-height: 220px;
+  overflow-y: auto;
+
   li {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.recommend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 14px;
+  border: none;
+  background: transparent;
+  color: #4b5563;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  i {
+    flex-shrink: 0;
+    width: 14px;
+    color: #9ca3af;
     font-size: 12px;
-    padding: 2px 5px;
-    .recommend-box {
-      display: flex;
-      justify-content: space-between;
-      .remove {
-        &:hover {
-          text-decoration: underline;
-          cursor: pointer;
-          color: #1a73e8;
-        }
-      }
-    }
-    .is-active {
-      background: #d3d5d8;
-      text-decoration: underline;
-    }
-    &:hover {
-      background: #d3d5d8;
-      text-decoration: underline;
+  }
+
+  span {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &:hover,
+  &.is-active {
+    background: #f0f7f4;
+    color: #20bc56;
+
+    i {
+      color: #20bc56;
     }
   }
 }
 
 .history-header {
-  background: #FFFFFF;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 6px 10px;
+  justify-content: space-between;
+  padding: 8px 14px;
   font-size: 12px;
-  border-bottom: 1px solid #d3d5d8;
-  .history-title {
-    color: #8a919f;
-  }
-  .history-clear {
-    color: #1e80ff;
-    cursor: pointer;
+  border-bottom: 1px solid #eef0f3;
+  background: #fafbfc;
+}
+
+.history-title {
+  color: #8a919f;
+}
+
+.history-clear {
+  border: none;
+  background: none;
+  padding: 0;
+  color: #1e80ff;
+  font-size: 12px;
+  cursor: pointer;
+
+  &:hover {
     text-decoration: underline;
   }
 }
 
-.pd6 {
-  padding-top: 6px;
-}
+@media screen and (max-width: 768px) {
+  .input-group {
+    padding: 0 4px;
+    box-sizing: border-box;
+  }
 
-.search-input-placeholder-default-color {
-  &::-webkit-input-placeholder {
-    color: #8a919f;
+  .custom-input-width {
+    width: 100%;
   }
-  &::-moz-input-placeholder {
-    color: #8a919f;
+
+  .search-bar {
+    min-height: 40px;
+    border-radius: 20px;
   }
-  &::-ms-input-placeholder {
-    color: #8a919f;
+
+  .search-input {
+    height: 40px;
+    font-size: 14px;
+  }
+
+  .search-btn {
+    height: 40px;
+    padding: 0 14px;
+    font-size: 14px;
+
+    span {
+      display: none;
+    }
+  }
+
+  .engine-list {
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .engine-chip {
+    min-width: 48px;
+    height: 26px;
+    padding: 0 10px;
+    font-size: 12px;
   }
 }
 </style>

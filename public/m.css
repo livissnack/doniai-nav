@@ -15,7 +15,47 @@
 }
 
 .content-box > .container {
-    padding: 0 10px !important;
+    padding: 0 12px !important;
+}
+
+.columns > .column {
+    width: 100% !important;
+}
+
+.column .sidebar {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.column .sidebar .util-box,
+.column .sidebar .news-panel,
+.column .sidebar .music-box,
+.column .sidebar .weather-box,
+.column .sidebar .panel,
+.column .sidebar .card {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.home .post {
+    padding: 16px 14px !important;
+    margin-bottom: 16px !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    box-shadow: 0 2px 12px rgba(15, 23, 42, 0.08) !important;
+}
+
+.home .tab-item {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+}
+
+.home .tab-item a,
+.home .tab-item .box-item {
+    width: 100% !important;
+    max-width: none !important;
 }
 
 .play-btn {
@@ -23,12 +63,8 @@
     left: 40% !important;
 }
 
-.input-group {
-    .custom-input-width {
-        .field {
-            margin-left: -25px !important;
-        }
-    }
+.input-group .custom-input-width .field {
+    margin-left: 0 !important;
 }
 
 .todo-handle {

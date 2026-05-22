@@ -61,7 +61,7 @@
               </code></pre>
             </div>
           </div>
-          <div class="column">
+          <div class="column sidebar-column">
             <Sidebar/>
           </div>
         </div>

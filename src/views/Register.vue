@@ -2,23 +2,28 @@
   <div class="auth-page" :style="bgStyle">
     <div class="auth-card">
       <header class="auth-card-head">
-        <h1>登录</h1>
-        <p>登录后可访问「私人」导航与侧栏管理</p>
+        <h1>注册账号</h1>
+        <p>创建账号后可访问「私人」导航与管理侧栏面板</p>
       </header>
       <section class="auth-card-body">
+        <b-field label="用户名">
+          <b-input v-model="form.username" placeholder="2–20 个字符" maxlength="20" />
+        </b-field>
         <b-field label="邮箱">
-          <b-input v-model="form.email" type="email" placeholder="请输入邮箱" />
+          <b-input v-model="form.email" type="email" placeholder="your@email.com" />
         </b-field>
         <b-field label="密码">
-          <b-input v-model="form.password" type="password" password-reveal placeholder="请输入密码" />
+          <b-input v-model="form.password" type="password" password-reveal placeholder="至少 6 位" />
         </b-field>
-        <p class="auth-hint">演示账号：admin@doniai.com / admin123</p>
+        <b-field label="确认密码">
+          <b-input v-model="form.confirm" type="password" password-reveal placeholder="再次输入密码" />
+        </b-field>
       </section>
       <footer class="auth-card-foot">
         <button type="button" class="auth-btn primary" :disabled="loading" @click="handleSubmit">
-          {{ loading ? '登录中…' : '登录' }}
+          {{ loading ? '注册中…' : '注册' }}
         </button>
-        <router-link to="/register" class="auth-link">没有账号？去注册</router-link>
+        <router-link to="/login" class="auth-link">已有账号？去登录</router-link>
       </footer>
     </div>
   </div>
@@ -29,14 +34,16 @@ import { getBgImage } from '@/services/api'
 import { authActions } from '@/store/auth'
 
 export default {
-  name: 'Login',
+  name: 'Register',
   data() {
     return {
       bgStyle: {},
       loading: false,
       form: {
+        username: '',
         email: '',
         password: '',
+        confirm: '',
       },
     }
   },
@@ -58,16 +65,20 @@ export default {
       }
     },
     async handleSubmit() {
+      if (this.form.password !== this.form.confirm) {
+        this.$buefy.toast.open({ message: '两次密码不一致', type: 'is-danger' })
+        return
+      }
       this.loading = true
-      const res = await authActions.login({
+      const res = await authActions.register({
+        username: this.form.username,
         email: this.form.email,
         password: this.form.password,
       })
       this.loading = false
       if (res.ok) {
         this.$buefy.toast.open({ message: res.message, type: 'is-success' })
-        const redirect = this.$route.query.redirect || '/'
-        this.$router.replace(redirect)
+        this.$router.replace({ path: '/' })
       } else {
         this.$buefy.toast.open({ message: res.message, type: 'is-danger' })
       }
@@ -89,7 +100,7 @@ export default {
 
 .auth-card {
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
   background: rgba(255, 255, 255, 0.94);
   border-radius: 12px;
   box-shadow: 0 12px 40px rgba(15, 23, 42, 0.2);
@@ -116,12 +127,6 @@ export default {
 
 .auth-card-body {
   padding: 16px 24px;
-}
-
-.auth-hint {
-  margin: 8px 0 0;
-  font-size: 12px;
-  color: #9ca3af;
 }
 
 .auth-card-foot {

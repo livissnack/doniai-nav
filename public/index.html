@@ -3,10 +3,11 @@
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
     <meta name="description" content="多尼爱导航是面向个人开发者的一款导航工具站点，提供各类导航资源，包括网站导航、工具导航、资源导航等。"/>
     <link rel="icon" href="<%= BASE_URL %>favicon.ico"/>
     <link rel="dns-prefetch" href="//fastly.jsdelivr.net"/>
+    <link rel="preconnect" href="//fastly.jsdelivr.net" crossorigin/>
     <link rel="dns-prefetch" href="//nav.doniai.com"/>
     <link rel="dns-prefetch" href="//cn.bing.com"/>
     <!-- 使用CDN的并预加载CSS文件 -->
@@ -20,7 +21,7 @@
     <link rel="preload" as="image" href="<%= htmlWebpackPlugin.options.cdn.image[i] %>"
           type="image/webp" crossorigin="anonymous"/>
     <% } %>
-    <link rel="stylesheet" media="screen and (max-width:600px)" href="<%= BASE_URL %>m.css" />
+    <link rel="stylesheet" media="screen and (max-width:768px)" href="<%= BASE_URL %>m.css" />
     <title>Doniai导航</title>
 </head>
 <body>

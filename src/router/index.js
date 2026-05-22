@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import { initAuth, authReady, isLoggedIn, isSkipAuthMode } from '@/store/auth'
+
+const authInit = initAuth()
 
 Vue.use(VueRouter)
 
@@ -13,6 +16,17 @@ const routes = [
     path: '/login',
     name: 'login',
     component: () => import('@/views/Login.vue')
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('@/views/Register.vue')
+  },
+  {
+    path: '/admin',
+    name: 'admin',
+    meta: { requiresAuth: true },
+    component: () => import('@/views/Admin.vue')
   },
   {
     path: '/json',
@@ -138,6 +152,12 @@ const routes = [
     path: '/utils/monitor',
     name: 'projectMonitor',
     component: () => import('@/views/utils/Monitor.vue')
+  },
+  {
+    path: '/docs',
+    name: 'docs',
+    meta: { requiresAuth: true },
+    component: () => import('@/views/docs/Docs.vue')
   }
 ]
 
@@ -147,7 +167,36 @@ const router = new VueRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
+  const needsAuth =
+    to.matched.some((r) => r.meta.requiresAuth) ||
+    to.name === 'login' ||
+    to.name === 'register'
+
+  if (needsAuth) {
+    await authInit
+    await authReady
+  }
+
+  if (isSkipAuthMode()) {
+    if (to.name === 'login' || to.name === 'register') {
+      next({ path: '/' })
+      return
+    }
+    next()
+    return
+  }
+
+  if (to.matched.some((r) => r.meta.requiresAuth) && !isLoggedIn()) {
+    next({ path: '/login', query: { redirect: to.fullPath } })
+    return
+  }
+
+  if ((to.name === 'login' || to.name === 'register') && isLoggedIn()) {
+    next({ path: '/' })
+    return
+  }
+
   next()
 })
 

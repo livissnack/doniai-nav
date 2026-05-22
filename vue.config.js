@@ -12,6 +12,17 @@ module.exports = {
     config.plugins = [...config.plugins, ...plugins]
   },
   chainWebpack: config => {
+    config.plugin('prefetch').tap((options) => {
+      options[0].fileBlacklist = options[0].fileBlacklist || []
+      options[0].fileBlacklist.push(
+        /panel-music/,
+        /echarts/,
+        /epubjs/,
+        /tldraw/,
+        /json-formatter/
+      )
+      return options
+    })
     const cdn = {
       css: [
         '//fastly.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css',

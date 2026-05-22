@@ -37,7 +37,11 @@
 <script>
 import LunarTime from '@/components/LunarTime.vue'
 import Countdown from '@/components/Countdown.vue'
-import {getWeather} from "@/services/api";
+import { getWeather } from '@/services/api'
+import { readCache, writeCache } from '@/utils/apiCache'
+
+const WEATHER_CACHE_KEY = 'doniaiNavCacheWeather'
+const WEATHER_CACHE_TTL = 10 * 60 * 1000
 
 export default {
   name: 'Weather',
@@ -100,8 +104,20 @@ export default {
   },
   methods: {
     async getWeather() {
-      const { data } = await getWeather({ query: this.city })
-      this.weatherData = data.data
+      const cached = readCache(WEATHER_CACHE_KEY, WEATHER_CACHE_TTL)
+      if (cached?.data) {
+        this.weatherData = cached.data
+      }
+
+      try {
+        const { data } = await getWeather({ query: this.city })
+        writeCache(WEATHER_CACHE_KEY, data)
+        if (data?.data) {
+          this.weatherData = data.data
+        }
+      } catch (e) {
+        console.warn('weather fetch failed', e)
+      }
     },
     getErrMsg(code) {
       switch (code) {

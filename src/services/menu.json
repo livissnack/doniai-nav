@@ -8,7 +8,8 @@
     {
       "id": 2,
       "name": "私人",
-      "is_active": false
+      "is_active": false,
+      "requireAuth": true
     },
     {
       "id": 3,

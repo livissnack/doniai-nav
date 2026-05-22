@@ -38,6 +38,12 @@ export default {
           recommend: true,
         },
         {
+          name: '云笔记',
+          icon: 'fas fa-book',
+          path: '/docs',
+          recommend: true,
+        },
+        {
           name: '密码生成器',
           icon: 'fas fa-key',
           path: '/utils/password',
@@ -65,12 +71,6 @@ export default {
           name: '封面生成器',
           icon: 'fas fa-images',
           path: '/utils/cover',
-          recommend: false,
-        },
-        {
-          name: '豆瓣租房',
-          icon: 'fas fa-home',
-          path: 'https://dbzz.house/search?city=%E6%AD%A6%E6%B1%89',
           recommend: false,
         }
       ],

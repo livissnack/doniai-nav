@@ -79,7 +79,9 @@ export default {
   }
 
   .music-player {
-    max-width: 298px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
   }
 }
 </style>

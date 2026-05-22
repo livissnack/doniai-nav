@@ -1,39 +1,131 @@
 <template>
-  <div class="home">
+  <div class="json-page">
     <div class="nav-box">
-      <Navbar @updateCurrentNavs="updateCurrentNavs" :currentActiveMenuId="current_active_menu_id" :newPage="true"
-              pageTitle="JSON工具"/>
+      <Navbar :newPage="true" pageTitle="JSON工具" :newUrl="`/json`" />
     </div>
-    <div class="content-box">
-      <div class="container">
-        <div class="columns">
-          <div class="column is-three-quarters">
-            <textarea
-                class="json-box"
-                cols="150"
-                :placeholder="placeholder_text"
-                v-model="in_json"
-            ></textarea>
-            <button class="button mt14" @click="formatJsonData">转换</button>
-            <div
-                id="json-loader"
-                cols="150"
-                class="json-box mt20"
-                contenteditable="true"
-            ></div>
-          </div>
-          <div class="column">
-            <Sidebar/>
-          </div>
+
+    <div class="json-main">
+      <header class="json-header">
+        <h1>JSON 在线解析</h1>
+        <p>格式化、压缩、校验 — 参考 json.cn 常用能力</p>
+      </header>
+
+      <div class="json-toolbar">
+        <div class="toolbar-group">
+          <button type="button" class="tool-btn primary" @click="handleFormat">
+            <i class="fas fa-align-left"></i> 格式化
+          </button>
+          <button type="button" class="tool-btn" @click="handleMinify">
+            <i class="fas fa-compress-alt"></i> 压缩
+          </button>
+          <button type="button" class="tool-btn" @click="handleValidate">
+            <i class="fas fa-check-circle"></i> 校验
+          </button>
+          <button type="button" class="tool-btn" @click="handleClear">
+            <i class="fas fa-trash-alt"></i> 清空
+          </button>
+          <button type="button" class="tool-btn" @click="loadDemo">
+            <i class="fas fa-file-code"></i> 示例
+          </button>
         </div>
+        <div class="toolbar-group toolbar-options">
+          <label class="option-chip">
+            <input v-model="keepUnicode" type="checkbox" />
+            <span>保留转义</span>
+          </label>
+          <label class="option-label">缩进</label>
+          <select v-model="indentType" class="indent-select">
+            <option :value="2">2 空格</option>
+            <option :value="4">4 空格</option>
+            <option value="tab">Tab</option>
+          </select>
+        </div>
+      </div>
+
+      <div v-if="statusMessage" class="json-status" :class="statusType">
+        <i :class="statusIcon"></i>
+        <span>{{ statusMessage }}</span>
+        <span v-if="parseMs >= 0" class="status-meta">耗时 {{ parseMs }}ms</span>
+      </div>
+
+      <div class="json-workspace">
+        <div class="json-columns">
+          <section class="json-panel input-panel">
+            <div class="panel-head">
+              <span class="panel-title">输入 JSON</span>
+              <div class="panel-actions">
+                <span class="panel-meta">{{ inputStats.chars }} 字符 · {{ inputStats.lines }} 行</span>
+                <button type="button" class="icon-btn" title="复制输入" @click="copyText(inputJson)">
+                  <i class="fas fa-copy"></i>
+                </button>
+              </div>
+            </div>
+            <textarea
+              ref="inputArea"
+              v-model="inputJson"
+              class="json-textarea"
+              spellcheck="false"
+              placeholder='在此粘贴 JSON，例如 {"name":"Tom"}'
+              @input="onInputChange"
+            />
+          </section>
+
+          <section class="json-panel output-panel">
+            <div class="panel-head">
+              <div class="view-tabs">
+                <button
+                  type="button"
+                  class="view-tab"
+                  :class="{ 'is-active': viewMode === 'tree' }"
+                  @click="viewMode = 'tree'"
+                >
+                  树视图
+                </button>
+                <button
+                  type="button"
+                  class="view-tab"
+                  :class="{ 'is-active': viewMode === 'code' }"
+                  @click="viewMode = 'code'"
+                >
+                  代码视图
+                </button>
+              </div>
+              <div class="panel-actions">
+                <button
+                  v-if="viewMode === 'code'"
+                  type="button"
+                  class="icon-btn"
+                  title="复制输出"
+                  @click="copyText(outputCode)"
+                >
+                  <i class="fas fa-copy"></i>
+                </button>
+              </div>
+            </div>
+
+            <div v-show="viewMode === 'tree'" ref="treeView" class="json-tree-view"></div>
+            <pre
+              v-show="viewMode === 'code'"
+              class="json-code-view"
+            ><code>{{ outputCode }}</code></pre>
+
+            <div v-if="!hasOutput && !errorMessage" class="json-empty-hint">
+              点击「格式化」或「校验」查看结果
+            </div>
+          </section>
+        </div>
+
+        <aside class="json-sidebar-wrap">
+          <Sidebar />
+        </aside>
       </div>
     </div>
 
     <div class="backtop">
-      <back-top color="#409EFF" :size="1.1" :slow="10"></back-top>
+      <back-top color="#409EFF" :size="1.1" :slow="10" />
     </div>
     <div id="footer">
-      <Footer/>
+      <Footer />
     </div>
   </div>
 </template>
@@ -45,118 +137,547 @@ import Sidebar from '@/components/Sidebar.vue'
 import BackTop from '@mlqt/vue-back-top'
 import Footer from '@/components/Footer.vue'
 import JSONFormatter from 'json-formatter-js'
+import {
+  parseJson,
+  validateJson,
+  formatJson,
+  minifyJson,
+  getJsonStats,
+  DEMO_JSON,
+} from '@/utils/jsonTool'
 
 Vue.use(BackTop)
+
 export default {
-  name: 'json',
+  name: 'JsonTool',
   components: {
     Navbar,
     Sidebar,
-    Footer
+    Footer,
   },
   data() {
     return {
-      current_active_menu_id: 1,
-      navData: [],
-      in_json: '',
-      placeholder_text: '在此输入json字符串'
+      inputJson: '',
+      outputCode: '',
+      viewMode: 'tree',
+      keepUnicode: true,
+      indentType: 2,
+      statusMessage: '',
+      statusType: 'info',
+      errorMessage: '',
+      parseMs: -1,
+      hasOutput: false,
+      parsedData: null,
+      inputStats: { chars: 0, lines: 0 },
     }
   },
-  methods: {
-    formatJsonData() {
-      this.deleteChildNode()
-      let format_str = this.in_json
-      if (
-          format_str === '' ||
-          format_str === null ||
-          format_str === undefined
-      ) {
-        this.$buefy.snackbar.open({
-          duration: 3000,
-          message: '输入的内容不能为空！',
-          type: 'is-danger',
-          position: 'is-bottom-right',
-          actionText: 'Msg'
-        })
+  computed: {
+    statusIcon() {
+      if (this.statusType === 'success') return 'fas fa-check-circle'
+      if (this.statusType === 'danger') return 'fas fa-exclamation-circle'
+      return 'fas fa-info-circle'
+    },
+  },
+  watch: {
+    viewMode(mode) {
+      if (mode === 'tree' && this.hasOutput && this.parsedData !== undefined) {
+        this.$nextTick(() => this.renderTree(this.parsedData))
       }
-
-      const myJSON = JSON.parse(this.in_json)
-      const formatter = new JSONFormatter(myJSON, {
+    },
+  },
+  mounted() {
+    this.loadFromHash()
+    this.updateInputStats()
+  },
+  beforeDestroy() {
+    this.clearTree()
+  },
+  methods: {
+    updateInputStats() {
+      this.inputStats = getJsonStats(this.inputJson)
+    },
+    onInputChange() {
+      this.updateInputStats()
+      this.errorMessage = ''
+    },
+    setStatus(message, type = 'info', ms = -1) {
+      this.statusMessage = message
+      this.statusType = type
+      this.parseMs = ms
+    },
+    clearTree() {
+      const el = this.$refs.treeView
+      if (el) el.innerHTML = ''
+    },
+    renderTree(data) {
+      this.clearTree()
+      const el = this.$refs.treeView
+      if (!el) return
+      const formatter = new JSONFormatter(data, 2, {
         hoverPreviewEnabled: true,
         hoverPreviewArrayCount: 100,
         hoverPreviewFieldCount: 5,
         animateOpen: true,
         animateClose: true,
-        useToJSON: true
+        theme: '',
       })
-      document.getElementById('json-loader').appendChild(formatter.render())
+      el.appendChild(formatter.render())
+      this.formatterInstance = formatter
     },
-    deleteChildNode() {
-      let parent = document.getElementById('json-loader')
-      let child = document.getElementById('json-loader').nextSibling
-      if (child !== null) {
-        parent.removeChild(child)
+    runParse(action) {
+      const start = performance.now()
+      try {
+        const data = parseJson(this.inputJson)
+        this.parsedData = data
+        this.errorMessage = ''
+        const ms = Math.round(performance.now() - start)
+        action(data, ms)
+        return true
+      } catch (e) {
+        this.parsedData = undefined
+        this.hasOutput = false
+        this.outputCode = ''
+        this.clearTree()
+        this.errorMessage = e.message
+        this.setStatus(`解析失败：${e.message}`, 'danger')
+        return false
       }
-    }
-  }
+    },
+    handleFormat() {
+      if (!this.runParse((data, ms) => {
+        const formatted = formatJson(this.inputJson, this.indentType, this.keepUnicode)
+        this.outputCode = formatted
+        this.hasOutput = true
+        this.setStatus('格式化成功', 'success', ms)
+        this.$nextTick(() => {
+          if (this.viewMode === 'tree') this.renderTree(data)
+        })
+      })) return
+    },
+    handleMinify() {
+      if (!this.runParse((data, ms) => {
+        const minified = minifyJson(this.inputJson, this.keepUnicode)
+        this.outputCode = minified
+        this.inputJson = minified
+        this.updateInputStats()
+        this.hasOutput = true
+        this.setStatus('压缩成功（已同步到输入区）', 'success', ms)
+        this.$nextTick(() => {
+          if (this.viewMode === 'tree') this.renderTree(data)
+        })
+      })) return
+    },
+    handleValidate() {
+      const start = performance.now()
+      const result = validateJson(this.inputJson)
+      const ms = Math.round(performance.now() - start)
+      if (result.valid) {
+        this.setStatus(result.message, 'success', ms)
+        this.handleFormat()
+      } else {
+        this.setStatus(result.message, 'danger', ms)
+        this.hasOutput = false
+        this.clearTree()
+        this.outputCode = ''
+      }
+    },
+    handleClear() {
+      this.inputJson = ''
+      this.outputCode = ''
+      this.hasOutput = false
+      this.errorMessage = ''
+      this.parsedData = undefined
+      this.clearTree()
+      this.setStatus('已清空', 'info')
+      this.updateInputStats()
+    },
+    loadDemo() {
+      this.inputJson = JSON.stringify(DEMO_JSON, null, 2)
+      this.updateInputStats()
+      this.handleFormat()
+    },
+    loadFromHash() {
+      const hash = window.location.hash || ''
+      if (hash.startsWith('#data=')) {
+        try {
+          this.inputJson = decodeURIComponent(hash.slice(6))
+          this.updateInputStats()
+          this.$nextTick(() => this.handleFormat())
+        } catch (e) {
+          this.setStatus('URL 参数 data 解码失败', 'danger')
+        }
+        window.location.hash = ''
+      }
+    },
+    copyText(text) {
+      if (!text) {
+        this.$buefy.snackbar.open({
+          message: '没有可复制的内容',
+          type: 'is-warning',
+          position: 'is-bottom-right',
+          duration: 2000,
+        })
+        return
+      }
+      this.$copyText(text).then(
+        () => {
+          this.$buefy.snackbar.open({
+            message: '已复制到剪贴板',
+            type: 'is-success',
+            position: 'is-bottom-right',
+            duration: 2000,
+          })
+        },
+        () => {
+          this.$buefy.snackbar.open({
+            message: '复制失败',
+            type: 'is-danger',
+            position: 'is-bottom-right',
+            duration: 2000,
+          })
+        }
+      )
+    },
+  },
 }
 </script>
 
 <style lang="less" scoped>
+.json-page {
+  min-height: 100vh;
+  background: #f0f2f5;
+}
+
 .nav-box {
+  background: #fff;
+  border-bottom: 1px solid #e8ecea;
+  margin-bottom: 0;
+}
+
+.json-main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+}
+
+.json-header {
   text-align: center;
-  background: #ffffff;
-  border-top: 1px solid #ebebeb;
-  margin-bottom: 35px;
-  border-bottom: 2px solid #e1e1e1;
-}
+  margin-bottom: 16px;
 
-.is-active {
-  color: #7957d5 !important;
-  font-weight: bold;
-}
-
-.json-box {
-  border: 1px solid #e567d8;
-  height: 40%;
-  padding: 20px;
-  background-color: #ffffff !important;
-
-  &::-webkit-scrollbar {
-    display: block;
-    width: 8px;
-    height: 100%;
+  h1 {
+    margin: 0 0 6px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #1f2937;
   }
 
-  &::-webkit-scrollbar-track {
-    background: #f1f1f1;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #c1c1c1;
-    border-radius: 29px;
-    height: 100px;
+  p {
+    margin: 0;
+    font-size: 13px;
+    color: #6b7280;
   }
 }
 
-#json-loader {
-  width: 977px;
-  height: 320px;
-  min-height: 120px;
-  max-height: 300px;
-  outline: 0;
-  border: 1px solid #a0b3d6;
+.json-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding: 12px 14px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
+}
+
+.toolbar-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.tool-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  background: #fff;
+  color: #374151;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: #20bc56;
+    color: #20bc56;
+  }
+
+  &.primary {
+    background: linear-gradient(135deg, #22c65b, #20bc56);
+    border-color: #20bc56;
+    color: #fff;
+
+    &:hover {
+      background: linear-gradient(135deg, #2dd36f, #22c65b);
+      color: #fff;
+    }
+  }
+}
+
+.toolbar-options {
+  gap: 12px;
+}
+
+.option-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #4b5563;
+  cursor: pointer;
+
+  input {
+    accent-color: #20bc56;
+  }
+}
+
+.option-label {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.indent-select {
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.json-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+
+  &.success {
+    background: #ecfdf3;
+    color: #15803d;
+  }
+
+  &.danger {
+    background: #fef2f2;
+    color: #b91c1c;
+  }
+
+  &.info {
+    background: #eff6ff;
+    color: #1d4ed8;
+  }
+
+  .status-meta {
+    margin-left: auto;
+    opacity: 0.8;
+    font-size: 12px;
+  }
+}
+
+.json-workspace {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.json-columns {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.json-sidebar-wrap {
+  flex: 0 0 300px;
+  max-width: 300px;
+  min-width: 0;
+}
+
+.json-panel {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 360px;
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fafbfc;
+}
+
+.panel-title {
   font-size: 14px;
-  word-wrap: break-word;
-  overflow-x: hidden;
-  overflow-y: auto;
+  font-weight: 600;
+  color: #374151;
 }
 
-.mt14 {
-  margin-top: 14px;
+.panel-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.mt20 {
-  margin-top: 20px;
+.panel-meta {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.icon-btn {
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #6b7280;
+  cursor: pointer;
+
+  &:hover {
+    background: #ecfdf3;
+    color: #20bc56;
+  }
+}
+
+.view-tabs {
+  display: flex;
+  gap: 4px;
+}
+
+.view-tab {
+  height: 28px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  font-size: 13px;
+  color: #6b7280;
+  cursor: pointer;
+
+  &.is-active {
+    background: #ecfdf3;
+    color: #20bc56;
+    font-weight: 600;
+  }
+}
+
+.json-textarea {
+  flex: 1;
+  width: 100%;
+  min-height: 320px;
+  padding: 14px;
+  border: none;
+  outline: none;
+  resize: vertical;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #1f2937;
+  background: #fff;
+  box-sizing: border-box;
+
+  &::placeholder {
+    color: #9ca3af;
+  }
+}
+
+.json-tree-view {
+  flex: 1;
+  min-height: 320px;
+  max-height: 520px;
+  overflow: auto;
+  padding: 12px 14px;
+  font-size: 13px;
+
+  /deep/ .json-formatter-row {
+    font-family: 'Consolas', 'Monaco', monospace;
+  }
+}
+
+.json-code-view {
+  flex: 1;
+  min-height: 320px;
+  max-height: 520px;
+  margin: 0;
+  padding: 14px;
+  overflow: auto;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #1f2937;
+  background: #f8fafc;
+  white-space: pre-wrap;
+  word-break: break-all;
+
+  code {
+    font-family: inherit;
+  }
+}
+
+.json-empty-hint {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+@media screen and (min-width: 901px) {
+  .json-columns {
+    flex-direction: row;
+  }
+
+  .input-panel,
+  .output-panel {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .json-workspace {
+    flex-direction: column;
+  }
+
+  .json-sidebar-wrap {
+    flex: none;
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .json-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .toolbar-group {
+    justify-content: center;
+  }
 }
 </style>

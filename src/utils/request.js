@@ -9,13 +9,26 @@ axios.defaults.timeout = 10000
 // post请求头
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
 
+// 仅旧版数据接口需要服务 Bearer；/auth、/nav、/notes 等走用户 JWT（X-Session-Token）
+function needsServiceBearer(url) {
+  if (!url) return false
+  const path = String(url).split('?')[0]
+  return /^\/(all|hotel|convert|refresh)(\/|$)/.test(path)
+}
+
 // 请求拦截器
 axios.interceptors.request.use(
     config => {
-      const token = process.env.VUE_APP_SECRET_KEY;
+      const serviceToken = process.env.VUE_APP_SECRET_KEY;
+      const url = config.url || ''
 
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+      if (serviceToken && needsServiceBearer(url)) {
+        config.headers.Authorization = `Bearer ${serviceToken}`;
+      }
+
+      const sessionToken = localStorage.getItem('doniaiNavAuthToken');
+      if (sessionToken) {
+        config.headers['X-Session-Token'] = sessionToken;
       }
 
       return config;
@@ -37,9 +50,11 @@ axios.interceptors.response.use(
   },
   error => {
     if (error && error.response) {
+      const body = error.response.data
+      const serverMsg = body && (body.message || body.msg)
       let res = {}
       res.code = error.response.status
-      res.msg = throwErr(error.response.status, error.response)
+      res.msg = serverMsg || throwErr(error.response.status, error.response)
       return Promise.reject(res)
     }
     return Promise.reject(error)

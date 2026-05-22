@@ -3,9 +3,12 @@
     <div class="nav-box">
       <Navbar @updateCurrentNavs="updateCurrentNavs" :currentActiveMenuId="current_active_menu_id"/>
     </div>
-    <div class="content-box cover-bg" :style="{ backgroundImage: `url(${coverBg})` }">
-      <img :src="coverBg" alt="" width="0" height="0" style="display: none !important;" />
-      <div class="container">
+    <div class="content-box cover-bg">
+      <div
+        class="cover-layer is-visible"
+        :style="{ backgroundImage: coverBg ? `url(${coverBg})` : 'none' }"
+      />
+      <div class="container cover-content">
         <div class="columns">
           <div class="column is-three-quarters mt20">
             <SearchInput/>
@@ -13,7 +16,7 @@
         </div>
 
         <div class="columns">
-          <div class="column is-three-quarters">
+          <div class="column is-three-quarters main-column">
             <div class="post" v-for="navItems in navData" :key="navItems.title">
               <div class="widget">
                 <a href="#" class="sub-title title-underline">
@@ -33,16 +36,14 @@
               </div>
             </div>
           </div>
-          <div class="column">
+          <div class="column sidebar-column">
             <Sidebar/>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="backtop">
-      <back-top color="#409EFF" :size="1.1" :slow="10"></back-top>
-    </div>
+    <AsyncBackTop v-if="showBackTop" />
     <div id="footer">
       <Footer/>
     </div>
@@ -54,87 +55,133 @@ import Vue from 'vue'
 import SearchInput from '@/components/SearchInput.vue'
 import Navbar from '@/components/Navbar.vue'
 import Sidebar from '@/components/Sidebar.vue'
-import BackTop from '@mlqt/vue-back-top'
 import Footer from '@/components/Footer.vue'
-import jsonNavs from '@/services/data.json'
-import {preloadMulitImg} from "@/utils/helper"
-import {getBgImage} from "@/services/api";
+import { canAccessMenu, isLoggedIn, isSkipAuthMode } from '@/store/auth'
+import { fetchPrivateNav } from '@/services/navApi'
+import {
+  DEFAULT_COVER,
+  getCachedCover,
+  preloadCover,
+  refreshBingCover,
+} from '@/utils/bingCover'
 
-Vue.use(BackTop)
+const MENU_STORAGE_KEY = 'doniaiNavActiveMenuId'
+const VALID_MENU_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+const PRIVATE_MENU_ID = 2
+
 export default {
   name: 'home',
   components: {
     SearchInput,
     Navbar,
     Sidebar,
-    Footer
+    Footer,
+    AsyncBackTop: () =>
+      import(/* webpackChunkName: "back-top" */ '@mlqt/vue-back-top').then((mod) => {
+        const BackTop = mod.default
+        Vue.use(BackTop)
+        return BackTop
+      }),
   },
   data() {
+    const cached = getCachedCover()
     return {
       current_active_menu_id: 1,
       navData: [],
-      coverBg: ''
+      coverBg: cached || DEFAULT_COVER,
+      showBackTop: false,
     }
   },
-  beforeCreate() {
-    setTimeout(() => {
-      let imgList = [
-        this.coverBg,
-      ]
-      preloadMulitImg(imgList)
-    }, 200)
+  mounted() {
+    this.showBackTop = true
   },
   created() {
-    this.getCurrentNavs(1)
-    this.getBingImg()
+    const menuId = this.getSavedMenuId()
+    this.current_active_menu_id = menuId
+    this.getCurrentNavs(menuId)
+    this.initCover()
   },
   methods: {
+    getSavedMenuId() {
+      const saved = parseInt(localStorage.getItem(MENU_STORAGE_KEY), 10)
+      const id = VALID_MENU_IDS.includes(saved) ? saved : 1
+      return canAccessMenu(id) ? id : 1
+    },
+    saveMenuId(menuId) {
+      localStorage.setItem(MENU_STORAGE_KEY, String(menuId))
+    },
     async getCurrentNavs(menu_id) {
-      const dataMap = new Map([
-        [1, 'homeData'],
-        [2, 'workData'],
-        [3, 'iosData'],
-        [4, 'toolsData'],
-        [5, 'frontendData'],
-        [6, 'shopData'],
-        [7, 'designData'],
-        [8, 'blogData'],
-        [9, 'foreignData'],
-        [10, 'studyData'],
-      ])
-      let navs = await jsonNavs[dataMap.get(menu_id)]
-      this.navData = navs
-      this.$set(this, "navData", navs)
+      if (menu_id === PRIVATE_MENU_ID && isLoggedIn()) {
+        await this.loadPrivateNav()
+        return
+      }
+
+      const dataMap = {
+        1: 'homeData',
+        2: 'workData',
+        3: 'iosData',
+        4: 'toolsData',
+        5: 'frontendData',
+        6: 'shopData',
+        7: 'designData',
+        8: 'blogData',
+        9: 'foreignData',
+        10: 'studyData',
+      }
+      const key = dataMap[menu_id] || 'homeData'
+      const jsonNavs = (await import(/* webpackChunkName: "nav-data" */ '@/services/data.json')).default
+      this.navData = jsonNavs[key] || []
+    },
+    async loadPrivateNav() {
+      try {
+        const { data } = await fetchPrivateNav()
+        if (data?.ok && Array.isArray(data.categories)) {
+          this.navData = data.categories
+          return
+        }
+      } catch (e) {
+        console.warn('load private nav failed', e)
+      }
+      const jsonNavs = (await import(/* webpackChunkName: "nav-data" */ '@/services/data.json')).default
+      this.navData = jsonNavs.workData || []
     },
     updateCurrentNavs(obj) {
-      this.current_active_menu_id = obj.menu_id
-      this.getCurrentNavs(obj.menu_id)
-    },
-    async getBingImg() {
-      const { data } = await getBgImage()
-      if (data.code === 200) {
-        this.coverBg = data.data.cover_4k
+      const menuId = obj.menu_id
+      if (!VALID_MENU_IDS.includes(menuId)) return
+      if (!canAccessMenu(menuId)) {
+        this.$buefy.toast.open({
+          message: '请先登录后访问「私人」栏目',
+          type: 'is-warning',
+        })
+        if (!isSkipAuthMode()) {
+          this.$router.push({ path: '/login', query: { redirect: '/' } })
+        }
+        return
       }
+      this.current_active_menu_id = menuId
+      this.saveMenuId(menuId)
+      this.getCurrentNavs(menuId)
+    },
+    async initCover() {
+      const initial = this.coverBg
+      preloadCover(initial).catch(() => {})
+
+      refreshBingCover({ silent: true })
+        .then(async (url) => {
+          if (url && url !== this.coverBg) {
+            await preloadCover(url).catch(() => {})
+            this.coverBg = url
+          }
+        })
+        .catch(() => {})
     },
   }
 }
 </script>
 
 <style lang="less" scoped>
-@media screen and (max-width: 375px) {
-  .tab-item {
-    .box-item {
-      width: 130px !important;
-    }
-  }
-}
-
 .nav-box {
-  text-align: center;
-  background: #ffffff;
-  border-top: 1px solid #ebebeb;
   margin-bottom: 12px;
-  border-bottom: 2px solid #e1e1e1;
 }
 
 .post {
@@ -188,6 +235,96 @@ export default {
 }
 
 .cover-bg {
+  position: relative;
+  min-height: 100vh;
+}
+
+.cover-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-color: #1a2332;
   background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 1;
+  transition: opacity 0.4s ease;
+
+  &:not(.is-visible) {
+    opacity: 0;
+  }
+}
+
+.cover-content {
+  position: relative;
+  z-index: 1;
+}
+
+.home .sidebar-column {
+  min-width: 0;
+  max-width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .home .content-box {
+    padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .home .content-box > .container {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .home .columns > .column {
+    width: 100% !important;
+  }
+
+  .home .post {
+    padding: 16px 14px;
+    margin-bottom: 16px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(15, 23, 42, 0.08);
+  }
+
+  .home .main-column .post:last-child {
+    margin-bottom: 0;
+  }
+
+  .home .widget {
+    margin-bottom: 12px;
+  }
+
+  .home .sub-title {
+    font-size: 16px;
+  }
+
+  .home .tab-item {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+
+    a,
+    .box-item {
+      width: 100%;
+      max-width: none;
+      height: 40px;
+      line-height: 40px;
+      font-size: 13px;
+      margin: 0;
+    }
+  }
+
+  .home .sidebar-column {
+    margin-top: 4px;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .home .tab-item {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
