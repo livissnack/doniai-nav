@@ -56,7 +56,7 @@ import SearchInput from '@/components/SearchInput.vue'
 import Navbar from '@/components/Navbar.vue'
 import Sidebar from '@/components/Sidebar.vue'
 import Footer from '@/components/Footer.vue'
-import { canAccessMenu, isLoggedIn, isSkipAuthMode } from '@/store/auth'
+import { canAccessMenu, isLoggedIn } from '@/store/auth'
 import { fetchPrivateNav } from '@/services/navApi'
 import {
   DEFAULT_COVER,
@@ -135,7 +135,7 @@ export default {
     async loadPrivateNav() {
       try {
         const { data } = await fetchPrivateNav()
-        if (data?.ok && Array.isArray(data.categories)) {
+        if (data?.ok && Array.isArray(data.categories) && data.categories.length > 0) {
           this.navData = data.categories
           return
         }
@@ -153,9 +153,7 @@ export default {
           message: '请先登录后访问「私人」栏目',
           type: 'is-warning',
         })
-        if (!isSkipAuthMode()) {
-          this.$router.push({ path: '/login', query: { redirect: '/' } })
-        }
+        this.$router.push({ path: '/login', query: { redirect: '/' } })
         return
       }
       this.current_active_menu_id = menuId

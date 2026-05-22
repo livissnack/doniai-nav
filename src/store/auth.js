@@ -10,15 +10,6 @@ import {
 
 const TOKEN_KEY = 'doniaiNavAuthToken'
 const PRIVATE_MENU_ID = 2
-/** 生产临时免登录：.env 中 VUE_APP_SKIP_AUTH=true */
-const SKIP_AUTH = process.env.VUE_APP_SKIP_AUTH === 'true'
-
-const ADMIN_USER = {
-  id: 1,
-  username: 'admin',
-  email: 'admin@doniai.com',
-  displayName: '管理员',
-}
 
 export const SIDEBAR_PANELS = [
   { id: 'news', title: '热门新闻' },
@@ -79,12 +70,6 @@ function clearSession() {
   setToken('')
 }
 
-function bootstrapAdmin() {
-  authStore.user = { ...ADMIN_USER }
-  authStore.sidebarPanels = { ...DEFAULT_PANELS }
-  setToken('skip-auth')
-}
-
 function mapApiError(err, fallback = '请求失败') {
   const body = err?.response?.data
   if (body?.message) return body.message
@@ -93,11 +78,6 @@ function mapApiError(err, fallback = '请求失败') {
 }
 
 export async function initAuth() {
-  if (SKIP_AUTH) {
-    bootstrapAdmin()
-    authReadyResolve()
-    return
-  }
   const token = getToken()
   if (!token) {
     authReadyResolve()
@@ -118,12 +98,7 @@ export async function initAuth() {
 }
 
 export function isLoggedIn() {
-  if (SKIP_AUTH) return !!authStore.user
   return !!authStore.user && !!getToken()
-}
-
-export function isSkipAuthMode() {
-  return SKIP_AUTH
 }
 
 export function isPrivateMenu(menuId) {
@@ -131,7 +106,6 @@ export function isPrivateMenu(menuId) {
 }
 
 export function canAccessMenu(menuId) {
-  if (SKIP_AUTH) return true
   if (!isPrivateMenu(menuId)) return true
   return isLoggedIn()
 }
@@ -175,10 +149,6 @@ export const authActions = {
   },
 
   async logout() {
-    if (SKIP_AUTH) {
-      bootstrapAdmin()
-      return { ok: true, message: '当前为免登录模式，已恢复管理员会话' }
-    }
     try {
       await logoutApi()
     } catch {

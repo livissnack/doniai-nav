@@ -64,7 +64,7 @@
             </button>
           </div>
         </div>
-        <template v-else-if="!skipAuth">
+        <template v-else>
           <button type="button" class="nav-action" @click="goLogin">登录</button>
           <button type="button" class="nav-action nav-action--primary" @click="goRegister">
             注册
@@ -77,7 +77,7 @@
 
 <script>
 import jsonMenus from '@/services/menu.json'
-import { authStore, authActions, canAccessMenu, isSkipAuthMode } from '@/store/auth'
+import { authStore, authActions, canAccessMenu } from '@/store/auth'
 
 export default {
   name: 'Navbar',
@@ -139,9 +139,6 @@ export default {
         return true
       })
     },
-    skipAuth() {
-      return isSkipAuthMode()
-    },
   },
   methods: {
     closeMenu() {
@@ -160,9 +157,7 @@ export default {
           message: '请先登录后访问「私人」栏目',
           type: 'is-warning',
         })
-        if (!isSkipAuthMode()) {
-          this.$router.push({ path: '/login', query: { redirect: '/' } })
-        }
+        this.$router.push({ path: '/login', query: { redirect: '/' } })
         return
       }
       this.closeAll()
