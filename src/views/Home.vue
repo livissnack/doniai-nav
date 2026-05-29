@@ -135,15 +135,14 @@ export default {
     async loadPrivateNav() {
       try {
         const { data } = await fetchPrivateNav()
-        if (data?.ok && Array.isArray(data.categories) && data.categories.length > 0) {
+        if (data?.ok && Array.isArray(data.categories)) {
           this.navData = data.categories
           return
         }
       } catch (e) {
         console.warn('load private nav failed', e)
       }
-      const jsonNavs = (await import(/* webpackChunkName: "nav-data" */ '@/services/data.json')).default
-      this.navData = jsonNavs.workData || []
+      this.navData = []
     },
     updateCurrentNavs(obj) {
       const menuId = obj.menu_id

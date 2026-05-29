@@ -3,6 +3,7 @@ import {
   loginApi,
   registerApi,
   fetchMeApi,
+  fetchPublicSettingsApi,
   updatePanelsApi,
   logoutApi,
   changePasswordApi,
@@ -48,6 +49,7 @@ function setToken(token) {
 export const authStore = Vue.observable({
   user: null,
   sidebarPanels: { ...DEFAULT_PANELS },
+  registrationEnabled: true,
 })
 
 let authReadyResolve
@@ -77,7 +79,19 @@ function mapApiError(err, fallback = '请求失败') {
   return fallback
 }
 
+async function loadPublicSettings() {
+  try {
+    const { data } = await fetchPublicSettingsApi()
+    if (data?.ok) {
+      authStore.registrationEnabled = data.registrationEnabled !== false
+    }
+  } catch {
+    // 保持默认开放
+  }
+}
+
 export async function initAuth() {
+  await loadPublicSettings()
   const token = getToken()
   if (!token) {
     authReadyResolve()
@@ -101,6 +115,14 @@ export function isLoggedIn() {
   return !!authStore.user && !!getToken()
 }
 
+export function isAdmin() {
+  return !!authStore.user?.isAdmin
+}
+
+export function isRegistrationEnabled() {
+  return authStore.registrationEnabled !== false
+}
+
 export function isPrivateMenu(menuId) {
   return Number(menuId) === PRIVATE_MENU_ID
 }
@@ -115,13 +137,15 @@ export function isPanelVisible(panelId) {
 }
 
 export const authActions = {
-  async register({ username, email, password, displayName }) {
+  async register({ username, email, password, displayName, captchaId, captchaCode }) {
     try {
       const { data } = await registerApi({
         username,
         email,
         password,
         displayName,
+        captchaId,
+        captchaCode,
       })
       if (data?.ok) {
         setToken(data.token)

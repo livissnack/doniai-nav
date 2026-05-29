@@ -53,16 +53,19 @@ module.exports = {
     })
   },
   devServer: {
-    port: process.env.VUE_APP_WEB_PORT,
+    port: process.env.VUE_APP_WEB_PORT || 1343,
+    host: '0.0.0.0',
+    disableHostCheck: true,
     proxy: {
+      // 开发时前端走同源 /api，由 devServer 转发到 Rust API，避免 CORS
       '/api': {
-        target: `${process.env.VUE_APP_API_URL}`,
+        target: process.env.VUE_APP_API_PROXY_TARGET || 'http://127.0.0.1:3001',
         changeOrigin: true,
         ws: true,
         pathRewrite: {
-          '^/api': '/'
-        }
-      }
-    }
-  }
+          '^/api': '',
+        },
+      },
+    },
+  },
 }

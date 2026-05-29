@@ -147,11 +147,11 @@
             <div class="uptime-section">
               <div class="uptime-section-head">
                 <span class="section-title">近期探测</span>
-                <span class="section-meta">{{ site.history.length }} 次记录</span>
+                <span class="section-meta">{{ historyBarMeta(site) }}</span>
               </div>
-              <div class="uptime-bar" :title="`最近 ${site.history.length} 次探测`">
+              <div class="uptime-bar" :title="uptimeBarTitle(site)">
                 <span
-                  v-for="(h, idx) in site.history"
+                  v-for="(h, idx) in visibleHistory(site.history)"
                   :key="idx"
                   class="uptime-seg"
                   :class="{ up: h.up, down: !h.up }"
@@ -210,6 +210,9 @@ import {
 } from '@/services/monitorApi'
 
 Vue.use(BackTop)
+
+/** 条形图最多展示的探测次数，避免过多记录撑破卡片 */
+const UPTIME_BAR_MAX = 72
 
 export default {
   name: 'Monitor',
@@ -276,6 +279,22 @@ export default {
       if (percent >= 95) return 'good'
       if (percent >= 80) return 'warn'
       return 'poor'
+    },
+    visibleHistory(history) {
+      const list = Array.isArray(history) ? history : []
+      if (list.length <= UPTIME_BAR_MAX) return list
+      return list.slice(-UPTIME_BAR_MAX)
+    },
+    historyBarMeta(site) {
+      const total = site.history?.length || 0
+      if (!total) return '0 次记录'
+      if (total <= UPTIME_BAR_MAX) return `${total} 次记录`
+      return `最近 ${UPTIME_BAR_MAX} 次 / 共 ${total} 次`
+    },
+    uptimeBarTitle(site) {
+      const total = site.history?.length || 0
+      if (total <= UPTIME_BAR_MAX) return `最近 ${total} 次探测`
+      return `共 ${total} 次探测，条形图展示最近 ${UPTIME_BAR_MAX} 次`
     },
     formatLastCheck(ts) {
       if (!ts) return '尚未检测'
@@ -816,6 +835,7 @@ export default {
 
 .uptime-section {
   margin-bottom: 14px;
+  min-width: 0;
 }
 
 .uptime-section-head {
@@ -839,21 +859,26 @@ export default {
 .uptime-bar {
   display: flex;
   align-items: stretch;
-  gap: 3px;
+  gap: 2px;
+  width: 100%;
+  max-width: 100%;
   height: 32px;
   padding: 5px 6px;
   background: #1f2937;
   border-radius: 8px;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .uptime-seg {
-  flex: 1;
-  min-width: 3px;
-  border-radius: 3px;
+  flex: 1 1 0;
+  min-width: 0;
+  border-radius: 2px;
   transition: transform 0.15s ease;
 
   &:hover {
     transform: scaleY(1.15);
+    z-index: 1;
   }
 
   &.up {

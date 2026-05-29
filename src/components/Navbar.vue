@@ -66,7 +66,12 @@
         </div>
         <template v-else>
           <button type="button" class="nav-action" @click="goLogin">登录</button>
-          <button type="button" class="nav-action nav-action--primary" @click="goRegister">
+          <button
+            v-if="registrationEnabled"
+            type="button"
+            class="nav-action nav-action--primary"
+            @click="goRegister"
+          >
             注册
           </button>
         </template>
@@ -122,6 +127,9 @@ export default {
   computed: {
     isLoggedIn() {
       return !!authStore.user
+    },
+    registrationEnabled() {
+      return authStore.registrationEnabled !== false
     },
     displayName() {
       return authStore.user?.displayName || authStore.user?.username || ''

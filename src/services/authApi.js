@@ -4,6 +4,30 @@ export function loginApi(payload) {
   return request('post', '/auth/login', payload)
 }
 
+export function fetchPublicSettingsApi() {
+  return request('get', '/auth/public-settings')
+}
+
+export function fetchCaptchaApi() {
+  return request('get', '/auth/captcha')
+}
+
+export function fetchAdminUsersApi() {
+  return request('get', '/auth/admin/users')
+}
+
+export function fetchAdminSettingsApi() {
+  return request('get', '/auth/admin/settings')
+}
+
+export function updateAdminSettingsApi(payload) {
+  return request('put', '/auth/admin/settings', payload)
+}
+
+export function setUserEnabledApi(userId, payload) {
+  return request('put', `/auth/admin/users/${userId}/enabled`, payload)
+}
+
 export function registerApi(payload) {
   return request('post', '/auth/register', payload)
 }

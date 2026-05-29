@@ -62,6 +62,8 @@
 
           <ChangePasswordPanel v-show="activeTab === 'password'" />
 
+          <AdminUsersPanel v-show="activeTab === 'users'" />
+
           <!-- 监控站点 -->
           <section v-show="activeTab === 'monitor'" class="admin-card">
             <div class="card-title-row">
@@ -177,7 +179,8 @@ import Navbar from '@/components/Navbar.vue'
 import Footer from '@/components/Footer.vue'
 import PrivateNavManager from '@/components/admin/PrivateNavManager.vue'
 import ChangePasswordPanel from '@/components/admin/ChangePasswordPanel.vue'
-import { SIDEBAR_PANELS, authStore, authActions } from '@/store/auth'
+import AdminUsersPanel from '@/components/admin/AdminUsersPanel.vue'
+import { SIDEBAR_PANELS, authStore, authActions, isAdmin } from '@/store/auth'
 import {
   fetchManageSites,
   createMonitorSite,
@@ -212,6 +215,13 @@ const MENU_ITEMS = [
   },
 ]
 
+const ADMIN_MENU_ITEM = {
+  id: 'users',
+  label: '用户管理',
+  icon: 'fas fa-users-cog',
+  desc: '查看注册用户、启用/禁用账号、开关注册功能',
+}
+
 const emptyForm = () => ({
   name: '',
   url: '',
@@ -227,12 +237,13 @@ export default {
     Footer,
     PrivateNavManager,
     ChangePasswordPanel,
+    AdminUsersPanel,
   },
   data() {
+    const items = this.buildMenuItems()
     const tab = this.$route?.query?.tab
-    const validTab = MENU_ITEMS.some((m) => m.id === tab) ? tab : 'sidebar'
+    const validTab = items.some((m) => m.id === tab) ? tab : 'sidebar'
     return {
-      menuItems: MENU_ITEMS,
       activeTab: validTab,
       panelDefs: SIDEBAR_PANELS,
       manageSites: [],
@@ -244,6 +255,9 @@ export default {
     }
   },
   computed: {
+    menuItems() {
+      return this.buildMenuItems()
+    },
     panelState() {
       return authStore.sidebarPanels
     },
@@ -253,6 +267,10 @@ export default {
     },
   },
   mounted() {
+    if (this.$route?.query?.tab === 'users' && !isAdmin()) {
+      this.activeTab = 'sidebar'
+      this.switchTab('sidebar')
+    }
     this.loadSites()
   },
   watch: {
@@ -261,6 +279,12 @@ export default {
     },
   },
   methods: {
+    buildMenuItems() {
+      if (isAdmin()) {
+        return [...MENU_ITEMS, ADMIN_MENU_ITEM]
+      }
+      return MENU_ITEMS
+    },
     switchTab(id) {
       this.activeTab = id
       const query = { ...this.$route.query, tab: id }

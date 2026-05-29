@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import { initAuth, authReady, isLoggedIn } from '@/store/auth'
+import { initAuth, authReady, isLoggedIn, isRegistrationEnabled } from '@/store/auth'
 
 const authInit = initAuth()
 
@@ -185,6 +185,11 @@ router.beforeEach(async (to, from, next) => {
 
   if ((to.name === 'login' || to.name === 'register') && isLoggedIn()) {
     next({ path: '/' })
+    return
+  }
+
+  if (to.name === 'register' && !isRegistrationEnabled()) {
+    next({ path: '/login' })
     return
   }
 
