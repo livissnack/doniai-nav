@@ -45,6 +45,9 @@
           var url = localStorage.getItem(KEY)
           var at = parseInt(localStorage.getItem(AT_KEY), 10)
           if (!url || !Number.isFinite(at) || Date.now() - at > TTL) return
+          if (url.indexOf('uhd=1') < 0 || url.indexOf('vt=webp') < 0) {
+            url += (url.indexOf('?') >= 0 ? '&' : '?') + 'uhd=1&vt=webp'
+          }
           var link = document.createElement('link')
           link.rel = 'preload'
           link.as = 'image'

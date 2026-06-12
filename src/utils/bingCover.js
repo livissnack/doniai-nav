@@ -11,8 +11,18 @@ export const COVER_FALLBACK_STYLE = {
   backgroundImage: 'none',
 }
 
+/** Bing 图请求参数：UHD + WebP */
+export function withBingImageParams(url) {
+  if (!url) return null
+  const base = String(url).split('#')[0]
+  if (base.includes('uhd=1') && base.includes('vt=webp')) return url
+  const sep = base.includes('?') ? '&' : '?'
+  return `${base}${sep}uhd=1&vt=webp`
+}
+
 export function coverStyleFromUrl(url) {
-  return url ? { backgroundImage: `url(${url})` } : { ...COVER_FALLBACK_STYLE }
+  const normalized = withBingImageParams(url)
+  return normalized ? { backgroundImage: `url(${normalized})` } : { ...COVER_FALLBACK_STYLE }
 }
 
 let inflight = null
@@ -27,7 +37,7 @@ export function pickCoverUrl(apiData) {
   if (!body) return null
   if (apiData?.code != null && apiData.code !== 200) return null
   const d = body.data || body
-  return d.cover_4k || null
+  return withBingImageParams(d.cover_4k || null)
 }
 
 /** 新 URL 是否与当前不同（用于后台更新缓存） */
@@ -43,16 +53,17 @@ export function getCachedCover() {
     const url = localStorage.getItem(CACHE_KEY)
     if (!url) return null
     if (!Number.isFinite(at) || Date.now() - at > CACHE_TTL_MS) return null
-    return url
+    return withBingImageParams(url)
   } catch {
     return null
   }
 }
 
 export function setCachedCover(url) {
-  if (!url) return
+  const normalized = withBingImageParams(url)
+  if (!normalized) return
   try {
-    localStorage.setItem(CACHE_KEY, url)
+    localStorage.setItem(CACHE_KEY, normalized)
     localStorage.setItem(CACHE_TIME_KEY, String(Date.now()))
   } catch (e) {
     console.warn('bing cover cache failed', e)
