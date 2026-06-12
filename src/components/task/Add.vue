@@ -10,34 +10,26 @@
           <button class="delete" aria-label="close" @click="popupStatus = false"></button>
         </header>
         <section class="modal-card-body">
-          <b-field label="待办内容：">
-            <b-input size="is-small" maxlength="200" placeholder="例如：明天10点确认产品方案" type="textarea"></b-input>
-          </b-field>
-          <b-field label="添加执行人：">
-            <b-taginput icon-pack="fas" v-model="tags" size="is-small" placeholder="添加执行人">
-            </b-taginput>
-          </b-field>
-          <b-field label="设置截止时间：">
-            <b-datepicker
-                v-model="selected"
-                size="is-small"
-                :show-week-number="showWeekNumber"
-                :locale="locale"
-                icon-pack="fas"
-                icon="calendar"
-                :icon-right="selected ? 'close-circle' : ''"
-                icon-right-clickable
-                @icon-right-click="clearDate"
-                trap-focus>
-            </b-datepicker>
-          </b-field>
-          <b-field label="描述说明：">
-            <b-input size="is-small" maxlength="200" placeholder="请填写描述说明，也可拖放文件到此处" type="textarea"></b-input>
-          </b-field>
-          <b-field label="添加参与人：">
-            <b-taginput icon-pack="fas" v-model="tags" size="is-small" placeholder="添加参与人">
-            </b-taginput>
-          </b-field>
+          <o-field label="待办内容：">
+            <o-input size="small" maxlength="200" placeholder="例如：明天10点确认产品方案" type="textarea"></o-input>
+          </o-field>
+          <o-field label="添加执行人：">
+            <o-taginput icon-pack="fas" v-model="tags" size="small" placeholder="添加执行人">
+            </o-taginput>
+          </o-field>
+          <o-field label="设置截止时间：">
+            <o-datepicker
+              v-model="selected"
+              size="small"
+            />
+          </o-field>
+          <o-field label="描述说明：">
+            <o-input size="small" maxlength="200" placeholder="请填写描述说明，也可拖放文件到此处" type="textarea"></o-input>
+          </o-field>
+          <o-field label="添加参与人：">
+            <o-taginput icon-pack="fas" v-model="tags" size="small" placeholder="添加参与人">
+            </o-taginput>
+          </o-field>
         </section>
         <footer class="modal-card-foot">
           <button class="button is-success">新建</button>

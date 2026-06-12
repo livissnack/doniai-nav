@@ -10,14 +10,29 @@
       @mouseenter="pauseCarousel"
       @mouseleave="resumeCarousel"
     >
-      <div v-if="loading" class="news-state">
-        <i class="fas fa-spinner fa-spin"></i>
-        <span>加载中…</span>
-      </div>
+      <SidebarPanelState
+        v-if="loading"
+        status="loading"
+        message="新闻加载中…"
+        :retryable="false"
+        :min-height="120"
+      />
 
-      <div v-else-if="!list.length" class="news-state is-empty">
-        <span>暂无新闻</span>
-      </div>
+      <SidebarPanelState
+        v-else-if="error"
+        status="error"
+        message="新闻加载失败"
+        :min-height="120"
+        @retry="fetchNews"
+      />
+
+      <SidebarPanelState
+        v-else-if="!list.length"
+        status="empty"
+        message="暂无新闻"
+        :retryable="false"
+        :min-height="120"
+      />
 
       <template v-else>
         <div class="news-carousel" :style="{ height: carouselHeight + 'px' }">
@@ -71,6 +86,7 @@
 </template>
 
 <script>
+import SidebarPanelState from '@/components/SidebarPanelState.vue'
 import { getHotNews } from '@/services/api'
 import { readCache, writeCache } from '@/utils/apiCache'
 
@@ -90,10 +106,12 @@ const SOURCE_META = {
 
 export default {
   name: 'News',
+  components: { SidebarPanelState },
   data() {
     return {
       list: [],
       loading: true,
+      error: false,
       currentIndex: 0,
       progressWidth: 0,
       timerId: null,
@@ -132,7 +150,7 @@ export default {
   mounted() {
     this.restartCarousel()
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.clearTimers()
   },
   methods: {
@@ -203,22 +221,29 @@ export default {
     },
     async fetchNews() {
       const cached = readCache(NEWS_CACHE_KEY, NEWS_CACHE_TTL)
+
       if (cached) {
         this.list = this.normalizeNewsList(cached)
         this.currentIndex = 0
         this.loading = false
-      } else {
-        this.loading = true
+        this.error = false
+        return
       }
+
+      this.loading = true
+      this.error = false
 
       try {
         const { data } = await getHotNews()
         writeCache(NEWS_CACHE_KEY, data)
         this.list = this.normalizeNewsList(data)
         this.currentIndex = 0
+        this.error = false
       } catch (e) {
         console.error('News fetch failed:', e)
-        if (!cached) this.list = []
+        if (!this.list.length) {
+          this.error = true
+        }
       } finally {
         this.loading = false
       }
@@ -289,6 +314,9 @@ export default {
 .news-panel {
   background: #fff;
   padding: 10px;
+  border: 1px solid #e8e8e8;
+  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.06);
+  overflow: hidden;
 }
 
 .util-title {
@@ -327,20 +355,6 @@ export default {
   min-width: 0;
   min-height: 120px;
   overflow: hidden;
-}
-
-.news-state {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  height: 120px;
-  color: #8c8c8c;
-  font-size: 13px;
-
-  &.is-empty {
-    color: #bfbfbf;
-  }
 }
 
 .news-carousel {

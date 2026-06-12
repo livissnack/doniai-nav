@@ -1,5 +1,5 @@
 <template>
-  <p v-cloak class="gx-countdown card-header-title">
+  <p v-cloak class="countdown">
     <strong>{{ remainText }}</strong>
   </p>
 </template>
@@ -11,24 +11,27 @@ export default {
     return {
       remark: '距离下班还剩：',
       type: 'up',
-      remainTime: '18:00:00'
+      remainTime: '18:00:00',
+      timerId: null,
     }
-  },
-  mounted() {
-    setInterval(() => {
-      this.remainTime = this.getWorkEndTime()
-    }, 1000)
   },
   computed: {
     remainText() {
-      let showText = ''
       if (this.type === 'down') {
-        showText = this.remark
+        return this.remark
       }
-      if (this.type === 'up') {
-        showText = this.remark + this.remainTime
-      }
-      return showText
+      return this.remark + this.remainTime
+    },
+  },
+  mounted() {
+    this.remainTime = this.getWorkEndTime()
+    this.timerId = setInterval(() => {
+      this.remainTime = this.getWorkEndTime()
+    }, 1000)
+  },
+  beforeUnmount() {
+    if (this.timerId) {
+      clearInterval(this.timerId)
     }
   },
   methods: {
@@ -40,7 +43,7 @@ export default {
       if (startTime > endTime) {
         this.remark = '恭喜你已经下班了'
         this.type = 'down'
-        return
+        return ''
       }
 
       this.type = 'up'
@@ -56,13 +59,18 @@ export default {
       seconds = seconds < 10 ? '0' + seconds : seconds
 
       return `${hours}:${minutes}:${seconds}`
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style lang="less" scoped>
-.gx-countdown {
-  justify-content: flex-end;
+.countdown {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #6b7280;
+  text-align: right;
+  line-height: 1.3;
+  max-width: 140px;
 }
 </style>

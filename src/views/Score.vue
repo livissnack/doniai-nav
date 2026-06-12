@@ -6,15 +6,16 @@
     </div>
     <div class="content-box">
       <div class="container">
+        <UtilPageColumns>
         <div class="columns">
           <div class="column is-three-quarters">
-            <ScoreInput/>
+            <ScoreInput :loading="searchLoading" :initial-key="routeKey" @search="fetchScore" />
             <div class="operate-box">
-              <b-button type="is-success" size="is-small" icon-pack="fas" icon-left="share-alt" v-clipboard:copy="shareUrl" v-clipboard:success="onCopySuccess" v-clipboard:error="onCopyError">分享
-              </b-button>
-              <b-button type="is-info" size="is-small" icon-pack="fas" icon-left="download" :loading="downloadStatus" @click="downloadScoreCard">
+              <o-button variant="success" size="small" icon-pack="fas" icon-left="share-alt" @click="copyShareUrl">分享
+              </o-button>
+              <o-button variant="info" size="small" icon-pack="fas" icon-left="download" :loading="downloadStatus" @click="downloadScoreCard">
                 下载分数卡片
-              </b-button>
+              </o-button>
             </div>
             <div class="see-box">
               <div class="see-content">
@@ -22,11 +23,17 @@
                 注意：查询分数卡功能只开放15天，请尽快下载分数卡片
               </div>
             </div>
+            <div v-if="!dataLoaded" class="score-empty">
+              <i class="fas fa-id-card"></i>
+              <p>请输入查询秘钥，或打开老师分享的带 <code>?key=</code> 的链接查看分数卡。</p>
+              <p class="score-empty__hint">分数查询服务若已过期，请使用下方示例预览版式并下载保存。</p>
+            </div>
             <div class="post" ref="score-card">
               <div class="widget">
                 <a href="#" class="sub-title title-underline">
                   分数详情
                 </a>
+                <span v-if="!dataLoaded" class="preview-tag">示例预览</span>
               </div>
               <div class="tab-item">
                 <div class="item-content">
@@ -41,18 +48,23 @@
                   <div class="item-title">学生姓名：</div>
                   <div class="item-value">{{ data.name }}</div>
                 </div>
-                <div class="item-content" v-for="(item, index) in data.list" :key="index" v-if="item.isScore">
+                <div class="item-content" v-for="(item, index) in scoreItems" :key="index">
                   <div class="item-score">
                     <div class="item-title">{{ item.name }}：</div>
-                    <div class="item-value">{{ item.isScore ? item.score : '' }}</div>
+                    <div class="item-value">{{ item.score }}</div>
                   </div>
                   <div class="item-remark">
-                    <b-tooltip class="tooltip-remark" v-if="item.isScore" type="is-danger" :label="`张三同学：最高分（${item.maxScore}）`" multilined>
+                    <o-tooltip
+                      class="tooltip-remark"
+                      variant="danger"
+                      :label="`${data.name}同学：最高分（${item.maxScore}）`"
+                      multiline
+                    >
                       <small>
                         <i class="far fa-question-circle"></i>
                         班级最高分{{ item.maxScore }}
                       </small>
-                    </b-tooltip>
+                    </o-tooltip>
                   </div>
                 </div>
                 <div class="item-content">
@@ -68,13 +80,13 @@
                   <div class="chart-title">
                     一、分数条形图
                   </div>
-                  <ScoreLine :scoreList="scoreList"/>
+                  <ScoreLine :scoreList="scoreList" :subjectNames="subjectNames" />
                 </div>
                 <div class="chart-box mt20">
                   <div class="chart-title">
                     二、分数雷达图
                   </div>
-                  <ScoreRadar :scoreList="scoreList"/>
+                  <ScoreRadar :scoreList="scoreList" :subjectNames="subjectNames" />
                 </div>
                 <div class="copyright-box">
                   <div class="copyright-content">
@@ -85,10 +97,9 @@
               </div>
             </div>
           </div>
-          <div class="column sidebar-column">
-            <Sidebar />
-          </div>
+          <SidebarColumn />
         </div>
+        </UtilPageColumns>
       </div>
     </div>
 
@@ -103,76 +114,79 @@
 
 <script>
 import html2canvas from 'html2canvas'
-import Vue from 'vue'
+import { saveAs } from 'file-saver'
 import Navbar from '@/components/Navbar.vue'
-import Sidebar from '@/components/Sidebar.vue'
-import BackTop from '@mlqt/vue-back-top'
+import SidebarColumn from '@/components/SidebarColumn.vue'
+import UtilPageColumns from '@/components/UtilPageColumns.vue'
 import Footer from '@/components/Footer.vue'
-import ScoreInput from "@/components/ScoreInput.vue"
-import ScoreLine from "@/components/chart/Line.vue"
-import ScoreRadar from "@/components/chart/Radar.vue"
+import ScoreInput from '@/components/ScoreInput.vue'
+import ScoreLine from '@/components/chart/Line.vue'
+import ScoreRadar from '@/components/chart/Radar.vue'
+import { getStudentScore } from '@/services/api'
 
-Vue.use(BackTop)
+const DEMO_SCORE = {
+  school: '第二实验小学',
+  class: '一（22）班',
+  name: '张三',
+  list: [
+    { name: '语文', score: 89, maxScore: 100, isScore: true },
+    { name: '数学', score: 90, maxScore: 99, isScore: true },
+    { name: '思想', score: 94, maxScore: 100, isScore: false },
+    { name: '体育', score: 95, maxScore: 100, isScore: false },
+    { name: '美术', score: 74, maxScore: 100, isScore: false },
+    { name: '道法', score: 68, maxScore: 100, isScore: false },
+  ],
+  mailing:
+    '没有辛勤的汗水，就没有成功的泪水；没有艰辛的付出，激励学习的句子就没有丰硕的果实；没有刻苦的训练，就没有闪光的金牌。',
+}
+
+function normalizeScorePayload(res) {
+  const raw = res?.data
+  const scoreBlock = raw?.score
+  const body =
+    (scoreBlock && typeof scoreBlock === 'object' && (scoreBlock.data ?? scoreBlock)) ||
+    raw?.data ||
+    raw
+
+  if (!body || typeof body !== 'object' || !Array.isArray(body.list)) {
+    return null
+  }
+
+  return {
+    school: body.school || '—',
+    class: body.class || body.className || '—',
+    name: body.name || '—',
+    list: body.list.map((item) => ({
+      name: item.name,
+      score: Number(item.score) || 0,
+      maxScore: Number(item.maxScore) || 100,
+      isScore: item.isScore !== false,
+    })),
+    mailing: body.mailing || body.remark || '',
+  }
+}
+
 export default {
-  name: 'score',
+  name: 'Score',
   components: {
     ScoreLine,
     ScoreRadar,
     ScoreInput,
     Navbar,
-    Sidebar,
+    SidebarColumn,
+    UtilPageColumns,
     Footer
   },
   data() {
     return {
       year: (new Date().getFullYear()),
       downloadStatus: false,
+      searchLoading: false,
+      dataLoaded: false,
+      lastSearchKey: '',
       current_active_menu_id: 1,
       downloadImgUrl: '',
-      data: {
-        school: '第二实验小学',
-        class: '一（22）班',
-        name: '张三',
-        list: [
-          {
-            name: '语文',
-            score: 89,
-            maxScore: 100,
-            isScore: true,
-          },
-          {
-            name: '数学',
-            score: 90,
-            maxScore: 99,
-            isScore: true,
-          },
-          {
-            name: '思想',
-            score: 94,
-            maxScore: 100,
-            isScore: false,
-          },
-          {
-            name: '体育',
-            score: 95,
-            maxScore: 100,
-            isScore: false,
-          },
-          {
-            name: '美术',
-            score: 74,
-            maxScore: 100,
-            isScore: false,
-          },
-          {
-            name: '道法',
-            score: 68,
-            maxScore: 100,
-            isScore: false,
-          },
-        ],
-        mailing: '没有辛勤的汗水，就没有成功的泪水；没有艰辛的付出，激励学习的句子就没有丰硕的果实；没有刻苦的训练，就没有闪光的金牌。',
-      },
+      data: { ...DEMO_SCORE, list: DEMO_SCORE.list.map((item) => ({ ...item })) },
       studyRemarks: [
           '愿云彩、艳阳一直陪伴你走到海角天涯；鲜花、绿草相随你铺展远大的前程。',
           '目标的坚定是性格中最必要的力量源泉之一，也是成功的武器之一。',
@@ -184,8 +198,17 @@ export default {
     }
   },
   computed: {
+    routeKey() {
+      const key = this.$route.query?.key
+      return typeof key === 'string' ? key : ''
+    },
     shareUrl() {
-      return window.location.href
+      const url = new URL(window.location.href)
+      const key = this.lastSearchKey || this.routeKey
+      if (key) {
+        url.searchParams.set('key', key)
+      }
+      return url.toString()
     },
     totalScore() {
       let tmpTotalScore = 0
@@ -197,55 +220,104 @@ export default {
       return tmpTotalScore
     },
     scoreList() {
-      let tmpScoreList = []
-      this.data.list.map(a => {
-        tmpScoreList.push(a.score)
-      })
-      return tmpScoreList
+      return this.data.list.map((a) => a.score)
     },
+    scoreItems() {
+      return this.data.list.filter((item) => item.isScore)
+    },
+    subjectNames() {
+      return this.data.list.map((item) => item.name)
+    },
+  },
+  created() {
+    if (this.routeKey) {
+      this.lastSearchKey = this.routeKey
+      this.fetchScore(this.routeKey)
+    }
   },
   methods: {
     updateCurrentNavs(obj) {
       this.current_active_menu_id = obj.menu_id
-      this.getCurrentNavs(obj.menu_id)
     },
-    downloadScoreCard() {
-      this.downloadStatus = true
-      let dom = this.$refs['score-card']
-      html2canvas(dom, {
-        allowTaint: true,
-        taintTest: true,
-        scale: 2,
-        // useCORS: true,
-      }).then((canvas) => {
-        this.downloadImgUrl = canvas.toDataURL('image/png')
-        const link = document.createElement('a')
-        link.href = this.downloadImgUrl
-        link.download = 'score.png'
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-        this.$buefy.snackbar.open({
+    async fetchScore(key) {
+      const secret = String(key || '').trim()
+      if (!secret) return
+
+      this.searchLoading = true
+      try {
+        const res = await getStudentScore(secret)
+        const parsed = normalizeScorePayload(res)
+        if (!parsed) {
+          throw new Error('invalid score payload')
+        }
+        this.data = parsed
+        this.dataLoaded = true
+        this.lastSearchKey = secret
+        if (this.$route.query?.key !== secret) {
+          this.$router.replace({ path: '/score', query: { key: secret } })
+        }
+        this.$notify({
           duration: 3000,
-          message: '分数卡图片下载成功！',
+          message: `已加载 ${parsed.name} 的分数卡`,
           type: 'is-success',
           position: 'is-bottom-right',
-          actionText: 'Msg'
+          actionText: 'Msg',
         })
-        this.downloadStatus = false
-      }).catch(() => {
-        this.$buefy.snackbar.open({
-          duration: 3000,
-          message: '分数卡图片下载失败！',
+      } catch (e) {
+        console.error('fetchScore failed:', e)
+        this.$notify({
+          duration: 4000,
+          message: '分数查询失败：秘钥无效或服务已过期，可先使用下方示例分数卡下载保存',
           type: 'is-danger',
           position: 'is-bottom-right',
-          actionText: 'Msg'
+          actionText: 'Msg',
         })
-        this.downloadStatus = false
+      } finally {
+        this.searchLoading = false
+      }
+    },
+    downloadScoreCard() {
+      const dom = this.$refs['score-card']
+      if (!dom) return
+      this.downloadStatus = true
+      html2canvas(dom, {
+        allowTaint: true,
+        scale: 1.5,
+        backgroundColor: '#ffffff',
+        logging: false,
       })
+        .then((canvas) => {
+          canvas.toBlob((blob) => {
+            if (blob) {
+              saveAs(blob, `score-${Date.now()}.png`)
+              this.$notify({
+                duration: 3000,
+                message: '分数卡图片下载成功！',
+                type: 'is-success',
+                position: 'is-bottom-right',
+                actionText: 'Msg',
+              })
+            }
+            this.downloadStatus = false
+          }, 'image/png', 0.92)
+        })
+        .catch((e) => {
+          console.error('download score card failed:', e)
+          this.$notify({
+            duration: 3000,
+            message: '分数卡图片下载失败！',
+            type: 'is-danger',
+            position: 'is-bottom-right',
+            actionText: 'Msg',
+          })
+          this.downloadStatus = false
+        })
+    },
+    copyShareUrl() {
+      this.$copyText(this.shareUrl).then(() => this.onCopySuccess()).catch(() => this.onCopyError({ text: '复制失败' }))
     },
     onCopySuccess() {
-      this.$buefy.snackbar.open({
+      this.$notify({
         duration: 3000,
         message: `已复制分享链接: ${this.shareUrl} !`,
         type: 'is-success',
@@ -257,7 +329,7 @@ export default {
       if (err.text === undefined) {
         err.text = '复制失败'
       }
-      this.$buefy.snackbar.open({
+      this.$notify({
         duration: 3000,
         message: `${err.text}`,
         type: 'is-danger',
@@ -308,6 +380,16 @@ export default {
 .widget {
   position: relative;
   margin-bottom: 20px;
+
+  .preview-tag {
+    margin-left: 10px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: #f3ecff;
+    color: #6943d0;
+    font-size: 12px;
+    font-weight: 600;
+  }
   .download-box {
     right: 0;
     top: 0;
@@ -397,6 +479,47 @@ export default {
   .copyright-content {
     font-size: 12px;
     color: #9c9c9c;
+  }
+}
+
+.score-empty {
+  margin-bottom: 16px;
+  padding: 16px 18px;
+  border: 1px dashed #d8d8d8;
+  border-radius: 8px;
+  background: #fafafa;
+  color: #666;
+  font-size: 14px;
+  line-height: 1.6;
+
+  i {
+    color: #6943d0;
+    margin-right: 6px;
+  }
+
+  code {
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: #eee;
+    color: #444;
+    font-size: 12px;
+  }
+}
+
+.score-empty__hint {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #999;
+}
+
+@media screen and (max-width: 768px) {
+  .operate-box {
+    flex-direction: column;
+    gap: 8px;
+
+    :deep(.button) {
+      width: 100%;
+    }
   }
 }
 </style>

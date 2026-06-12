@@ -31,27 +31,27 @@
 
           <section class="form-section">
             <h3>文案内容</h3>
-            <b-field label="主标题">
-              <b-input v-model="form.title" maxlength="40" placeholder="输入封面标题" />
-            </b-field>
-            <b-field label="副标题">
-              <b-input v-model="form.subtitle" maxlength="60" placeholder="可选副标题" />
-            </b-field>
-            <b-field label="标签">
-              <b-input v-model="form.tag" maxlength="16" placeholder="如：技术 · 分享" />
-            </b-field>
+            <o-field label="主标题">
+              <o-input v-model="form.title" maxlength="40" placeholder="输入封面标题" />
+            </o-field>
+            <o-field label="副标题">
+              <o-input v-model="form.subtitle" maxlength="60" placeholder="可选副标题" />
+            </o-field>
+            <o-field label="标签">
+              <o-input v-model="form.tag" maxlength="16" placeholder="如：技术 · 分享" />
+            </o-field>
           </section>
 
           <section class="form-section">
             <h3>背景</h3>
-            <b-field label="背景类型">
-              <b-radio v-model="form.bgMode" native-value="gradient">渐变</b-radio>
-              <b-radio v-model="form.bgMode" native-value="solid">纯色</b-radio>
-              <b-radio v-model="form.bgMode" native-value="image">图片</b-radio>
-            </b-field>
+            <o-field label="背景类型">
+              <o-radio v-model="form.bgMode" native-value="gradient">渐变</o-radio>
+              <o-radio v-model="form.bgMode" native-value="solid">纯色</o-radio>
+              <o-radio v-model="form.bgMode" native-value="image">图片</o-radio>
+            </o-field>
 
             <template v-if="form.bgMode === 'gradient'">
-              <b-field label="渐变方案">
+              <o-field label="渐变方案">
                 <div class="gradient-picks">
                   <button
                     v-for="g in gradients"
@@ -64,20 +64,20 @@
                     @click="form.gradientId = g.id"
                   />
                 </div>
-              </b-field>
-              <b-field label="渐变角度">
-                <b-slider v-model="form.gradientAngle" :min="0" :max="360" :step="15" />
-              </b-field>
+              </o-field>
+              <o-field label="渐变角度">
+                <o-slider v-model="form.gradientAngle" :min="0" :max="360" :step="15" />
+              </o-field>
             </template>
 
             <template v-if="form.bgMode === 'solid'">
-              <b-field label="背景色">
-                <b-input v-model="form.bgColor" type="color" />
-              </b-field>
+              <o-field label="背景色">
+                <o-input v-model="form.bgColor" type="color" />
+              </o-field>
             </template>
 
             <template v-if="form.bgMode === 'image'">
-              <b-field label="上传图片">
+              <o-field label="上传图片">
                 <div class="upload-row">
                   <button type="button" class="btn-outline" @click="$refs.fileInput.click()">
                     <i class="fas fa-image"></i> 选择图片
@@ -98,28 +98,28 @@
                   class="hidden-input"
                   @change="onImageSelect"
                 />
-              </b-field>
-              <b-field label="遮罩浓度">
-                <b-slider v-model="form.overlay" :min="0" :max="0.85" :step="0.05" />
-              </b-field>
+              </o-field>
+              <o-field label="遮罩浓度">
+                <o-slider v-model="form.overlay" :min="0" :max="0.85" :step="0.05" />
+              </o-field>
             </template>
           </section>
 
           <section class="form-section">
             <h3>文字样式</h3>
-            <b-field label="文字颜色">
-              <b-input v-model="form.textColor" type="color" />
-            </b-field>
-            <b-field label="主标题字号">
-              <b-slider v-model="form.titleSize" :min="24" :max="96" :step="2" />
-            </b-field>
-            <b-field label="副标题字号">
-              <b-slider v-model="form.subtitleSize" :min="14" :max="48" :step="2" />
-            </b-field>
-            <b-field label="对齐">
-              <b-radio v-model="form.textAlign" native-value="center">居中</b-radio>
-              <b-radio v-model="form.textAlign" native-value="left">居左</b-radio>
-            </b-field>
+            <o-field label="文字颜色">
+              <o-input v-model="form.textColor" type="color" />
+            </o-field>
+            <o-field label="主标题字号">
+              <o-slider v-model="form.titleSize" :min="24" :max="96" :step="2" />
+            </o-field>
+            <o-field label="副标题字号">
+              <o-slider v-model="form.subtitleSize" :min="14" :max="48" :step="2" />
+            </o-field>
+            <o-field label="对齐">
+              <o-radio v-model="form.textAlign" native-value="center">居中</o-radio>
+              <o-radio v-model="form.textAlign" native-value="left">居左</o-radio>
+            </o-field>
           </section>
 
           <div class="form-actions">
@@ -157,18 +157,14 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import Navbar from '@/components/Navbar.vue'
-import BackTop from '@mlqt/vue-back-top'
+import BackTop from '@/components/BackTop.vue'
 import Footer from '@/components/Footer.vue'
 import {
   drawCover,
   COVER_PRESETS,
   COVER_GRADIENTS,
 } from '@/utils/coverCanvas'
-
-Vue.use(BackTop)
-
 const DEFAULT_FORM = () => ({
   title: 'Doniai 导航',
   subtitle: '简洁 · 优雅 · 高效的个人导航',
@@ -249,7 +245,7 @@ export default {
     })
     window.addEventListener('resize', this.updatePreviewScale)
   },
-  beforeDestroy() {
+  beforeUnmount() {
     window.removeEventListener('resize', this.updatePreviewScale)
     if (this.redrawTimer) clearTimeout(this.redrawTimer)
     if (this.bgImageUrl) URL.revokeObjectURL(this.bgImageUrl)
@@ -270,8 +266,12 @@ export default {
     updatePreviewScale() {
       const stage = this.$refs.previewStage
       if (!stage) return
-      const maxW = stage.clientWidth - 32
-      const maxH = Math.min(640, window.innerHeight * 0.55)
+      const narrow = window.innerWidth <= 768
+      const padX = narrow ? 16 : 48
+      const maxW = Math.max(0, stage.clientWidth - padX)
+      const maxH = narrow
+        ? Math.min(360, window.innerHeight * 0.38)
+        : Math.min(640, window.innerHeight * 0.55)
       const scaleW = (maxW / this.canvasWidth) * 100
       const scaleH = (maxH / this.canvasHeight) * 100
       this.previewScale = Math.min(100, Math.max(20, Math.floor(Math.min(scaleW, scaleH))))
@@ -318,14 +318,14 @@ export default {
         link.download = `${name}-${this.canvasWidth}x${this.canvasHeight}.png`
         link.href = canvas.toDataURL('image/png', 1.0)
         link.click()
-        this.$buefy.snackbar.open({
+        this.$notify({
           message: '封面已导出',
           type: 'is-success',
           position: 'is-bottom-right',
           duration: 2500,
         })
       } catch (e) {
-        this.$buefy.snackbar.open({
+        this.$notify({
           message: '导出失败，请重试',
           type: 'is-danger',
           position: 'is-bottom-right',
@@ -345,6 +345,30 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.cover-scrollbar() {
+  scrollbar-width: thin;
+  scrollbar-color: #c8ced6 #f3f4f6;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f3f4f6;
+    border-radius: 999px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #c8ced6;
+    border-radius: 999px;
+
+    &:hover {
+      background: #9ca3af;
+    }
+  }
+}
+
 .cover-page {
   min-height: 100vh;
   background: #f0f2f5;
@@ -390,11 +414,13 @@ export default {
   flex: 0 0 360px;
   max-width: 100%;
   background: #fff;
-  border-radius: 12px;
+  border-radius: 0;
   padding: 20px;
   box-shadow: 0 2px 12px rgba(15, 23, 42, 0.06);
   max-height: calc(100vh - 180px);
+  overflow-x: hidden;
   overflow-y: auto;
+  .cover-scrollbar();
 }
 
 .form-section {
@@ -411,6 +437,24 @@ export default {
     font-size: 14px;
     font-weight: 700;
     color: #374151;
+  }
+
+  :deep(.field) {
+    margin-bottom: 0.75rem;
+  }
+
+  :deep(.control),
+  :deep(.input),
+  :deep(input.input) {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  :deep(.field-body) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 16px;
   }
 }
 
@@ -544,7 +588,7 @@ export default {
   flex: 1;
   min-width: 0;
   background: #fff;
-  border-radius: 12px;
+  border-radius: 0;
   padding: 16px;
   box-shadow: 0 2px 12px rgba(15, 23, 42, 0.06);
 }
@@ -565,29 +609,134 @@ export default {
   min-height: 320px;
   padding: 24px;
   background: repeating-conic-gradient(#e5e7eb 0% 25%, #f9fafb 0% 50%) 50% / 16px 16px;
-  border-radius: 8px;
-  overflow: auto;
+  border-radius: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  box-sizing: border-box;
+  .cover-scrollbar();
 }
 
 .cover-canvas {
   display: block;
+  flex-shrink: 0;
+  max-width: 100%;
+  height: auto !important;
   box-shadow: 0 8px 28px rgba(15, 23, 42, 0.18);
-  border-radius: 4px;
+  border-radius: 0;
 }
 
 @media screen and (max-width: 900px) {
   .cover-layout {
     flex-direction: column;
+    gap: 16px;
+  }
+
+  .preview-panel {
+    order: 1;
+    width: 100%;
   }
 
   .cover-panel {
+    order: 2;
     flex: none;
     width: 100%;
     max-height: none;
   }
 
   .preview-stage {
-    min-height: 240px;
+    min-height: 200px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .cover-page {
+    overflow-x: hidden;
+  }
+
+  .nav-box {
+    margin-bottom: 0;
+  }
+
+  .cover-main {
+    padding: 16px 12px calc(20px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .cover-header {
+    margin-bottom: 16px;
+
+    h1 {
+      font-size: 20px;
+    }
+
+    p {
+      font-size: 13px;
+      line-height: 1.5;
+    }
+  }
+
+  .cover-panel,
+  .preview-panel {
+    padding: 14px 12px;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+  }
+
+  .preset-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .preset-btn {
+    padding: 8px 10px;
+    min-width: 0;
+  }
+
+  .preset-name {
+    font-size: 13px;
+  }
+
+  .upload-row {
+    flex-wrap: wrap;
+    width: 100%;
+
+    .btn-outline {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+
+  .form-actions {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    margin: 0 -12px -14px;
+    padding: 12px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, #fff 24%);
+    border-top: 1px solid #f0f0f0;
+    box-shadow: 0 -4px 16px rgba(15, 23, 42, 0.06);
+
+    .btn-primary,
+    .btn-outline {
+      width: 100%;
+      min-height: 42px;
+    }
+  }
+
+  .preview-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    font-size: 12px;
+  }
+
+  .preview-stage {
+    padding: 12px;
+    min-height: 160px;
+  }
+
+  .gradient-swatch {
+    width: 32px;
+    height: 32px;
   }
 }
 </style>

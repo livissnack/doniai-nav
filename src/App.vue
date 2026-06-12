@@ -1,12 +1,52 @@
 <template>
   <div id="app">
-    <router-view/>
+    <PageProgressBar />
+    <router-view v-slot="{ Component, route }">
+      <keep-alive :max="8">
+        <component
+          :is="Component"
+          v-if="Component && route.meta.keepAlive"
+          :key="route.name"
+        />
+      </keep-alive>
+      <component
+        :is="Component"
+        v-if="Component && !route.meta.keepAlive"
+        :key="route.path"
+      />
+    </router-view>
+
+    <Teleport :to="sidebarHost" :disabled="!sidebarHost">
+      <div v-show="sidebarHost" class="global-sidebar-host">
+        <Sidebar />
+      </div>
+    </Teleport>
   </div>
 </template>
 
 <script>
+import { warmApp } from '@/utils/warmApp'
+import { defineAsyncComponent } from 'vue'
+import PageProgressBar from '@/components/PageProgressBar.vue'
+import { sidebarHost } from '@/utils/sidebarPortal'
+
 export default {
-  name: 'app'
+  name: 'app',
+  components: {
+    Sidebar: defineAsyncComponent(() => import('@/components/Sidebar.vue')),
+    PageProgressBar,
+  },
+  setup() {
+    return { sidebarHost }
+  },
+  watch: {
+    '$route.path'(path) {
+      warmApp({ path })
+    },
+  },
+  mounted() {
+    warmApp({ path: this.$route.path })
+  },
 }
 </script>
 
@@ -20,7 +60,11 @@ export default {
   background: #ebebeb;
 }
 
-.is-primary {
+/* 仅作用于按钮、通知、首页导航卡片，避免污染 switch/checkbox 等表单控件 */
+.button.is-primary,
+.notification.is-primary,
+.tab-item a.is-primary,
+a.box-item.is-primary {
   background-color: #6943d0;
   border-color: transparent;
   color: white;
@@ -32,7 +76,10 @@ export default {
   }
 }
 
-.is-success {
+.button.is-success,
+.notification.is-success,
+.tab-item a.is-success,
+a.box-item.is-success {
   background-color: #20bc56;
   border-color: transparent;
   color: #fff;
@@ -44,9 +91,10 @@ export default {
   }
 }
 
-/* 按钮、Toast 通知等实心样式 */
 .button.is-danger,
-.notification.is-danger {
+.notification.is-danger,
+.tab-item a.is-danger,
+a.box-item.is-danger {
   background-color: #ff3860;
   border-color: transparent;
   color: #fff;
@@ -72,20 +120,10 @@ export default {
   color: #ef4444;
 }
 
-/* 首页导航卡片（data.json 的 color 类名） */
-.tab-item a.is-danger,
-a.box-item.is-danger {
-  background-color: #ff3860;
-  border-color: transparent;
-  color: #fff;
-
-  &:hover {
-    background-color: #f14668;
-    color: #fff;
-  }
-}
-
-.is-warning {
+.button.is-warning,
+.notification.is-warning,
+.tab-item a.is-warning,
+a.box-item.is-warning {
   background-color: #ffd83d;
   border-color: transparent;
   color: #fff;
@@ -97,7 +135,10 @@ a.box-item.is-danger {
   }
 }
 
-.is-info {
+.button.is-info,
+.notification.is-info,
+.tab-item a.is-info,
+a.box-item.is-info {
   background-color: #0e71de;
   border-color: transparent;
   color: #fff;
@@ -109,19 +150,60 @@ a.box-item.is-danger {
   }
 }
 
-/* 所有带 Sidebar 的页面：侧栏列与卡片宽度 */
-.columns > .column {
-  min-width: 0;
+/* 导航栏：全局统一高度，避免各页 scoped 样式或主题覆盖导致压扁 */
+.nav-box {
+  flex-shrink: 0;
+  background: #fff;
 }
 
-.column .sidebar {
+.nav-box > nav.site-nav,
+.nav-box .site-nav {
+  display: block;
   width: 100%;
-  max-width: 100%;
+  min-height: 52px;
+  box-sizing: border-box;
 }
 
-@media screen and (max-width: 768px) {
-  .columns > .column {
-    width: 100% !important;
-  }
+.nav-box .site-nav-inner {
+  display: flex;
+  align-items: center;
+  min-height: 52px;
+  padding: 8px 16px;
+  box-sizing: border-box;
 }
+
+.global-sidebar-host {
+  width: 100%;
+}
+
+/* 内容容器统一直角：主卡片、侧栏面板、工具页白底区块 */
+#app .bg-white,
+#app .home .post,
+#app .util-box,
+#app .news-panel,
+#app .music-box,
+#app .sidebar-panel,
+#app .weather-card,
+#app .todo-panel,
+#app .info-card,
+#app .tools-panel,
+#app .parse-content,
+#app .loan-panel,
+#app .json-main,
+#app .json-toolbar,
+#app .json-panel,
+#app .json-workspace,
+#app .rollcall-card,
+#app .side-card,
+#app .post,
+#app .cover-panel,
+#app .preview-panel,
+#app .json-toolbar,
+#app .json-status,
+#app .docs-card,
+#app .admin-card,
+#app .admin-aside {
+  border-radius: 0 !important;
+}
+
 </style>

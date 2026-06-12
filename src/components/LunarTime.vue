@@ -1,64 +1,169 @@
 <template>
-  <div class="content">
-    <div class="subtitle is-6 text-center">
-      {{ solarTimeComputed }}
-    </div>
-    <strong class="subtitle is-7"
-      >{{ upDownTextComputed }} {{ currentTime }}</strong
-    >
+
+  <div class="lunar-time">
+
+    <p class="lunar-time__date">{{ solarTimeComputed }}</p>
+
+    <p class="lunar-time__clock">
+
+      <strong>{{ upDownTextComputed }} {{ currentTime }}</strong>
+
+    </p>
+
   </div>
+
 </template>
 
+
+
 <script>
+
 import {
+
   timeNow,
+
   year,
+
   month,
+
   day,
-  monningAndAfternoonText
+
+  monningAndAfternoonText,
+
 } from '@/utils/helper.js'
-import solarLunar from 'solarlunar'
+
+
 
 export default {
+
   name: 'LunarTime',
+
   data() {
+
     return {
+
       up_down_text: '',
-      solar2lunarData: '',
-      currentTime: timeNow()
+
+      solar2lunarData: null,
+
+      currentTime: timeNow(),
+
+      timerId: null,
+
     }
+
   },
+
   computed: {
+
     upDownTextComputed() {
-      let solar2lunarData = this.solar2lunarData
-      return `${solar2lunarData.ncWeek}[${this.up_down_text}]`
+
+      const data = this.solar2lunarData
+
+      if (!data) return ''
+
+      return `${data.ncWeek}[${this.up_down_text}]`
+
     },
+
     solarTimeComputed() {
-      let solar2lunarData = this.solar2lunarData
-      return `${solar2lunarData.gzYear}年[${solar2lunarData.animal}年]-${solar2lunarData.monthCn}${solar2lunarData.dayCn}`
-    }
+
+      const data = this.solar2lunarData
+
+      if (!data) return ''
+
+      return `${data.gzYear}年[${data.animal}年]-${data.monthCn}${data.dayCn}`
+
+    },
+
   },
-  mounted() {
-    setInterval(() => {
-      this.currentTime = timeNow()
-    }, 1000)
-  },
-  created() {
-    this.getWeekday()
-  },
-  methods: {
-    getWeekday() {
-      this.up_down_text = monningAndAfternoonText()
+
+  async created() {
+
+    this.up_down_text = monningAndAfternoonText()
+
+    try {
+
+      const solarLunar = (await import('solarlunar')).default
+
       this.solar2lunarData = solarLunar.solar2lunar(year(), month(), day())
+
+    } catch (e) {
+
+      console.warn('load solarlunar failed', e)
+
     }
-  }
+
+  },
+
+  mounted() {
+
+    this.timerId = setInterval(() => {
+
+      this.currentTime = timeNow()
+
+    }, 1000)
+
+  },
+
+  beforeUnmount() {
+
+    if (this.timerId) {
+
+      clearInterval(this.timerId)
+
+    }
+
+  },
+
 }
+
 </script>
 
+
+
 <style lang="less" scoped>
-.text-center {
+
+.lunar-time {
+
+  padding-top: 10px;
+
+  border-top: 1px dashed #e5e7eb;
+
   text-align: center;
-  font-weight: 600;
-  color: #4c9ae8;
+
 }
+
+
+
+.lunar-time__date {
+
+  margin: 0 0 6px;
+
+  font-size: 0.875rem;
+
+  font-weight: 600;
+
+  color: #4c9ae8;
+
+  line-height: 1.4;
+
+}
+
+
+
+.lunar-time__clock {
+
+  margin: 0;
+
+  font-size: 0.8125rem;
+
+  color: #6b7280;
+
+  line-height: 1.4;
+
+}
+
 </style>
+
+

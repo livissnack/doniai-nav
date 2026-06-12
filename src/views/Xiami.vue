@@ -5,17 +5,18 @@
     </div>
     <div class="content-box">
       <div class="container">
+        <UtilPageColumns>
         <div class="columns">
           <div class="column is-three-quarters">
             <div class="mt-4 play-input">
               <div class="input-box">
-                <b-input type="url" v-model="mediaSrc" placeholder="请输入播放地址" maxlength="400" icon-pack="fas"
+                <o-input type="url" v-model="mediaSrc" placeholder="请输入播放地址" maxlength="400" icon-pack="fas"
                          icon-right="times"
                          icon-right-clickable
-                         @icon-right-click="clearIconClick"></b-input>
+                         @icon-right-click="clearIconClick"></o-input>
               </div>
               <div class="start-play-btn">
-                <b-button type="is-success" @click="startPlay">播放</b-button>
+                <o-button variant="success" @click="startPlay">播放</o-button>
               </div>
             </div>
 
@@ -25,13 +26,9 @@
                       sandbox="allow-same-origin allow-forms allow-scripts"></iframe>
             </div>
           </div>
-          <div class="column">
-            <div class="section-box">
-              <MediaResource :resourceUrl="mediaSrc"/>
-            </div>
-            <Sidebar/>
-          </div>
+          <SidebarColumn root-class="column" />
         </div>
+        </UtilPageColumns>
       </div>
     </div>
 
@@ -45,20 +42,17 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import Navbar from '@/components/Navbar.vue'
-import Sidebar from '@/components/Sidebar.vue'
-import BackTop from '@mlqt/vue-back-top'
+import SidebarColumn from '@/components/SidebarColumn.vue'
+import UtilPageColumns from '@/components/UtilPageColumns.vue'
+import BackTop from '@/components/BackTop.vue'
 import Footer from '@/components/Footer.vue'
-import MediaResource from "@/components/MediaResource.vue";
-
-Vue.use(BackTop)
 export default {
   name: 'xiami',
   components: {
-    MediaResource,
     Navbar,
-    Sidebar,
+    SidebarColumn,
+    UtilPageColumns,
     Footer
   },
   data() {
@@ -110,9 +104,5 @@ export default {
     width: 100%;
     height: 564px;
   }
-}
-
-.section-box {
-  margin-bottom: 20px;
 }
 </style>

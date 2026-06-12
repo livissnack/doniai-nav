@@ -29,7 +29,7 @@
                 </div>
               </div>
               <div class="start-play-btn">
-                <b-button type="is-success" @click="startConverter">转换</b-button>
+                <o-button variant="success" @click="startConverter">转换</o-button>
               </div>
             </div>
 
@@ -38,9 +38,8 @@
                 <input class="input" v-model="showMoney" type="text" placeholder="转换后金额数字">
               </div>
               <div class="start-play-btn">
-                <b-button type="is-danger" v-clipboard:copy="showMoney" v-clipboard:success="onCopySuccess"
-                          v-clipboard:error="onCopyError">复制
-                </b-button>
+                <o-button variant="danger" @click="copyMoney">复制
+                </o-button>
               </div>
             </div>
           </div>
@@ -76,14 +75,11 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import Navbar from '@/components/Navbar.vue'
-import BackTop from '@mlqt/vue-back-top'
+import BackTop from '@/components/BackTop.vue'
 import Footer from '@/components/Footer.vue'
 import Clock from "@/components/Clock.vue"
 import number2chinesenumber from 'number2chinesenumber'
-
-Vue.use(BackTop)
 export default {
   name: 'foreign',
   components: {
@@ -138,8 +134,11 @@ export default {
       let money = parseFloat(this.money)
       this.showMoney = number2chinesenumber(money, 'maxAmount')
     },
+    copyMoney() {
+      this.$copyText(this.showMoney).then(() => this.onCopySuccess()).catch(() => this.onCopyError({ text: '复制失败' }))
+    },
     onCopySuccess() {
-      this.$buefy.snackbar.open({
+      this.$notify({
         duration: 3000,
         message: `${this.showMoney}`,
         type: 'is-success',
@@ -151,7 +150,7 @@ export default {
       if (err.text === undefined) {
         err.text = '复制失败'
       }
-      this.$buefy.snackbar.open({
+      this.$notify({
         duration: 3000,
         message: `${err.text}`,
         type: 'is-danger',

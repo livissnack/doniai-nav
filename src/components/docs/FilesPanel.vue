@@ -142,8 +142,6 @@
 </template>
 
 <script>
-import * as XLSX from 'xlsx'
-import mammoth from 'mammoth'
 import {
   fetchFileList,
   createFolder,
@@ -176,6 +174,7 @@ export default {
       sheetNames: [],
       activeSheet: 0,
       sheetRows: [],
+      xlsxLib: null,
     }
   },
   computed: {
@@ -190,7 +189,7 @@ export default {
   mounted() {
     this.loadList()
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.revokeBlob()
   },
   methods: {
@@ -228,7 +227,7 @@ export default {
         const { data } = await fetchFileList(this.currentPath)
         if (data?.ok) this.items = data.items || []
       } catch (e) {
-        this.$buefy.toast.open({ message: e?.msg || '加载失败', type: 'is-danger' })
+        this.$toast.open({ message: e?.msg || '加载失败', type: 'is-danger' })
       } finally {
         this.loading = false
       }
@@ -255,10 +254,10 @@ export default {
         for (const file of files) {
           await uploadFile(file, this.currentPath)
         }
-        this.$buefy.toast.open({ message: '上传完成', type: 'is-success' })
+        this.$toast.open({ message: '上传完成', type: 'is-success' })
         await this.loadList()
       } catch (err) {
-        this.$buefy.toast.open({ message: err?.msg || '上传失败', type: 'is-danger' })
+        this.$toast.open({ message: err?.msg || '上传失败', type: 'is-danger' })
       }
       e.target.value = ''
     },
@@ -269,10 +268,10 @@ export default {
         const { data } = await createFolder(this.currentPath, name)
         if (data?.ok) {
           this.items = data.items || []
-          this.$buefy.toast.open({ message: '已创建', type: 'is-success' })
+          this.$toast.open({ message: '已创建', type: 'is-success' })
         }
       } catch (e) {
-        this.$buefy.toast.open({ message: e?.msg || '创建失败', type: 'is-danger' })
+        this.$toast.open({ message: e?.msg || '创建失败', type: 'is-danger' })
       }
     },
     openItem(item) {
@@ -308,10 +307,10 @@ export default {
         } else if (e === '.pdf') {
           this.viewerMode = 'pdf'
         } else if (['.xlsx', '.xls'].includes(e)) {
-          this.loadExcel(buf)
+          await this.loadExcel(buf)
           this.viewerMode = 'excel'
         } else if (e === '.csv') {
-          this.loadCsv(buf)
+          await this.loadCsv(buf)
           this.viewerMode = 'excel'
         } else if (e === '.docx') {
           await this.previewDocx(buf)
@@ -321,17 +320,25 @@ export default {
           this.viewerMode = 'unsupported'
         }
       } catch (err) {
-        this.$buefy.toast.open({ message: err?.msg || '打开失败', type: 'is-danger' })
+        this.$toast.open({ message: err?.msg || '打开失败', type: 'is-danger' })
         this.viewerOpen = false
       }
     },
-    loadExcel(buf) {
+    async ensureXlsx() {
+      if (!this.xlsxLib) {
+        this.xlsxLib = await import('xlsx')
+      }
+      return this.xlsxLib
+    },
+    async loadExcel(buf) {
+      const XLSX = await this.ensureXlsx()
       this.workbook = XLSX.read(buf, { type: 'array' })
       this.sheetNames = this.workbook.SheetNames
       this.activeSheet = 0
       this.applySheet(0)
     },
-    loadCsv(buf) {
+    async loadCsv(buf) {
+      const XLSX = await this.ensureXlsx()
       const text = new TextDecoder().decode(buf)
       this.workbook = XLSX.read(text, { type: 'string' })
       this.sheetNames = this.workbook.SheetNames
@@ -339,6 +346,8 @@ export default {
       this.applySheet(0)
     },
     applySheet(idx) {
+      if (!this.xlsxLib || !this.workbook) return
+      const XLSX = this.xlsxLib
       const name = this.sheetNames[idx]
       const sheet = this.workbook.Sheets[name]
       const arr = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' })
@@ -353,19 +362,21 @@ export default {
         this.sheetRows.push(row)
       }
     },
-    switchSheet(idx) {
-      this.saveCurrentSheet()
+    async switchSheet(idx) {
+      await this.saveCurrentSheet()
       this.activeSheet = idx
       this.applySheet(idx)
     },
-    saveCurrentSheet() {
+    async saveCurrentSheet() {
       if (!this.workbook || !this.sheetNames.length) return
+      const XLSX = await this.ensureXlsx()
       const name = this.sheetNames[this.activeSheet]
       const ws = XLSX.utils.aoa_to_sheet(this.sheetRows)
       this.workbook.Sheets[name] = ws
     },
     async previewDocx(buffer) {
       try {
+        const mammoth = (await import('mammoth')).default
         const result = await mammoth.convertToHtml({ arrayBuffer: buffer })
         this.htmlContent = result.value
         this.viewerMode = 'docx'
@@ -390,11 +401,12 @@ export default {
         } else if (this.viewerMode === 'html') {
           const htmlPath = this.viewerPath.replace(/\.docx?$/i, '.html')
           await saveFileText(htmlPath, this.htmlContent)
-          this.$buefy.toast.open({ message: `已保存为 ${htmlPath.split('/').pop()}`, type: 'is-success' })
+          this.$toast.open({ message: `已保存为 ${htmlPath.split('/').pop()}`, type: 'is-success' })
           this.viewerSaving = false
           return
         } else if (this.viewerMode === 'excel') {
-          this.saveCurrentSheet()
+          await this.saveCurrentSheet()
+          const XLSX = await this.ensureXlsx()
           const out = XLSX.write(this.workbook, { bookType: 'xlsx', type: 'array' })
           const blob = new Blob([out], {
             type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -402,15 +414,15 @@ export default {
           const file = new File([blob], this.viewerName, { type: blob.type })
           await uploadBinary(file, this.viewerPath)
         }
-        this.$buefy.toast.open({ message: '已保存', type: 'is-success' })
+        this.$toast.open({ message: '已保存', type: 'is-success' })
       } catch (e) {
-        this.$buefy.toast.open({ message: e?.msg || '保存失败', type: 'is-danger' })
+        this.$toast.open({ message: e?.msg || '保存失败', type: 'is-danger' })
       } finally {
         this.viewerSaving = false
       }
     },
     removeItem(item) {
-      this.$buefy.dialog.confirm({
+      this.$dialog.confirm({
         title: '删除',
         message: `确定删除「${item.name}」？`,
         type: 'is-danger',
@@ -420,10 +432,10 @@ export default {
             const { data } = await deleteFile(item.path)
             if (data?.ok) {
               this.items = data.items || []
-              this.$buefy.toast.open({ message: '已删除', type: 'is-success' })
+              this.$toast.open({ message: '已删除', type: 'is-success' })
             }
           } catch (e) {
-            this.$buefy.toast.open({ message: e?.msg || '删除失败', type: 'is-danger' })
+            this.$toast.open({ message: e?.msg || '删除失败', type: 'is-danger' })
           }
         },
       })
@@ -980,15 +992,117 @@ export default {
   .files-toolbar {
     flex-direction: column;
     align-items: stretch;
+    gap: 10px;
+    padding: 10px 12px;
+  }
+
+  .breadcrumb-wrap {
+    width: 100%;
+  }
+
+  .breadcrumb {
+    white-space: normal;
+    line-height: 1.45;
   }
 
   .tool-btns {
-    justify-content: flex-end;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 8px;
+    align-items: stretch;
+  }
+
+  .btn-upload {
+    justify-content: center;
+    grid-column: 1 / -1;
+  }
+
+  .btn-tool:not(.icon-only) {
+    justify-content: center;
+    min-height: 38px;
+  }
+
+  .files-body {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .files-table {
+    min-width: 520px;
+    font-size: 12px;
+
+    th,
+    td {
+      padding: 10px 12px;
+    }
   }
 
   .files-table th:nth-child(2),
-  .files-table td:nth-child(2) {
+  .files-table td:nth-child(2),
+  .files-table th:nth-child(3),
+  .files-table td:nth-child(3) {
     display: none;
+  }
+
+  .file-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+    border-radius: 0;
+  }
+
+  .link-btn {
+    margin-right: 8px;
+    font-size: 12px;
+  }
+
+  .viewer-mask {
+    padding: 0;
+    align-items: stretch;
+  }
+
+  .viewer-box {
+    max-width: none;
+    border-radius: 0;
+    min-height: 100dvh;
+    min-height: 100svh;
+  }
+
+  .viewer-head {
+    flex-wrap: wrap;
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .viewer-title {
+    flex: 1;
+    min-width: 0;
+    font-size: 14px;
+  }
+
+  .viewer-actions {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 6px;
+  }
+
+  .btn-save,
+  .btn-tool {
+    padding: 7px 12px;
+    font-size: 12px;
+    border-radius: 0;
+  }
+
+  .btn-close {
+    width: 32px;
+    height: 32px;
+    border-radius: 0;
+  }
+
+  .text-editor {
+    padding: 12px 14px;
+    font-size: 13px;
   }
 }
 </style>

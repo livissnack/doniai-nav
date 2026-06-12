@@ -2,8 +2,32 @@
     display: none !important;
 }
 
-#larPlayer {
-    height: 200px !important;
+.player-page #larPlayer,
+.player-page .lar-player video {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16 / 9 !important;
+    min-height: 180px !important;
+    max-height: none !important;
+}
+
+.player-page .lar-player {
+    border-radius: 0 !important;
+    overflow: hidden !important;
+}
+
+.player-page .media-controls__bar {
+    flex-wrap: nowrap !important;
+}
+
+.player-page .media-controls__left {
+    flex: 1 1 auto !important;
+    width: auto !important;
+}
+
+.player-page .media-controls__right {
+    flex: 0 0 auto !important;
+    width: auto !important;
 }
 
 .live-volume {
@@ -16,6 +40,25 @@
 
 .content-box > .container {
     padding: 0 12px !important;
+}
+
+.bg-white,
+.util-box,
+.news-panel,
+.music-box,
+.parse-content,
+.loan-panel,
+.json-panel,
+.json-toolbar,
+.json-main,
+.todo-panel,
+.info-card,
+.tools-panel,
+.sidebar-panel,
+.weather-card,
+.rollcall-card,
+.side-card {
+    border-radius: 0 !important;
 }
 
 .columns > .column {
@@ -41,7 +84,7 @@
 .home .post {
     padding: 16px 14px !important;
     margin-bottom: 16px !important;
-    border-radius: 12px !important;
+    border-radius: 0 !important;
     overflow: hidden !important;
     box-shadow: 0 2px 12px rgba(15, 23, 42, 0.08) !important;
 }
@@ -92,4 +135,338 @@
 
 .line-box {
     width: 100% !important;
+}
+
+.home #footer .site-footer,
+#footer .site-footer {
+    margin-top: 0 !important;
+}
+
+.home #footer .footer-inner,
+#footer .footer-inner {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+}
+
+.node-parse-page .operate-btn {
+    flex-direction: column !important;
+}
+
+.node-parse-page .operate-btn .button {
+    width: 100% !important;
+}
+
+.password-page .bg-white {
+    padding: 16px 14px !important;
+    margin-bottom: 16px !important;
+    border-radius: 0 !important;
+}
+
+.password-page .pass-operate .btns {
+    width: 100% !important;
+    flex-direction: column !important;
+}
+
+.password-page .pass-operate .button {
+    width: 100% !important;
+    justify-content: center !important;
+}
+
+.password-page .pass-option__chars {
+    word-break: break-all !important;
+    white-space: normal !important;
+}
+
+.cover-page .cover-main {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+}
+
+.cover-page .cover-panel,
+.cover-page .preview-panel {
+    border-radius: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.cover-page .cover-layout {
+    flex-direction: column !important;
+    gap: 16px !important;
+}
+
+.cover-page .preview-panel {
+    order: 1 !important;
+}
+
+.cover-page .cover-panel {
+    order: 2 !important;
+    max-height: none !important;
+}
+
+.cover-page .preset-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+.cover-page .form-actions .btn-primary,
+.cover-page .form-actions .btn-outline {
+    width: 100% !important;
+}
+
+.cover-page .cover-canvas {
+    max-width: 100% !important;
+    height: auto !important;
+}
+
+.json-page {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+}
+
+.json-page .json-main {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+}
+
+.json-page .json-toolbar,
+.json-page .json-panel,
+.json-page .json-status,
+.json-page .tool-btn,
+.json-page .view-tab,
+.json-page .indent-select {
+    border-radius: 0 !important;
+}
+
+.json-page .json-toolbar {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 25 !important;
+}
+
+.json-page .json-workspace {
+    flex-direction: column !important;
+    gap: 12px !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+}
+
+.json-page .json-sidebar-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.json-page .toolbar-group:first-child {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    width: 100% !important;
+}
+
+.json-page .tool-btn.primary {
+    grid-column: 1 / -1 !important;
+}
+
+.json-page .tool-btn {
+    justify-content: center !important;
+    min-width: 0 !important;
+    touch-action: manipulation !important;
+}
+
+.json-page .toolbar-options {
+    display: grid !important;
+    grid-template-columns: auto 1fr !important;
+    align-items: center !important;
+}
+
+.json-page .option-chip {
+    grid-column: 1 / -1 !important;
+}
+
+.json-page .indent-select {
+    width: 100% !important;
+    max-width: none !important;
+}
+
+.json-page .view-tabs {
+    width: 100% !important;
+}
+
+.json-page .view-tab {
+    flex: 1 !important;
+    text-align: center !important;
+}
+
+.json-page .json-textarea,
+.json-page .json-tree-view,
+.json-page .json-code-view {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    resize: none !important;
+}
+
+.json-page .json-textarea {
+    min-height: min(38vh, 300px) !important;
+    max-height: 42vh !important;
+}
+
+.json-page .json-tree-view,
+.json-page .json-code-view {
+    min-height: min(34vh, 260px) !important;
+    max-height: 42vh !important;
+    overflow: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    word-break: break-word !important;
+}
+
+.base64-page .bg-white {
+    padding: 16px 14px !important;
+    margin-bottom: 16px !important;
+    border-radius: 0 !important;
+}
+
+.base64-page .pass-operate .btns {
+    width: 100% !important;
+    flex-direction: column !important;
+}
+
+.base64-page .pass-operate .button {
+    width: 100% !important;
+    justify-content: center !important;
+}
+
+.base64-page .b64-input .help,
+.base64-page .b64-input .field,
+.base64-page .b64-result .field {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.base64-page .b64-input .input,
+.base64-page .b64-result .textarea {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.docs-page .docs-main {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+}
+
+.docs-page .docs-card {
+    border-radius: 0 !important;
+}
+
+.docs-page .docs-bar {
+    flex-wrap: wrap !important;
+}
+
+.docs-page .bar-tabs {
+    width: 100% !important;
+    margin-left: 0 !important;
+}
+
+.docs-page .bar-icon--split {
+    display: none !important;
+}
+
+.docs-page .notes-panel {
+    flex-direction: column !important;
+}
+
+.docs-page .doc-sidebar {
+    width: 100% !important;
+    max-height: min(36vh, 260px) !important;
+    border-right: none !important;
+}
+
+.docs-page .files-toolbar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+}
+
+.docs-page .files-body {
+    overflow-x: auto !important;
+}
+
+.admin-page {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+}
+
+.admin-page .admin-main {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+}
+
+.admin-page .admin-layout,
+.admin-page .admin-content {
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+}
+
+.admin-page .admin-aside,
+.admin-page .admin-card {
+    border-radius: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.admin-page .admin-menu {
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    overflow: visible !important;
+}
+
+.admin-page .admin-menu .menu-item {
+    width: 100% !important;
+    flex: none !important;
+    min-width: 0 !important;
+    justify-content: flex-start !important;
+}
+
+.admin-page .card-title-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+}
+
+.admin-page .inline-form-row {
+    flex-direction: column !important;
+}
+
+.admin-page .inline-form-row .btn-primary {
+    width: 100% !important;
+}
+
+.admin-page .form-foot {
+    flex-direction: column !important;
+    align-items: stretch !important;
+}
+
+.admin-page .form-btns {
+    width: 100% !important;
+    flex-direction: column-reverse !important;
+}
+
+.admin-page .form-btns .btn-primary,
+.admin-page .form-btns .btn-outline {
+    width: 100% !important;
+    justify-content: center !important;
+}
+
+.admin-page .private-nav-panel {
+    overflow-x: hidden !important;
+}
+
+.admin-page .nav-table-wrap,
+.admin-page .sites-table-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
 }

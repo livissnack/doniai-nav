@@ -9,33 +9,35 @@
 <script>
 export default {
   name: 'Marquee',
-  computed: {
-    text() {
-      return this.textList[this.currentIndex];
-    },
-  },
   props: {
     textList: {
       type: Array,
-      default: []
+      default: () => [],
     },
   },
   data() {
     return {
       currentIndex: 0,
-      duration: 4, // 滚动速度，单位为秒
-      delay: 1, // 滚动间隔时间，单位为秒
-      timer: null, //定时器
+      duration: 4,
+      delay: 1,
+      timer: null,
     }
+  },
+  computed: {
+    text() {
+      if (!this.textList.length) return ''
+      return this.textList[this.currentIndex]
+    },
   },
   mounted() {
     this.initMarquee()
   },
-  destroyed() {
+  unmounted() {
     this.destroyTimer()
   },
   methods: {
     initMarquee() {
+      if (!this.textList.length) return
       this.timer = setInterval(() => {
         this.currentIndex = (this.currentIndex + 1) % this.textList.length
       }, (this.duration + this.delay) * 1000)
@@ -43,9 +45,10 @@ export default {
     destroyTimer() {
       if (this.timer) {
         clearInterval(this.timer)
+        this.timer = null
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -59,18 +62,14 @@ export default {
   }
 }
 
-.scroll {
-  animation: scroll 5s linear infinite;
-}
-
 .marquee {
-  height: 20px; // 设置跑马灯高度
-  overflow: hidden; // 隐藏超出高度的部分
+  height: 20px;
+  overflow: hidden;
 }
 
 .content {
-  display: inline-block; // 让文字在一行内显示
-  animation: scroll linear infinite; // 应用滚动动画
+  display: inline-block;
+  animation: scroll linear infinite;
   font-size: 12px;
 }
 </style>

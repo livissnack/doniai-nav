@@ -1,0 +1,265 @@
+[
+    {
+        "id": 1,
+        "title": "我的业务",
+        "items": [
+            {
+                "name": "头条新闻号",
+                "href": "http://mp.toutiao.com",
+                "color": "is-primary"
+            },
+            {
+                "name": "LivisSnack博客",
+                "href": "https://livissnack.com",
+                "color": "is-success"
+            },
+            {
+                "name": "短视频解析",
+                "href": "https://parser.doniai.com",
+                "color": "is-danger"
+            },
+            {
+                "name": "软件下载",
+                "href": "/utils/software",
+                "color": "is-warning",
+                "isNotNewBlack": true
+            },
+            {
+                "name": "好看UI",
+                "href": "/utils/color",
+                "color": "is-primary",
+                "isNotNewBlack": true
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "title": "平台程序运行状态监控",
+        "items": [
+            {
+                "name": "LivisSnack监控",
+                "href": "/utils/monitor",
+                "color": "is-primary",
+                "isNotNewBlack": true
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "title": "自有网站管理",
+        "items": [
+            {
+                "name": "CloudFlare",
+                "href": "https://www.cloudflare.com",
+                "color": "is-primary"
+            },
+            {
+                "name": "Vultr",
+                "href": "https://www.vultr.com",
+                "color": "is-success"
+            },
+            {
+                "name": "Aliyun",
+                "href": "https://cn.aliyun.com",
+                "color": "is-danger"
+            },
+            {
+                "name": "Minio存储",
+                "href": "https://minio.doniai.cn",
+                "color": "is-info"
+            },
+            {
+                "name": "Api接口文档",
+                "href": "https://doc.doniai.com",
+                "color": "is-warning"
+            },
+            {
+                "name": "代码管理",
+                "href": "https://codeup.aliyun.com",
+                "color": "is-primary"
+            },
+            {
+                "name": "图床应用",
+                "href": "https://pic.114156.xyz",
+                "color": "is-success"
+            },
+            {
+                "name": "NodePass中转",
+                "href": "https://nd.livissnack.com/",
+                "color": "is-danger"
+            },
+            {
+                "name": "个人工具集",
+                "href": "https://ut.doniai.com/",
+                "color": "is-info"
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "title": "名龙堂造项目",
+        "items": [
+            {
+                "name": "接口文档-后台-开发",
+                "href": "http://192.168.50.217:8083/backEnd/doc.html#/home",
+                "color": "is-primary"
+            },
+            {
+                "name": "接口文档-前台-开发",
+                "href": "http://192.168.50.217:8801/front/doc.html#/home",
+                "color": "is-success"
+            },
+            {
+                "name": "国内-应用-站点",
+                "href": "https://www.mltzao.com",
+                "color": "is-danger"
+            },
+            {
+                "name": "海外-应用-站点",
+                "href": "https://www.mloongbld.sg",
+                "color": "is-info"
+            },
+            {
+                "name": "海外-应用-管理后台",
+                "href": "https://ab8a384ac645f337.mloongbld.sg/",
+                "color": "is-warning"
+            },
+            {
+                "name": "国内-应用-装机星球",
+                "href": "https://diyplanets.com/",
+                "color": "is-primary"
+            },
+            {
+                "name": "国内-应用-装机龙工具",
+                "href": "https://tools.diyplanets.com/",
+                "color": "is-success"
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "title": "茂业本地项目",
+        "items": [
+            {
+                "name": "茂业-后台-开发",
+                "href": "http://www.maomei.com/admin",
+                "color": "is-primary"
+            },
+            {
+                "name": "茂业-接口-开发",
+                "href": "http://www.maomei.com/api",
+                "color": "is-success"
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "title": "茂业内网项目",
+        "items": [
+            {
+                "name": "茂业前端H5-测试",
+                "href": "http://mztest.maoye.cn",
+                "color": "is-primary"
+            },
+            {
+                "name": "茂业后台Admin-测试",
+                "href": "https://makeuptest.maoye.cn",
+                "color": "is-success"
+            },
+            {
+                "name": "茂业前端H5-开发",
+                "href": "https://mzdev.maoye.cn",
+                "color": "is-danger"
+            },
+            {
+                "name": "茂业后台Admin-开发",
+                "href": "https://makeupdev1.maoye.cn",
+                "color": "is-info"
+            }
+        ]
+    },
+    {
+        "id": 7,
+        "title": "茂业外网项目",
+        "items": [
+            {
+                "name": "茂业前端H5",
+                "href": "https://mz.maoye.cn",
+                "color": "is-primary"
+            },
+            {
+                "name": "茂业后台Admin",
+                "href": "https://makeup.maoye.cn",
+                "color": "is-success"
+            }
+        ]
+    },
+    {
+        "id": 8,
+        "title": "小虎外网项目",
+        "items": [
+            {
+                "name": "用户后台管理",
+                "href": "https://uc-admin.ftdj666.com",
+                "color": "is-primary"
+            },
+            {
+                "name": "操盘后台管理",
+                "href": "https://admin.ftdj666.com",
+                "color": "is-success"
+            },
+            {
+                "name": "h5应用",
+                "href": "https://m.ftdj666.com",
+                "color": "is-warning"
+            },
+            {
+                "name": "h5-Live",
+                "href": "http://h5live.ftdj667.com",
+                "color": "is-danger"
+            }
+        ]
+    },
+    {
+        "id": 9,
+        "title": "相关应用",
+        "items": [
+            {
+                "name": "茂业Gitlab",
+                "href": "http://172.29.105.79:8888",
+                "color": "is-primary"
+            },
+            {
+                "name": "茂业禅道",
+                "href": "http://zt.maoye.cn",
+                "color": "is-success"
+            },
+            {
+                "name": "平安云收款",
+                "href": "https://passport.orangebank.com.cn/SSOServer/login?targeturl=https%3A%2F%2Fcloudpaycm.orangebank.com.cn%2Fapi%2Forgan%2Flogin",
+                "color": "is-warning"
+            },
+            {
+                "name": "茂业Kibana",
+                "href": "http://172.29.105.76:5601/app/dev_tools#/console",
+                "color": "is-danger"
+            }
+        ]
+    },
+    {
+        "id": 10,
+        "title": "个人接口管理",
+        "items": [
+            {
+                "name": "茂业接口文档管理",
+                "href": "https://172.29.105.77/web/#/3?page_id=2641",
+                "color": "is-primary"
+            },
+            {
+                "name": "Eolinker接口管理",
+                "href": "https://www.eolinker.com",
+                "color": "is-success"
+            }
+        ]
+    }
+]

@@ -68,14 +68,14 @@
                     {{ book.name }} ({{ book.author }})
                   </a>
                   <a href="#" class="dropdown-item">
-                    <b-field class="file is-danger" :class="{'has-name': !!file}">
-                      <b-upload size="small" v-model="file" class="file-label" accept=".epub" required validationMessage="Please select a file" @input="handleUploadEbook">
+                    <o-field class="file is-danger" :class="{'has-name': !!file}">
+                      <o-upload size="small" v-model="file" class="file-label" accept=".epub" required validationMessage="Please select a file" @input="handleUploadEbook">
                         <span class="file-cta">
-                            <b-icon class="file-icon" icon="upload"></b-icon>
+                            <o-icon class="file-icon" icon="upload"></o-icon>
                             <span class="file-label">本地书籍 (仅支持 .epub格式)</span>
                         </span>
-                      </b-upload>
-                    </b-field>
+                      </o-upload>
+                    </o-field>
                   </a>
                 </div>
               </div>
@@ -109,16 +109,12 @@
 
 <script>
 import 'jszip'
-import Vue from 'vue'
 import Epub from 'epubjs'
 import Navbar from '@/components/Navbar.vue'
 import Sidebar from '@/components/Sidebar.vue'
-import BackTop from '@mlqt/vue-back-top'
+import BackTop from '@/components/BackTop.vue'
 import Footer from '@/components/Footer.vue'
-import bookList from "@/services/book.json"
-
-Vue.use(BackTop)
-export default {
+import bookList from "@/services/book.json"export default {
   name: 'ebook',
   components: {
     Navbar,
@@ -491,13 +487,13 @@ export default {
 
 #bookDom {
   min-height: 100vh;
-  /deep/ .epub-container {
+  :deep(.epub-container) {
     overflow-x: hidden !important;
-    /deep/ .epub-view{
+    :deep(.epub-view){
       padding-top: 40px !important;
       padding-bottom: 40px !important;
     }
-    /deep/ p {
+    :deep(p) {
       font-size: 20px !important;
       line-height: 26px !important;
       font-family: Microsoft Yahei, Heiti SC, Heiti TC,serif !important;

@@ -1,7 +1,7 @@
 <template>
   <nav class="site-nav">
     <div class="site-nav-inner">
-      <router-link to="/" class="nav-brand" @click.native="closeMenu">
+      <router-link to="/" class="nav-brand" @click="closeMenu">
         <span class="nav-brand-icon">D</span>
         <span class="nav-brand-text">Doniai导航</span>
       </router-link>
@@ -56,7 +56,7 @@
             <div class="dropdown-user-name">{{ displayName }}</div>
             <div class="dropdown-user-email">{{ userEmail }}</div>
             <hr class="dropdown-divider" />
-            <router-link to="/admin" class="dropdown-item" @click.native="closeAll">
+            <router-link to="/admin" class="dropdown-item" @click="closeAll">
               <i class="fas fa-sliders-h"></i> 管理面板
             </router-link>
             <button type="button" class="dropdown-item danger" @click="handleLogout">
@@ -88,13 +88,13 @@ export default {
   name: 'Navbar',
   directives: {
     clickOutside: {
-      bind(el, binding) {
+      mounted(el, binding) {
         el._clickOutside = (e) => {
           if (!el.contains(e.target)) binding.value(e)
         }
         document.addEventListener('click', el._clickOutside)
       },
-      unbind(el) {
+      unmounted(el) {
         document.removeEventListener('click', el._clickOutside)
       },
     },
@@ -161,7 +161,7 @@ export default {
     },
     handleChangeData(menu) {
       if (!canAccessMenu(menu.id)) {
-        this.$buefy.toast.open({
+        this.$toast.open({
           message: '请先登录后访问「私人」栏目',
           type: 'is-warning',
         })
@@ -184,7 +184,7 @@ export default {
     async handleLogout() {
       await authActions.logout()
       this.closeAll()
-      this.$buefy.toast.open({ message: '已退出登录', type: 'is-info' })
+      this.$toast.open({ message: '已退出登录', type: 'is-info' })
       if (this.$route.path === '/admin') {
         this.$router.push({ path: '/' })
       }
@@ -198,8 +198,12 @@ export default {
 
 <style lang="less" scoped>
 .site-nav {
+  display: block;
+  width: 100%;
+  min-height: 52px;
   background: #fff;
   box-shadow: 0 1px 0 rgba(15, 23, 42, 0.06), 0 4px 12px rgba(15, 23, 42, 0.04);
+  box-sizing: border-box;
 }
 
 .site-nav-inner {
@@ -208,8 +212,9 @@ export default {
   gap: 12px;
   max-width: 1152px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 8px 16px;
   min-height: 52px;
+  box-sizing: border-box;
 }
 
 .nav-brand {
@@ -243,6 +248,7 @@ export default {
 .nav-brand-text {
   font-size: 17px;
   font-weight: 700;
+  line-height: 1.4;
   color: #15b982;
   transition: color 0.2s;
   white-space: nowrap;
@@ -280,6 +286,41 @@ export default {
   &::-webkit-scrollbar {
     display: none;
   }
+
+  :deep(> div) {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  :deep(.navbar-menu) {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  :deep(.navbar-item) {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 34px;
+    height: auto;
+    padding: 5px 12px;
+    border: none;
+    border-radius: 16px;
+    background: transparent;
+    color: #4b5563;
+    font-size: 14px;
+    line-height: 1.4;
+    text-decoration: none;
+    cursor: pointer;
+    white-space: nowrap;
+    box-sizing: border-box;
+
+    &:hover {
+      background: #f3f4f6;
+      color: #1f2937;
+    }
+  }
 }
 
 .nav-tab {
@@ -287,14 +328,15 @@ export default {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  height: 32px;
-  padding: 0 14px;
+  min-height: 34px;
+  height: auto;
+  padding: 6px 14px;
   border: none;
   border-radius: 16px;
   background: transparent;
   color: #4b5563;
   font-size: 14px;
-  line-height: 1;
+  line-height: 1.4;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
 
@@ -332,14 +374,15 @@ export default {
   flex-direction: row;
   align-items: center;
   gap: 8px;
-  height: 32px;
-  padding: 0 12px 0 6px;
+  min-height: 34px;
+  height: auto;
+  padding: 5px 12px 5px 6px;
   border: 1px solid #e5e7eb;
   border-radius: 16px;
   background: #fff;
   font-family: inherit;
   font-size: 14px;
-  line-height: 1;
+  line-height: 1.4;
   white-space: nowrap;
   cursor: pointer;
   box-sizing: border-box;
@@ -450,8 +493,9 @@ export default {
 }
 
 .nav-action {
-  height: 32px;
-  padding: 0 14px;
+  min-height: 34px;
+  height: auto;
+  padding: 5px 14px;
   border: 1px solid #e5e7eb;
   border-radius: 16px;
   background: #fff;
@@ -481,8 +525,8 @@ export default {
 @media screen and (max-width: 1023px) {
   .site-nav-inner {
     flex-wrap: wrap;
-    padding: 10px 12px;
-    min-height: auto;
+    padding: 8px 12px;
+    min-height: 52px;
   }
 
   .nav-toggle {

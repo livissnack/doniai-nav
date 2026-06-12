@@ -11,33 +11,33 @@
     </div>
 
     <form class="password-form" novalidate @submit.prevent="handleSubmit">
-      <b-field label="当前密码">
-        <b-input
+      <o-field label="当前密码">
+        <o-input
           v-model="form.currentPassword"
           type="password"
           password-reveal
           placeholder="请输入当前密码"
           autocomplete="current-password"
         />
-      </b-field>
-      <b-field label="新密码">
-        <b-input
+      </o-field>
+      <o-field label="新密码">
+        <o-input
           v-model="form.newPassword"
           type="password"
           password-reveal
           placeholder="至少 6 位"
           autocomplete="new-password"
         />
-      </b-field>
-      <b-field label="确认新密码">
-        <b-input
+      </o-field>
+      <o-field label="确认新密码">
+        <o-input
           v-model="form.confirmPassword"
           type="password"
           password-reveal
           placeholder="再次输入新密码"
           autocomplete="new-password"
         />
-      </b-field>
+      </o-field>
       <div class="form-foot">
         <button type="submit" class="btn-primary" :disabled="saving">
           <i v-if="saving" class="fas fa-spinner fa-spin"></i>
@@ -77,19 +77,19 @@ export default {
       const confirmPassword = this.form.confirmPassword.trim()
 
       if (!currentPassword || !newPassword || !confirmPassword) {
-        this.$buefy.toast.open({ message: '请填写完整', type: 'is-warning' })
+        this.$toast.open({ message: '请填写完整', type: 'is-warning' })
         return
       }
       if (newPassword.length < 6) {
-        this.$buefy.toast.open({ message: '新密码至少 6 位', type: 'is-warning' })
+        this.$toast.open({ message: '新密码至少 6 位', type: 'is-warning' })
         return
       }
       if (newPassword !== confirmPassword) {
-        this.$buefy.toast.open({ message: '两次输入的新密码不一致', type: 'is-warning' })
+        this.$toast.open({ message: '两次输入的新密码不一致', type: 'is-warning' })
         return
       }
       if (currentPassword === newPassword) {
-        this.$buefy.toast.open({ message: '新密码不能与当前密码相同', type: 'is-warning' })
+        this.$toast.open({ message: '新密码不能与当前密码相同', type: 'is-warning' })
         return
       }
 
@@ -98,9 +98,9 @@ export default {
         const res = await authActions.changePassword({ currentPassword, newPassword })
         if (res.ok) {
           this.form = emptyForm()
-          this.$buefy.toast.open({ message: res.message, type: 'is-success' })
+          this.$toast.open({ message: res.message, type: 'is-success' })
         } else {
-          this.$buefy.toast.open({ message: res.message, type: 'is-danger' })
+          this.$toast.open({ message: res.message, type: 'is-danger' })
         }
       } finally {
         this.saving = false
@@ -146,12 +146,12 @@ export default {
   background: #f9fafb;
   border-radius: 10px;
 
-  ::v-deep .label {
+  :deep(.label) {
     color: #374151;
     font-weight: 600;
   }
 
-  ::v-deep .field:not(:last-child) {
+  :deep(.field:not(:last-child)) {
     margin-bottom: 14px;
   }
 }

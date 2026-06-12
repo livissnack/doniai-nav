@@ -19,28 +19,38 @@
         <div class="qrcode-box">
           <div class="show-box">
             <div class="set-qrcode">
+              <div v-if="widgetLoading" class="qrcode-placeholder">
+                <i class="fas fa-spinner fa-spin"></i>
+                <span>二维码组件加载中…</span>
+              </div>
+              <div v-else-if="widgetError" class="qrcode-placeholder is-error">
+                <i class="fas fa-exclamation-circle"></i>
+                <span>组件加载失败</span>
+                <button type="button" class="retry-btn" @click="initWidget">重试</button>
+              </div>
               <widget-qrcode
-                  id="qrcode-generate"
-                  :value="qrcode.value"
-                  :template="qrcode.template"
-                  :level="qrcode.level"
-                  :width="qrcode.width"
-                  :height="qrcode.height"
-                  :background-color="qrcode.backgroundColor"
-                  :foreground-color="qrcode.foregroundColor"
-                  :inner-color="qrcode.innerColor"
-                  :outer-color="qrcode.outerColor"
-                  :background-image="qrcode.backgroundImage"
-                  :foreground-image="qrcode.foregroundImage"
-                  :logo="qrcode.logo"
-                  :text="qrcode.text"
-                  :text-color="qrcode.textColor"
-                  :text-stroke="qrcode.textStroke"
-              ></widget-qrcode>
+                v-else
+                id="qrcode-generate"
+                :value="qrcode.value"
+                :template="qrcode.template"
+                :level="qrcode.level"
+                :width="qrcode.width"
+                :height="qrcode.height"
+                :background-color="qrcode.backgroundColor"
+                :foreground-color="qrcode.foregroundColor"
+                :inner-color="qrcode.innerColor"
+                :outer-color="qrcode.outerColor"
+                :background-image="qrcode.backgroundImage"
+                :foreground-image="qrcode.foregroundImage"
+                :logo="qrcode.logo"
+                :text="qrcode.text"
+                :text-color="qrcode.textColor"
+                :text-stroke="qrcode.textStroke"
+              />
             </div>
             <div class="buttons">
-              <button class="button is-info" @click="downloadImg('png')">下载PNG</button>
-              <button class="button is-danger" @click="downloadImg('jpg')">下载JPG</button>
+              <o-button variant="info" :disabled="!widgetReady" @click="downloadImg('png')">下载 PNG</o-button>
+              <o-button variant="danger" :disabled="!widgetReady" @click="downloadImg('jpg')">下载 JPG</o-button>
             </div>
           </div>
           <div class="input-box">
@@ -68,40 +78,40 @@
               <div class="tmp-input-field field">
                 <div class="control">
                   <div class="input-label">风格模板</div>
-                  <div class="block">
-                    <b-radio size="is-small" v-model="qrcode.template" native-value="default">
+                  <div class="block radio-group-wrap">
+                    <o-radio size="small" v-model="qrcode.template" native-value="default">
                       默认
-                    </b-radio>
-                    <b-radio size="is-small" v-model="qrcode.template" native-value="water">
+                    </o-radio>
+                    <o-radio size="small" v-model="qrcode.template" native-value="water">
                       液态
-                    </b-radio>
-                    <b-radio size="is-small" v-model="qrcode.template" native-value="diamond">
+                    </o-radio>
+                    <o-radio size="small" v-model="qrcode.template" native-value="diamond">
                       菱形
-                    </b-radio>
-                    <b-radio size="is-small" v-model="qrcode.template" native-value="hexagon">
+                    </o-radio>
+                    <o-radio size="small" v-model="qrcode.template" native-value="hexagon">
                       六边形
-                    </b-radio>
-                    <b-radio size="is-small" v-model="qrcode.template" native-value="star">
+                    </o-radio>
+                    <o-radio size="small" v-model="qrcode.template" native-value="star">
                       星星
-                    </b-radio>
-                    <b-radio size="is-small" v-model="qrcode.template" native-value="rect">
+                    </o-radio>
+                    <o-radio size="small" v-model="qrcode.template" native-value="rect">
                       方块
-                    </b-radio>
-                    <b-radio size="is-small" v-model="qrcode.template" native-value="bar">
+                    </o-radio>
+                    <o-radio size="small" v-model="qrcode.template" native-value="bar">
                       条形
-                    </b-radio>
-                    <b-radio size="is-small" v-model="qrcode.template" native-value="heart">
+                    </o-radio>
+                    <o-radio size="small" v-model="qrcode.template" native-value="heart">
                       心形
-                    </b-radio>
-                    <b-radio size="is-small" v-model="qrcode.template" native-value="glitter">
+                    </o-radio>
+                    <o-radio size="small" v-model="qrcode.template" native-value="glitter">
                       闪烁
-                    </b-radio>
-                    <b-radio size="is-small" v-model="qrcode.template" native-value="stroke">
+                    </o-radio>
+                    <o-radio size="small" v-model="qrcode.template" native-value="stroke">
                       描边
-                    </b-radio>
-                    <b-radio size="is-small" v-model="qrcode.template" native-value="fusion">
+                    </o-radio>
+                    <o-radio size="small" v-model="qrcode.template" native-value="fusion">
                       融合
-                    </b-radio>
+                    </o-radio>
                   </div>
                 </div>
               </div>
@@ -109,19 +119,19 @@
               <div class="tmp-input-field field">
                 <div class="control">
                   <div class="input-label">纠错等级</div>
-                  <div class="block">
-                    <b-radio size="is-small" v-model="qrcode.level" native-value="M">
+                  <div class="block radio-group-wrap">
+                    <o-radio size="small" v-model="qrcode.level" native-value="M">
                       M
-                    </b-radio>
-                    <b-radio size="is-small" v-model="qrcode.level" native-value="L">
+                    </o-radio>
+                    <o-radio size="small" v-model="qrcode.level" native-value="L">
                       L
-                    </b-radio>
-                    <b-radio size="is-small" v-model="qrcode.level" native-value="Q">
+                    </o-radio>
+                    <o-radio size="small" v-model="qrcode.level" native-value="Q">
                       Q
-                    </b-radio>
-                    <b-radio size="is-small" v-model="qrcode.level" native-value="H">
+                    </o-radio>
+                    <o-radio size="small" v-model="qrcode.level" native-value="H">
                       H
-                    </b-radio>
+                    </o-radio>
                   </div>
                 </div>
               </div>
@@ -132,26 +142,46 @@
 
                   <div class="block tmp-block">
                     <div class="color-select">
-                      <b-switch size="is-small" v-model="foregroundColorMode" passive-type='is-dark' type='is-danger'>
-                        {{ foregroundColorMode ? "组合色" : "单色" }}
-                      </b-switch>
-                      <input class="input is-small" v-model="qrcode.foregroundColor" :disabled="foregroundColorMode"
-                             type="color">
+                      <o-switch size="small" v-model="foregroundColorMode" variant="success">
+                        {{ foregroundColorMode ? '组合色' : '单色' }}
+                      </o-switch>
+                      <input
+                        class="input is-small"
+                        type="color"
+                        :value="pickHex(qrcode.foregroundColor)"
+                        :disabled="foregroundColorMode"
+                        @input="qrcode.foregroundColor = $event.target.value"
+                      >
                       <div class="color-label">前景</div>
                     </div>
 
                     <div class="color-select">
-                      <input class="input is-small" v-model="qrcode.backgroundColor" type="color">
+                      <input
+                        class="input is-small"
+                        type="color"
+                        :value="pickHex(qrcode.backgroundColor, '#ffffff')"
+                        @input="qrcode.backgroundColor = $event.target.value"
+                      >
                       <div class="color-label">背景</div>
                     </div>
 
                     <div class="color-select">
-                      <input class="input is-small" v-model="qrcode.innerColor" type="color">
+                      <input
+                        class="input is-small"
+                        type="color"
+                        :value="pickHex(qrcode.innerColor)"
+                        @input="qrcode.innerColor = $event.target.value"
+                      >
                       <div class="color-label">定位内框</div>
                     </div>
 
                     <div class="color-select">
-                      <input class="input is-small" v-model="qrcode.outerColor" type="color">
+                      <input
+                        class="input is-small"
+                        type="color"
+                        :value="pickHex(qrcode.outerColor)"
+                        @input="qrcode.outerColor = $event.target.value"
+                      >
                       <div class="color-label">定位外框</div>
                     </div>
                   </div>
@@ -179,7 +209,12 @@
 
                   <div class="block tmp-block">
                     <div class="color-select">
-                      <input class="input is-small" v-model="qrcode.textColor" type="color">
+                      <input
+                        class="input is-small"
+                        type="color"
+                        :value="pickHex(qrcode.textColor)"
+                        @input="qrcode.textColor = $event.target.value"
+                      >
                       <div class="color-label">悬浮文本颜色</div>
                     </div>
                   </div>
@@ -192,7 +227,12 @@
 
                   <div class="block tmp-block">
                     <div class="color-select">
-                      <input class="input is-small" v-model="qrcode.textStroke" type="color">
+                      <input
+                        class="input is-small"
+                        type="color"
+                        :value="pickHex(qrcode.textStroke, '#ffffff')"
+                        @input="qrcode.textStroke = $event.target.value"
+                      >
                       <div class="color-label">悬浮文本描边颜色</div>
                     </div>
                   </div>
@@ -373,22 +413,23 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import Navbar from '@/components/Navbar.vue'
-import BackTop from '@mlqt/vue-back-top'
 import Footer from '@/components/Footer.vue'
+import { loadWidgetQrcode } from '@/utils/widgetQrcode'
 import * as htmlToImage from 'html-to-image'
 import FileSaver from 'file-saver'
 
-Vue.use(BackTop)
 export default {
-  name: 'Color',
+  name: 'Qrcode',
   components: {
     Navbar,
-    Footer
+    Footer,
   },
   data() {
     return {
+      widgetLoading: true,
+      widgetReady: false,
+      widgetError: false,
       foregroundColorMode: false,
       qrcode: {
         value: 'https://nav.doniai.com/',
@@ -397,9 +438,9 @@ export default {
         width: 300,
         height: 300,
         backgroundColor: '#fff2dc',
-        foregroundColor: '',
+        foregroundColor: '#000000',
         innerColor: '#094304',
-        outerColor: '',
+        outerColor: '#000000',
         backgroundImage: '',
         // foregroundImage: 'https://doniai.oss-cn-shenzhen.aliyuncs.com/qrcode-bg/grass.png',
         foregroundImage: '',
@@ -407,15 +448,46 @@ export default {
         logo: '',
         text: '',
         textColor: '#2c2b2e',
-        textStroke: '',
+        textStroke: '#ffffff',
       }
     }
   },
+  mounted() {
+    this.initWidget()
+  },
+  watch: {
+    foregroundColorMode(mode) {
+      if (!mode) {
+        this.qrcode.foregroundColor = this.pickHex(this.qrcode.foregroundColor)
+      }
+    },
+  },
   methods: {
+    pickHex(color, fallback = '#000000') {
+      const value = String(color || '').trim()
+      if (/^#[0-9a-fA-F]{6}$/.test(value)) return value
+      const first = value.split(',')[0]?.trim()
+      if (/^#[0-9a-fA-F]{6}$/.test(first)) return first
+      return fallback
+    },
+    async initWidget() {
+      this.widgetLoading = true
+      this.widgetError = false
+      this.widgetReady = false
+      try {
+        await loadWidgetQrcode()
+        this.widgetReady = true
+      } catch (e) {
+        console.error('widget-qrcode load failed:', e)
+        this.widgetError = true
+      } finally {
+        this.widgetLoading = false
+      }
+    },
     handleCopyText(str) {
       this.$copyText(str).then(() => {
         let tmpStr = str.substring(0, 40)
-        this.$buefy.snackbar.open({
+        this.$notify({
           duration: 3000,
           message: `复制成功：${tmpStr} ...`,
           type: 'is-success',
@@ -423,7 +495,7 @@ export default {
           actionText: 'Msg'
         })
       }, (e) => {
-        this.$buefy.snackbar.open({
+        this.$notify({
           duration: 3000,
           message: `复制失败：${e.message}`,
           type: 'is-danger',
@@ -433,18 +505,37 @@ export default {
       })
     },
     downloadImg(type) {
+      if (!this.widgetReady) return
       if (['png', 'jpg'].includes(type)) {
         const qrcodeWidget = document.getElementById('qrcode-generate')
-        htmlToImage.toBlob(qrcodeWidget).then(function (blob) {
-          let fileName = `${new Date().getTime()}.${type}`
-          if (window.saveAs) {
-            window.saveAs(blob, fileName)
-          } else {
+        if (!qrcodeWidget) {
+          this.$notify({
+            duration: 3000,
+            message: '二维码尚未渲染完成',
+            type: 'is-warning',
+            position: 'is-bottom-right',
+            actionText: 'Msg',
+          })
+          return
+        }
+        htmlToImage
+          .toBlob(qrcodeWidget)
+          .then((blob) => {
+            const fileName = `${Date.now()}.${type}`
             FileSaver.saveAs(blob, fileName)
-          }
-        })
+          })
+          .catch((e) => {
+            console.error('download qrcode failed:', e)
+            this.$notify({
+              duration: 3000,
+              message: '下载失败，请稍后重试',
+              type: 'is-danger',
+              position: 'is-bottom-right',
+              actionText: 'Msg',
+            })
+          })
       } else {
-        this.$buefy.snackbar.open({
+        this.$notify({
           duration: 3000,
           message: `暂不支持${type}格式下载`,
           type: 'is-danger',
@@ -464,57 +555,121 @@ export default {
   border-top: 1px solid #ebebeb;
 }
 
+.block-radio {
+  display: flex;
+  just-content: flex-start;
+  gap: 10px;
+}
+
 .content-box {
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  padding: 40px 0;
+  padding: 24px 16px 40px;
+  background-color: #f0f2f5;
+  min-height: calc(100vh - 120px);
 
   .container-box {
+    box-sizing: border-box;
     max-width: 1100px;
-    width: 1100px;
+    width: 100%;
     background-color: #ffffff;
-    padding: 20px 20px;
+    padding: 20px 24px;
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.06);
 
     .title-box {
-      max-width: 980px;
-      width: 980px;
+      width: 100%;
 
       .title1 {
         font-size: 24px;
         font-weight: 600;
         color: #333;
         margin-bottom: 10px;
+
+        .tag.is-primary {
+          font-size: 12px;
+          vertical-align: middle;
+          margin-left: 8px;
+          background-color: #2095f2;
+          color: #fff;
+          padding: 2px 8px;
+          border-radius: 3px;
+        }
       }
 
       .title2 {
-        font-size: 16px;
+        font-size: 15px;
         color: #666;
+        line-height: 1.6;
       }
     }
 
     .qrcode-box {
-      margin-top: 40px;
-      max-width: 1040px;
-      width: 1040px;
+      margin-top: 32px;
+      width: 100%;
       display: flex;
-      justify-content: flex-start;
+      flex-wrap: wrap;
+      gap: 24px;
+      align-items: flex-start;
 
       .show-box {
+        flex: 0 0 auto;
+
+        .set-qrcode {
+          width: 300px;
+          min-height: 300px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: #fafafa;
+          border: 1px solid rgba(0, 0, 0, 0.06);
+          border-radius: 4px;
+        }
+
+        .qrcode-placeholder {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 10px;
+          color: #888;
+          font-size: 14px;
+          padding: 24px;
+
+          &.is-error {
+            color: #e74c3c;
+          }
+
+          .retry-btn {
+            margin-top: 4px;
+            padding: 4px 14px;
+            font-size: 13px;
+            color: #2095f2;
+            background: #fff;
+            border: 1px solid #2095f2;
+            border-radius: 4px;
+            cursor: pointer;
+
+            &:hover {
+              background: #f0f8ff;
+            }
+          }
+        }
+
         .buttons {
           margin-top: 12px;
           width: 300px;
           display: flex;
-          justify-content: space-between;
+          gap: 12px;
         }
       }
 
       .input-box {
-        width: calc(100% - 300px);
-        margin-left: 24px;
+        flex: 1 1 360px;
+        min-width: 0;
         background-color: #ffffff;
-        padding: 12px 24px;
+        padding: 12px 20px;
         box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.05);
         border: 1px solid rgba(0, 0, 0, 0.075);
 
@@ -543,21 +698,44 @@ export default {
               display: flex;
               justify-content: flex-start;
               align-items: flex-start;
+              gap: 12px;
 
               .input-label {
+                flex-shrink: 0;
+                width: 72px;
+                padding-top: 6px;
                 font-size: 12px;
-                width: 120px;
                 font-weight: bold;
                 color: rgb(110, 119, 129);
               }
 
               .input {
-                width: 60%;
+                flex: 1;
+                min-width: 0;
+                max-width: 100%;
               }
 
               .block {
-                margin-left: 12px;
-                width: 100%;
+                flex: 1;
+                min-width: 0;
+                margin-left: 0;
+
+                &.radio-group-wrap {
+                  display: flex;
+                  flex-wrap: wrap;
+                  align-items: center;
+                  gap: 8px 16px;
+                  padding-top: 2px;
+
+                  :deep(.o-radio) {
+                    margin: 0;
+                  }
+
+                  :deep(label.radio) {
+                    margin: 0;
+                    white-space: nowrap;
+                  }
+                }
 
                 .color-select {
                   display: flex;
@@ -593,11 +771,11 @@ export default {
 
     .table-inner {
       margin-top: 32px;
-      max-width: 1040px;
-      width: 1040px;
+      width: 100%;
       background-color: #ffffff;
       box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.05);
       border: 1px solid rgba(0, 0, 0, 0.075);
+      overflow-x: auto;
 
       .table {
         .caption {
@@ -644,15 +822,63 @@ export default {
 
     .qrcodes {
       margin-top: 10px;
-      max-width: 1040px;
+      width: 100%;
       display: flex;
       justify-content: flex-start;
       flex-wrap: wrap;
-      gap: 30px;
+      gap: 24px;
 
       .qrcode-widget {
         width: 182px;
         height: 182px;
+        flex-shrink: 0;
+      }
+    }
+
+    .mit-list {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #666;
+
+      a {
+        color: #2095f2;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .content-box {
+    padding: 16px 12px 32px;
+
+    .container-box {
+      padding: 16px;
+
+      .qrcode-box {
+        .show-box {
+          width: 100%;
+
+          .set-qrcode,
+          .buttons {
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+          }
+        }
+
+        .input-box .input-item .field .control {
+          flex-direction: column;
+          align-items: stretch;
+
+          .input-label {
+            width: auto;
+            margin-bottom: 6px;
+          }
+
+          .input {
+            width: 100%;
+          }
+        }
       }
     }
   }

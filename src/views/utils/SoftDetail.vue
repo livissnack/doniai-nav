@@ -11,11 +11,11 @@
         </div>
         <div class="software-info">
           <div class="software-imgs">
-            <b-carousel icon-pack="fas" :pause-info="false">
-              <b-carousel-item v-for="(carousel, i) in carousels" :key="i">
+            <o-carousel icon-pack="fas" :pause-info="false">
+              <o-carousel-item v-for="(carousel, i) in carousels" :key="i">
                 <img :src="carousel.imgUrl" :alt="carousel.title">
-              </b-carousel-item>
-            </b-carousel>
+              </o-carousel-item>
+            </o-carousel>
           </div>
           <div class="software-desc">
             <div class="software-desc-top">
@@ -61,20 +61,20 @@
               建议使用
             </div>
             <div class="right-title">
-              <b-tooltip type="is-white"
+              <o-tooltip variant="white"
                          label="复制ED2K或者BT链接，建议使用专用下载工具下载。下载速度仅与您宽带环壤和工具有关。捐助与否是您自由选择。"
                          multilined>
                 <small>
                   <i class="far fa-question-circle"></i>
                   如何下载？
                 </small>
-              </b-tooltip>
+              </o-tooltip>
             </div>
           </div>
 
           <div class="software-list">
             <div class="software-li">
-              <b-collapse v-for="(software, softwareIndex) in softwareList" :key="softwareIndex" :open="software.isOpen"
+              <o-collapse v-for="(software, softwareIndex) in softwareList" :key="softwareIndex" :open="software.isOpen"
                           class="card" animation="slide" :aria-id="`contentIdFor${software.id}`">
                 <template #trigger="props">
                   <div class="card-header" role="button" :aria-controls="`contentIdFor${software.id}`"
@@ -121,25 +121,25 @@
                       <div class="soft-title">ED2K：</div>
                       <div class="soft-text">{{ software.ed2k }}</div>
                       <div class="soft-copy-btn" @click="handleCopyText(software.ed2k)">
-                        <b-tag type="is-danger" rounded>
+                        <o-tag variant="danger" rounded>
                           <i class="far fa-copy"></i>
                           复制
-                        </b-tag>
+                        </o-tag>
                       </div>
                     </div>
                     <div class="soft-content-item">
                       <div class="soft-title">BT：</div>
                       <div class="soft-text">{{ software.bt }}</div>
                       <div class="soft-copy-btn" @click="handleCopyText(software.bt)">
-                        <b-tag type="is-danger" rounded>
+                        <o-tag variant="danger" rounded>
                           <i class="far fa-copy"></i>
                           复制
-                        </b-tag>
+                        </o-tag>
                       </div>
                     </div>
                   </div>
                 </div>
-              </b-collapse>
+              </o-collapse>
             </div>
           </div>
 
@@ -162,12 +162,9 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import Navbar from '@/components/Navbar.vue'
-import BackTop from '@mlqt/vue-back-top'
+import BackTop from '@/components/BackTop.vue'
 import Footer from '@/components/Footer.vue'
-
-Vue.use(BackTop)
 export default {
   name: 'Download',
   components: {
@@ -232,7 +229,7 @@ export default {
   },
   methods: {
     onCopySuccess() {
-      this.$buefy.snackbar.open({
+      this.$notify({
         duration: 3000,
         message: `${this.showMoney}`,
         type: 'is-success',
@@ -243,7 +240,7 @@ export default {
     handleCopyText(str) {
       this.$copyText(str).then(() => {
         let tmpStr = str.substring(0, 40)
-        this.$buefy.snackbar.open({
+        this.$notify({
           duration: 3000,
           message: `复制成功：${tmpStr} ...`,
           type: 'is-success',
@@ -251,7 +248,7 @@ export default {
           actionText: 'Msg'
         })
       }, (e) => {
-        this.$buefy.snackbar.open({
+        this.$notify({
           duration: 3000,
           message: `复制失败：${e.message}`,
           type: 'is-danger',
@@ -403,9 +400,9 @@ export default {
         margin-top: 40px;
 
         .software-li {
-          /deep/ .card {
-            /deep/ .collapse-content {
-              /deep/ .card-content {
+          :deep(.card) {
+            :deep(.collapse-content) {
+              :deep(.card-content) {
                 padding-left: 0 !important;
               }
             }

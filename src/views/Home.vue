@@ -7,7 +7,7 @@
       <div
         class="cover-layer is-visible"
         :style="{ backgroundImage: coverBg ? `url(${coverBg})` : 'none' }"
-      />
+      ></div>
       <div class="container cover-content">
         <div class="columns">
           <div class="column is-three-quarters mt20">
@@ -16,7 +16,7 @@
         </div>
 
         <div class="columns">
-          <div class="column is-three-quarters main-column">
+          <div class="column is-three-quarters main-column" :key="current_active_menu_id">
             <div class="post" v-for="navItems in navData" :key="navItems.title">
               <div class="widget">
                 <a href="#" class="sub-title title-underline">
@@ -31,41 +31,41 @@
                     :class="navItem.color"
                     v-for="navItem in navItems.items"
                     :key="navItem.index"
-                >{{ navItem.name }}</a
-                >
+                >{{ navItem.name }}</a>
               </div>
             </div>
           </div>
-          <div class="column sidebar-column">
-            <Sidebar/>
-          </div>
+          <SidebarColumn />
         </div>
+      </div>
+      <div id="footer" class="home-footer">
+        <Footer/>
       </div>
     </div>
 
-    <AsyncBackTop v-if="showBackTop" />
-    <div id="footer">
-      <Footer/>
-    </div>
+    <BackTop v-if="showBackTop" />
   </div>
 </template>
 
 <script>
-import Vue from 'vue'
+import { defineAsyncComponent } from 'vue'
 import SearchInput from '@/components/SearchInput.vue'
+import BackTop from '@/components/BackTop.vue'
 import Navbar from '@/components/Navbar.vue'
-import Sidebar from '@/components/Sidebar.vue'
-import Footer from '@/components/Footer.vue'
+import SidebarColumn from '@/components/SidebarColumn.vue'
 import { canAccessMenu, isLoggedIn } from '@/store/auth'
 import { fetchPrivateNav } from '@/services/navApi'
 import {
+  loadNavData,
+  peekNavData,
+  setPrivateNavCache,
+} from '@/services/navData'
+import {
   DEFAULT_COVER,
   getCachedCover,
-  preloadCover,
   refreshBingCover,
 } from '@/utils/bingCover'
 
-const MENU_STORAGE_KEY = 'doniaiNavActiveMenuId'
 const VALID_MENU_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 const PRIVATE_MENU_ID = 2
 
@@ -74,14 +74,9 @@ export default {
   components: {
     SearchInput,
     Navbar,
-    Sidebar,
-    Footer,
-    AsyncBackTop: () =>
-      import(/* webpackChunkName: "back-top" */ '@mlqt/vue-back-top').then((mod) => {
-        const BackTop = mod.default
-        Vue.use(BackTop)
-        return BackTop
-      }),
+    SidebarColumn,
+    Footer: defineAsyncComponent(() => import('@/components/Footer.vue')),
+    BackTop,
   },
   data() {
     const cached = getCachedCover()
@@ -96,81 +91,70 @@ export default {
     this.showBackTop = true
   },
   created() {
-    const menuId = this.getSavedMenuId()
-    this.current_active_menu_id = menuId
-    this.getCurrentNavs(menuId)
-    this.initCover()
+    localStorage.removeItem('doniaiNavActiveMenuId')
+    this.current_active_menu_id = 1
+    this.getCurrentNavs(1)
+    if (!getCachedCover()) {
+      refreshBingCover({ silent: true }).then((url) => {
+        if (url && url !== this.coverBg) {
+          this.coverBg = url
+        }
+      })
+    }
   },
   methods: {
-    getSavedMenuId() {
-      const saved = parseInt(localStorage.getItem(MENU_STORAGE_KEY), 10)
-      const id = VALID_MENU_IDS.includes(saved) ? saved : 1
-      return canAccessMenu(id) ? id : 1
-    },
-    saveMenuId(menuId) {
-      localStorage.setItem(MENU_STORAGE_KEY, String(menuId))
-    },
     async getCurrentNavs(menu_id) {
       if (menu_id === PRIVATE_MENU_ID && isLoggedIn()) {
         await this.loadPrivateNav()
         return
       }
 
-      const dataMap = {
-        1: 'homeData',
-        2: 'workData',
-        3: 'iosData',
-        4: 'toolsData',
-        5: 'frontendData',
-        6: 'shopData',
-        7: 'designData',
-        8: 'blogData',
-        9: 'foreignData',
-        10: 'studyData',
+      const data = await loadNavData(menu_id)
+      if (this.current_active_menu_id === menu_id) {
+        this.navData = data
       }
-      const key = dataMap[menu_id] || 'homeData'
-      const jsonNavs = (await import(/* webpackChunkName: "nav-data" */ '@/services/data.json')).default
-      this.navData = jsonNavs[key] || []
     },
     async loadPrivateNav() {
+      const cached = peekNavData(PRIVATE_MENU_ID)
+      if (cached?.length) {
+        this.navData = cached
+      }
+
       try {
         const { data } = await fetchPrivateNav()
         if (data?.ok && Array.isArray(data.categories)) {
-          this.navData = data.categories
+          setPrivateNavCache(data.categories)
+          if (this.current_active_menu_id === PRIVATE_MENU_ID) {
+            this.navData = data.categories
+          }
           return
         }
       } catch (e) {
         console.warn('load private nav failed', e)
       }
-      this.navData = []
+
+      if (!cached && this.current_active_menu_id === PRIVATE_MENU_ID) {
+        this.navData = []
+      }
     },
     updateCurrentNavs(obj) {
       const menuId = obj.menu_id
       if (!VALID_MENU_IDS.includes(menuId)) return
       if (!canAccessMenu(menuId)) {
-        this.$buefy.toast.open({
+        this.$toast.open({
           message: '请先登录后访问「私人」栏目',
           type: 'is-warning',
         })
         this.$router.push({ path: '/login', query: { redirect: '/' } })
         return
       }
-      this.current_active_menu_id = menuId
-      this.saveMenuId(menuId)
-      this.getCurrentNavs(menuId)
-    },
-    async initCover() {
-      const initial = this.coverBg
-      preloadCover(initial).catch(() => {})
 
-      refreshBingCover({ silent: true })
-        .then(async (url) => {
-          if (url && url !== this.coverBg) {
-            await preloadCover(url).catch(() => {})
-            this.coverBg = url
-          }
-        })
-        .catch(() => {})
+      this.current_active_menu_id = menuId
+      const cached = peekNavData(menuId)
+      if (cached) {
+        this.navData = cached
+      }
+      this.getCurrentNavs(menuId)
     },
   }
 }
@@ -178,7 +162,10 @@ export default {
 
 <style lang="less" scoped>
 .nav-box {
-  margin-bottom: 12px;
+  background: #fff;
+  border-bottom: 2px solid #e1e1e1;
+  position: relative;
+  z-index: 2;
 }
 
 .post {
@@ -234,6 +221,8 @@ export default {
 .cover-bg {
   position: relative;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .cover-layer {
@@ -244,6 +233,10 @@ export default {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  image-rendering: auto;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translateZ(0);
   opacity: 1;
   transition: opacity 0.4s ease;
 
@@ -255,6 +248,17 @@ export default {
 .cover-content {
   position: relative;
   z-index: 1;
+}
+
+.home-footer {
+  position: relative;
+  z-index: 1;
+  margin-top: auto;
+  width: 100%;
+
+  :deep(.site-footer) {
+    margin-top: 0;
+  }
 }
 
 .home .sidebar-column {
@@ -281,7 +285,6 @@ export default {
   .home .post {
     padding: 16px 14px;
     margin-bottom: 16px;
-    border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 2px 12px rgba(15, 23, 42, 0.08);
   }
@@ -316,6 +319,10 @@ export default {
 
   .home .sidebar-column {
     margin-top: 4px;
+  }
+
+  .home-footer :deep(.site-footer) {
+    border-radius: 0;
   }
 }
 

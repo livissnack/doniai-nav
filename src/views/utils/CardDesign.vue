@@ -3,25 +3,25 @@
     <div class="nav-box">
       <Navbar :newPage="true" :newUrl="`/utils/color`" pageTitle="好看的设计">
         <template v-slot:custommenu>
-          <b-navbar-item>
+          <div>
             <div class="navbar-menu">
-              <b-dropdown v-model="navigation" position="is-bottom-left" append-to-body aria-role="menu">
+              <o-dropdown position="bottom-left" teleport aria-role="menu">
                 <template #trigger>
                   <a class="navbar-item" role="button">
-                    <b-icon pack="fab" icon="apple"></b-icon>
+                    <o-icon pack="fab" icon="apple"></o-icon>
                     <span>好看UI</span>
-                    <b-icon pack="fas" icon="angle-down"></b-icon>
+                    <o-icon pack="fas" icon="angle-down"></o-icon>
                   </a>
                 </template>
-                <b-dropdown-item custom aria-role="menuitem">
+                <o-dropdown-item custom aria-role="menuitem">
                   <a href="/utils/design-card">卡片设计</a>
-                </b-dropdown-item>
-                <b-dropdown-item custom aria-role="menuitem">
+                </o-dropdown-item>
+                <o-dropdown-item custom aria-role="menuitem">
                   <a href="/utils/design-btn">Button设计</a>
-                </b-dropdown-item>
-              </b-dropdown>
+                </o-dropdown-item>
+              </o-dropdown>
             </div>
-          </b-navbar-item>
+          </div>
         </template>
       </Navbar>
     </div>
@@ -475,12 +475,10 @@
 </template>
 
 <script>
-import Vue from 'vue'
+import '@fortawesome/fontawesome-free/css/brands.min.css'
 import Navbar from '@/components/Navbar.vue'
-import BackTop from '@mlqt/vue-back-top'
+import BackTop from '@/components/BackTop.vue'
 import Footer from '@/components/Footer.vue'
-
-Vue.use(BackTop)
 export default {
   name: 'Color',
   components: {
@@ -492,7 +490,7 @@ export default {
   },
   methods: {
     onCopySuccess() {
-      this.$buefy.snackbar.open({
+      this.$notify({
         duration: 3000,
         message: `${this.showMoney}`,
         type: 'is-success',
@@ -503,7 +501,7 @@ export default {
     handleCopyText(str) {
       this.$copyText(str).then(() => {
         let tmpStr = str.substring(0, 40)
-        this.$buefy.snackbar.open({
+        this.$notify({
           duration: 3000,
           message: `复制成功：${tmpStr} ...`,
           type: 'is-success',
@@ -511,7 +509,7 @@ export default {
           actionText: 'Msg'
         })
       }, (e) => {
-        this.$buefy.snackbar.open({
+        this.$notify({
           duration: 3000,
           message: `复制失败：${e.message}`,
           type: 'is-danger',

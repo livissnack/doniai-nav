@@ -109,7 +109,7 @@ export default {
   mounted() {
     window.addEventListener('keydown', this.keyDown)
   },
-  beforeDestroy() {
+  beforeUnmount() {
     window.removeEventListener('keydown', this.keyDown)
   },
   methods: {
@@ -120,7 +120,7 @@ export default {
       let id = this.filter.search_type
       let text = this.filter.search_text
       if (text === '' || text == null || undefined) {
-        this.$buefy.snackbar.open({
+        this.$notify({
           duration: 3000,
           message: '输入框内容不能为空！',
           type: 'is-danger',

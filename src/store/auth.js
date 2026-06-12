@@ -1,4 +1,5 @@
-import Vue from 'vue'
+import { reactive } from 'vue'
+import { invalidatePrivateNavCache } from '@/services/navData'
 import {
   loginApi,
   registerApi,
@@ -38,6 +39,10 @@ function getToken() {
   return localStorage.getItem(TOKEN_KEY) || ''
 }
 
+export function hasStoredToken() {
+  return !!getToken()
+}
+
 function setToken(token) {
   if (token) {
     localStorage.setItem(TOKEN_KEY, token)
@@ -46,7 +51,7 @@ function setToken(token) {
   }
 }
 
-export const authStore = Vue.observable({
+export const authStore = reactive({
   user: null,
   sidebarPanels: { ...DEFAULT_PANELS },
   registrationEnabled: true,
@@ -91,21 +96,26 @@ async function loadPublicSettings() {
 }
 
 export async function initAuth() {
-  await loadPublicSettings()
+  const settingsTask = loadPublicSettings()
   const token = getToken()
   if (!token) {
+    await settingsTask
     authReadyResolve()
     return
   }
   try {
-    const { data } = await fetchMeApi()
+    const [, meRes] = await Promise.all([settingsTask, fetchMeApi()])
+    const { data } = meRes
     if (data?.ok && data.user) {
       applySession(data)
     } else {
       clearSession()
     }
-  } catch {
-    clearSession()
+  } catch (err) {
+    // 仅 token 失效时清除；网络错误保留 token，下次路由仍会重试
+    if (err?.code === 401 || err?.code === 403) {
+      clearSession()
+    }
   } finally {
     authReadyResolve()
   }
@@ -179,12 +189,13 @@ export const authActions = {
       // 客户端清除即可
     }
     clearSession()
+    invalidatePrivateNavCache()
     return { ok: true }
   },
 
   async setPanelVisible(panelId, visible) {
     if (!authStore.user) return
-    Vue.set(authStore.sidebarPanels, panelId, visible)
+    authStore.sidebarPanels[panelId] = visible
     try {
       const { data } = await updatePanelsApi({ ...authStore.sidebarPanels })
       if (data?.ok && data.sidebarPanels) {

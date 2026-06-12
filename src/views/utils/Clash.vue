@@ -5,48 +5,51 @@
     </div>
     <div class="content-box">
       <div class="container">
+        <UtilPageColumns>
         <div class="columns">
           <div class="column is-three-quarters">
-            <div class="mt-4 play-input">
+            <div class="play-input">
               <div class="input-box">
-                <b-field :message="validClashMsg">
-                <b-input class="custom-min-height" @input="handleValidClashMsg" v-model="nodeList" placeholder="请输入节点数据" type="textarea" maxlength="2000" icon-pack="fas"
-                         icon-right="times"
-                         icon-right-clickable
-                         @icon-right-click="clearIconClick"></b-input>
-                </b-field>
+                <o-field label="节点数据" :message="validClashMsg">
+                  <o-input
+                    v-model="nodeList"
+                    type="textarea"
+                    rows="10"
+                    placeholder="请输入节点数据，每行一条链接（支持 vmess / vless / hysteria / ss / trojan）"
+                    maxlength="2000"
+                    icon-pack="fas"
+                    icon-right="times"
+                    icon-right-clickable
+                    @input="handleValidClashMsg"
+                    @icon-right-click="clearIconClick"
+                  />
+                </o-field>
               </div>
             </div>
 
             <div class="operate-btn">
-              <div class="start-play-btn">
-                <b-button type="is-success" :disabled="validClashMsg !== ''" @click="handleParse">解析</b-button>
-              </div>
-              <div class="btn-box">
-                <b-button type="is-danger" :disabled="disableDownload" :loading="loadingDownload" @click="handleDownloadClash">下载Clash</b-button>
-              </div>
+              <o-button variant="success" :disabled="!!validClashMsg" @click="handleParse">解析</o-button>
+              <o-button variant="danger" :disabled="disableDownload" :loading="loadingDownload" @click="handleDownloadClash">
+                下载 Clash
+              </o-button>
             </div>
 
             <div class="parse-content">
               <div class="parse-header">
-                <b-icon icon="code" size="is-small" pack="fas"></b-icon>
+                <o-icon icon="code" size="small" pack="fas"></o-icon>
                 <span>YAML 配置预览</span>
               </div>
 
-              <codemirror
-                  v-model="parseConfig"
-                  :options="cmOptions"
-                  ref="myCm"
-              ></codemirror>
+              <Codemirror
+                v-model="parseConfig"
+                :style="{ height: '1260px' }"
+                :extensions="cmExtensions"
+              />
             </div>
           </div>
-          <div class="column">
-            <div class="section-box">
-              <MediaResource />
-            </div>
-            <Sidebar/>
-          </div>
+          <SidebarColumn root-class="column" />
         </div>
+        </UtilPageColumns>
       </div>
     </div>
 
@@ -60,25 +63,23 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import Navbar from '@/components/Navbar.vue'
-import Sidebar from '@/components/Sidebar.vue'
-import BackTop from '@mlqt/vue-back-top'
+import SidebarColumn from '@/components/SidebarColumn.vue'
+import UtilPageColumns from '@/components/UtilPageColumns.vue'
 import Footer from '@/components/Footer.vue'
-import MediaResource from "@/components/MediaResource.vue"
-import { codemirror } from 'vue-codemirror'
-import {isEmpty} from "@/utils/helper"
-import {getNodeParse} from "@/services/api";
+import { Codemirror } from 'vue-codemirror'
+import { yaml } from '@codemirror/lang-yaml'
+import { isEmpty } from '@/utils/helper'
+import { getNodeParse } from '@/services/api'
 
-Vue.use(BackTop)
 export default {
-  name: 'json',
+  name: 'Clash',
   components: {
-    MediaResource,
     Navbar,
-    Sidebar,
+    SidebarColumn,
+    UtilPageColumns,
     Footer,
-    codemirror
+    Codemirror,
   },
   data() {
     return {
@@ -90,54 +91,41 @@ export default {
       parseConfig: '暂无解析数据~',
       disableDownload: true,
       loadingDownload: false,
-      cmOptions: {
-        tabSize: 2,
-        mode: 'text/x-yaml',
-        theme: 'base16-light',
-        lineNumbers: true,
-        readOnly: false,
-        lineWrapping: true,
-        viewportMargin: Infinity,
-        cursorHeight: 0.85,
-        autofocus: false,
-      }
+      cmExtensions: [yaml()],
     }
-  },
-  created() {
-
   },
   methods: {
     clearIconClick() {
       this.nodeList = ''
     },
     handleValidClashMsg(value) {
-      const val = value.trim();
+      const val = (typeof value === 'string' ? value : this.nodeList || '').trim()
 
       if (!val) {
-        this.validClashMsg = '节点信息不能为空哦~';
-        return;
+        this.validClashMsg = '节点信息不能为空哦~'
+        return
       }
 
-      const supportedProtocols = ['vmess://', 'vless://', 'hysteria', 'ss://', 'trojan://'];
+      const supportedProtocols = ['vmess://', 'vless://', 'hysteria', 'ss://', 'trojan://']
 
-      const lines = val.split('\n');
-      const isValid = lines.some(line =>
-          supportedProtocols.some(proto => line.trim().toLowerCase().startsWith(proto))
-      );
+      const lines = val.split('\n')
+      const isValid = lines.some((line) =>
+        supportedProtocols.some((proto) => line.trim().toLowerCase().startsWith(proto))
+      )
 
       if (!isValid) {
-        this.validClashMsg = '未能识别有效的节点链接 (支持 vmess/vless/hysteria)~';
+        this.validClashMsg = '未能识别有效的节点链接 (支持 vmess/vless/hysteria)~'
       } else {
-        this.validClashMsg = '';
+        this.validClashMsg = ''
       }
     },
     async handleParse() {
       if (isEmpty(this.nodeList)) {
-        this.$buefy.snackbar.open({
+        this.$notify({
           message: '节点数据不能为空！',
           type: 'is-danger',
           position: 'is-top',
-          actionText: 'Msg'
+          actionText: 'Msg',
         })
         return
       }
@@ -145,52 +133,51 @@ export default {
       this.parseConfig = data
       if (!isEmpty(data)) {
         this.disableDownload = false
-        this.$nextTick(() => {
-          if (this.$refs.myCm && this.$refs.myCm.codemirror) {
-            this.$refs.myCm.codemirror.refresh()
-          }
-        })
       }
     },
     async handleDownloadClash() {
       if (!this.parseConfig || this.parseConfig === '暂无解析数据~') {
-        return;
+        return
       }
 
-      this.loadingDownload = true;
+      this.loadingDownload = true
       try {
-        const filenamePrefix = this.randomFileName();
-        const filename = `${filenamePrefix}.yaml`;
+        const filenamePrefix = this.randomFileName()
+        const filename = `${filenamePrefix}.yaml`
 
-        const blob = new Blob([this.parseConfig], { type: 'text/yaml;charset=utf-8' });
-        const objectUrl = URL.createObjectURL(blob);
+        const blob = new Blob([this.parseConfig], { type: 'text/yaml;charset=utf-8' })
+        const objectUrl = URL.createObjectURL(blob)
 
-        const eleLink = document.createElement('a');
-        eleLink.style.display = 'none';
-        eleLink.href = objectUrl;
-        eleLink.download = filename;
+        const eleLink = document.createElement('a')
+        eleLink.style.display = 'none'
+        eleLink.href = objectUrl
+        eleLink.download = filename
 
-        document.body.appendChild(eleLink);
-        eleLink.click();
+        document.body.appendChild(eleLink)
+        eleLink.click()
 
-        document.body.removeChild(eleLink);
-        URL.revokeObjectURL(objectUrl);
-
+        document.body.removeChild(eleLink)
+        URL.revokeObjectURL(objectUrl)
       } catch (error) {
-        this.$buefy.snackbar.open({
+        this.$notify({
           message: '下载配置失败！',
           type: 'is-danger',
           position: 'is-top',
-          actionText: 'Msg'
+          actionText: 'Msg',
         })
       } finally {
-        this.loadingDownload = false;
+        this.loadingDownload = false
       }
     },
     randomFileName() {
-      return Math.random().toString(36).slice(-8)
-    }
-  }
+      const chars = 'abcdefghijklmnopqrstuvwxyz0123456789'
+      let result = ''
+      for (let i = 0; i < 8; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length))
+      }
+      return result
+    },
+  },
 }
 </script>
 
@@ -204,40 +191,76 @@ export default {
 }
 
 .play-input {
-  display: flex;
-  justify-content: flex-start;
+  width: 100%;
+  margin-bottom: 16px;
 
   .input-box {
-    flex: 1;
-  }
-}
+    width: 100%;
 
-.section-box {
-  margin-bottom: 20px;
+    :deep(.field) {
+      width: 100%;
+      margin-bottom: 0;
+    }
+
+    :deep(.label) {
+      font-weight: 600;
+      color: #363636;
+      margin-bottom: 6px;
+    }
+
+    :deep(.control) {
+      width: 100%;
+    }
+
+    :deep(.textarea),
+    :deep(textarea.input) {
+      width: 100%;
+      min-height: 220px;
+      max-height: 420px;
+      padding: 12px 14px;
+      font-size: 13px;
+      line-height: 1.65;
+      font-family: Consolas, Monaco, 'Courier New', monospace;
+      color: #363636;
+      background: #fafafa;
+      border: 1px solid #dbdbdb;
+      border-radius: 6px;
+      resize: vertical;
+      box-sizing: border-box;
+      transition: border-color 0.2s, box-shadow 0.2s;
+
+      &:hover {
+        border-color: #b5b5b5;
+      }
+
+      &:focus {
+        background: #fff;
+        border-color: #20bc56;
+        box-shadow: 0 0 0 3px rgba(32, 188, 86, 0.15);
+        outline: none;
+      }
+    }
+
+    :deep(.help) {
+      margin-top: 6px;
+    }
+  }
 }
 
 .operate-btn {
   margin-bottom: 20px;
   display: flex;
   justify-content: flex-end;
-  .btn-box {
-    display: flex;
-    justify-content: flex-start;
-    gap: 20px;
-  }
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .parse-content {
   margin-bottom: 40px;
-  background: #FFFFFF;
-  border-radius: 8px;
+  background: #ffffff;
   border: 1px solid #e1e1e1;
   overflow: hidden;
-  transition: border-color 0.3s;
-  &:focus-within {
-    border-color: #409EFF;
-    box-shadow: 0 0 4px rgba(64, 158, 255, 0.2);
-  }
+
   .parse-header {
     padding: 10px 15px;
     background: #f9f9f9;
@@ -249,39 +272,10 @@ export default {
     gap: 8px;
   }
 
-  // 深度选择器修改 CodeMirror 样式
-  ::v-deep(.CodeMirror) {
-    max-height: 800px;
-    min-height: 600px; // 设定最小高度
+  :deep(.cm-editor) {
+    min-height: 1260px;
     font-family: 'Fira Code', 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
     font-size: 14px;
-    background: #FFFFFF !important; // 确保背景色统一
-    .CodeMirror-cursor {
-      border-left: 2px solid #409EFF;
-    }
-    // 让滚动更平滑
-    .CodeMirror-scroll {
-      max-height: 800px;
-      min-height: 600px;
-    }
-  }
-
-  // 如果有滚动条，美化一下
-  ::v-deep(.CodeMirror-hscrollbar), ::v-deep(.CodeMirror-vscrollbar) {
-    &::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    &::-webkit-scrollbar-thumb {
-      background-color: #dbdbdb;
-      border-radius: 3px;
-    }
-  }
-}
-
-.custom-min-height {
-  ::v-deep(.textarea) {
-    min-height: 300px;
   }
 }
 

@@ -3,91 +3,91 @@
     <div class="nav-box">
       <Navbar :newPage="true" pageTitle="原版软件">
         <template v-slot:custommenu>
-          <b-navbar-item>
+          <div>
             <div class="navbar-menu">
-              <b-dropdown v-model="navigation" position="is-bottom-left" append-to-body aria-role="menu">
+              <o-dropdown position="bottom-left" teleport aria-role="menu">
                 <template #trigger>
                   <a class="navbar-item" role="button">
-                    <b-icon pack="fab" icon="apple"></b-icon>
+                    <o-icon pack="fab" icon="apple"></o-icon>
                     <span>软件</span>
-                    <b-icon pack="fas" icon="angle-down"></b-icon>
+                    <o-icon pack="fas" icon="angle-down"></o-icon>
                   </a>
                 </template>
-                <b-dropdown-item custom aria-role="menuitem">
+                <o-dropdown-item custom aria-role="menuitem">
                   图形设计
-                </b-dropdown-item>
-                <b-dropdown-item custom aria-role="menuitem">
+                </o-dropdown-item>
+                <o-dropdown-item custom aria-role="menuitem">
                   媒体工具
-                </b-dropdown-item>
-                <b-dropdown-item custom aria-role="menuitem">
+                </o-dropdown-item>
+                <o-dropdown-item custom aria-role="menuitem">
                   游戏娱乐
-                </b-dropdown-item>
-                <b-dropdown-item custom aria-role="menuitem">
+                </o-dropdown-item>
+                <o-dropdown-item custom aria-role="menuitem">
                   系统工具
-                </b-dropdown-item>
-                <b-dropdown-item custom aria-role="menuitem">
+                </o-dropdown-item>
+                <o-dropdown-item custom aria-role="menuitem">
                   编程开发
-                </b-dropdown-item>
-                <b-dropdown-item custom aria-role="menuitem">
+                </o-dropdown-item>
+                <o-dropdown-item custom aria-role="menuitem">
                   网络工具
-                </b-dropdown-item>
-              </b-dropdown>
+                </o-dropdown-item>
+              </o-dropdown>
             </div>
-          </b-navbar-item>
-          <b-navbar-item>
-            <b-dropdown v-model="navigation" position="is-bottom-left" append-to-body aria-role="menu">
+          </div>
+          <div>
+            <o-dropdown position="bottom-left" teleport aria-role="menu">
               <template #trigger>
                 <a class="navbar-item" role="button">
-                  <b-icon pack="fab" icon="windows"></b-icon>
+                  <o-icon pack="fab" icon="windows"></o-icon>
                   <span>系统</span>
-                  <b-icon pack="fas" icon="angle-down"></b-icon>
+                  <o-icon pack="fas" icon="angle-down"></o-icon>
                 </a>
               </template>
-              <b-dropdown-item custom aria-role="menuitem">
-                <b-icon pack="fab" icon="windows"></b-icon>
+              <o-dropdown-item custom aria-role="menuitem">
+                <o-icon pack="fab" icon="windows"></o-icon>
                 windows11
-              </b-dropdown-item>
-              <b-dropdown-item custom aria-role="menuitem">
-                <b-icon pack="fab" icon="windows"></b-icon>
+              </o-dropdown-item>
+              <o-dropdown-item custom aria-role="menuitem">
+                <o-icon pack="fab" icon="windows"></o-icon>
                 windows10
-              </b-dropdown-item>
-              <b-dropdown-item custom aria-role="menuitem">
-                <b-icon pack="fab" icon="windows"></b-icon>
+              </o-dropdown-item>
+              <o-dropdown-item custom aria-role="menuitem">
+                <o-icon pack="fab" icon="windows"></o-icon>
                 windows8
-              </b-dropdown-item>
-              <b-dropdown-item custom aria-role="menuitem">
-                <b-icon pack="fab" icon="windows"></b-icon>
+              </o-dropdown-item>
+              <o-dropdown-item custom aria-role="menuitem">
+                <o-icon pack="fab" icon="windows"></o-icon>
                 windows7
-              </b-dropdown-item>
-            </b-dropdown>
-          </b-navbar-item>
-          <b-navbar-item>
-            <b-dropdown v-model="navigation" position="is-bottom-left" append-to-body aria-role="menu">
+              </o-dropdown-item>
+            </o-dropdown>
+          </div>
+          <div>
+            <o-dropdown position="bottom-left" teleport aria-role="menu">
               <template #trigger>
                 <a class="navbar-item" role="button">
-                  <b-icon pack="fas" icon="gamepad"></b-icon>
+                  <o-icon pack="fas" icon="gamepad"></o-icon>
                   <span>游戏</span>
-                  <b-icon pack="fas" icon="angle-down"></b-icon>
+                  <o-icon pack="fas" icon="angle-down"></o-icon>
                 </a>
               </template>
-              <b-dropdown-item custom aria-role="menuitem">
-                <b-icon pack="fab" icon="windows"></b-icon>
+              <o-dropdown-item custom aria-role="menuitem">
+                <o-icon pack="fab" icon="windows"></o-icon>
                 windows11
-              </b-dropdown-item>
-              <b-dropdown-item custom aria-role="menuitem">
-                <b-icon pack="fab" icon="windows"></b-icon>
+              </o-dropdown-item>
+              <o-dropdown-item custom aria-role="menuitem">
+                <o-icon pack="fab" icon="windows"></o-icon>
                 windows10
-              </b-dropdown-item>
-              <b-dropdown-item custom aria-role="menuitem">
-                <b-icon pack="fab" icon="windows"></b-icon>
+              </o-dropdown-item>
+              <o-dropdown-item custom aria-role="menuitem">
+                <o-icon pack="fab" icon="windows"></o-icon>
                 windows8
-              </b-dropdown-item>
-              <b-dropdown-item custom aria-role="menuitem">
-                <b-icon pack="fab" icon="windows"></b-icon>
+              </o-dropdown-item>
+              <o-dropdown-item custom aria-role="menuitem">
+                <o-icon pack="fab" icon="windows"></o-icon>
                 windows7
-              </b-dropdown-item>
-            </b-dropdown>
-          </b-navbar-item>
+              </o-dropdown-item>
+            </o-dropdown>
+          </div>
         </template>
       </Navbar>
     </div>
@@ -97,8 +97,8 @@
         <div class="search">
           <div class="search-box">
             <div class="search-input-box">
-              <b-field>
-                <b-input placeholder="请输入软件名称..."
+              <o-field>
+                <o-input placeholder="请输入软件名称..."
                     type="search"
                     icon="search"
                     v-model="keyword"
@@ -108,11 +108,11 @@
                     @blur="handleBlur" 
                     @input="handleChangeTxt" 
                     >
-                </b-input>
-              </b-field>
+                </o-input>
+              </o-field>
             </div>
             <div class="search-btn-box">
-              <b-button type="is-success is-light" @click="searchBtnClick">搜索</b-button>
+              <o-button variant="success" @click="searchBtnClick">搜索</o-button>
             </div>
           </div>
           <div class="search-content" :class="show ? 'is-active' : 'is-none'">
@@ -154,28 +154,28 @@
             </div>
           </div>
           <div class="notice-right-box">
-            <b-field grouped group-multiline>
+            <o-field grouped group-multiline>
               <div class="control">
-                <b-taglist attached>
-                  <b-tag type="is-dark">今日发布</b-tag>
-                  <b-tag type="is-info">0</b-tag>
-                </b-taglist>
+                <div class="tags has-addons">
+                  <o-tag variant="dark">今日发布</o-tag>
+                  <o-tag variant="info">0</o-tag>
+                </div>
               </div>
 
               <div class="control">
-                <b-taglist attached>
-                  <b-tag type="is-dark">本周</b-tag>
-                  <b-tag type="is-success">32</b-tag>
-                </b-taglist>
+                <div class="tags has-addons">
+                  <o-tag variant="dark">本周</o-tag>
+                  <o-tag variant="success">32</o-tag>
+                </div>
               </div>
 
               <div class="control">
-                <b-taglist attached>
-                  <b-tag type="is-dark">总数</b-tag>
-                  <b-tag type="is-primary">5394</b-tag>
-                </b-taglist>
+                <div class="tags has-addons">
+                  <o-tag variant="dark">总数</o-tag>
+                  <o-tag variant="primary">5394</o-tag>
+                </div>
               </div>
-            </b-field>
+            </o-field>
           </div>
         </div>
       </div>
@@ -190,9 +190,9 @@
           </div>
           <div class="notice-right-box">
             <div class="buttons">
-              <b-button size="is-small" type="is-primary">最新</b-button>
-              <b-button size="is-small" type="is-success" outlined>系统</b-button>
-              <b-button size="is-small" type="is-success" outlined>软件</b-button>
+              <o-button size="small" variant="primary">最新</o-button>
+              <o-button size="small" variant="success" outlined>系统</o-button>
+              <o-button size="small" variant="success" outlined>软件</o-button>
             </div>
           </div>
         </div>
@@ -241,14 +241,12 @@
 </template>
 
 <script>
-import Vue from 'vue'
+import '@fortawesome/fontawesome-free/css/brands.min.css'
 import Navbar from '@/components/Navbar.vue'
 import Marquee from '@/components/Marquee.vue'
-import BackTop from '@mlqt/vue-back-top'
+import BackTop from '@/components/BackTop.vue'
 import Footer from '@/components/Footer.vue'
 import { isEmpty } from '@/utils/helper'
-
-Vue.use(BackTop)
 export default {
   name: 'Download',
   components: {
@@ -418,7 +416,7 @@ export default {
   },
   methods: {
     onCopySuccess() {
-      this.$buefy.snackbar.open({
+      this.$notify({
         duration: 3000,
         message: `${this.showMoney}`,
         type: 'is-success',
@@ -429,7 +427,7 @@ export default {
     handleCopyText(str) {
       this.$copyText(str).then(() => {
         let tmpStr = str.substring(0, 40)
-        this.$buefy.snackbar.open({
+        this.$notify({
           duration: 3000,
           message: `复制成功：${tmpStr} ...`,
           type: 'is-success',
@@ -437,7 +435,7 @@ export default {
           actionText: 'Msg'
         })
       }, (e) => {
-        this.$buefy.snackbar.open({
+        this.$notify({
           duration: 3000,
           message: `复制失败：${e.message}`,
           type: 'is-danger',
@@ -512,8 +510,20 @@ export default {
         display: flex;
         justify-content: flex-start;
         align-items: center;
+        gap: 12px;
+
         .search-input-box {
           width: 600px;
+          max-width: 100%;
+          flex: 1;
+
+          :deep(.field) {
+            margin-bottom: 0;
+          }
+        }
+
+        .search-btn-box {
+          flex-shrink: 0;
         }
       }
       .is-active {
@@ -644,6 +654,45 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
+
+      .notice-right-box {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+
+        :deep(.field) {
+          margin-bottom: 0;
+        }
+
+        :deep(.field.is-grouped) {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+
+        .buttons {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: 8px;
+        }
+
+        :deep(.tags.has-addons) {
+          display: inline-flex;
+        }
+
+        :deep(.tags.has-addons .tag:not(:first-child)) {
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+          margin-left: -1px;
+        }
+
+        :deep(.tags.has-addons .tag:not(:last-child)) {
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+      }
 
       .notice-left-box {
         display: flex;

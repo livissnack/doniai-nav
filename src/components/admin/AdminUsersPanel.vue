@@ -8,9 +8,9 @@
         <span class="settings-label">开放注册</span>
         <span class="settings-hint">关闭后注册页将不可用</span>
       </div>
-      <b-switch
+      <o-switch
         :value="registrationEnabled"
-        type="is-success"
+        variant="success"
         :disabled="settingsSaving"
         @input="onRegistrationToggle"
       />
@@ -104,7 +104,7 @@ export default {
           this.registrationEnabled = settingsRes.data.registrationEnabled !== false
         }
       } catch (e) {
-        this.$buefy.toast.open({
+        this.$toast.open({
           message: e?.msg || '加载用户列表失败',
           type: 'is-danger',
         })
@@ -119,18 +119,18 @@ export default {
         if (data?.ok) {
           this.registrationEnabled = data.registrationEnabled !== false
           authStore.registrationEnabled = this.registrationEnabled
-          this.$buefy.toast.open({
+          this.$toast.open({
             message: data.message || (enabled ? '已开放注册' : '已关闭注册'),
             type: 'is-success',
           })
         } else {
-          this.$buefy.toast.open({
+          this.$toast.open({
             message: data?.message || '保存失败',
             type: 'is-danger',
           })
         }
       } catch (e) {
-        this.$buefy.toast.open({
+        this.$toast.open({
           message: e?.msg || '保存失败',
           type: 'is-danger',
         })
@@ -145,18 +145,18 @@ export default {
         const { data } = await setUserEnabledApi(user.id, { enabled: next })
         if (data?.ok) {
           user.enabled = next
-          this.$buefy.toast.open({
+          this.$toast.open({
             message: data.message || (next ? '已启用' : '已禁用'),
             type: 'is-success',
           })
         } else {
-          this.$buefy.toast.open({
+          this.$toast.open({
             message: data?.message || '操作失败',
             type: 'is-danger',
           })
         }
       } catch (e) {
-        this.$buefy.toast.open({
+        this.$toast.open({
           message: e?.msg || '操作失败',
           type: 'is-danger',
         })

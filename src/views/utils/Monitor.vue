@@ -198,20 +198,15 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import Navbar from '@/components/Navbar.vue'
 import Footer from '@/components/Footer.vue'
-import BackTop from '@mlqt/vue-back-top'
+import BackTop from '@/components/BackTop.vue'
 import { authStore } from '@/store/auth'
 import {
   fetchMonitorSites,
   checkAllMonitorSites,
   checkMonitorSite,
-} from '@/services/monitorApi'
-
-Vue.use(BackTop)
-
-/** 条形图最多展示的探测次数，避免过多记录撑破卡片 */
+} from '@/services/monitorApi'/** 条形图最多展示的探测次数，避免过多记录撑破卡片 */
 const UPTIME_BAR_MAX = 72
 
 export default {
@@ -251,7 +246,7 @@ export default {
       if (this.autoRefresh) this.loadSites(true)
     }, 60000)
   },
-  beforeDestroy() {
+  beforeUnmount() {
     if (this.timer) clearInterval(this.timer)
   },
   methods: {
@@ -313,7 +308,7 @@ export default {
         }
       } catch (e) {
         if (!silent) {
-          this.$buefy.toast.open({
+          this.$toast.open({
             message: e?.msg || '加载监控数据失败',
             type: 'is-danger',
           })
@@ -328,12 +323,12 @@ export default {
         const { data } = await checkAllMonitorSites()
         if (data?.ok) {
           this.sites = data.sites || []
-          this.$buefy.toast.open({ message: '全量检测完成', type: 'is-success' })
+          this.$toast.open({ message: '全量检测完成', type: 'is-success' })
         } else {
-          this.$buefy.toast.open({ message: data?.message || '检测失败', type: 'is-danger' })
+          this.$toast.open({ message: data?.message || '检测失败', type: 'is-danger' })
         }
       } catch (e) {
-        this.$buefy.toast.open({ message: e?.msg || '检测失败', type: 'is-danger' })
+        this.$toast.open({ message: e?.msg || '检测失败', type: 'is-danger' })
       } finally {
         this.loading = false
       }
@@ -345,11 +340,11 @@ export default {
         if (data?.ok && data.site) {
           const idx = this.sites.findIndex((s) => s.id === site.id)
           if (idx >= 0) {
-            this.$set(this.sites, idx, data.site)
+            this.sites[idx] = data.site
           }
         }
       } catch (e) {
-        this.$buefy.toast.open({ message: e?.msg || '检测失败', type: 'is-danger' })
+        this.$toast.open({ message: e?.msg || '检测失败', type: 'is-danger' })
       } finally {
         this.checkingId = ''
       }

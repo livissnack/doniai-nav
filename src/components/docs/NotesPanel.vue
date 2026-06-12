@@ -120,9 +120,9 @@
     <div v-if="showProjectModal" class="modal-mask" @click.self="showProjectModal = false">
       <div class="modal-card">
         <h3>新建项目</h3>
-        <b-field label="名称">
-          <b-input v-model="newProjectName" placeholder="项目名称" />
-        </b-field>
+        <o-field label="名称">
+          <o-input v-model="newProjectName" placeholder="项目名称" />
+        </o-field>
         <div class="modal-foot">
           <button type="button" class="btn-outline" @click="showProjectModal = false">取消</button>
           <button type="button" class="btn-primary" @click="createProject">创建</button>
@@ -252,7 +252,7 @@ export default {
           this.emitProjectName()
         }
       } catch (e) {
-        this.$buefy.toast.open({ message: e?.msg || '加载项目失败', type: 'is-danger' })
+        this.$toast.open({ message: e?.msg || '加载项目失败', type: 'is-danger' })
       }
     },
     async onProjectChange() {
@@ -267,7 +267,7 @@ export default {
         const { data } = await fetchPages(this.currentProjectId)
         if (data?.ok) this.pages = data.pages || []
       } catch (e) {
-        this.$buefy.toast.open({ message: e?.msg || '加载页面失败', type: 'is-danger' })
+        this.$toast.open({ message: e?.msg || '加载页面失败', type: 'is-danger' })
       }
     },
     async createProject() {
@@ -284,10 +284,10 @@ export default {
             await this.loadPages()
             this.emitProjectName()
           }
-          this.$buefy.toast.open({ message: '项目已创建', type: 'is-success' })
+          this.$toast.open({ message: '项目已创建', type: 'is-success' })
         }
       } catch (e) {
-        this.$buefy.toast.open({ message: e?.msg || '创建失败', type: 'is-danger' })
+        this.$toast.open({ message: e?.msg || '创建失败', type: 'is-danger' })
       }
     },
     parentForNew() {
@@ -321,7 +321,7 @@ export default {
           if (data.page && kind === 'page') this.selectPage(data.page)
         }
       } catch (e) {
-        this.$buefy.toast.open({ message: e?.msg || '创建失败', type: 'is-danger' })
+        this.$toast.open({ message: e?.msg || '创建失败', type: 'is-danger' })
       }
     },
     async selectPage(node) {
@@ -338,7 +338,7 @@ export default {
           this.editContent = data.page.content || ''
         }
       } catch (e) {
-        this.$buefy.toast.open({ message: e?.msg || '加载失败', type: 'is-danger' })
+        this.$toast.open({ message: e?.msg || '加载失败', type: 'is-danger' })
       }
     },
     async saveMeta() {
@@ -351,9 +351,9 @@ export default {
       this.saving = true
       try {
         await this.patchPage({ content: this.editContent })
-        this.$buefy.toast.open({ message: '已保存', type: 'is-success' })
+        this.$toast.open({ message: '已保存', type: 'is-success' })
       } catch (e) {
-        this.$buefy.toast.open({ message: e?.msg || '保存失败', type: 'is-danger' })
+        this.$toast.open({ message: e?.msg || '保存失败', type: 'is-danger' })
       } finally {
         this.saving = false
       }
@@ -372,7 +372,7 @@ export default {
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
     },
     removePage(node) {
-      this.$buefy.dialog.confirm({
+      this.$dialog.confirm({
         title: '删除',
         message: `确定删除「${node.title}」${node.kind === 'folder' ? '及其子项' : ''}？`,
         type: 'is-danger',
@@ -386,10 +386,10 @@ export default {
                 this.activePage = null
               }
               this.pages = data.pages || []
-              this.$buefy.toast.open({ message: '已删除', type: 'is-success' })
+              this.$toast.open({ message: '已删除', type: 'is-success' })
             }
           } catch (e) {
-            this.$buefy.toast.open({ message: e?.msg || '删除失败', type: 'is-danger' })
+            this.$toast.open({ message: e?.msg || '删除失败', type: 'is-danger' })
           }
         },
       })
@@ -490,17 +490,17 @@ export default {
 }
 
 .tree-root,
-::v-deep .tree-children {
+:deep(.tree-children) {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-::v-deep .tree-children {
+:deep(.tree-children) {
   padding-left: 14px;
 }
 
-::v-deep .tree-row {
+:deep(.tree-row) {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -549,7 +549,7 @@ export default {
   }
 }
 
-::v-deep .tree-label {
+:deep(.tree-label) {
   flex: 1;
   min-width: 0;
   overflow: hidden;
@@ -557,7 +557,7 @@ export default {
   white-space: nowrap;
 }
 
-::v-deep .tree-del {
+:deep(.tree-del) {
   width: 20px;
   height: 20px;
   flex-shrink: 0;
@@ -888,9 +888,14 @@ export default {
 
   .doc-sidebar {
     width: 100%;
-    max-height: 200px;
+    max-height: min(36vh, 260px);
+    min-height: 168px;
     border-right: none;
     border-bottom: 1px solid @border;
+  }
+
+  .doc-center {
+    border-left: none;
   }
 
   .doc-toc {
@@ -899,7 +904,72 @@ export default {
     top: 0;
     bottom: 0;
     z-index: 10;
+    width: min(220px, 78vw);
     box-shadow: -4px 0 16px rgba(0, 0, 0, 0.08);
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar-search {
+    margin: 10px 10px 6px;
+    height: 32px;
+  }
+
+  .sidebar-project {
+    padding: 0 10px 8px;
+  }
+
+  .doc-article-head {
+    padding: 10px 12px 8px;
+  }
+
+  .doc-title-field {
+    font-size: 16px;
+    padding-right: 36px;
+  }
+
+  .doc-article-actions {
+    right: 8px;
+  }
+
+  .doc-article.mode-split {
+    flex-direction: column;
+
+    .md-source,
+    .md-preview {
+      width: 100%;
+      min-height: 34vh;
+      max-height: 42vh;
+    }
+
+    .md-source {
+      border-right: none;
+      border-bottom: 1px solid @border;
+    }
+  }
+
+  .md-source,
+  .md-preview {
+    padding: 12px 14px;
+    font-size: 13px;
+  }
+
+  .modal-card {
+    width: calc(100vw - 32px);
+    max-width: 360px;
+    margin: 0 16px;
+    padding: 18px 16px;
+    border-radius: 0;
+  }
+
+  .modal-foot {
+    flex-direction: column-reverse;
+
+    .btn-outline,
+    .btn-primary {
+      width: 100%;
+      text-align: center;
+    }
   }
 }
 </style>

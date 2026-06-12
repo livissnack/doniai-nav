@@ -1,5 +1,5 @@
 <template>
-  <section class="admin-card">
+  <section class="admin-card private-nav-panel">
     <div class="card-title-row">
       <div>
         <h2 class="card-title">私人导航</h2>
@@ -18,7 +18,7 @@
     <form class="inline-form" @submit.prevent="submitCategory">
       <label class="inline-form-label">新增分类</label>
       <div class="inline-form-row">
-        <b-input
+        <o-input
           v-model="categoryForm.title"
           placeholder="分类名称"
           maxlength="30"
@@ -35,7 +35,7 @@
       <div v-for="cat in categories" :key="cat.id" class="category-block">
         <div class="category-head">
           <template v-if="editingCategoryId === cat.id">
-            <b-input v-model="categoryEditTitle" size="is-small" class="cat-edit-input" />
+            <o-input v-model="categoryEditTitle" size="small" class="cat-edit-input" />
             <button type="button" class="link-btn" @click="saveCategoryEdit(cat)">保存</button>
             <button type="button" class="link-btn muted" @click="editingCategoryId = null">取消</button>
           </template>
@@ -49,29 +49,31 @@
           </template>
         </div>
 
-        <table v-if="cat.items && cat.items.length" class="nav-table">
-          <thead>
-            <tr>
-              <th>名称</th>
-              <th>链接</th>
-              <th>样式</th>
-              <th>本页打开</th>
-              <th>操作</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="item in cat.items" :key="item.id">
-              <td>{{ item.name }}</td>
-              <td class="td-href">{{ item.href }}</td>
-              <td><span class="color-tag" :class="item.color">{{ colorLabel(item.color) }}</span></td>
-              <td>{{ item.isNotNewBlack ? '是' : '否' }}</td>
-              <td class="td-actions">
-                <button type="button" class="link-btn" @click="editItem(cat, item)">编辑</button>
-                <button type="button" class="link-btn danger" @click="removeItem(item)">删除</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div v-if="cat.items && cat.items.length" class="nav-table-wrap">
+          <table class="nav-table">
+            <thead>
+              <tr>
+                <th>名称</th>
+                <th>链接</th>
+                <th class="col-style">样式</th>
+                <th class="col-inline">本页打开</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in cat.items" :key="item.id">
+                <td class="td-name">{{ item.name }}</td>
+                <td class="td-href">{{ item.href }}</td>
+                <td class="col-style"><span class="color-tag" :class="item.color">{{ colorLabel(item.color) }}</span></td>
+                <td class="col-inline">{{ item.isNotNewBlack ? '是' : '否' }}</td>
+                <td class="td-actions">
+                  <button type="button" class="link-btn" @click="editItem(cat, item)">编辑</button>
+                  <button type="button" class="link-btn danger" @click="removeItem(item)">删除</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <p v-else class="empty-items">该分类下暂无导航</p>
 
         <button type="button" class="btn-add-item" @click="openItemForm(cat)">
@@ -84,20 +86,20 @@
       <div class="modal-card">
         <h3 class="modal-title">{{ editingItemId ? '编辑导航' : '添加导航' }}</h3>
         <form @submit.prevent="submitItem">
-          <b-field label="名称">
-            <b-input v-model="itemForm.name" maxlength="40" />
-          </b-field>
-          <b-field label="链接">
-            <b-input v-model="itemForm.href" placeholder="https:// 或 /utils/xxx" />
-          </b-field>
-          <b-field label="按钮颜色">
-            <b-select v-model="itemForm.color" expanded>
+          <o-field label="名称">
+            <o-input v-model="itemForm.name" maxlength="40" />
+          </o-field>
+          <o-field label="链接">
+            <o-input v-model="itemForm.href" placeholder="https:// 或 /utils/xxx" />
+          </o-field>
+          <o-field label="按钮颜色">
+            <o-select v-model="itemForm.color" expanded>
               <option v-for="c in colorOptions" :key="c.value" :value="c.value">{{ c.label }}</option>
-            </b-select>
-          </b-field>
-          <b-field label="本页打开（站内路径）">
-            <b-switch v-model="itemForm.isNotNewBlack" type="is-success">不新开标签页</b-switch>
-          </b-field>
+            </o-select>
+          </o-field>
+          <o-field label="本页打开（站内路径）">
+            <o-switch v-model="itemForm.isNotNewBlack" variant="success">不新开标签页</o-switch>
+          </o-field>
           <div class="modal-foot">
             <button type="button" class="btn-outline" @click="closeItemForm">取消</button>
             <button type="submit" class="btn-primary" :disabled="saving">
@@ -170,7 +172,7 @@ export default {
           this.categories = data.categories || []
         }
       } catch (e) {
-        this.$buefy.toast.open({ message: e?.msg || '加载失败', type: 'is-danger' })
+        this.$toast.open({ message: e?.msg || '加载失败', type: 'is-danger' })
       } finally {
         this.loading = false
       }
@@ -178,7 +180,7 @@ export default {
     async submitCategory() {
       const title = this.categoryForm.title.trim()
       if (!title) {
-        this.$buefy.toast.open({ message: '请填写分类名称', type: 'is-warning' })
+        this.$toast.open({ message: '请填写分类名称', type: 'is-warning' })
         return
       }
       this.saving = true
@@ -188,10 +190,10 @@ export default {
           this.categoryForm.title = ''
           if (data.categories) this.categories = data.categories
           else await this.loadNav()
-          this.$buefy.toast.open({ message: '分类已添加', type: 'is-success' })
+          this.$toast.open({ message: '分类已添加', type: 'is-success' })
         }
       } catch (e) {
-        this.$buefy.toast.open({ message: e?.msg || '添加失败', type: 'is-danger' })
+        this.$toast.open({ message: e?.msg || '添加失败', type: 'is-danger' })
       } finally {
         this.saving = false
       }
@@ -208,14 +210,14 @@ export default {
         if (data?.ok) {
           this.editingCategoryId = null
           await this.loadNav()
-          this.$buefy.toast.open({ message: '已更新', type: 'is-success' })
+          this.$toast.open({ message: '已更新', type: 'is-success' })
         }
       } catch (e) {
-        this.$buefy.toast.open({ message: e?.msg || '更新失败', type: 'is-danger' })
+        this.$toast.open({ message: e?.msg || '更新失败', type: 'is-danger' })
       }
     },
     removeCategory(cat) {
-      this.$buefy.dialog.confirm({
+      this.$dialog.confirm({
         title: '删除分类',
         message: `确定删除「${cat.title}」及其下所有导航？`,
         type: 'is-danger',
@@ -225,10 +227,10 @@ export default {
             const { data } = await deleteNavCategory(cat.id)
             if (data?.ok) {
               this.categories = data.categories || []
-              this.$buefy.toast.open({ message: '已删除', type: 'is-success' })
+              this.$toast.open({ message: '已删除', type: 'is-success' })
             }
           } catch (e) {
-            this.$buefy.toast.open({ message: e?.msg || '删除失败', type: 'is-danger' })
+            this.$toast.open({ message: e?.msg || '删除失败', type: 'is-danger' })
           }
         },
       })
@@ -264,7 +266,7 @@ export default {
         isNotNewBlack: this.itemForm.isNotNewBlack,
       }
       if (!payload.name || !payload.href) {
-        this.$buefy.toast.open({ message: '请填写名称和链接', type: 'is-warning' })
+        this.$toast.open({ message: '请填写名称和链接', type: 'is-warning' })
         return
       }
       this.saving = true
@@ -277,16 +279,16 @@ export default {
           this.categories = data.categories || this.categories
           await this.loadNav()
           this.closeItemForm()
-          this.$buefy.toast.open({ message: '已保存', type: 'is-success' })
+          this.$toast.open({ message: '已保存', type: 'is-success' })
         }
       } catch (e) {
-        this.$buefy.toast.open({ message: e?.msg || '保存失败', type: 'is-danger' })
+        this.$toast.open({ message: e?.msg || '保存失败', type: 'is-danger' })
       } finally {
         this.saving = false
       }
     },
     removeItem(item) {
-      this.$buefy.dialog.confirm({
+      this.$dialog.confirm({
         title: '删除导航',
         message: `确定删除「${item.name}」？`,
         type: 'is-danger',
@@ -296,16 +298,16 @@ export default {
             const { data } = await deleteNavItem(item.id)
             if (data?.ok) {
               this.categories = data.categories || []
-              this.$buefy.toast.open({ message: '已删除', type: 'is-success' })
+              this.$toast.open({ message: '已删除', type: 'is-success' })
             }
           } catch (e) {
-            this.$buefy.toast.open({ message: e?.msg || '删除失败', type: 'is-danger' })
+            this.$toast.open({ message: e?.msg || '删除失败', type: 'is-danger' })
           }
         },
       })
     },
     confirmReset() {
-      this.$buefy.dialog.confirm({
+      this.$dialog.confirm({
         title: '恢复默认',
         message: '将用内置默认数据覆盖当前私人导航，是否继续？',
         type: 'is-warning',
@@ -315,10 +317,10 @@ export default {
             const { data } = await resetPrivateNav()
             if (data?.ok) {
               this.categories = data.categories || []
-              this.$buefy.toast.open({ message: '已恢复默认', type: 'is-success' })
+              this.$toast.open({ message: '已恢复默认', type: 'is-success' })
             }
           } catch (e) {
-            this.$buefy.toast.open({ message: e?.msg || '操作失败', type: 'is-danger' })
+            this.$toast.open({ message: e?.msg || '操作失败', type: 'is-danger' })
           }
         },
       })
@@ -378,11 +380,11 @@ export default {
     min-width: 0;
   }
 
-  ::v-deep .control {
+  :deep(.control) {
     margin-bottom: 0;
   }
 
-  ::v-deep .input {
+  :deep(.input) {
     height: 34px;
     box-sizing: border-box;
   }
@@ -435,7 +437,8 @@ export default {
 .cat-actions {
   margin-left: auto;
   display: flex;
-  gap: 8px;
+  align-items: center;
+  gap: 12px;
 }
 
 .cat-edit-input {
@@ -470,6 +473,13 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
   color: #6b7280;
+}
+
+.td-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  white-space: nowrap;
 }
 
 .color-tag {
@@ -589,6 +599,146 @@ export default {
 
   &:disabled {
     opacity: 0.7;
+  }
+}
+
+.private-nav-panel {
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.nav-table-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.td-name {
+  font-weight: 600;
+  color: #374151;
+}
+
+@media screen and (max-width: 768px) {
+  .card-title-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .title-actions {
+    justify-content: flex-end;
+  }
+
+  .inline-form {
+    padding: 12px;
+    border-radius: 0;
+  }
+
+  .inline-form-row {
+    flex-direction: column;
+    gap: 10px;
+
+    .btn-primary {
+      width: 100%;
+      height: 38px;
+    }
+  }
+
+  .category-list {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .category-block {
+    padding: 12px 10px;
+    border-radius: 0;
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  .nav-table-wrap {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .category-head {
+    gap: 8px;
+  }
+
+  .category-title {
+    flex: 1;
+    min-width: 0;
+    font-size: 15px;
+  }
+
+  .cat-actions {
+    width: 100%;
+    margin-left: 0;
+    justify-content: flex-end;
+  }
+
+  .cat-edit-input {
+    max-width: none;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .nav-table {
+    min-width: 420px;
+    font-size: 12px;
+
+    th,
+    td {
+      padding: 8px;
+    }
+  }
+
+  .nav-table .col-style,
+  .nav-table .col-inline {
+    display: none;
+  }
+
+  .btn-add-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    border-radius: 0;
+    padding: 10px 12px;
+  }
+
+  .modal-mask {
+    padding: 0;
+    align-items: stretch;
+  }
+
+  .modal-card {
+    max-width: none;
+    min-height: 100dvh;
+    min-height: 100svh;
+    border-radius: 0;
+    padding: 16px 14px calc(16px + env(safe-area-inset-bottom, 0px));
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .modal-foot {
+    flex-direction: column-reverse;
+    margin-top: auto;
+    padding-top: 16px;
+
+    .btn-outline,
+    .btn-primary {
+      width: 100%;
+      height: 40px;
+      justify-content: center;
+    }
   }
 }
 </style>

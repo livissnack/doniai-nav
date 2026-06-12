@@ -43,7 +43,7 @@
             </button>
             <button
               type="button"
-              class="bar-icon"
+              class="bar-icon bar-icon--split"
               :class="{ active: notesViewMode === 'split' }"
               title="分屏"
               @click="setNotesMode('split')"
@@ -92,7 +92,17 @@ export default {
       tab: 'notes',
       projectName: '云笔记',
       notesViewMode: 'split',
+      isNarrow: false,
     }
+  },
+  mounted() {
+    this.syncNarrow()
+    this._mq = window.matchMedia('(max-width: 768px)')
+    this._mqHandler = () => this.syncNarrow()
+    this._mq.addEventListener('change', this._mqHandler)
+  },
+  beforeUnmount() {
+    this._mq?.removeEventListener('change', this._mqHandler)
   },
   computed: {
     topbarTitle() {
@@ -100,7 +110,16 @@ export default {
     },
   },
   methods: {
+    syncNarrow() {
+      this.isNarrow = window.matchMedia('(max-width: 768px)').matches
+      if (this.isNarrow && this.notesViewMode === 'split') {
+        this.setNotesMode('edit')
+      }
+    },
     setNotesMode(mode) {
+      if (this.isNarrow && mode === 'split') {
+        mode = 'edit'
+      }
       this.notesViewMode = mode
       this.$refs.notesPanel?.setViewMode(mode)
     },
@@ -149,7 +168,7 @@ export default {
   flex-direction: column;
   background: #fff;
   border: 1px solid @border;
-  border-radius: 12px;
+  border-radius: 0;
   box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
   overflow: hidden;
 }
@@ -265,6 +284,64 @@ export default {
   > * {
     flex: 1;
     min-height: 0;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .docs-page {
+    min-height: 100dvh;
+    height: 100dvh;
+    height: 100svh;
+  }
+
+  .docs-main {
+    padding: 8px 10px calc(10px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .docs-card {
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+  }
+
+  .docs-bar {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 10px;
+  }
+
+  .bar-title {
+    flex: 1;
+    min-width: 0;
+    max-width: none;
+    font-size: 13px;
+  }
+
+  .bar-tabs {
+    order: 3;
+    width: 100%;
+    margin-left: 0;
+    justify-content: stretch;
+
+    .bar-tab {
+      flex: 1;
+      text-align: center;
+      padding: 6px 8px;
+      font-size: 12px;
+    }
+  }
+
+  .bar-actions {
+    margin-left: auto;
+    gap: 2px;
+  }
+
+  .bar-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+  }
+
+  .bar-icon--split {
+    display: none;
   }
 }
 </style>

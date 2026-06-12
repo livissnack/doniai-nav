@@ -7,7 +7,7 @@
     },
     {
       "id": 2,
-      "name": "私人",
+      "name": "个人",
       "is_active": false,
       "requireAuth": true
     },

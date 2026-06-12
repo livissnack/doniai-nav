@@ -1,30 +1,35 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-import { warmApp } from '@/utils/warmApp'
-import Buefy from 'buefy'
-import VueClipboard from 'vue-clipboard2'
+import { finishPageProgress } from '@/utils/pageProgress'
+import { installOruga } from '@/plugins/oruga'
 import { installNotify } from '@/utils/notify'
-/* 图标样式由 public/index.html CDN 加载，避免与打包资源重复 */
+import { installDialog } from '@/utils/dialog'
+import { installCopyText } from '@/utils/copyText'
+import BackTop from '@/components/BackTop.vue'
 
-Vue.config.productionTip = false
-Vue.use(Buefy)
-installNotify(Vue)
-Vue.use(VueClipboard)
-Vue.prototype.OBS = process.env.VUE_APP_OSS_CDN
+const app = createApp(App)
 
-warmApp()
+app.component('back-top', BackTop)
+app.component('BackTop', BackTop)
 
-Vue.prototype.$OPENLINK = (url) => {
-  let a = document.createElement("a")
-  a.setAttribute("href", url)
-  a.setAttribute("target", "_blank")
+installOruga(app)
+installNotify(app)
+installDialog(app)
+installCopyText(app)
+
+app.config.globalProperties.OBS = import.meta.env.VITE_OSS_CDN
+app.config.globalProperties.$OPENLINK = (url) => {
+  const a = document.createElement('a')
+  a.setAttribute('href', url)
+  a.setAttribute('target', '_blank')
   document.body.appendChild(a)
   a.click()
   document.body.removeChild(a)
 }
 
-new Vue({
-  router,
-  render: h => h(App)
-}).$mount('#app')
+app.use(router)
+app.mount('#app')
+router.isReady().then(() => {
+  finishPageProgress()
+})

@@ -15,19 +15,20 @@ export default {
   },
   mounted() {
     this.initPieChart()
+    this._onResize = () => this.chart?.resize()
+    window.addEventListener('resize', this._onResize)
   },
   watch: {
-    // 监听数据变化，重新渲染图表
     rollCallData: {
       handler() {
         this.updateChart()
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   methods: {
     initPieChart() {
-      this.chart = echarts.init(document.getElementById('line'))
+      this.chart = echarts.init(this.$el)
       this.updateChart()
     },
 
@@ -69,17 +70,19 @@ export default {
       })
     }
   },
-  beforeDestroy() {
+  beforeUnmount() {
+    window.removeEventListener('resize', this._onResize)
     if (this.chart) {
       this.chart.dispose()
     }
-  }
+  },
 }
 </script>
 
 <style lang="less" scoped>
 .line-box {
-  width: 400px;
-  height: 400px;
+  width: 100%;
+  height: 280px;
+  min-height: 240px;
 }
 </style>

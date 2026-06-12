@@ -6,6 +6,7 @@
 
     <div class="content-box">
       <div class="container">
+        <UtilPageColumns>
         <div class="columns">
           <div class="column bg-white is-three-quarters">
             <table class="table is-fullwidth">
@@ -61,10 +62,9 @@
               </code></pre>
             </div>
           </div>
-          <div class="column sidebar-column">
-            <Sidebar/>
-          </div>
+          <SidebarColumn />
         </div>
+        </UtilPageColumns>
       </div>
     </div>
 
@@ -78,19 +78,18 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import Navbar from '@/components/Navbar.vue'
-import Sidebar from '@/components/Sidebar.vue'
-import BackTop from '@mlqt/vue-back-top'
+import SidebarColumn from '@/components/SidebarColumn.vue'
+import UtilPageColumns from '@/components/UtilPageColumns.vue'
+import BackTop from '@/components/BackTop.vue'
 import Footer from '@/components/Footer.vue'
 import dayjs from 'dayjs'
-
-Vue.use(BackTop)
 export default {
   name: 'docker',
   components: {
     Navbar,
-    Sidebar,
+    SidebarColumn,
+    UtilPageColumns,
     Footer
   },
   data() {
@@ -164,7 +163,7 @@ export default {
     handleCopyText(str) {
       this.$copyText(str).then(() => {
         let tmpStr = str.substring(0, 40)
-        this.$buefy.snackbar.open({
+        this.$notify({
           duration: 3000,
           message: `复制成功：${tmpStr} ...`,
           type: 'is-success',
@@ -172,7 +171,7 @@ export default {
           actionText: 'Msg'
         })
       }, (e) => {
-        this.$buefy.snackbar.open({
+        this.$notify({
           duration: 3000,
           message: `复制失败：${e.message}`,
           type: 'is-danger',

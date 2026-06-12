@@ -460,19 +460,59 @@ export function calculatePrincipalInstallment(loanAmount, annualInterestRate, lo
   return repaymentSchedule;
 }
 
-export function fetchSsSubscribe(base64Content) {
-  try {
-    const decodedContent = Buffer.from(base64Content, 'base64').toString('utf-8')
-    return decodedContent.split('\n').filter(line => line.trim() !== '')
-  } catch (error) {
-    console.error('Error fetching node subscribe:', error)
-    throw error
+export function decodeBase64Utf8(base64Content) {
+  const normalized = String(base64Content || '').replace(/\s/g, '')
+  const binary = atob(normalized)
+  const bytes = new Uint8Array(binary.length)
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i)
   }
+  return new TextDecoder('utf-8').decode(bytes)
+}
+
+const NODE_LINE_RE = /^(ss|vmess|vless|trojan|hysteria2?|socks5):\/\//i
+
+export function parseSubscribeContent(raw) {
+  const text = String(raw ?? '').trim()
+  if (!text) return []
+
+  const lines = (value) =>
+    value
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter((line) => line && !line.startsWith('#'))
+
+  if (NODE_LINE_RE.test(text)) {
+    return lines(text).filter((line) => NODE_LINE_RE.test(line))
+  }
+
+  try {
+    const decoded = decodeBase64Utf8(text.replace(/\s/g, ''))
+    if (NODE_LINE_RE.test(decoded)) {
+      return lines(decoded).filter((line) => NODE_LINE_RE.test(line))
+    }
+  } catch (error) {
+    // 非 base64 时按纯文本行处理
+  }
+
+  return lines(text).filter((line) => NODE_LINE_RE.test(line))
+}
+
+export function fetchSsSubscribe(raw) {
+  return parseSubscribeContent(raw)
+}
+
+export function extractSubscribePayload(response) {
+  const body = response?.data
+  if (typeof body === 'string') return body
+  if (body && typeof body.data === 'string') return body.data
+  if (body && body.data != null) return String(body.data)
+  return ''
 }
 
 export function parseSsUrl(url) {
   const [base64Content, serverName] = url.replace('ss://', '').split('#')
-  const ssContent = Buffer.from(base64Content, 'base64').toString('utf-8')
+  const ssContent = decodeBase64Utf8(base64Content)
   const [methodAndPassword, server] = ssContent.replace('ss://', '').split('@')
   const [method, password] = methodAndPassword.split(':')
   const [serverHost, serverPort] = server.split(':');

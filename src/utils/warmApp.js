@@ -1,49 +1,31 @@
+import { prefetchNavMenus } from '@/services/navData'
 import { warmBingCover, getCachedCover, preloadCover, DEFAULT_COVER } from '@/utils/bingCover'
-import { readCache, writeCache } from '@/utils/apiCache'
-import { getHotNews, getWeather } from '@/services/api'
+import { runWhenIdle } from '@/utils/defer'
+import { warmSidebarBundle } from '@/utils/sidebarWarm'
 
-const NEWS_KEY = 'doniaiNavCacheNews'
-const WEATHER_KEY = 'doniaiNavCacheWeather'
-const NEWS_TTL = 5 * 60 * 1000
-const WEATHER_TTL = 10 * 60 * 1000
+function prefetchHomeNav() {
+  prefetchNavMenus([1, 3, 4, 6])
+}
 
-function idle(fn) {
-  if (typeof window !== 'undefined' && window.requestIdleCallback) {
-    window.requestIdleCallback(fn, { timeout: 2000 })
-  } else {
-    setTimeout(fn, 1)
+function isHomePath(path) {
+  return path === '/' || path === ''
+}
+
+/** 应用启动预热：首页延后执行，避免阻塞首屏 */
+export function warmApp(options = {}) {
+  const path = options.path ?? (typeof window !== 'undefined' ? window.location.pathname : '')
+  const onHome = isHomePath(path)
+
+  const coverUrl = getCachedCover() || DEFAULT_COVER
+  if (onHome && coverUrl) {
+    preloadCover(coverUrl).catch(() => {})
   }
-}
 
-function warmSidebarApis() {
-  if (!readCache(NEWS_KEY, NEWS_TTL)) {
-    getHotNews()
-      .then(({ data }) => writeCache(NEWS_KEY, data))
-      .catch(() => {})
-  }
-  if (!readCache(WEATHER_KEY, WEATHER_TTL)) {
-    getWeather()
-      .then(({ data }) => writeCache(WEATHER_KEY, data))
-      .catch(() => {})
-  }
-}
+  if (!onHome) return
 
-function prefetchHomeChunks() {
-  idle(() => {
-    import(/* webpackPrefetch: true */ '@/views/Home.vue').catch(() => {})
-    import(/* webpackPrefetch: true */ '@/services/data.json').catch(() => {})
-  })
-}
-
-function preloadBingFromCache() {
-  const url = getCachedCover() || DEFAULT_COVER
-  preloadCover(url).catch(() => {})
-}
-
-/** 应用启动预热：背景图、侧栏 API、首页分包 */
-export function warmApp() {
-  preloadBingFromCache()
-  warmBingCover()
-  warmSidebarApis()
-  prefetchHomeChunks()
+  runWhenIdle(() => {
+    warmBingCover()
+    prefetchHomeNav()
+    warmSidebarBundle()
+  }, 2000)
 }

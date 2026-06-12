@@ -1,7 +1,7 @@
 import { getBgImage } from '@/services/api'
 
-const CACHE_KEY = 'doniaiNavBingCover'
-const CACHE_TIME_KEY = 'doniaiNavBingCoverAt'
+const CACHE_KEY = 'doniaiNavBingCoverV2'
+const CACHE_TIME_KEY = 'doniaiNavBingCoverAtV2'
 /** 缓存 12 小时（Bing 每日一图，不必每次打 API） */
 const CACHE_TTL_MS = 12 * 60 * 60 * 1000
 
@@ -11,13 +11,25 @@ export const DEFAULT_COVER =
 let inflight = null
 let preloadLinkEl = null
 
-/** 优先用体积更小的图，加快首屏 */
+/** 宽屏 / 高分屏用高清图，避免 background-size:cover 放大后发糊 */
+export function shouldUseHighResCover() {
+  if (typeof window === 'undefined') return true
+  const w = window.innerWidth || 1280
+  const dpr = window.devicePixelRatio || 1
+  return w >= 1280 || dpr >= 1.5
+}
+
+/** 按屏幕选择合适分辨率；大屏优先 4K */
 export function pickCoverUrl(apiData) {
   const body = apiData?.data ?? apiData
   if (!body) return null
   if (apiData?.code != null && apiData.code !== 200) return null
   const d = body.data || body
-  return d.cover_1080 || d.cover || d.cover_4k || d.url || null
+
+  if (shouldUseHighResCover()) {
+    return d.cover_4k || d.cover || d.url || d.cover_1080 || null
+  }
+  return d.cover_1080 || d.cover || d.url || d.cover_4k || null
 }
 
 export function getCachedCover() {

@@ -46,9 +46,9 @@
                   <span class="panel-title">{{ item.title }}</span>
                   <span class="panel-id">{{ item.id }}</span>
                 </div>
-                <b-switch
+                <o-switch
                   :value="panelState[item.id] !== false"
-                  type="is-success"
+                  variant="success"
                   @input="(v) => setPanel(item.id, v)"
                 />
               </div>
@@ -79,47 +79,47 @@
 
             <form class="site-form" novalidate @submit.prevent="submitSite">
               <div class="form-grid">
-                <b-field
+                <o-field
                   label="站点名称"
                   :type="fieldErrors.name ? 'is-danger' : null"
                   :message="fieldErrors.name"
                 >
-                  <b-input
+                  <o-input
                     v-model="siteForm.name"
                     placeholder="例如：主站 API"
                     maxlength="40"
                     @input="fieldErrors.name = ''"
                   />
-                </b-field>
-                <b-field
+                </o-field>
+                <o-field
                   label="监控 URL"
                   :type="fieldErrors.url ? 'is-danger' : null"
                   :message="fieldErrors.url"
                 >
-                  <b-input
+                  <o-input
                     v-model="siteForm.url"
                     type="url"
                     placeholder="https://example.com"
                     @input="fieldErrors.url = ''"
                   />
-                </b-field>
-                <b-field label="请求方式">
-                  <b-select v-model="siteForm.method" expanded>
+                </o-field>
+                <o-field label="请求方式">
+                  <o-select v-model="siteForm.method" expanded>
                     <option value="GET">GET</option>
                     <option value="HEAD">HEAD</option>
-                  </b-select>
-                </b-field>
-                <b-field label="检测间隔">
-                  <b-select v-model="siteForm.intervalSec" expanded>
+                  </o-select>
+                </o-field>
+                <o-field label="检测间隔">
+                  <o-select v-model="siteForm.intervalSec" expanded>
                     <option :value="60">1 分钟</option>
                     <option :value="300">5 分钟</option>
                     <option :value="600">10 分钟</option>
                     <option :value="1800">30 分钟</option>
-                  </b-select>
-                </b-field>
+                  </o-select>
+                </o-field>
               </div>
               <div class="form-foot">
-                <b-switch v-model="siteForm.enabled" type="is-success">启用监控</b-switch>
+                <o-switch v-model="siteForm.enabled" variant="success">启用监控</o-switch>
                 <div class="form-btns">
                   <button v-if="editingId" type="button" class="btn-outline" @click="cancelEdit">取消编辑</button>
                   <button type="submit" class="btn-primary" :disabled="siteSaving">
@@ -138,23 +138,24 @@
                 <thead>
                   <tr>
                     <th>名称</th>
-                    <th>URL</th>
+                    <th class="col-url">URL</th>
                     <th>状态</th>
-                    <th>可用率</th>
+                    <th class="col-uptime">可用率</th>
                     <th>操作</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr v-for="site in manageSites" :key="site.id">
-                    <td>
+                    <td class="td-name-cell">
                       <span class="td-name">{{ site.name }}</span>
                       <span v-if="!site.enabled" class="tag-paused">已暂停</span>
+                      <span class="td-url-mobile">{{ site.url }}</span>
                     </td>
-                    <td class="td-url">{{ site.url }}</td>
+                    <td class="td-url col-url">{{ site.url }}</td>
                     <td>
                       <span class="status-pill" :class="site.status">{{ statusLabel(site.status) }}</span>
                     </td>
-                    <td>{{ site.uptimePercent }}%</td>
+                    <td class="col-uptime">{{ site.uptimePercent }}%</td>
                     <td class="td-actions">
                       <button type="button" class="link-btn" @click="editSite(site)">编辑</button>
                       <button type="button" class="link-btn danger" @click="removeSite(site)">删除</button>
@@ -299,7 +300,7 @@ export default {
     },
     async resetAll() {
       await authActions.resetPanels()
-      this.$buefy.toast.open({ message: '已恢复默认显示', type: 'is-success' })
+      this.$toast.open({ message: '已恢复默认显示', type: 'is-success' })
     },
     async loadSites() {
       this.sitesLoading = true
@@ -309,7 +310,7 @@ export default {
           this.manageSites = data.sites || []
         }
       } catch (e) {
-        this.$buefy.toast.open({ message: e?.msg || '加载站点失败', type: 'is-danger' })
+        this.$toast.open({ message: e?.msg || '加载站点失败', type: 'is-danger' })
       } finally {
         this.sitesLoading = false
       }
@@ -363,23 +364,23 @@ export default {
           : createMonitorSite(payload)
         const { data } = await req
         if (data?.ok) {
-          this.$buefy.toast.open({
+          this.$toast.open({
             message: data.message || '已保存',
             type: 'is-success',
           })
           this.cancelEdit()
           await this.loadSites()
         } else {
-          this.$buefy.toast.open({ message: data?.message || '保存失败', type: 'is-danger' })
+          this.$toast.open({ message: data?.message || '保存失败', type: 'is-danger' })
         }
       } catch (e) {
-        this.$buefy.toast.open({ message: e?.msg || '保存失败', type: 'is-danger' })
+        this.$toast.open({ message: e?.msg || '保存失败', type: 'is-danger' })
       } finally {
         this.siteSaving = false
       }
     },
     removeSite(site) {
-      this.$buefy.dialog.confirm({
+      this.$dialog.confirm({
         title: '删除站点',
         message: `确定删除「${site.name}」？历史探测记录将一并清除。`,
         confirmText: '删除',
@@ -388,12 +389,12 @@ export default {
           try {
             const { data } = await deleteMonitorSite(site.id)
             if (data?.ok) {
-              this.$buefy.toast.open({ message: '已删除', type: 'is-success' })
+              this.$toast.open({ message: '已删除', type: 'is-success' })
               if (this.editingId === site.id) this.cancelEdit()
               await this.loadSites()
             }
           } catch (e) {
-            this.$buefy.toast.open({ message: e?.msg || '删除失败', type: 'is-danger' })
+            this.$toast.open({ message: e?.msg || '删除失败', type: 'is-danger' })
           }
         },
       })
@@ -406,6 +407,7 @@ export default {
 .admin-page {
   min-height: 100vh;
   background: #f0f2f5;
+  overflow-x: hidden;
 }
 
 .nav-box {
@@ -544,6 +546,8 @@ export default {
 .admin-content {
   flex: 1;
   min-width: 0;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .admin-card {
@@ -619,12 +623,12 @@ export default {
   background: #f9fafb;
   border-radius: 10px;
 
-  ::v-deep .label {
+  :deep(.label) {
     color: #374151;
     font-weight: 600;
   }
 
-  ::v-deep .help.is-danger {
+  :deep(.help.is-danger) {
     margin-top: 4px;
     font-size: 12px;
   }
@@ -786,34 +790,172 @@ export default {
   }
 }
 
+.td-url-mobile {
+  display: none;
+}
+
 @media screen and (max-width: 768px) {
+  .admin-main {
+    padding: 12px 10px calc(32px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .admin-header {
+    margin-bottom: 14px;
+
+    h1 {
+      font-size: 20px;
+    }
+
+    p {
+      font-size: 13px;
+      line-height: 1.5;
+    }
+  }
+
   .admin-layout {
     flex-direction: column;
+    gap: 12px;
   }
 
   .admin-aside {
     width: 100%;
+    max-width: 100%;
     position: static;
+    border-radius: 0;
+    padding: 8px 10px;
+    overflow: hidden;
+    box-sizing: border-box;
   }
 
   .admin-menu {
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    overflow: visible;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
   }
 
   .menu-item {
-    flex: 1 1 auto;
-    min-width: 120px;
-    justify-content: center;
+    width: 100%;
+    flex: none;
+    min-width: 0;
+    padding: 10px 12px;
+    font-size: 14px;
+    border-radius: 0;
+    white-space: normal;
+    justify-content: flex-start;
   }
 
   .aside-foot {
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .aside-link {
+    border-radius: 0;
+    padding: 8px 10px;
+  }
+
+  .admin-card {
+    padding: 14px 12px;
+    border-radius: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+
+  .card-title-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .card-title-row .btn-outline {
+    width: 100%;
+    justify-content: center;
+    height: 38px;
+  }
+
+  .site-form {
+    padding: 12px;
+    border-radius: 0;
   }
 
   .form-grid {
     grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .form-foot {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .form-btns {
+    flex-direction: column-reverse;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .form-btns .btn-primary,
+  .form-btns .btn-outline {
+    width: 100%;
+    justify-content: center;
+    height: 40px;
+  }
+
+  .sites-table-wrap {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sites-table {
+    min-width: 100%;
+    font-size: 12px;
+
+    th,
+    td {
+      padding: 10px 8px;
+    }
+  }
+
+  .sites-table .col-url,
+  .sites-table .col-uptime {
+    display: none;
+  }
+
+  .td-name-cell {
+    min-width: 0;
+  }
+
+  .td-url-mobile {
+    display: block;
+    margin-top: 4px;
+    font-size: 11px;
+    color: #9ca3af;
+    word-break: break-all;
+    line-height: 1.4;
+    font-weight: 400;
+  }
+
+  .td-actions {
+    white-space: normal;
+
+    .link-btn {
+      display: inline-block;
+      margin: 0 8px 0 0;
+      font-size: 12px;
+    }
+  }
+
+  .admin-actions .btn-outline {
+    width: 100%;
+    justify-content: center;
   }
 }
 </style>

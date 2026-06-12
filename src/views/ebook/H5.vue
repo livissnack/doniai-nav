@@ -6,16 +6,12 @@
 
 <script>
 import 'jszip'
-import Vue from 'vue'
 import Epub from 'epubjs'
 import Navbar from '@/components/Navbar.vue'
 import Sidebar from '@/components/Sidebar.vue'
-import BackTop from '@mlqt/vue-back-top'
+import BackTop from '@/components/BackTop.vue'
 import Footer from '@/components/Footer.vue'
-import bookList from "@/services/book.json"
-
-Vue.use(BackTop)
-export default {
+import bookList from "@/services/book.json"export default {
   name: 'ebook',
   components: {
     Navbar,
@@ -387,13 +383,13 @@ export default {
 
 #bookDom {
   min-height: 100vh;
-  /deep/ .epub-container {
+  :deep(.epub-container) {
     overflow-x: hidden !important;
-    /deep/ .epub-view{
+    :deep(.epub-view){
       padding-top: 40px !important;
       padding-bottom: 40px !important;
     }
-    /deep/ p {
+    :deep(p) {
       font-size: 20px !important;
       line-height: 26px !important;
       font-family: Microsoft Yahei, Heiti SC, Heiti TC,serif !important;

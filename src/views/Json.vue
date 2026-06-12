@@ -115,9 +115,7 @@
           </section>
         </div>
 
-        <aside class="json-sidebar-wrap">
-          <Sidebar />
-        </aside>
+        <SidebarColumn tag="aside" root-class="json-sidebar-wrap" />
       </div>
     </div>
 
@@ -131,10 +129,9 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import Navbar from '@/components/Navbar.vue'
-import Sidebar from '@/components/Sidebar.vue'
-import BackTop from '@mlqt/vue-back-top'
+import SidebarColumn from '@/components/SidebarColumn.vue'
+import BackTop from '@/components/BackTop.vue'
 import Footer from '@/components/Footer.vue'
 import JSONFormatter from 'json-formatter-js'
 import {
@@ -145,14 +142,11 @@ import {
   getJsonStats,
   DEMO_JSON,
 } from '@/utils/jsonTool'
-
-Vue.use(BackTop)
-
 export default {
   name: 'JsonTool',
   components: {
     Navbar,
-    Sidebar,
+    SidebarColumn,
     Footer,
   },
   data() {
@@ -189,7 +183,7 @@ export default {
     this.loadFromHash()
     this.updateInputStats()
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.clearTree()
   },
   methods: {
@@ -311,7 +305,7 @@ export default {
     },
     copyText(text) {
       if (!text) {
-        this.$buefy.snackbar.open({
+        this.$notify({
           message: '没有可复制的内容',
           type: 'is-warning',
           position: 'is-bottom-right',
@@ -321,7 +315,7 @@ export default {
       }
       this.$copyText(text).then(
         () => {
-          this.$buefy.snackbar.open({
+          this.$notify({
             message: '已复制到剪贴板',
             type: 'is-success',
             position: 'is-bottom-right',
@@ -329,7 +323,7 @@ export default {
           })
         },
         () => {
-          this.$buefy.snackbar.open({
+          this.$notify({
             message: '复制失败',
             type: 'is-danger',
             position: 'is-bottom-right',
@@ -358,6 +352,7 @@ export default {
   max-width: 1400px;
   margin: 0 auto;
   padding: 20px 16px 40px;
+  box-sizing: border-box;
 }
 
 .json-header {
@@ -387,7 +382,6 @@ export default {
   margin-bottom: 12px;
   padding: 12px 14px;
   background: #fff;
-  border-radius: 10px;
   box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
 }
 
@@ -462,10 +456,11 @@ export default {
 .json-status {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 12px;
   padding: 10px 14px;
-  border-radius: 8px;
+  border-radius: 0;
   font-size: 13px;
 
   &.success {
@@ -512,7 +507,6 @@ export default {
 
 .json-panel {
   background: #fff;
-  border-radius: 10px;
   box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
   overflow: hidden;
   display: flex;
@@ -611,7 +605,7 @@ export default {
   padding: 12px 14px;
   font-size: 13px;
 
-  /deep/ .json-formatter-row {
+  :deep(.json-formatter-row) {
     font-family: 'Consolas', 'Monaco', monospace;
   }
 }
@@ -670,14 +664,201 @@ export default {
   }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 768px) {
+  .json-page {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  .json-main {
+    padding: 12px 10px calc(20px + env(safe-area-inset-bottom, 0px));
+    max-width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+
+  .json-header {
+    margin-bottom: 10px;
+
+    h1 {
+      font-size: 18px;
+    }
+
+    p {
+      font-size: 12px;
+      line-height: 1.5;
+    }
+  }
+
   .json-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 25;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 0;
+  }
+
+  .toolbar-group {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .toolbar-group:first-child {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .tool-btn {
+    justify-content: center;
+    height: 38px;
+    padding: 0 8px;
+    font-size: 12px;
+    min-width: 0;
+    border-radius: 0;
+    touch-action: manipulation;
+
+    i {
+      font-size: 12px;
+    }
+
+    &.primary {
+      grid-column: 1 / -1;
+      height: 40px;
+      font-size: 13px;
+    }
+  }
+
+  .toolbar-options {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 8px 10px;
+    padding-top: 8px;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  .option-chip {
+    grid-column: 1 / -1;
+    font-size: 12px;
+  }
+
+  .option-label {
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .indent-select {
+    width: 100%;
+    max-width: none;
+    height: 36px;
+    border-radius: 0;
+  }
+
+  .json-status {
+    padding: 8px 10px;
+    font-size: 12px;
+    border-radius: 0;
+
+    .status-meta {
+      margin-left: 0;
+      width: 100%;
+    }
+  }
+
+  .json-workspace {
+    gap: 12px;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .json-columns {
+    gap: 12px;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .json-panel {
+    min-height: 0;
+    border-radius: 0;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .panel-head {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 10px;
+  }
+
+  .output-panel .panel-head {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .toolbar-group {
-    justify-content: center;
+  .panel-actions {
+    margin-left: auto;
+  }
+
+  .panel-meta {
+    display: none;
+  }
+
+  .view-tabs {
+    width: 100%;
+    gap: 6px;
+  }
+
+  .view-tab {
+    flex: 1;
+    height: 34px;
+    text-align: center;
+    border-radius: 0;
+  }
+
+  .json-textarea {
+    min-height: min(38vh, 300px);
+    max-height: 42vh;
+    padding: 10px 12px;
+    font-size: 13px;
+    resize: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .json-tree-view,
+  .json-code-view {
+    min-height: min(34vh, 260px);
+    max-height: 42vh;
+    padding: 10px 12px;
+    font-size: 12px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    word-break: break-word;
+  }
+
+  .json-tree-view {
+    overflow-x: auto;
+
+    :deep(.json-formatter-row) {
+      word-break: break-all;
+    }
+  }
+
+  .json-empty-hint {
+    min-height: 140px;
+    font-size: 13px;
+    padding: 0 12px;
+    text-align: center;
+  }
+
+  .json-sidebar-wrap {
+    margin-top: 4px;
+    width: 100%;
+    max-width: 100%;
   }
 }
 </style>

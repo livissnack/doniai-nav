@@ -5,25 +5,33 @@
     </div>
     <div class="content-box">
       <div class="container">
+        <UtilPageColumns>
         <div class="columns">
           <div class="column is-three-quarters">
-            <div class="mt-4 play-input">
+            <div class="play-input">
               <div class="input-box">
-                <b-field :message="validIpMsg">
-                <b-input @input="handleValidIpMsg" v-model="ip" placeholder="请输入酒店IP地址" maxlength="400" icon-pack="fas"
-                         icon-right="times"
-                         icon-right-clickable
-                         @icon-right-click="clearIconClick"></b-input>
-                </b-field>
+                <o-field :message="validIpMsg">
+                  <o-input
+                    v-model="ip"
+                    placeholder="请输入酒店 IP 地址，如 61.136.172.236:9901"
+                    maxlength="400"
+                    icon-pack="fas"
+                    icon-right="times"
+                    icon-right-clickable
+                    @input="handleValidIpMsg"
+                    @icon-right-click="clearIconClick"
+                    @keyup.enter="handleParse"
+                  />
+                </o-field>
               </div>
               <div class="start-play-btn">
-                <b-button type="is-success" :disabled="validIpMsg !== ''" @click="handleParse">解析</b-button>
+                <o-button variant="success" :disabled="!!validIpMsg" @click="handleParse">解析</o-button>
               </div>
             </div>
 
             <div class="operate-btn">
               <div class="btn-box">
-                <b-button type="is-danger" :disabled="disableDownload" :loading="loadingDownload" @click="handleDownloadM3u">下载m3u</b-button>
+                <o-button variant="danger" :disabled="disableDownload" :loading="loadingDownload" @click="handleDownloadM3u">下载m3u</o-button>
               </div>
             </div>
 
@@ -31,13 +39,9 @@
               <div class="html" v-html="m3u"></div>
             </div>
           </div>
-          <div class="column">
-            <div class="section-box">
-              <MediaResource />
-            </div>
-            <Sidebar/>
-          </div>
+          <SidebarColumn root-class="column" />
         </div>
+        </UtilPageColumns>
       </div>
     </div>
 
@@ -51,22 +55,20 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import Navbar from '@/components/Navbar.vue'
-import Sidebar from '@/components/Sidebar.vue'
-import BackTop from '@mlqt/vue-back-top'
+import SidebarColumn from '@/components/SidebarColumn.vue'
+import UtilPageColumns from '@/components/UtilPageColumns.vue'
+import BackTop from '@/components/BackTop.vue'
 import Footer from '@/components/Footer.vue'
-import MediaResource from "@/components/MediaResource.vue"
 import {isEmpty} from "@/utils/helper"
 import {getHotelIptvM3u} from "@/services/api";
 
-Vue.use(BackTop)
 export default {
   name: 'json',
   components: {
-    MediaResource,
     Navbar,
-    Sidebar,
+    SidebarColumn,
+    UtilPageColumns,
     Footer
   },
   data() {
@@ -95,7 +97,7 @@ export default {
     },
     async handleParse() {
       if (isEmpty(this.ip)) {
-        this.$buefy.snackbar.open({
+        this.$notify({
           message: '酒店IP地址不能为空！',
           type: 'is-danger',
           position: 'is-top',
@@ -140,15 +142,50 @@ export default {
 
 .play-input {
   display: flex;
-  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+  width: 100%;
 
   .input-box {
     flex: 1;
-  }
-}
+    min-width: 0;
 
-.section-box {
-  margin-bottom: 20px;
+    :deep(.field) {
+      margin-bottom: 0;
+      width: 100%;
+    }
+
+    :deep(.control) {
+      width: 100%;
+    }
+
+    :deep(.input) {
+      width: 100%;
+      height: 40px;
+      min-height: 40px;
+      box-sizing: border-box;
+    }
+
+    :deep(.help) {
+      margin-top: 4px;
+    }
+  }
+
+  .start-play-btn {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    height: 40px;
+
+    :deep(.button) {
+      height: 40px;
+      min-height: 40px;
+      margin: 0;
+      white-space: nowrap;
+    }
+  }
 }
 
 .operate-btn {
@@ -165,7 +202,6 @@ export default {
 .parse-content {
   margin-bottom: 40px;
   background: #FFFFFF;
-  border-radius: 8px;
   .html {
     min-height: 800px;
     color: #000000;
