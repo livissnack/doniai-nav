@@ -58,7 +58,7 @@
 
               <div class="parse-content">
                 <div class="parse-header">
-                  <i class="fas fa-code"></i>
+                  <AppIcon name="code"  />
                   <span>解析结果</span>
                   <span v-if="nodes.length" class="node-count">共 {{ nodes.length }} 条节点</span>
                 </div>

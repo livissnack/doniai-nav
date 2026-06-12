@@ -13,19 +13,19 @@
       <div class="json-toolbar">
         <div class="toolbar-group">
           <button type="button" class="tool-btn primary" @click="handleFormat">
-            <i class="fas fa-align-left"></i> 格式化
+            <AppIcon name="align-left"  /> 格式化
           </button>
           <button type="button" class="tool-btn" @click="handleMinify">
-            <i class="fas fa-compress-alt"></i> 压缩
+            <AppIcon name="compress-alt"  /> 压缩
           </button>
           <button type="button" class="tool-btn" @click="handleValidate">
-            <i class="fas fa-check-circle"></i> 校验
+            <AppIcon name="check-circle"  /> 校验
           </button>
           <button type="button" class="tool-btn" @click="handleClear">
-            <i class="fas fa-trash-alt"></i> 清空
+            <AppIcon name="trash-alt"  /> 清空
           </button>
           <button type="button" class="tool-btn" @click="loadDemo">
-            <i class="fas fa-file-code"></i> 示例
+            <AppIcon name="file-code"  /> 示例
           </button>
         </div>
         <div class="toolbar-group toolbar-options">
@@ -43,7 +43,7 @@
       </div>
 
       <div v-if="statusMessage" class="json-status" :class="statusType">
-        <i :class="statusIcon"></i>
+        <AppIcon :name="statusIcon" />
         <span>{{ statusMessage }}</span>
         <span v-if="parseMs >= 0" class="status-meta">耗时 {{ parseMs }}ms</span>
       </div>
@@ -56,7 +56,7 @@
               <div class="panel-actions">
                 <span class="panel-meta">{{ inputStats.chars }} 字符 · {{ inputStats.lines }} 行</span>
                 <button type="button" class="icon-btn" title="复制输入" @click="copyText(inputJson)">
-                  <i class="fas fa-copy"></i>
+                  <AppIcon name="copy"  />
                 </button>
               </div>
             </div>
@@ -98,7 +98,7 @@
                   title="复制输出"
                   @click="copyText(outputCode)"
                 >
-                  <i class="fas fa-copy"></i>
+                  <AppIcon name="copy"  />
                 </button>
               </div>
             </div>
@@ -167,9 +167,9 @@ export default {
   },
   computed: {
     statusIcon() {
-      if (this.statusType === 'success') return 'fas fa-check-circle'
-      if (this.statusType === 'danger') return 'fas fa-exclamation-circle'
-      return 'fas fa-info-circle'
+      if (this.statusType === 'success') return 'check-circle'
+      if (this.statusType === 'danger') return 'exclamation-circle'
+      return 'info-circle'
     },
   },
   watch: {

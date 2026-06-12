@@ -3,12 +3,9 @@
     <div class="nav-box">
       <Navbar @updateCurrentNavs="updateCurrentNavs" :currentActiveMenuId="current_active_menu_id"/>
     </div>
-    <div class="content-box cover-bg">
-      <div
-        class="cover-layer is-visible"
-        :style="{ backgroundImage: coverBg ? `url(${coverBg})` : 'none' }"
-      ></div>
-      <div class="container cover-content">
+    <div ref="coverHost" class="content-box cover-bg">
+      <div v-if="!coverBg" class="cover-layer cover-layer--fallback is-visible" aria-hidden="true"></div>
+      <main id="main-content" class="container cover-content">
         <div class="columns">
           <div class="column is-three-quarters mt20">
             <SearchInput/>
@@ -37,7 +34,7 @@
           </div>
           <SidebarColumn />
         </div>
-      </div>
+      </main>
       <div id="footer" class="home-footer">
         <Footer/>
       </div>
@@ -60,11 +57,7 @@ import {
   peekNavData,
   setPrivateNavCache,
 } from '@/services/navData'
-import {
-  DEFAULT_COVER,
-  getCachedCover,
-  refreshBingCover,
-} from '@/utils/bingCover'
+import { getCachedCover, isSharperCover, refreshBingCover } from '@/utils/bingCover'
 
 const VALID_MENU_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 const PRIVATE_MENU_ID = 2
@@ -83,26 +76,60 @@ export default {
     return {
       current_active_menu_id: 1,
       navData: [],
-      coverBg: cached || DEFAULT_COVER,
+      coverBg: cached || '',
       showBackTop: false,
     }
   },
   mounted() {
+    this.mountStaticCover()
     this.showBackTop = true
+  },
+  activated() {
+    this.mountStaticCover()
+    const cached = getCachedCover()
+    if (cached && isSharperCover(cached, this.coverBg)) {
+      this.syncCoverImg(cached)
+    }
   },
   created() {
     localStorage.removeItem('doniaiNavActiveMenuId')
     this.current_active_menu_id = 1
     this.getCurrentNavs(1)
-    if (!getCachedCover()) {
-      refreshBingCover({ silent: true }).then((url) => {
-        if (url && url !== this.coverBg) {
-          this.coverBg = url
-        }
-      })
-    }
+    this.loadCoverBg()
   },
   methods: {
+    mountStaticCover() {
+      const img = document.getElementById('lcp-cover')
+      const host = this.$refs.coverHost
+      if (!img || !host) return
+      img.classList.add('cover-layer', 'is-visible')
+      if (img.parentElement !== host) {
+        host.insertBefore(img, host.firstChild)
+      }
+      if (this.coverBg && img.getAttribute('src') !== this.coverBg) {
+        img.setAttribute('src', this.coverBg)
+      }
+    },
+    syncCoverImg(url) {
+      if (!url) return
+      this.coverBg = url
+      const img = document.getElementById('lcp-cover')
+      if (!img) return
+      if (img.getAttribute('src') !== url) {
+        img.setAttribute('src', url)
+      }
+      this.mountStaticCover()
+    },
+    loadCoverBg() {
+      const cached = getCachedCover()
+      if (cached) this.syncCoverImg(cached)
+
+      refreshBingCover({ silent: true }).then((url) => {
+        if (url && isSharperCover(url, this.coverBg)) {
+          this.syncCoverImg(url)
+        }
+      })
+    },
     async getCurrentNavs(menu_id) {
       if (menu_id === PRIVATE_MENU_ID && isLoggedIn()) {
         await this.loadPrivateNav()
@@ -229,20 +256,23 @@ export default {
   position: absolute;
   inset: 0;
   z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
   background-color: #1a2332;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  image-rendering: auto;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  transform: translateZ(0);
   opacity: 1;
   transition: opacity 0.4s ease;
+  pointer-events: none;
+  user-select: none;
 
   &:not(.is-visible) {
     opacity: 0;
   }
+}
+
+.cover-layer--fallback {
+  background-color: #1a2332;
 }
 
 .cover-content {

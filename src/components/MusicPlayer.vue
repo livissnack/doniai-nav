@@ -3,6 +3,8 @@
 </template>
 
 <script>
+import { yieldToMain } from '@/utils/defer'
+
 let aplayerModule = null
 
 function loadAPlayer() {
@@ -98,6 +100,9 @@ export default {
       _rebuildGen: 0,
       _rebuildTimer: null,
       _mounted: false,
+      _visible: false,
+      _pendingList: null,
+      _io: null,
     }
   },
   watch: {
@@ -111,9 +116,29 @@ export default {
   },
   mounted() {
     this._mounted = true
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const el = this.$refs.root
+        if (!el || !this._mounted) return
+        this._io = new IntersectionObserver(
+          (entries) => {
+            const visible = entries.some((entry) => entry.isIntersecting)
+            if (visible === this._visible) return
+            this._visible = visible
+            if (visible) {
+              this.scheduleRebuild(this._pendingList ?? this.audio)
+            }
+          },
+          { root: null, rootMargin: '80px 0px', threshold: 0.01 },
+        )
+        this._io.observe(el)
+      })
+    })
   },
   beforeUnmount() {
     this._mounted = false
+    this._io?.disconnect()
+    this._io = null
     this.destroyPlayer()
   },
   methods: {
@@ -136,16 +161,23 @@ export default {
       this.tracks = []
     },
     scheduleRebuild(list) {
+      this._pendingList = list
+      if (!this._visible) return
       clearTimeout(this._rebuildTimer)
       this._rebuildTimer = setTimeout(() => {
         this._rebuildTimer = null
         this.rebuild(list)
-      }, 50)
+      }, 80)
     },
     isStale(gen) {
       return gen !== this._rebuildGen || !this._mounted
     },
     async rebuild(list) {
+      if (!this._visible) {
+        this._pendingList = list
+        return
+      }
+
       const gen = ++this._rebuildGen
       const tracks = normalizeTracks(list)
 
@@ -166,7 +198,7 @@ export default {
       await this.$nextTick()
       if (this.isStale(gen)) return
 
-      await new Promise((r) => requestAnimationFrame(r))
+      await yieldToMain()
       if (this.isStale(gen)) return
 
       const el = this.$refs.root
@@ -175,6 +207,9 @@ export default {
       el.innerHTML = ''
 
       const APlayer = await loadAPlayer()
+      if (this.isStale(gen)) return
+
+      await yieldToMain()
       if (this.isStale(gen)) return
 
       const hasRemoteLrc = tracks.some((t) => t.lrc && String(t.lrc).startsWith('http'))

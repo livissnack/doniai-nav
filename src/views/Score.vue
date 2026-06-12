@@ -19,12 +19,12 @@
             </div>
             <div class="see-box">
               <div class="see-content">
-                <i class="fas fa-info-circle"></i>
+                <AppIcon name="info-circle"  />
                 注意：查询分数卡功能只开放15天，请尽快下载分数卡片
               </div>
             </div>
             <div v-if="!dataLoaded" class="score-empty">
-              <i class="fas fa-id-card"></i>
+              <AppIcon name="id-card"  />
               <p>请输入查询秘钥，或打开老师分享的带 <code>?key=</code> 的链接查看分数卡。</p>
               <p class="score-empty__hint">分数查询服务若已过期，请使用下方示例预览版式并下载保存。</p>
             </div>
@@ -61,7 +61,7 @@
                       multiline
                     >
                       <small>
-                        <i class="far fa-question-circle"></i>
+                        <AppIcon name="question-circle" pack="regular" />
                         班级最高分{{ item.maxScore }}
                       </small>
                     </o-tooltip>

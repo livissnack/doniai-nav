@@ -11,6 +11,9 @@ import {
   finishPageProgress,
   failPageProgress,
 } from '@/utils/pageProgress'
+import { ensureOruga } from '@/plugins/oruga'
+
+const ORUGA_DEFERRED_ROUTES = new Set(['home'])
 
 let authInitPromise = null
 
@@ -209,6 +212,10 @@ router.beforeEach(async (to, from, next) => {
   if (to.name === 'register' && !isRegistrationEnabled()) {
     next({ path: '/login' })
     return
+  }
+
+  if (!ORUGA_DEFERRED_ROUTES.has(to.name)) {
+    await ensureOruga()
   }
 
   next()

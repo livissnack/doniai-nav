@@ -27,7 +27,7 @@
         class="history-chip"
         @mousedown.prevent="selectHistory(item)"
       >
-        <i class="fas fa-clock"></i>
+        <AppIcon name="clock"  />
         {{ item }}
       </button>
     </div>

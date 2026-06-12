@@ -25,7 +25,7 @@
           </o-checkbox>
 
           <div v-else class="todo-item__edit">
-            <i class="fas fa-pen todo-item__edit-icon"></i>
+            <AppIcon name="pen" class="todo-item__edit-icon"  />
             <input
               v-model="todo.remark"
               class="todo-item__input"
@@ -43,7 +43,7 @@
         >
           <template #trigger>
             <button type="button" class="todo-item__menu" aria-label="操作">
-              <i class="fas fa-ellipsis-v"></i>
+              <AppIcon name="ellipsis-v"  />
             </button>
           </template>
           <o-dropdown-item aria-role="menuitem" @click="switchEditTodo(todo)">
@@ -59,7 +59,7 @@
     </ul>
 
     <div class="todo-add">
-      <i class="fas fa-plus-circle todo-add__icon"></i>
+      <AppIcon name="plus-circle" class="todo-add__icon"  />
       <input
         v-model="new_todo_text"
         class="todo-add__input"

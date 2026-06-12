@@ -1,19 +1,19 @@
 <template>
   <div class="auth-page" :style="bgStyle">
     <router-link to="/" class="auth-back">
-      <i class="fas fa-arrow-left"></i>
+      <AppIcon name="arrow-left"  />
       返回首页
     </router-link>
     <div class="auth-card auth-card--register">
       <header class="auth-card-head">
         <div class="auth-icon">
-          <i class="fas fa-user-plus"></i>
+          <AppIcon name="user-plus"  />
         </div>
         <h1>注册账号</h1>
         <p>创建账号后可访问「私人」导航与管理侧栏面板</p>
       </header>
       <div v-if="!registrationEnabled" class="register-closed">
-        <i class="fas fa-lock"></i>
+        <AppIcon name="lock"  />
         <span>注册功能已关闭，请联系管理员</span>
       </div>
       <form v-else class="auth-form" @submit.prevent="handleSubmit">
@@ -102,6 +102,7 @@
 
 <script>
 import { getBgImage } from '@/services/api'
+import { coverStyleFromUrl, pickCoverUrl } from '@/utils/bingCover'
 import { fetchCaptchaApi } from '@/services/authApi'
 import { authActions, authStore } from '@/store/auth'
 
@@ -135,14 +136,9 @@ export default {
     async loadBg() {
       try {
         const { data } = await getBgImage()
-        const url = data?.code === 200 ? data.data?.cover_4k : ''
-        this.bgStyle = url
-          ? { backgroundImage: `url(${url})` }
-          : { backgroundImage: 'url(https://hiphup.oss-cn-hangzhou.aliyuncs.com/uploads/images/swiper6.jpg)' }
+        this.bgStyle = coverStyleFromUrl(pickCoverUrl(data))
       } catch {
-        this.bgStyle = {
-          backgroundImage: 'url(https://hiphup.oss-cn-hangzhou.aliyuncs.com/uploads/images/swiper6.jpg)',
-        }
+        this.bgStyle = coverStyleFromUrl()
       }
     },
     async loadCaptcha(showError = true) {

@@ -1,9 +1,11 @@
 <template>
-  <div class="radar-box" ref="chartRef"></div>
+  <div class="radar-box">
+    <canvas ref="canvasRef"></canvas>
+  </div>
 </template>
 
 <script>
-import * as echarts from 'echarts'
+import { destroyChart, replaceChart, resizeChart } from '@/utils/chartJsHelper'
 
 const DEFAULT_SUBJECTS = ['语文', '数学', '思想', '体育', '美术', '道法']
 
@@ -27,67 +29,86 @@ export default {
   watch: {
     scoreList: {
       handler() {
-        this.updateChart()
+        this.scheduleUpdate()
       },
       deep: true,
     },
     subjectNames: {
       handler() {
-        this.updateChart()
+        this.scheduleUpdate()
       },
       deep: true,
     },
   },
   mounted() {
-    this.chart = echarts.init(this.$refs.chartRef)
-    this.updateChart()
-    this._onResize = () => this.chart?.resize()
+    this.$nextTick(() => this.ensureChartReady())
+    this._onResize = () => resizeChart(this.chart)
     window.addEventListener('resize', this._onResize)
   },
   beforeUnmount() {
     window.removeEventListener('resize', this._onResize)
-    if (this.chart) {
-      this.chart.dispose()
-      this.chart = null
-    }
+    clearTimeout(this._updateTimer)
+    destroyChart(this.chart)
+    this.chart = null
   },
   methods: {
-    updateChart() {
-      if (!this.chart) return
+    scheduleUpdate() {
+      clearTimeout(this._updateTimer)
+      this._updateTimer = setTimeout(() => {
+        this.$nextTick(() => this.updateChart())
+      }, 0)
+    },
+    ensureChartReady() {
+      const wrap = this.$refs.canvasRef?.parentElement
+      if (!wrap) return
+      if (!wrap.clientWidth && !wrap.clientHeight) {
+        requestAnimationFrame(() => this.ensureChartReady())
+        return
+      }
+      this.updateChart()
+    },
+    buildConfig() {
       const subjects = this.subjectNames.length ? this.subjectNames : DEFAULT_SUBJECTS
-      const indicator = subjects.map((name) => ({ name, max: 100 }))
-      this.chart.setOption({
-        legend: { left: 'center', data: ['分数'] },
-        tooltip: {},
-        radar: {
-          indicator,
-          radius: 120,
-          axisName: {
-            color: '#fff',
-            backgroundColor: '#666',
-            borderRadius: 3,
-            padding: [3, 5],
+      const values = subjects.map((_, index) => Number(this.scoreList[index] ?? 0))
+
+      return {
+        type: 'radar',
+        data: {
+          labels: subjects,
+          datasets: [
+            {
+              label: '分数',
+              data: values,
+              backgroundColor: 'rgba(14, 113, 222, 0.2)',
+              borderColor: '#0e71de',
+              pointBackgroundColor: '#0e71de',
+              pointBorderColor: '#fff',
+              borderWidth: 2,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: false,
+          plugins: {
+            legend: { position: 'bottom' },
+          },
+          scales: {
+            r: {
+              min: 0,
+              max: 100,
+              ticks: { stepSize: 20, backdropColor: 'transparent' },
+              pointLabels: { font: { size: 12 } },
+            },
           },
         },
-        series: [
-          {
-            type: 'radar',
-            data: [
-              {
-                value: this.scoreList,
-                name: '分数',
-                label: {
-                  show: true,
-                  formatter(params) {
-                    return params.value
-                  },
-                },
-              },
-            ],
-          },
-        ],
-      })
-      this.chart.resize()
+      }
+    },
+    updateChart() {
+      const canvas = this.$refs.canvasRef
+      if (!canvas) return
+      this.chart = replaceChart(this.chart, canvas, this.buildConfig())
     },
   },
 }
@@ -99,5 +120,6 @@ export default {
   max-width: 520px;
   height: 360px;
   margin: 0 auto;
+  position: relative;
 }
 </style>

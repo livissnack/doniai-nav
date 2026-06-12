@@ -19,14 +19,14 @@
                     :class="{ active: loanType === tab.value }"
                     @click="switchLoanType(tab.value)"
                   >
-                    <i :class="tab.icon"></i>
+                    <AppIcon :name="tab.icon" />
                     {{ tab.label }}
                   </button>
                 </div>
 
                 <section class="form-section">
                   <h3 class="section-title">
-                    <i class="fas fa-sliders-h"></i>
+                    <AppIcon name="sliders-h"  />
                     贷款参数
                   </h3>
 
@@ -212,11 +212,11 @@
                       <label class="form-label">还款方式</label>
                       <div class="mode-group">
                         <button type="button" class="mode-btn" :class="{ active: paybackMode === 1 }" @click="paybackMode = 1">
-                          <i class="fas fa-equals"></i>
+                          <AppIcon name="equals"  />
                           等额本息
                         </button>
                         <button type="button" class="mode-btn" :class="{ active: paybackMode === 2 }" @click="paybackMode = 2">
-                          <i class="fas fa-chart-line"></i>
+                          <AppIcon name="chart-line"  />
                           等额本金
                         </button>
                       </div>
@@ -229,7 +229,7 @@
                   </div>
 
                   <div class="remark-box">
-                    <i class="fas fa-info-circle"></i>
+                    <AppIcon name="info-circle"  />
                     <span>{{ remark }}</span>
                   </div>
                 </section>
@@ -237,7 +237,7 @@
                 <section class="prepay-section">
                   <div class="prepay-header">
                     <h3 class="section-title">
-                      <i class="fas fa-hand-holding-usd"></i>
+                      <AppIcon name="hand-holding-usd"  />
                       提前还款
                     </h3>
                     <o-switch v-model="prepayEnabled" variant="success" size="small">
@@ -375,10 +375,12 @@
 
                 <section v-if="list.length" class="chart-section">
                   <h3 class="section-title">
-                    <i class="fas fa-chart-area"></i>
+                    <AppIcon name="chart-area"  />
                     还款构成
                   </h3>
-                  <div ref="chartRef" class="chart-box"></div>
+                  <div class="chart-box">
+                    <canvas ref="chartRef"></canvas>
+                  </div>
                 </section>
 
                 <div class="pass-operate">
@@ -402,7 +404,7 @@
 
                 <section v-if="list.length" class="result-section" ref="exportSectionRef">
                   <h3 class="section-title">
-                    <i class="fas fa-table"></i>
+                    <AppIcon name="table"  />
                     还款明细
                     <span class="result-count">共 {{ list.length }} 期</span>
                   </h3>
@@ -479,7 +481,7 @@
                 </section>
 
                 <div v-else-if="calcError" class="empty-state">
-                  <i class="fas fa-exclamation-triangle"></i>
+                  <AppIcon name="exclamation-triangle"  />
                   <p>{{ calcError }}</p>
                 </div>
               </div>
@@ -505,7 +507,11 @@ import SidebarColumn from '@/components/SidebarColumn.vue'
 import UtilPageColumns from '@/components/UtilPageColumns.vue'
 import Footer from '@/components/Footer.vue'
 import { calculateLoanPlan } from '@/utils/loanCalc'
-import * as echarts from 'echarts'
+import {
+  destroyChart as disposeChartJs,
+  replaceChart,
+  resizeChart,
+} from '@/utils/chartJsHelper'
 import * as XLSX from 'xlsx'
 import html2canvas from 'html2canvas'
 import JSZip from 'jszip'
@@ -534,9 +540,9 @@ export default {
     return {
       loanType: 'commercial',
       loanTypeTabs: [
-        { value: 'commercial', label: '商业贷款', icon: 'fas fa-building' },
-        { value: 'fund', label: '公积金贷款', icon: 'fas fa-home' },
-        { value: 'combined', label: '组合贷', icon: 'fas fa-layer-group' },
+        { value: 'commercial', label: '商业贷款', icon: 'building' },
+        { value: 'fund', label: '公积金贷款', icon: 'home' },
+        { value: 'combined', label: '组合贷', icon: 'layer-group' },
       ],
       money: 1000000,
       yearRate: 3.1,
@@ -713,7 +719,7 @@ export default {
   },
   mounted() {
     this.getLoanRate()
-    this._onResize = () => this.chart?.resize()
+    this._onResize = () => resizeChart(this.chart)
     window.addEventListener('resize', this._onResize)
   },
   beforeUnmount() {
@@ -811,57 +817,89 @@ export default {
       return left < 0.1 ? '0.00' : left.toFixed(2)
     },
     destroyChart() {
-      if (this.chart) {
-        this.chart.dispose()
-        this.chart = null
+      disposeChartJs(this.chart)
+      this.chart = null
+    },
+    buildLoanChartConfig(labels) {
+      const datasets =
+        this.loanType === 'combined'
+          ? [
+              {
+                label: '公积金本金',
+                data: this.list.map((i) => Number(i.fundPrincipal || 0)),
+                backgroundColor: '#20bc56',
+                stack: 'pay',
+              },
+              {
+                label: '商贷本金',
+                data: this.list.map((i) => Number(i.commercialPrincipal || 0)),
+                backgroundColor: '#2095f2',
+                stack: 'pay',
+              },
+              {
+                label: '公积金利息',
+                data: this.list.map((i) => Number(i.fundInterest || 0)),
+                backgroundColor: '#f14668',
+                stack: 'pay',
+              },
+              {
+                label: '商贷利息',
+                data: this.list.map((i) => Number(i.commercialInterest || 0)),
+                backgroundColor: '#ff9f43',
+                stack: 'pay',
+              },
+            ]
+          : [
+              {
+                label: '本金',
+                data: this.list.map((i) => Number(i.principal)),
+                backgroundColor: '#20bc56',
+                stack: 'pay',
+              },
+              {
+                label: '利息',
+                data: this.list.map((i) => Number(i.interest)),
+                backgroundColor: '#2095f2',
+                stack: 'pay',
+              },
+            ]
+
+      return {
+        type: 'bar',
+        data: { labels, datasets },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: false,
+          plugins: {
+            legend: { position: 'bottom' },
+          },
+          scales: {
+            x: {
+              stacked: true,
+              ticks: { maxTicksLimit: 12, maxRotation: 0 },
+            },
+            y: {
+              stacked: true,
+              ticks: {
+                callback: (value) =>
+                  value >= 10000 ? `${(value / 10000).toFixed(0)}万` : value,
+              },
+            },
+          },
+        },
       }
     },
     renderChart() {
-      const el = this.$refs.chartRef
-      if (!el || !this.list.length) {
+      const canvas = this.$refs.chartRef
+      if (!canvas || !this.list.length) {
         this.destroyChart()
         return
       }
-      if (!this.chart) this.chart = echarts.init(el)
 
       const labels = this.list.map((item) => item.month.replace(/第|期|（.*?）/g, ''))
-      const series =
-        this.loanType === 'combined'
-          ? [
-              { name: '公积金本金', type: 'bar', stack: 'pay', data: this.list.map((i) => Number(i.fundPrincipal || 0)) },
-              { name: '商贷本金', type: 'bar', stack: 'pay', data: this.list.map((i) => Number(i.commercialPrincipal || 0)) },
-              { name: '公积金利息', type: 'bar', stack: 'pay', data: this.list.map((i) => Number(i.fundInterest || 0)) },
-              { name: '商贷利息', type: 'bar', stack: 'pay', data: this.list.map((i) => Number(i.commercialInterest || 0)) },
-            ]
-          : [
-              { name: '本金', type: 'bar', stack: 'pay', data: this.list.map((i) => Number(i.principal)) },
-              { name: '利息', type: 'bar', stack: 'pay', data: this.list.map((i) => Number(i.interest)) },
-            ]
-
-      this.chart.setOption({
-        color: ['#20bc56', '#2095f2', '#f14668', '#ff9f43'],
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: { type: 'shadow' },
-        },
-        legend: { bottom: 0 },
-        grid: { left: 48, right: 24, top: 24, bottom: 48 },
-        xAxis: {
-          type: 'category',
-          data: labels,
-          axisLabel: { interval: Math.max(0, Math.floor(labels.length / 12) - 1) },
-        },
-        yAxis: {
-          type: 'value',
-          axisLabel: {
-            formatter: (v) => (v >= 10000 ? `${(v / 10000).toFixed(0)}万` : v),
-          },
-        },
-        dataZoom:
-          labels.length > 24 ? [{ type: 'inside', start: 0, end: 30 }, { start: 0, end: 30 }] : undefined,
-        series,
-      })
-      this.chart.resize()
+      this.chart = replaceChart(this.chart, canvas, this.buildLoanChartConfig(labels))
+      resizeChart(this.chart)
     },
     getExportMetaRows() {
       const typeLabel = { commercial: '商业贷款', fund: '公积金贷款', combined: '组合贷' }[this.loanType]
@@ -1551,6 +1589,7 @@ export default {
   border: 1px solid #eee;
   border-radius: 8px;
   background: #fafafa;
+  position: relative;
 }
 
 .pass-operate {

@@ -9,7 +9,7 @@
         <article class="panel">
           <a class="directory-font panel-block" :class="currentBookIndex === index ? 'is-active' : ''" v-for="(item, index) in directory" :key="index" :id="item.id" @click="jumpPage(item, index)">
             <span class="panel-icon">
-              <i class="fas fa-book" aria-hidden="true"></i>
+              <AppIcon name="book" aria-hidden="true" />
             </span>
             {{ item.label }}
           </a>
@@ -35,13 +35,13 @@
                 <span class="color-text">字号</span>
               </div>
               <div class="font-btn plus-btn" @click="handlePlusFontSize">
-                <i class="fas fa-plus" aria-hidden="true"></i>
+                <AppIcon name="plus" aria-hidden="true" />
               </div>
               <div class="font-btn font-size-val">
                 {{ fontSize }}
               </div>
               <div class="font-btn minus-btn" @click="handleMinusFontSize">
-                <i class="fas fa-minus" aria-hidden="true"></i>
+                <AppIcon name="minus" aria-hidden="true" />
               </div>
             </div>
             <div class="change-page">
@@ -58,7 +58,7 @@
                 <button class="button" aria-haspopup="true" aria-controls="dropdown-menu" @click="handleShowDropdownBook">
                   <span>{{ bookName }}</span>
                   <span class="icon is-small">
-                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    <AppIcon name="angle-down" aria-hidden="true" />
                   </span>
                 </button>
               </div>

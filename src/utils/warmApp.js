@@ -1,5 +1,5 @@
 import { prefetchNavMenus } from '@/services/navData'
-import { warmBingCover, getCachedCover, preloadCover, DEFAULT_COVER } from '@/utils/bingCover'
+import { warmBingCover, getCachedCover, preloadCover } from '@/utils/bingCover'
 import { runWhenIdle } from '@/utils/defer'
 import { warmSidebarBundle } from '@/utils/sidebarWarm'
 
@@ -16,7 +16,7 @@ export function warmApp(options = {}) {
   const path = options.path ?? (typeof window !== 'undefined' ? window.location.pathname : '')
   const onHome = isHomePath(path)
 
-  const coverUrl = getCachedCover() || DEFAULT_COVER
+  const coverUrl = getCachedCover()
   if (onHome && coverUrl) {
     preloadCover(coverUrl).catch(() => {})
   }

@@ -12,7 +12,7 @@
         </div>
         <div class="header-actions">
           <button type="button" class="btn-tool" :disabled="loading" @click="refreshAll">
-            <i :class="['fas', loading ? 'fa-spinner fa-spin' : 'fa-sync-alt']"></i>
+            <AppIcon :name="loading  ? 'spinner fa-spin' : 'sync-alt'"  />
             立即检测
           </button>
           <label class="auto-refresh">
@@ -20,38 +20,38 @@
             <span>每 60 秒自动刷新</span>
           </label>
           <router-link v-if="isLoggedIn" to="/admin" class="btn-tool outline">
-            <i class="fas fa-cog"></i> 管理站点
+            <AppIcon name="cog"  /> 管理站点
           </router-link>
           <router-link v-else to="/login" class="btn-tool outline">
-            <i class="fas fa-sign-in-alt"></i> 登录后配置
+            <AppIcon name="sign-in-alt"  /> 登录后配置
           </router-link>
         </div>
       </header>
 
       <div class="stats-row">
         <div class="stat-card">
-          <span class="stat-icon total"><i class="fas fa-globe"></i></span>
+          <span class="stat-icon total"><AppIcon name="globe"  /></span>
           <div class="stat-body">
             <span class="stat-label">监控站点</span>
             <span class="stat-value">{{ sites.length }}</span>
           </div>
         </div>
         <div class="stat-card up">
-          <span class="stat-icon up"><i class="fas fa-check-circle"></i></span>
+          <span class="stat-icon up"><AppIcon name="check-circle"  /></span>
           <div class="stat-body">
             <span class="stat-label">正常运行</span>
             <span class="stat-value">{{ upCount }}</span>
           </div>
         </div>
         <div class="stat-card down">
-          <span class="stat-icon down"><i class="fas fa-exclamation-circle"></i></span>
+          <span class="stat-icon down"><AppIcon name="exclamation-circle"  /></span>
           <div class="stat-body">
             <span class="stat-label">异常</span>
             <span class="stat-value">{{ downCount }}</span>
           </div>
         </div>
         <div class="stat-card">
-          <span class="stat-icon latency"><i class="fas fa-tachometer-alt"></i></span>
+          <span class="stat-icon latency"><AppIcon name="tachometer-alt"  /></span>
           <div class="stat-body">
             <span class="stat-label">平均响应</span>
             <span class="stat-value">{{ avgResponse }}</span>
@@ -60,12 +60,12 @@
       </div>
 
       <div v-if="loading && !sites.length" class="state-box">
-        <i class="fas fa-spinner fa-spin"></i>
+        <AppIcon name="spinner" spin  />
         <p>加载监控数据…</p>
       </div>
 
       <div v-else-if="!sites.length" class="state-box empty">
-        <i class="fas fa-satellite-dish"></i>
+        <AppIcon name="satellite-dish"  />
         <p>暂无监控站点</p>
         <span v-if="isLoggedIn">请前往 <router-link to="/admin">管理面板</router-link> 添加要监控的 URL</span>
         <span v-else>登录后可在管理面板配置监控站点</span>
@@ -83,7 +83,7 @@
             <header class="site-card-head">
               <div class="site-identity">
                 <div class="site-avatar" :class="site.status">
-                  <i class="fas fa-server"></i>
+                  <AppIcon name="server"  />
                 </div>
                 <div class="site-meta">
                   <h3 class="site-name">{{ site.name }}</h3>
@@ -94,7 +94,7 @@
                     rel="noopener noreferrer"
                     @click.stop
                   >
-                    <i class="fas fa-external-link-alt"></i>
+                    <AppIcon name="external-link-alt"  />
                     {{ site.url }}
                   </a>
                 </div>
@@ -122,22 +122,22 @@
               </div>
               <div class="hero-metrics">
                 <div class="metric-tile">
-                  <i class="fas fa-bolt"></i>
+                  <AppIcon name="bolt"  />
                   <span class="metric-label">响应</span>
                   <span class="metric-value">{{ formatMs(site.responseMs) }}</span>
                 </div>
                 <div class="metric-tile">
-                  <i class="fas fa-code"></i>
+                  <AppIcon name="code"  />
                   <span class="metric-label">状态码</span>
                   <span class="metric-value">{{ site.statusCode || '—' }}</span>
                 </div>
                 <div class="metric-tile">
-                  <i class="fas fa-redo"></i>
+                  <AppIcon name="redo"  />
                   <span class="metric-label">间隔</span>
                   <span class="metric-value">{{ formatInterval(site.intervalSec) }}</span>
                 </div>
                 <div class="metric-tile">
-                  <i class="fas fa-exchange-alt"></i>
+                  <AppIcon name="exchange-alt"  />
                   <span class="metric-label">方式</span>
                   <span class="metric-value">{{ site.method || 'GET' }}</span>
                 </div>
@@ -167,7 +167,7 @@
 
             <footer class="site-card-foot">
               <span class="last-check">
-                <i class="far fa-clock"></i>
+                <AppIcon name="clock" pack="regular" />
                 {{ formatLastCheck(site.lastCheckAt) }}
               </span>
               <span v-if="site.lastError" class="last-error" :title="site.lastError">
@@ -179,7 +179,7 @@
                 :disabled="checkingId === site.id"
                 @click="checkOne(site)"
               >
-                <i :class="['fas', checkingId === site.id ? 'fa-spinner fa-spin' : 'fa-sync-alt']"></i>
+                <AppIcon :name="checkingId === site.id  ? 'spinner fa-spin' : 'sync-alt'"  />
                 检测
               </button>
             </footer>

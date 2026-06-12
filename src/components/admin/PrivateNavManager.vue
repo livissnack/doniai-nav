@@ -9,7 +9,7 @@
       </div>
       <div class="title-actions">
         <button type="button" class="btn-outline" :disabled="loading" @click="loadNav">
-          <i :class="['fas', loading ? 'fa-spinner fa-spin' : 'fa-sync-alt']"></i>
+          <AppIcon :name="loading  ? 'spinner fa-spin' : 'sync-alt'"  />
         </button>
         <button type="button" class="btn-outline" @click="confirmReset">恢复默认</button>
       </div>
@@ -28,7 +28,7 @@
       </div>
     </form>
 
-    <div v-if="loading" class="state-hint"><i class="fas fa-spinner fa-spin"></i> 加载中…</div>
+    <div v-if="loading" class="state-hint"><AppIcon name="spinner" spin  /> 加载中…</div>
     <div v-else-if="!categories.length" class="state-hint">暂无分类，请先添加</div>
 
     <div v-else class="category-list">
@@ -77,7 +77,7 @@
         <p v-else class="empty-items">该分类下暂无导航</p>
 
         <button type="button" class="btn-add-item" @click="openItemForm(cat)">
-          <i class="fas fa-plus"></i> 添加导航
+          <AppIcon name="plus"  /> 添加导航
         </button>
       </div>
     </div>

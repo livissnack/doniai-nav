@@ -50,7 +50,7 @@
             @error="iconBroken = true"
           />
           <div v-else class="weather-card__icon-placeholder">
-            <i class="fas fa-cloud-sun"></i>
+            <AppIcon name="cloud-sun"  />
           </div>
           <p class="weather-card__desc">{{ description }}</p>
         </div>

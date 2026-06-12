@@ -8,7 +8,7 @@
       <div class="docs-card">
         <header class="docs-bar">
           <router-link to="/" class="bar-back" title="返回首页">
-            <i class="fas fa-angle-left"></i>
+            <AppIcon name="angle-left"  />
           </router-link>
           <span class="bar-title">{{ topbarTitle }}</span>
 
@@ -39,7 +39,7 @@
               title="编辑"
               @click="setNotesMode('edit')"
             >
-              <i class="fas fa-edit"></i>
+              <AppIcon name="edit"  />
             </button>
             <button
               type="button"
@@ -48,7 +48,7 @@
               title="分屏"
               @click="setNotesMode('split')"
             >
-              <i class="fas fa-columns"></i>
+              <AppIcon name="columns"  />
             </button>
             <button
               type="button"
@@ -57,10 +57,10 @@
               title="预览"
               @click="setNotesMode('preview')"
             >
-              <i class="fas fa-eye"></i>
+              <AppIcon name="eye"  />
             </button>
             <button type="button" class="bar-icon bar-save" title="保存" @click="saveNotes">
-              <i class="fas fa-save"></i>
+              <AppIcon name="save"  />
             </button>
           </div>
         </header>

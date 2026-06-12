@@ -2,15 +2,19 @@
   <div class="input-group">
     <div class="search-wrap custom-input-width">
       <div class="search-bar">
-        <label class="search-field">
-          <i class="fas fa-search search-icon" aria-hidden="true"></i>
+        <label class="search-field" for="doniai-search-input">
+          <span class="visually-hidden">搜索内容</span>
+          <AppIcon name="search" class="search-icon" aria-hidden="true" />
           <input
+            id="doniai-search-input"
             ref="searchInput"
             class="search-input"
             v-model="filter.search_text"
+            name="q"
             confirm-type="search"
             placeholder="请输入搜索内容"
             autocomplete="off"
+            enterkeyhint="search"
             @input="handleChangeKeyword"
             @focus="handleFocusDsug"
             @blur="handleBlurDsug"
@@ -21,7 +25,7 @@
           />
         </label>
         <button type="button" class="search-btn" @click="startSearch">
-          <i class="fas fa-search"></i>
+          <AppIcon name="search" aria-hidden="true" />
           <span>搜索</span>
         </button>
       </div>
@@ -40,7 +44,7 @@
               class="recommend-item"
               @mousedown.prevent="handleSelectedSearch(history)"
             >
-              <i class="fas fa-history"></i>
+              <AppIcon name="history"  />
               <span>{{ history }}</span>
             </button>
           </li>
@@ -56,7 +60,7 @@
               :class="{ 'is-active': currentItemIndex === index }"
               @mousedown.prevent="handleSelectedSearch(item)"
             >
-              <i class="fas fa-paper-plane"></i>
+              <AppIcon name="paper-plane"  />
               <span>{{ item }}</span>
             </button>
           </li>
@@ -281,7 +285,7 @@ export default {
   flex-shrink: 0;
   margin-left: 14px;
   font-size: 14px;
-  color: #8a919f;
+  color: #6b7280;
 }
 
 .search-input {
@@ -296,7 +300,7 @@ export default {
   color: #1f2937;
 
   &::placeholder {
-    color: #8a919f;
+    color: #6b7280;
   }
 
   &::-webkit-search-cancel-button {

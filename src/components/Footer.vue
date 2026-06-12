@@ -20,30 +20,37 @@
                 aria-label="微信"
                 @click="toggleWechatQr"
               >
-                <i class="fab fa-weixin"></i>
+                <AppIcon name="weixin" pack="brands"  />
               </button>
               <div class="wechat-qr" :class="{ 'is-visible': wechatQrVisible }">
-                <img src="../assets/wechat_qrcode.webp" alt="微信二维码" width="120" height="120" />
+                <img
+                  src="../assets/wechat_qrcode.webp"
+                  alt="微信二维码"
+                  width="857"
+                  height="873"
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
             </li>
             <li class="social-item">
               <a href="https://www.facebook.com/lewis.wang.330" target="_blank" rel="noopener" class="social-btn facebook" aria-label="Facebook">
-                <i class="fab fa-facebook"></i>
+                <AppIcon name="facebook" pack="brands"  />
               </a>
             </li>
             <li class="social-item">
               <a href="mailto:hstdsteel@hotmail.com" class="social-btn twitter" aria-label="Twitter">
-                <i class="fab fa-twitter"></i>
+                <AppIcon name="twitter" pack="brands"  />
               </a>
             </li>
             <li class="social-item">
               <a href="https://www.linkedin.com/in/liang-wang-30273356" target="_blank" rel="noopener" class="social-btn linkedin" aria-label="LinkedIn">
-                <i class="fab fa-linkedin"></i>
+                <AppIcon name="linkedin" pack="brands"  />
               </a>
             </li>
             <li class="social-item">
               <a href="https://github.com/livissnack" target="_blank" rel="noopener" class="social-btn github" aria-label="GitHub">
-                <i class="fab fa-github-alt"></i>
+                <AppIcon name="github-alt" pack="brands"  />
               </a>
             </li>
           </ul>
@@ -67,12 +74,12 @@
         <section class="footer-block">
           <h4 class="footer-heading">联系方式</h4>
           <ul class="footer-contact">
-            <li><i class="fas fa-phone"></i><span>0714-3264731</span></li>
+            <li><AppIcon name="phone"  /><span>0714-3264731</span></li>
             <li>
-              <i class="fas fa-globe-americas"></i>
+              <AppIcon name="globe-americas"  />
               <a href="http://www.pxtoolsteel.com" target="_blank" rel="noopener">www.pxtoolsteel.com</a>
             </li>
-            <li><i class="fab fa-usps"></i><span>邮编 435000</span></li>
+            <li><AppIcon name="usps" pack="brands" /><span>邮编 435000</span></li>
           </ul>
         </section>
       </div>
@@ -108,9 +115,7 @@
 </template>
 
 <script>
-import '@fortawesome/fontawesome-free/css/brands.min.css'
 import { timeNow } from '@/utils/helper.js'
-
 export default {
   name: 'Footer',
   data() {
@@ -309,6 +314,9 @@ export default {
 
   img {
     display: block;
+    width: 120px;
+    height: auto;
+    aspect-ratio: 857 / 873;
     border-radius: 6px;
   }
 }

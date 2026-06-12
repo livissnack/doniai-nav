@@ -1,13 +1,13 @@
 <template>
   <div class="auth-page" :style="bgStyle">
     <router-link to="/" class="auth-back">
-      <i class="fas fa-arrow-left"></i>
+      <AppIcon name="arrow-left"  />
       返回首页
     </router-link>
     <div class="auth-card">
       <header class="auth-card-head">
         <div class="auth-icon">
-          <i class="fas fa-sign-in-alt"></i>
+          <AppIcon name="sign-in-alt"  />
         </div>
         <h1>登录</h1>
         <p>登录后可访问「私人」导航与侧栏管理</p>
@@ -37,7 +37,7 @@
             />
           </o-field>
           <p class="auth-hint">
-            <i class="fas fa-info-circle"></i>
+            <AppIcon name="info-circle"  />
             <span>演示账号：admin@doniai.com / admin123</span>
           </p>
         </section>
@@ -57,6 +57,7 @@
 <script>
 import { getBgImage } from '@/services/api'
 import { authActions, authStore } from '@/store/auth'
+import { coverStyleFromUrl, pickCoverUrl } from '@/utils/bingCover'
 
 export default {
   name: 'Login',
@@ -82,14 +83,9 @@ export default {
     async loadBg() {
       try {
         const { data } = await getBgImage()
-        const url = data?.code === 200 ? data.data?.cover_4k : ''
-        this.bgStyle = url
-          ? { backgroundImage: `url(${url})` }
-          : { backgroundImage: 'url(https://hiphup.oss-cn-hangzhou.aliyuncs.com/uploads/images/swiper6.jpg)' }
+        this.bgStyle = coverStyleFromUrl(pickCoverUrl(data))
       } catch {
-        this.bgStyle = {
-          backgroundImage: 'url(https://hiphup.oss-cn-hangzhou.aliyuncs.com/uploads/images/swiper6.jpg)',
-        }
+        this.bgStyle = coverStyleFromUrl()
       }
     },
     async handleSubmit() {

@@ -2,7 +2,8 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import { finishPageProgress } from '@/utils/pageProgress'
-import { installOruga } from '@/plugins/oruga'
+import { bindOrugaApp } from '@/plugins/oruga'
+import { installIcons } from '@/plugins/icons'
 import { installNotify } from '@/utils/notify'
 import { installDialog } from '@/utils/dialog'
 import { installCopyText } from '@/utils/copyText'
@@ -13,7 +14,8 @@ const app = createApp(App)
 app.component('back-top', BackTop)
 app.component('BackTop', BackTop)
 
-installOruga(app)
+installIcons(app)
+bindOrugaApp(app)
 installNotify(app)
 installDialog(app)
 installCopyText(app)

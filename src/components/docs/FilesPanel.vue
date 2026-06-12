@@ -2,32 +2,32 @@
   <div class="files-panel">
     <div class="files-toolbar">
       <div class="breadcrumb-wrap">
-        <i class="fas fa-hdd breadcrumb-icon"></i>
+        <AppIcon name="hdd" class="breadcrumb-icon"  />
         <nav class="breadcrumb">
           <a href="#" @click.prevent="goRoot">全部文件</a>
           <span v-for="(seg, i) in pathSegments" :key="i" class="crumb-seg">
-            <i class="fas fa-chevron-right"></i>
+            <AppIcon name="chevron-right"  />
             <a href="#" @click.prevent="goTo(i)">{{ seg }}</a>
           </span>
         </nav>
       </div>
       <div class="tool-btns">
         <label class="btn-upload primary">
-          <i class="fas fa-cloud-upload-alt"></i> 上传
+          <AppIcon name="cloud-upload-alt"  /> 上传
           <input type="file" multiple hidden @change="onUpload" />
         </label>
         <button type="button" class="btn-tool" @click="newFolder">
-          <i class="fas fa-folder-plus"></i> 新建文件夹
+          <AppIcon name="folder-plus"  /> 新建文件夹
         </button>
         <button type="button" class="btn-tool icon-only" title="刷新" @click="loadList">
-          <i class="fas fa-sync-alt"></i>
+          <AppIcon name="sync-alt"  />
         </button>
       </div>
     </div>
 
     <div class="files-body">
     <div v-if="loading" class="files-loading">
-      <i class="fas fa-spinner fa-spin"></i>
+      <AppIcon name="spinner" spin  />
       <p>加载文件列表…</p>
     </div>
     <table v-else class="files-table">
@@ -43,7 +43,7 @@
         <tr v-if="currentPath" class="row-up" @dblclick="goUp">
           <td colspan="4">
             <span class="file-cell">
-              <span class="file-icon up"><i class="fas fa-level-up-alt"></i></span>
+              <span class="file-icon up"><AppIcon name="level-up-alt"  /></span>
               返回上级目录
             </span>
           </td>
@@ -57,7 +57,7 @@
           <td>
             <span class="file-cell">
               <span class="file-icon" :class="item.isDir ? 'folder' : fileIconClass(item)">
-                <i :class="item.isDir ? 'fas fa-folder' : fileIcon(item)"></i>
+                <AppIcon :name="item.isDir ? 'folder' : fileIcon(item)" />
               </span>
               <span class="file-name">{{ item.name }}</span>
             </span>
@@ -71,7 +71,7 @@
         </tr>
         <tr v-if="!items.length && !loading">
           <td colspan="4" class="empty-cell">
-            <i class="fas fa-inbox"></i>
+            <AppIcon name="inbox"  />
             <p>文件夹为空</p>
             <span>上传文件或新建文件夹开始使用</span>
           </td>
@@ -83,14 +83,14 @@
     <div v-if="viewerOpen" class="viewer-mask" @click.self="closeViewer">
       <div class="viewer-box">
         <header class="viewer-head">
-          <span class="viewer-title"><i class="fas fa-file"></i> {{ viewerName }}</span>
+          <span class="viewer-title"><AppIcon name="file"  /> {{ viewerName }}</span>
           <div class="viewer-actions">
             <button v-if="canSave" type="button" class="btn-save" :disabled="viewerSaving" @click="saveViewer">
-              <i :class="['fas', viewerSaving ? 'fa-spinner fa-spin' : 'fa-save']"></i> 保存
+              <AppIcon :name="viewerSaving  ? 'spinner fa-spin' : 'save'"  /> 保存
             </button>
             <button v-if="viewerMode === 'docx' && !htmlEdit" type="button" class="btn-tool" @click="startHtmlEdit">HTML 编辑</button>
             <a v-if="viewerBlobUrl" :href="viewerBlobUrl" download class="btn-tool">下载</a>
-            <button type="button" class="btn-close" @click="closeViewer"><i class="fas fa-times"></i></button>
+            <button type="button" class="btn-close" @click="closeViewer"><AppIcon name="times"  /></button>
           </div>
         </header>
         <div class="viewer-body">
@@ -205,12 +205,12 @@ export default {
     },
     fileIcon(item) {
       const ext = (item.ext || '').toLowerCase()
-      if (['.doc', '.docx'].includes(ext)) return 'fas fa-file-word'
-      if (['.xls', '.xlsx', '.csv'].includes(ext)) return 'fas fa-file-excel'
-      if (['.md', '.txt'].includes(ext)) return 'fas fa-file-alt'
-      if (['.png', '.jpg', '.jpeg', '.gif'].includes(ext)) return 'fas fa-file-image'
-      if (ext === '.pdf') return 'fas fa-file-pdf'
-      return 'fas fa-file'
+      if (['.doc', '.docx'].includes(ext)) return 'file-word'
+      if (['.xls', '.xlsx', '.csv'].includes(ext)) return 'file-excel'
+      if (['.md', '.txt'].includes(ext)) return 'file-alt'
+      if (['.png', '.jpg', '.jpeg', '.gif'].includes(ext)) return 'file-image'
+      if (ext === '.pdf') return 'file-pdf'
+      return 'file'
     },
     fileIconClass(item) {
       const ext = (item.ext || '').toLowerCase()

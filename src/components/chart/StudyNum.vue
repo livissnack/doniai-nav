@@ -1,21 +1,28 @@
 <template>
-  <div class="line-box" id="line"></div>
+  <div class="line-box">
+    <canvas ref="canvasRef"></canvas>
+  </div>
 </template>
 
 <script>
-import * as echarts from 'echarts'
+import { destroyChart, replaceChart, resizeChart } from '@/utils/chartJsHelper'
+
 export default {
   name: 'StudyNum',
   props: {
-    // 修改props，接收学生点名次数数据
     rollCallData: {
       type: Array,
-      default: () => []
+      default: () => [],
+    },
+  },
+  data() {
+    return {
+      chart: null,
     }
   },
   mounted() {
-    this.initPieChart()
-    this._onResize = () => this.chart?.resize()
+    this.$nextTick(() => this.updateChart())
+    this._onResize = () => resizeChart(this.chart)
     window.addEventListener('resize', this._onResize)
   },
   watch: {
@@ -26,55 +33,66 @@ export default {
       deep: true,
     },
   },
-  methods: {
-    initPieChart() {
-      this.chart = echarts.init(this.$el)
-      this.updateChart()
-    },
-
-    updateChart() {
-      if (!this.chart) return
-
-      this.chart.setOption({
-        title: {
-          text: '学生点名次数统计',
-          left: 'center'
-        },
-        tooltip: {
-          trigger: 'item',
-          formatter: '{a} <br/>{b}: {c}次 ({d}%)'
-        },
-        legend: {
-          orient: 'vertical',
-          left: 'left'
-        },
-        series: [
-          {
-            name: '点名次数',
-            type: 'pie',
-            radius: '50%',
-            data: this.rollCallData,
-            emphasis: {
-              itemStyle: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
-              }
-            },
-            label: {
-              show: true,
-              formatter: '{b}: {c}次'
-            }
-          }
-        ]
-      })
-    }
-  },
   beforeUnmount() {
     window.removeEventListener('resize', this._onResize)
-    if (this.chart) {
-      this.chart.dispose()
-    }
+    destroyChart(this.chart)
+    this.chart = null
+  },
+  methods: {
+    buildConfig() {
+      const items = Array.isArray(this.rollCallData) ? this.rollCallData : []
+      return {
+        type: 'pie',
+        data: {
+          labels: items.map((item) => item.name),
+          datasets: [
+            {
+              label: '点名次数',
+              data: items.map((item) => item.value),
+              backgroundColor: [
+                '#6943d0',
+                '#20bc56',
+                '#0e71de',
+                '#ff9f43',
+                '#f14668',
+                '#48dbfb',
+                '#a29bfe',
+              ],
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: false,
+          plugins: {
+            title: {
+              display: true,
+              text: '学生点名次数统计',
+            },
+            legend: {
+              position: 'left',
+            },
+            tooltip: {
+              callbacks: {
+                label(ctx) {
+                  const label = ctx.label || ''
+                  const value = ctx.parsed || 0
+                  const total = ctx.dataset.data.reduce((sum, n) => sum + n, 0)
+                  const pct = total ? ((value / total) * 100).toFixed(1) : 0
+                  return `${label}: ${value}次 (${pct}%)`
+                },
+              },
+            },
+          },
+        },
+      }
+    },
+    updateChart() {
+      const canvas = this.$refs.canvasRef
+      if (!canvas) return
+      this.chart = replaceChart(this.chart, canvas, this.buildConfig())
+    },
   },
 }
 </script>
@@ -84,5 +102,6 @@ export default {
   width: 100%;
   height: 280px;
   min-height: 240px;
+  position: relative;
 }
 </style>

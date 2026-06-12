@@ -21,10 +21,10 @@
         :class="{ 'is-recommend': item.recommend }"
       >
         <span class="tools-item__icon" :class="iconTone(index)">
-          <i class="fas" :class="item.icon"></i>
+          <AppIcon :name="String(item.icon).replace(/^fa-/, '')"  />
         </span>
         <span class="tools-item__name">{{ item.name }}</span>
-        <i class="fas fa-chevron-right tools-item__arrow"></i>
+        <AppIcon name="chevron-right" class="tools-item__arrow"  />
       </a>
     </div>
   </div>
@@ -38,49 +38,49 @@ export default {
       list: [
         {
           name: '中国教育在线-掌上高考',
-          icon: 'fa-fire-alt',
+          icon: 'fire-alt',
           path: 'https://gaokao.cn/',
           recommend: true,
         },
         {
           name: 'JSON格式化',
-          icon: 'fa-feather',
+          icon: 'feather',
           path: '/json',
           recommend: true,
         },
         {
           name: '云笔记',
-          icon: 'fa-book',
+          icon: 'book',
           path: '/docs',
           recommend: true,
         },
         {
           name: '密码生成器',
-          icon: 'fa-key',
+          icon: 'key',
           path: '/utils/password',
           recommend: false,
         },
         {
           name: 'TV一下',
-          icon: 'fa-tv',
+          icon: 'tv',
           path: '/player',
           recommend: false,
         },
         {
           name: 'Base64加解密',
-          icon: 'fa-bold',
+          icon: 'bold',
           path: '/utils/base64',
           recommend: false,
         },
         {
           name: '贷款利率计算器',
-          icon: 'fa-money-bill',
+          icon: 'money-bill',
           path: '/utils/loan-rate',
           recommend: false,
         },
         {
           name: '封面生成器',
-          icon: 'fa-images',
+          icon: 'images',
           path: '/utils/cover',
           recommend: false,
         },

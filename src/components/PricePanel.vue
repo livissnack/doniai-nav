@@ -34,7 +34,7 @@
     <div v-else class="info-content">
       <div class="info-item" v-if="currentCurrency && targetCurrencyValue != null">
         <div class="info-label">
-          <i class="fas fa-chart-line icon-rate"></i>
+          <AppIcon name="chart-line" class="icon-rate"  />
           汇率 ({{ currentCurrency }}/{{ targetCurrency }})
         </div>
         <div class="info-value">
@@ -44,7 +44,7 @@
 
       <div class="info-item" v-if="fuelList.length">
         <div class="info-label">
-          <i class="fas fa-gas-pump icon-oil"></i>
+          <AppIcon name="gas-pump" class="icon-oil"  />
           今日油价 ({{ region }})
         </div>
         <div class="info-grid">
@@ -55,7 +55,7 @@
               v-if="fuelTrend !== null"
               :class="['trend', fuelTrend > 0 ? 'up' : 'down']"
             >
-              <i :class="['fas', fuelTrend > 0 ? 'fa-caret-up' : 'fa-caret-down']"></i>
+              <AppIcon :name="fuelTrend > 0  ? 'caret-up' : 'caret-down'"  />
             </span>
           </div>
         </div>

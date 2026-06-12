@@ -1,17 +1,19 @@
 <template>
-  <div
-    class="page-progress"
-    :class="{ 'is-visible': visible, 'is-done': done }"
-    role="progressbar"
-    :aria-valuenow="Math.round(percent)"
-    aria-valuemin="0"
-    aria-valuemax="100"
-    aria-label="页面加载进度"
-  >
-    <div class="page-progress-bar" :style="{ width: `${percent}%` }">
-      <span class="page-progress-glow" aria-hidden="true"></span>
+  <Teleport to="body">
+    <div
+      class="page-progress"
+      :class="{ 'is-visible': visible, 'is-done': done }"
+      role="progressbar"
+      :aria-valuenow="Math.round(percent)"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-label="页面加载进度"
+    >
+      <div class="page-progress-bar" :style="{ width: `${percent}%` }">
+        <span class="page-progress-glow" aria-hidden="true"></span>
+      </div>
     </div>
-  </div>
+  </Teleport>
 </template>
 
 <script>
@@ -39,7 +41,8 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<!-- 全局样式：scoped 类名在 PurgeCSS 生产构建中会被误删 -->
+<style lang="less">
 .page-progress {
   position: fixed;
   top: 0;

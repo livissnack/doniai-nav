@@ -6,7 +6,7 @@
     </p>
 
     <div v-if="userEmail" class="account-hint">
-      <i class="fas fa-user-circle"></i>
+      <AppIcon name="user-circle"  />
       <span>{{ userEmail }}</span>
     </div>
 
@@ -40,7 +40,7 @@
       </o-field>
       <div class="form-foot">
         <button type="submit" class="btn-primary" :disabled="saving">
-          <i v-if="saving" class="fas fa-spinner fa-spin"></i>
+          <AppIcon v-if="saving" name="spinner" spin />
           {{ saving ? '保存中…' : '保存新密码' }}
         </button>
       </div>

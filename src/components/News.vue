@@ -35,7 +35,13 @@
       />
 
       <template v-else>
-        <div class="news-carousel" :style="{ height: carouselHeight + 'px' }">
+        <div
+          class="news-carousel"
+          role="region"
+          aria-label="新闻列表"
+          :aria-live="slideCount > 1 ? 'polite' : 'off'"
+          :style="{ height: carouselHeight + 'px' }"
+        >
           <div
             v-for="(group, slideIndex) in groupedNews"
             :key="slideIndex"
@@ -55,13 +61,13 @@
                 :style="{ backgroundColor: sourceMeta(item.source).color }"
               >{{ sourceMeta(item.source).label }}</span>
               <span class="news-title">{{ item.name }}</span>
-              <i class="fas fa-external-link-alt news-arrow"></i>
+              <AppIcon name="external-link-alt" class="news-arrow" aria-hidden="true" />
             </button>
           </div>
         </div>
 
         <div v-if="slideCount > 1" class="news-footer">
-          <div class="news-dots" role="tablist" aria-label="新闻分页">
+          <div class="news-dots" role="group" aria-label="新闻分页">
             <button
               v-for="(_, index) in groupedNews"
               :key="index"
@@ -69,7 +75,7 @@
               class="news-dot"
               :class="{ 'is-active': index === currentIndex }"
               :aria-label="`第 ${index + 1} 页`"
-              :aria-selected="index === currentIndex"
+              :aria-current="index === currentIndex ? 'true' : 'false'"
               @click="goToSlide(index)"
             />
           </div>
@@ -101,7 +107,7 @@ const SOURCE_META = {
   baidu: { label: '百', color: '#4e6ef2' },
   nodeseek: { label: 'N', color: '#15b982' },
   nikkei: { label: '日', color: '#d4380d' },
-  news: { label: '热', color: '#8c8c8c' },
+  news: { label: '热', color: '#595959' },
 }
 
 export default {
@@ -435,7 +441,7 @@ export default {
 .news-title {
   flex: 1;
   min-width: 0;
-  color: #666;
+  color: #4b5563;
   font-size: 14px;
   font-weight: 400;
   overflow: hidden;
@@ -467,18 +473,29 @@ export default {
 }
 
 .news-dot {
-  width: 6px;
-  height: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 0;
+  margin: -10px 0;
   border: none;
   border-radius: 50%;
-  background: #d9d9d9;
+  background: transparent;
   cursor: pointer;
-  transition: transform 0.2s, background 0.2s;
 
-  &.is-active {
-    background: #15b982;
-    transform: scale(1.25);
+  &::before {
+    content: '';
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #9ca3af;
+    transition: transform 0.2s, background 0.2s;
+  }
+
+  &.is-active::before {
+    background: #0f9d58;
+    transform: scale(1.2);
   }
 }
 

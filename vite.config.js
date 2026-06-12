@@ -1,6 +1,8 @@
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
+import { createPurgeCssPlugin } from './purgecss.config.js'
+import { createFontDisplayPlugin } from './postcss-font-display.js'
 
 function resolveHmr(env, port) {
   if (env.VITE_HMR_DISABLE === '1' || env.VITE_HMR_DISABLE === 'true') {
@@ -52,11 +54,10 @@ function resolveManualChunk(id) {
   if (!id.includes('node_modules')) return
 
   const rules = [
-    [/[/\\]echarts[/\\]/, 'echarts'],
-    [/[/\\]zrender[/\\]/, 'echarts'],
+    [/[/\\]@iconify[/\\]/, 'iconify'],
+    [/[/\\]chart\.js[/\\]/, 'chartjs'],
     [/[/\\]highlight\.js[/\\]/, 'hljs'],
     [/[/\\]@oruga-ui[/\\]/, 'oruga'],
-    [/[/\\]@fortawesome[/\\]/, 'icons'],
     [/[/\\]vue-router[/\\]/, 'vue-vendor'],
     [/[/\\]@vue[/\\]/, 'vue-vendor'],
     [/[/\\]vue[/\\]dist[/\\]/, 'vue-vendor'],
@@ -73,7 +74,6 @@ function resolveManualChunk(id) {
     [/[/\\]marked[/\\]/, 'marked'],
     [/json-formatter-js/, 'json-formatter'],
     [/[/\\]js-yaml[/\\]/, 'js-yaml'],
-    [/[/\\]dayjs[/\\]/, 'dayjs'],
     [/solarlunar/, 'solarlunar'],
     [/number2chinesenumber/, 'n2cn'],
     [/[/\\]platform[/\\]/, 'platform'],
@@ -115,7 +115,6 @@ export default defineConfig(({ mode }) => {
         'vue-router',
         '@oruga-ui/oruga-next',
         '@oruga-ui/theme-bulma',
-        'dayjs',
       ],
     },
     resolve: {
@@ -124,6 +123,12 @@ export default defineConfig(({ mode }) => {
       },
     },
     css: {
+      postcss: {
+        plugins:
+          mode === 'production'
+            ? [createPurgeCssPlugin(), createFontDisplayPlugin()]
+            : [createFontDisplayPlugin()],
+      },
       preprocessorOptions: {
         less: {
           javascriptEnabled: true,
@@ -141,7 +146,6 @@ export default defineConfig(({ mode }) => {
           './src/main.js',
           './src/App.vue',
           './src/views/Home.vue',
-          './src/plugins/oruga.js',
         ],
       },
       hmr,
@@ -163,7 +167,7 @@ export default defineConfig(({ mode }) => {
       target: 'es2020',
       sourcemap: false,
       cssCodeSplit: true,
-      // echarts 整包约 1MB，仅在成绩/贷款等页懒加载
+      // chart.js 约 200KB，仅在成绩/贷款/点名等页懒加载
       chunkSizeWarningLimit: 1100,
       rollupOptions: {
         output: {

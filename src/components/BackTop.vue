@@ -8,7 +8,7 @@
       aria-label="回到顶部"
       @click="scrollTop"
     >
-      <i class="fas fa-arrow-up"></i>
+      <AppIcon name="arrow-up"  />
     </button>
   </transition>
 </template>

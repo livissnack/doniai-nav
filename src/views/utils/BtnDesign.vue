@@ -86,7 +86,6 @@
 </template>
 
 <script>
-import '@fortawesome/fontawesome-free/css/brands.min.css'
 import Navbar from '@/components/Navbar.vue'
 import BackTop from '@/components/BackTop.vue'
 import Footer from '@/components/Footer.vue'

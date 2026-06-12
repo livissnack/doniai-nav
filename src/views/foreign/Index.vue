@@ -23,7 +23,7 @@
                   <p class="control has-icons-right">
                     <input class="input" type="number" v-model.number="money" placeholder="请输入金额数字">
                     <span class="icon is-small is-right" @click="clearMoneyClick">
-                    <i class="fas fa-times"></i>
+                    <AppIcon name="times"  />
                   </span>
                   </p>
                 </div>

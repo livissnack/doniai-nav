@@ -21,16 +21,16 @@
               :class="{ 'is-active': activeTab === item.id }"
               @click="switchTab(item.id)"
             >
-              <i :class="item.icon"></i>
+              <AppIcon :name="item.icon" />
               <span class="menu-label">{{ item.label }}</span>
             </button>
           </nav>
           <div class="aside-foot">
             <router-link to="/utils/monitor" class="aside-link">
-              <i class="fas fa-chart-line"></i> 监控大屏
+              <AppIcon name="chart-line"  /> 监控大屏
             </router-link>
             <router-link to="/" class="aside-link muted">
-              <i class="fas fa-home"></i> 返回首页
+              <AppIcon name="home"  /> 返回首页
             </router-link>
           </div>
         </aside>
@@ -130,7 +130,7 @@
             </form>
 
             <div v-if="sitesLoading" class="sites-loading">
-              <i class="fas fa-spinner fa-spin"></i> 加载中…
+              <AppIcon name="spinner" spin  /> 加载中…
             </div>
             <div v-else-if="!manageSites.length" class="sites-empty">暂无站点，请在上方添加</div>
             <div v-else class="sites-table-wrap">
@@ -193,25 +193,25 @@ const MENU_ITEMS = [
   {
     id: 'sidebar',
     label: '侧栏卡片',
-    icon: 'fas fa-columns',
+    icon: 'columns',
     desc: '控制首页与工具页右侧 Sidebar 各模块的显示与隐藏',
   },
   {
     id: 'private',
     label: '私人导航',
-    icon: 'fas fa-th-large',
+    icon: 'th-large',
     desc: '管理「私人」栏目下的分类与导航链接',
   },
   {
     id: 'password',
     label: '修改密码',
-    icon: 'fas fa-key',
+    icon: 'key',
     desc: '修改当前账号的登录密码',
   },
   {
     id: 'monitor',
     label: '监控站点',
-    icon: 'fas fa-heartbeat',
+    icon: 'heartbeat',
     desc: '配置 HTTP/HTTPS 监控目标，在站点监控页查看运行状态',
   },
 ]
@@ -219,7 +219,7 @@ const MENU_ITEMS = [
 const ADMIN_MENU_ITEM = {
   id: 'users',
   label: '用户管理',
-  icon: 'fas fa-users-cog',
+  icon: 'users-cog',
   desc: '查看注册用户、启用/禁用账号、开关注册功能',
 }
 

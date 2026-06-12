@@ -9,15 +9,66 @@
       content="多尼爱导航是面向个人开发者的一款导航工具站点，提供各类导航资源，包括网站导航、工具导航、资源导航等。"
     />
     <link rel="icon" href="/favicon.ico" />
-    <link rel="dns-prefetch" href="https://hiphup.oss-cn-hangzhou.aliyuncs.com" />
-    <link rel="preconnect" href="https://hiphup.oss-cn-hangzhou.aliyuncs.com" crossorigin />
+    <link rel="preconnect" href="https://bing.com" crossorigin />
+    <link rel="preconnect" href="https://www.bing.com" crossorigin />
     <link rel="stylesheet" media="screen and (max-width:768px)" href="/m.css" />
     <title>Doniai导航</title>
+    <style>
+      #lcp-cover {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        z-index: 0;
+        pointer-events: none;
+        user-select: none;
+        background-color: #1a2332;
+      }
+      #lcp-cover:not([src]) {
+        visibility: hidden;
+      }
+      #app {
+        position: relative;
+        z-index: 1;
+      }
+    </style>
+    <script>
+      (function () {
+        var path = location.pathname
+        if (path !== '/' && path !== '') return
+        var KEY = 'doniaiNavBingCoverV4'
+        var AT_KEY = 'doniaiNavBingCoverAtV4'
+        var TTL = 12 * 60 * 60 * 1000
+        try {
+          var url = localStorage.getItem(KEY)
+          var at = parseInt(localStorage.getItem(AT_KEY), 10)
+          if (!url || !Number.isFinite(at) || Date.now() - at > TTL) return
+          var link = document.createElement('link')
+          link.rel = 'preload'
+          link.as = 'image'
+          link.href = url
+          link.setAttribute('fetchpriority', 'high')
+          document.head.appendChild(link)
+          var apply = function () {
+            var img = document.getElementById('lcp-cover')
+            if (img && !img.getAttribute('src')) img.setAttribute('src', url)
+          }
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', apply)
+          } else {
+            apply()
+          }
+        } catch (e) {}
+      })()
+    </script>
   </head>
   <body>
     <noscript>
       <strong>本站点需要启用 JavaScript 才能正常运行。</strong>
     </noscript>
+    <img id="lcp-cover" alt="" decoding="async" fetchpriority="high" aria-hidden="true" />
     <div id="app"></div>
     <script type="module" src="/src/main.js"></script>
   </body>

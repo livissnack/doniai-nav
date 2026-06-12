@@ -4,9 +4,9 @@
     :class="[`is-${status}`, { 'is-compact': compact }]"
     :style="boxStyle"
   >
-    <i v-if="status === 'loading'" class="fas fa-spinner fa-spin sidebar-panel-state__icon"></i>
-    <i v-else-if="status === 'error'" class="fas fa-exclamation-circle sidebar-panel-state__icon is-error"></i>
-    <i v-else class="fas fa-inbox sidebar-panel-state__icon is-empty"></i>
+    <AppIcon v-if="status === 'loading'" name="spinner" spin class="sidebar-panel-state__icon" />
+    <AppIcon v-else-if="status === 'error'" name="exclamation-circle" class="sidebar-panel-state__icon is-error" />
+    <AppIcon v-else name="inbox" class="sidebar-panel-state__icon is-empty" />
     <p class="sidebar-panel-state__text">{{ message }}</p>
     <button
       v-if="status === 'error' && retryable"

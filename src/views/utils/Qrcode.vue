@@ -20,11 +20,11 @@
           <div class="show-box">
             <div class="set-qrcode">
               <div v-if="widgetLoading" class="qrcode-placeholder">
-                <i class="fas fa-spinner fa-spin"></i>
+                <AppIcon name="spinner" spin  />
                 <span>二维码组件加载中…</span>
               </div>
               <div v-else-if="widgetError" class="qrcode-placeholder is-error">
-                <i class="fas fa-exclamation-circle"></i>
+                <AppIcon name="exclamation-circle"  />
                 <span>组件加载失败</span>
                 <button type="button" class="retry-btn" @click="initWidget">重试</button>
               </div>

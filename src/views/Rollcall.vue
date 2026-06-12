@@ -15,18 +15,18 @@
           <div class="columns">
             <div class="column is-three-quarters">
               <div class="tip-banner">
-                <i class="fas fa-info-circle"></i>
+                <AppIcon name="info-circle"  />
                 <span>学生名单存于浏览器本地，只需录入一次。清除浏览器缓存后需重新录入。</span>
               </div>
 
               <div class="rollcall-card">
                 <div class="card-header">
                   <div class="card-title">
-                    <i class="fas fa-random"></i>
+                    <AppIcon name="random"  />
                     随机点名
                   </div>
                   <div class="school-tag">
-                    <i class="fas fa-school"></i>
+                    <AppIcon name="school"  />
                     {{ data.school }}
                   </div>
                 </div>
@@ -51,7 +51,7 @@
                 </div>
 
                 <div class="quote-box">
-                  <i class="fas fa-quote-left"></i>
+                  <AppIcon name="quote-left"  />
                   <p>{{ data.mailing }}</p>
                 </div>
 
@@ -65,7 +65,7 @@
               <div class="side-card">
                 <div class="side-card-header">
                   <span class="side-title">
-                    <i class="fas fa-user-edit"></i>
+                    <AppIcon name="user-edit"  />
                     录入学生名单
                   </span>
                   <o-button size="small" variant="dark" outlined @click="clearHistory">重置记录</o-button>
@@ -85,7 +85,7 @@
               <div class="side-card">
                 <div class="side-card-header">
                   <span class="side-title">
-                    <i class="fas fa-history"></i>
+                    <AppIcon name="history"  />
                     已点学生
                     <span class="badge">{{ historyList.length }}</span>
                   </span>
@@ -98,7 +98,7 @@
                   </div>
                 </div>
                 <div v-else class="history-empty">
-                  <i class="fas fa-inbox"></i>
+                  <AppIcon name="inbox"  />
                   <span>暂无点名记录</span>
                 </div>
               </div>
@@ -106,7 +106,7 @@
               <div class="side-card chart-card">
                 <div class="side-card-header">
                   <span class="side-title">
-                    <i class="fas fa-chart-pie"></i>
+                    <AppIcon name="chart-pie"  />
                     点名统计
                   </span>
                 </div>

@@ -2,7 +2,7 @@
   <div class="notes-panel">
     <aside class="doc-sidebar">
       <div class="sidebar-search">
-        <i class="fas fa-search"></i>
+        <AppIcon name="search"  />
         <input
           v-model="searchKeyword"
           type="text"
@@ -20,7 +20,7 @@
           <option v-for="p in projects" :key="p.id" :value="p.id">{{ p.name }}</option>
         </select>
         <button type="button" class="foot-icon" title="新建项目" @click="showProjectModal = true">
-          <i class="fas fa-folder-plus"></i>
+          <AppIcon name="folder-plus"  />
         </button>
       </div>
 
@@ -42,10 +42,10 @@
 
       <div class="sidebar-foot">
         <button type="button" class="foot-icon" title="新建页面" @click="addPage">
-          <i class="fas fa-plus"></i>
+          <AppIcon name="plus"  />
         </button>
         <button type="button" class="foot-icon" title="新建目录" @click="addFolder">
-          <i class="fas fa-folder-plus"></i>
+          <AppIcon name="folder-plus"  />
         </button>
       </div>
     </aside>
@@ -68,7 +68,7 @@
               title="目录"
               @click="tocOpen = !tocOpen"
             >
-              <i class="fas fa-list-ul"></i>
+              <AppIcon name="list-ul"  />
             </button>
           </div>
         </header>
@@ -90,7 +90,7 @@
       </main>
 
       <main v-else class="doc-main doc-empty">
-        <i :class="activePage && activePage.kind === 'folder' ? 'fas fa-folder-open' : 'fas fa-file-alt'"></i>
+        <AppIcon :name="activePage && activePage.kind === 'folder' ? 'folder-open' : 'file-alt'" />
         <p v-if="activePage && activePage.kind === 'folder'">目录「{{ activePage.title }}」</p>
         <p v-else>选择左侧文档开始阅读</p>
       </main>
@@ -100,7 +100,7 @@
           <div class="toc-head">
             <span>目录</span>
             <button type="button" class="toc-close" @click="tocOpen = false">
-              <i class="fas fa-times"></i>
+              <AppIcon name="times"  />
             </button>
           </div>
           <nav class="toc-nav">
@@ -154,10 +154,10 @@ const DocTreeNode = {
         :class="{ active: node.id === activeId, 'is-folder': node.kind === 'folder' }"
         @click="$emit('select', node)"
       >
-        <i :class="node.kind === 'folder' ? 'fas fa-folder' : 'fas fa-file-alt'"></i>
+        <AppIcon :name="node.kind === 'folder' ? 'folder' : 'file-alt'" />
         <span class="tree-label" :title="node.title">{{ node.title }}</span>
         <button type="button" class="tree-del" title="删除" @click.stop="$emit('delete', node)">
-          <i class="fas fa-times"></i>
+          <AppIcon name="times"  />
         </button>
       </div>
       <ul v-if="node.children && node.children.length" class="tree-children">

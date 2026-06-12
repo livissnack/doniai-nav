@@ -12,7 +12,7 @@
         aria-label="切换菜单"
         @click="menuOpen = !menuOpen"
       >
-        <i :class="['fas', menuOpen ? 'fa-times' : 'fa-bars']"></i>
+        <AppIcon :name="menuOpen ? 'times' : 'bars'" aria-hidden="true" />
       </button>
 
       <div class="nav-menu" :class="{ 'is-open': menuOpen }">
@@ -50,17 +50,17 @@
           >
             <span class="nav-user-avatar" aria-hidden="true">{{ avatarLetter }}</span>
             <span class="nav-user-label">{{ displayName }}</span>
-            <i class="fas fa-chevron-down nav-user-chevron" aria-hidden="true"></i>
+            <AppIcon name="chevron-down" class="nav-user-chevron" aria-hidden="true" />
           </button>
           <div v-show="userMenuOpen" class="nav-user-dropdown">
             <div class="dropdown-user-name">{{ displayName }}</div>
             <div class="dropdown-user-email">{{ userEmail }}</div>
             <hr class="dropdown-divider" />
             <router-link to="/admin" class="dropdown-item" @click="closeAll">
-              <i class="fas fa-sliders-h"></i> 管理面板
+              <AppIcon name="sliders-h"  /> 管理面板
             </router-link>
             <button type="button" class="dropdown-item danger" @click="handleLogout">
-              <i class="fas fa-sign-out-alt"></i> 退出登录
+              <AppIcon name="sign-out-alt"  /> 退出登录
             </button>
           </div>
         </div>

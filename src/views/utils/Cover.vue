@@ -80,7 +80,7 @@
               <o-field label="上传图片">
                 <div class="upload-row">
                   <button type="button" class="btn-outline" @click="$refs.fileInput.click()">
-                    <i class="fas fa-image"></i> 选择图片
+                    <AppIcon name="image"  /> 选择图片
                   </button>
                   <button
                     v-if="bgImageUrl"
@@ -124,7 +124,7 @@
 
           <div class="form-actions">
             <button type="button" class="btn-primary" :disabled="exporting" @click="downloadCover">
-              <i class="fas fa-download"></i>
+              <AppIcon name="download"  />
               {{ exporting ? '导出中…' : '下载 PNG' }}
             </button>
             <button type="button" class="btn-outline" @click="resetForm">重置</button>

@@ -24,13 +24,23 @@
 <script>
 import { defineAsyncComponent } from 'vue'
 import { authStore, isPanelVisible } from '@/store/auth'
+import { ensureOruga } from '@/plugins/oruga'
+import { runWhenIdle } from '@/utils/defer'
+
+function loadWithOruga(loader) {
+  return async () => {
+    await ensureOruga()
+    return loader()
+  }
+}
 
 const PANEL_SCHEDULE = [
   { id: 'news', delay: 0 },
   { id: 'tools', delay: 100 },
-  { id: 'music', delay: 900 },
-  { id: 'weather', delay: 1200 },
   { id: 'todo', delay: 700 },
+  { id: 'weather', delay: 1200 },
+  /** APlayer 初始化会强制重排，延后到空闲时段再挂载 */
+  { id: 'music', idle: 5000 },
   { id: 'price', delay: 1600 },
 ]
 
@@ -38,10 +48,12 @@ export default {
   name: 'Sidebar',
   components: {
     AsyncNews: defineAsyncComponent(() => import('@/components/News.vue')),
-    AsyncTools: defineAsyncComponent(() => import('@/components/tools/index.vue')),
+    AsyncTools: defineAsyncComponent(
+      loadWithOruga(() => import('@/components/tools/index.vue')),
+    ),
     AsyncMusic: defineAsyncComponent(() => import('@/components/Music.vue')),
     AsyncWeather: defineAsyncComponent(() => import('@/components/Weather.vue')),
-    AsyncTodo: defineAsyncComponent(() => import('@/components/Todo.vue')),
+    AsyncTodo: defineAsyncComponent(loadWithOruga(() => import('@/components/Todo.vue'))),
     AsyncPrice: defineAsyncComponent(() => import('@/components/PricePanel.vue')),
   },
   data() {
@@ -101,9 +113,15 @@ export default {
     },
     schedulePanels() {
       const timers = []
-      for (const { id, delay } of PANEL_SCHEDULE) {
+      for (const { id, delay = 0, idle } of PANEL_SCHEDULE) {
         const visibleKey = `show${id.charAt(0).toUpperCase()}${id.slice(1)}`
         if (!this[visibleKey]) continue
+        if (idle != null) {
+          runWhenIdle(() => {
+            this.panelReady[id] = true
+          }, idle)
+          continue
+        }
         timers.push(
           setTimeout(() => {
             this.panelReady[id] = true

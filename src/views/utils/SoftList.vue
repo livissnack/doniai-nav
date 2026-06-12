@@ -145,7 +145,7 @@
         <div class="notice-box">
           <div class="notice-left-box">
             <div class="badge badge-danger">
-              <i class="fa fa-volume-up"></i> 网站动态
+              <AppIcon name="volume-up"  /> 网站动态
               <div class="spinner-grow"></div>
             </div>
 
@@ -241,7 +241,6 @@
 </template>
 
 <script>
-import '@fortawesome/fontawesome-free/css/brands.min.css'
 import Navbar from '@/components/Navbar.vue'
 import Marquee from '@/components/Marquee.vue'
 import BackTop from '@/components/BackTop.vue'

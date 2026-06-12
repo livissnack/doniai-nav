@@ -65,7 +65,7 @@
                          label="复制ED2K或者BT链接，建议使用专用下载工具下载。下载速度仅与您宽带环壤和工具有关。捐助与否是您自由选择。"
                          multilined>
                 <small>
-                  <i class="far fa-question-circle"></i>
+                  <AppIcon name="question-circle" pack="regular" />
                   如何下载？
                 </small>
               </o-tooltip>
@@ -83,7 +83,7 @@
                       {{ software.filename }}
                     </p>
                     <a class="card-header-icon">
-                      <i class="far fa-menu-down" :icon="props.open ? 'fa-menu-down' : 'fa-menu-up'"></i>
+                      <AppIcon :name="props.open ? 'caret-down' : 'caret-up'" pack="regular" />
                     </a>
                   </div>
                 </template>
@@ -122,7 +122,7 @@
                       <div class="soft-text">{{ software.ed2k }}</div>
                       <div class="soft-copy-btn" @click="handleCopyText(software.ed2k)">
                         <o-tag variant="danger" rounded>
-                          <i class="far fa-copy"></i>
+                          <AppIcon name="copy" pack="regular" />
                           复制
                         </o-tag>
                       </div>
@@ -132,7 +132,7 @@
                       <div class="soft-text">{{ software.bt }}</div>
                       <div class="soft-copy-btn" @click="handleCopyText(software.bt)">
                         <o-tag variant="danger" rounded>
-                          <i class="far fa-copy"></i>
+                          <AppIcon name="copy" pack="regular" />
                           复制
                         </o-tag>
                       </div>

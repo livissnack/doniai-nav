@@ -72,7 +72,7 @@
                 class="play-overlay"
                 @click="handlePlay"
               >
-                <i class="fas fa-play"></i>
+                <AppIcon name="play"  />
               </div>
               <div
                 class="media-controls"
@@ -90,10 +90,10 @@
                       :aria-label="pausedStatus ? '播放' : '暂停'"
                       @click="handlePlay"
                     >
-                      <i class="fas" :class="pausedStatus ? 'fa-play' : 'fa-pause'"></i>
+                      <AppIcon :name="String(pausedStatus ? 'fa-play' : 'fa-pause').replace(/^fa-/, '')"  />
                     </button>
                     <div class="ctrl-volume">
-                      <i class="fas ctrl-volume__icon" :class="volumeIcon"></i>
+                      <AppIcon :name="volumeIcon" class="ctrl-volume__icon" />
                       <input
                         type="range"
                         min="0"
@@ -110,7 +110,7 @@
                   <div class="media-controls__right">
                     <div class="ctrl-dropdown">
                       <button type="button" class="ctrl-btn ctrl-btn--text" @click="handleTvList">
-                        <i class="fas fa-list"></i>
+                        <AppIcon name="list"  />
                         <span>频道</span>
                       </button>
                       <div class="ctrl-panel" id="tvList">
@@ -133,36 +133,36 @@
                     </div>
                     <div class="ctrl-dropdown">
                       <button type="button" class="ctrl-btn" aria-label="更多" @click="handleSetBox">
-                        <i class="fas fa-ellipsis-h"></i>
+                        <AppIcon name="ellipsis-h"  />
                       </button>
                       <div class="ctrl-panel ctrl-panel--menu" id="setBox">
                         <div class="ctrl-panel__head">更多功能</div>
                         <button type="button" class="ctrl-panel__action" @click="copyPlayUrl">
-                          <i class="fas fa-link"></i>
+                          <AppIcon name="link"  />
                           <span>复制播放地址</span>
                         </button>
                         <button type="button" class="ctrl-panel__action" @click="openInNewTab">
-                          <i class="fas fa-external-link-alt"></i>
+                          <AppIcon name="external-link-alt"  />
                           <span>新窗口打开</span>
                         </button>
                         <button type="button" class="ctrl-panel__action" @click="reloadStream">
-                          <i class="fas fa-redo"></i>
+                          <AppIcon name="redo"  />
                           <span>重新加载</span>
                         </button>
                         <button type="button" class="ctrl-panel__action" @click="toggleMute">
-                          <i class="fas" :class="isMuted ? 'fa-volume-mute' : 'fa-volume-up'"></i>
+                          <AppIcon :name="String(isMuted ? 'fa-volume-mute' : 'fa-volume-up').replace(/^fa-/, '')"  />
                           <span>{{ isMuted ? '取消静音' : '静音' }}</span>
                         </button>
                         <button type="button" class="ctrl-panel__action" @click="cyclePlaybackRate">
-                          <i class="fas fa-tachometer-alt"></i>
+                          <AppIcon name="tachometer-alt"  />
                           <span>播放倍速 {{ playbackRate }}x</span>
                         </button>
                         <button type="button" class="ctrl-panel__action" @click="captureScreenshot">
-                          <i class="fas fa-camera"></i>
+                          <AppIcon name="camera"  />
                           <span>截图保存</span>
                         </button>
                         <button type="button" class="ctrl-panel__action" @click="handlePictureInPicture">
-                          <i class="fas fa-clone"></i>
+                          <AppIcon name="clone"  />
                           <span>画中画</span>
                         </button>
                         <button
@@ -171,20 +171,20 @@
                           class="ctrl-panel__action"
                           @click="toggleBackupSource"
                         >
-                          <i class="fas fa-random"></i>
+                          <AppIcon name="random"  />
                           <span>{{ useBackupSource ? '切换主源' : '切换备用源' }}</span>
                         </button>
                         <button type="button" class="ctrl-panel__action" @click="goIptvTool">
-                          <i class="fas fa-tv"></i>
+                          <AppIcon name="tv"  />
                           <span>IPTV 工具</span>
                         </button>
                       </div>
                     </div>
                     <button type="button" class="ctrl-btn" aria-label="画中画" @click="handleScreenShot">
-                      <i class="fas fa-clone"></i>
+                      <AppIcon name="clone"  />
                     </button>
                     <button type="button" class="ctrl-btn" aria-label="全屏" @click="handleFullScreen">
-                      <i class="fas fa-expand"></i>
+                      <AppIcon name="expand"  />
                     </button>
                   </div>
                 </div>
@@ -260,9 +260,9 @@ export default {
   computed: {
     volumeIcon() {
       const v = Number(this.playerVolume)
-      if (v <= 0) return 'fa-volume-mute'
-      if (v < 0.35) return 'fa-volume-down'
-      return 'fa-volume-up'
+      if (v <= 0) return 'volume-mute'
+      if (v < 0.35) return 'volume-down'
+      return 'volume-up'
     },
   },
   created() {
