@@ -17,6 +17,8 @@
         v-for="(item, index) in list"
         :key="index"
         :href="item.path"
+        target="_blank"
+        rel="noopener noreferrer"
         class="tools-item"
         :class="{ 'is-recommend': item.recommend }"
       >

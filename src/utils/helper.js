@@ -461,7 +461,12 @@ export function calculatePrincipalInstallment(loanAmount, annualInterestRate, lo
 }
 
 export function decodeBase64Utf8(base64Content) {
-  const normalized = String(base64Content || '').replace(/\s/g, '')
+  let normalized = String(base64Content || '')
+    .replace(/\s/g, '')
+    .replace(/-/g, '+')
+    .replace(/_/g, '/')
+  const pad = (4 - (normalized.length % 4)) % 4
+  if (pad) normalized += '='.repeat(pad)
   const binary = atob(normalized)
   const bytes = new Uint8Array(binary.length)
   for (let i = 0; i < binary.length; i++) {
@@ -470,7 +475,7 @@ export function decodeBase64Utf8(base64Content) {
   return new TextDecoder('utf-8').decode(bytes)
 }
 
-const NODE_LINE_RE = /^(ss|vmess|vless|trojan|hysteria2?|socks5):\/\//i
+const NODE_LINE_RE = /^(ss|vmess|vless|trojan|hysteria2?|hy2|anytls|socks5|tuic):\/\//i
 
 export function parseSubscribeContent(raw) {
   const text = String(raw ?? '').trim()
@@ -482,17 +487,24 @@ export function parseSubscribeContent(raw) {
       .map((line) => line.trim())
       .filter((line) => line && !line.startsWith('#'))
 
-  if (NODE_LINE_RE.test(text)) {
-    return lines(text).filter((line) => NODE_LINE_RE.test(line))
+  // 已是节点列表
+  if (NODE_LINE_RE.test(text) || text.includes('://')) {
+    const fromPlain = lines(text).filter((line) => NODE_LINE_RE.test(line))
+    if (fromPlain.length) return fromPlain
   }
 
+  // Clash YAML 订阅：无法直接拆成 share link，提示走节点链接粘贴
+  if (/^proxies:\s*$/m.test(text) || /\ntype:\s*(ss|vmess|vless|trojan|hysteria)/i.test(text)) {
+    return []
+  }
+
+  // base64 订阅（机场常见）
   try {
-    const decoded = decodeBase64Utf8(text.replace(/\s/g, ''))
-    if (NODE_LINE_RE.test(decoded)) {
-      return lines(decoded).filter((line) => NODE_LINE_RE.test(line))
-    }
+    const decoded = decodeBase64Utf8(text)
+    const fromB64 = lines(decoded).filter((line) => NODE_LINE_RE.test(line))
+    if (fromB64.length) return fromB64
   } catch (error) {
-    // 非 base64 时按纯文本行处理
+    // 非 base64
   }
 
   return lines(text).filter((line) => NODE_LINE_RE.test(line))
@@ -508,6 +520,42 @@ export function extractSubscribePayload(response) {
   if (body && typeof body.data === 'string') return body.data
   if (body && body.data != null) return String(body.data)
   return ''
+}
+
+/** 是否为完整 Clash YAML 配置（可直接使用，无需再 convert） */
+export function isClashYamlSubscribe(text) {
+  const raw = String(text ?? '').trim()
+  if (!raw) return false
+  if (/^proxies:\s*$/m.test(raw)) return true
+  if (/\nproxies:\s*\n/m.test(raw)) return true
+  if (/^mixed-port\s*:/m.test(raw) && /(?:^|\n)proxies\s*:/m.test(raw)) return true
+  if (/(?:^|\n)proxy-groups\s*:/m.test(raw) && /(?:^|\n)proxies\s*:/m.test(raw)) return true
+  return false
+}
+
+/** 只统计 proxies 段节点数，兼容块样式与行内 { name: ... } */
+export function countProxiesInClashYaml(yamlText) {
+  if (!yamlText || typeof yamlText !== 'string') return 0
+  const start = yamlText.search(/^proxies:\s*$/m)
+  if (start < 0) {
+    // proxies: 后可能直接跟列表项（少见）
+    const alt = yamlText.search(/^proxies:\s*\n/m)
+    if (alt < 0) return 0
+    const after = yamlText.slice(alt + 'proxies:'.length)
+    const end = after.search(/\n[A-Za-z][\w-]*:/)
+    const section = end >= 0 ? after.slice(0, end) : after
+    return countProxyItems(section)
+  }
+  const after = yamlText.slice(start + 'proxies:'.length)
+  const end = after.search(/\n[A-Za-z][\w-]*:/)
+  const section = end >= 0 ? after.slice(0, end) : after
+  return countProxyItems(section)
+}
+
+function countProxyItems(section) {
+  const block = (section.match(/^\s*-\s+name\s*:/gm) || []).length
+  if (block) return block
+  return (section.match(/^\s*-\s*\{/gm) || []).length
 }
 
 export function parseSsUrl(url) {

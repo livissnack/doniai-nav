@@ -36,6 +36,7 @@
 
     <div class="weather-map__frame">
       <iframe
+        :key="iframeSrc"
         class="weather-map__iframe"
         :src="iframeSrc"
         title="Ventusky 天气地图"
@@ -48,11 +49,12 @@
 </template>
 
 <script>
+/** Ventusky embed 图层 ID（简写会回退到温度） */
 const TABS = [
-  { id: 'temperature', label: '温度' },
-  { id: 'wind', label: '风' },
-  { id: 'rain', label: '降水' },
-  { id: 'clouds', label: '云' },
+  { id: 'temperature', label: '温度', layer: 'temperature-2m' },
+  { id: 'wind', label: '风', layer: 'wind-10m' },
+  { id: 'rain', label: '降水', layer: 'rain-1h' },
+  { id: 'clouds', label: '云', layer: 'clouds-total' },
 ]
 
 export default {
@@ -70,9 +72,13 @@ export default {
     }
   },
   computed: {
+    ventuskyLayer() {
+      const tab = this.tabs.find((t) => t.id === this.activeLayer)
+      return tab?.layer || 'temperature-2m'
+    },
     iframeSrc() {
       const p = encodeURIComponent(`${this.lat};${this.lon};${this.zoom}`)
-      return `https://embed.ventusky.com/?p=${p}&l=${this.activeLayer}`
+      return `https://embed.ventusky.com/?p=${p}&l=${this.ventuskyLayer}`
     },
   },
   mounted() {

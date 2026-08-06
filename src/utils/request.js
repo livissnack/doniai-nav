@@ -22,10 +22,10 @@ function appendQuery(url, params) {
 function needsServiceBearer(url) {
   if (!url) return false
   const path = String(url).split('?')[0]
-  return /^\/(all|hotel|convert|refresh)(\/|$)/.test(path)
+  return /^\/(all|hotel|convert|refresh|subscribe)(\/|$)/.test(path)
 }
 
-function buildHeaders(url, body, extraHeaders = {}) {
+function buildHeaders(url, data, extraHeaders = {}) {
   const headers = { ...extraHeaders }
   const serviceToken =
     import.meta.env.VITE_SECRET_KEY || import.meta.env.VUE_APP_SECRET_KEY
@@ -39,17 +39,20 @@ function buildHeaders(url, body, extraHeaders = {}) {
     headers['X-Session-Token'] = sessionToken
   }
 
-  if (body instanceof FormData) {
+  if (data instanceof FormData) {
     return headers
   }
 
   if (
-    body !== undefined &&
-    body !== null &&
+    data !== undefined &&
+    data !== null &&
     !headers['Content-Type'] &&
     !headers['content-type']
   ) {
-    headers['Content-Type'] = 'application/json;charset=UTF-8'
+    headers['Content-Type'] =
+      typeof data === 'string'
+        ? 'text/plain;charset=UTF-8'
+        : 'application/json;charset=UTF-8'
   }
 
   return headers
@@ -105,15 +108,18 @@ async function fetchRequest(config) {
   const requestUrl = appendQuery(combineUrl(baseURL, url), params)
   const upperMethod = method.toUpperCase()
   const hasBody = !['GET', 'HEAD'].includes(upperMethod)
+  // 字符串按原文发送（如 /convert 节点文本）；对象才 JSON 序列化
   const body = hasBody
     ? data instanceof FormData
       ? data
-      : data !== undefined && data !== null
-        ? JSON.stringify(data)
-        : undefined
+      : typeof data === 'string'
+        ? data
+        : data !== undefined && data !== null
+          ? JSON.stringify(data)
+          : undefined
     : undefined
 
-  const headers = buildHeaders(url, body, extraHeaders)
+  const headers = buildHeaders(url, data, extraHeaders)
   const { signal, clear } = createTimeoutSignal(timeout)
 
   let response

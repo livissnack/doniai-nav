@@ -9,7 +9,10 @@ mod docker_probe;
 mod private_nav;
 mod notes;
 mod files;
+mod files_ops;
 mod ai;
+mod backup;
+mod subscribe;
 
 use models::AggregatedData;
 use fetcher::do_fetch_all;
@@ -172,12 +175,17 @@ async fn main() {
     let notes_state = notes::init_state(auth_state.clone());
     let files_state = files::init_state(auth_state.clone());
     let ai_state = ai::init_state(auth_state.clone(), notes_state.clone());
+    let backup_state = backup::init_state(auth_state.clone(), notes_state.clone());
 
     let api = Router::new()
         .route("/all", get(get_data_handler).post(get_data_handler))
         .route("/hotel", get(hotel::hotel_handler))
         .route("/convert", post(converter::convert_handler))
         .route("/refresh", get(|| async { perform_refresh().await; "OK" }))
+        .route(
+            "/subscribe",
+            get(subscribe::subscribe_get).post(subscribe::subscribe_post),
+        )
         .layer(middleware::from_fn(auth_middleware));
 
     let app = Router::new()
@@ -188,6 +196,7 @@ async fn main() {
         .nest("/notes", notes::router(notes_state))
         .nest("/files", files::router(files_state))
         .nest("/ai", ai::router(ai_state))
+        .nest("/backup", backup::router(backup_state))
         .merge(api)
         .layer(CompressionLayer::new())
         .layer(cors_layer());

@@ -89,6 +89,12 @@
       @change="onPickFiles"
     />
 
+    <EmojiPicker
+      :open="emojiOpen"
+      @close="closeEmojiPicker"
+      @select="insertEmoji"
+    />
+
     <AiChatPanel
       :open="aiOpen"
       :page-title="pageTitle"
@@ -111,6 +117,7 @@ import { tags } from '@lezer/highlight'
 import { uploadFile, isImageFileName, notesUploadDir } from '@/services/filesApi'
 import { toDoniaiFileHref } from '@/utils/markdown'
 import AiChatPanel from '@/components/docs/AiChatPanel.vue'
+import EmojiPicker from '@/components/docs/EmojiPicker.vue'
 
 const TOOL_GROUPS = [
   [
@@ -128,6 +135,7 @@ const TOOL_GROUPS = [
     { id: 'codeblock', label: '</>', title: '代码块', action: 'block', before: '```\n', after: '\n```', placeholder: 'code' },
     { id: 'link', icon: 'link', title: '链接 Ctrl+K', action: 'link' },
     { id: 'image', icon: 'image', title: '插入图片/文件', action: 'pickFile' },
+    { id: 'emoji', icon: 'smile', title: '插入表情短代码', action: 'emoji' },
     { id: 'quote', icon: 'quote-left', title: '引用', action: 'linePrefix', prefix: '> ' },
     { id: 'ul', icon: 'list-ul', title: '无序列表', action: 'linePrefix', prefix: '- ' },
     { id: 'ol', icon: 'list-ol', title: '有序列表', action: 'linePrefix', prefix: '1. ' },
@@ -250,7 +258,7 @@ function markdownForUploaded(name, path) {
 
 export default {
   name: 'MarkdownEditor',
-  components: { Codemirror, AiChatPanel },
+  components: { Codemirror, AiChatPanel, EmojiPicker },
   props: {
     modelValue: { type: String, default: '' },
     autofocus: { type: Boolean, default: false },
@@ -269,6 +277,7 @@ export default {
       dragDepth: 0,
       uploading: false,
       uploadHint: '',
+      emojiOpen: false,
       extensions: null,
     }
   },
@@ -429,9 +438,13 @@ export default {
     },
     runTool(btn) {
       const view = this.view
-      if (!view && btn.action !== 'pickFile') return
+      if (!view && btn.action !== 'pickFile' && btn.action !== 'emoji') return
       if (btn.action === 'pickFile') {
         this.$refs.fileInput?.click()
+        return
+      }
+      if (btn.action === 'emoji') {
+        this.openEmojiPicker()
         return
       }
       if (btn.action === 'wrap') {
@@ -447,6 +460,22 @@ export default {
       } else if (btn.action === 'insert') {
         insertText(view, btn.text)
       }
+    },
+    openEmojiPicker() {
+      this.emojiOpen = true
+    },
+    closeEmojiPicker() {
+      this.emojiOpen = false
+    },
+    insertEmoji(item) {
+      if (!item?.shortcode) return
+      const view = this.view
+      if (view) {
+        insertText(view, item.shortcode)
+      } else {
+        this.$emit('update:modelValue', `${this.modelValue || ''}${item.shortcode}`)
+      }
+      this.closeEmojiPicker()
     },
     onPickFiles(e) {
       const files = [...(e.target.files || [])]

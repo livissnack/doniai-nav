@@ -21,6 +21,12 @@ argon2 = "0.5"
 jsonwebtoken = "9"
 rand_core = { version = "0.6", features = ["std"] }
 captcha = "0.0.9"
+flate2 = "1"
+tar = "0.4"
+zip = { version = "0.6", features = ["deflate"] }
+tokio-util = { version = "0.7.19", features = ["io"] }
+mime_guess = "2.0.5"
+http-range-header = "0.4.2"
 
 [profile.release]
 opt-level = "s"

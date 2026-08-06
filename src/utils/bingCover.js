@@ -89,6 +89,39 @@ function syncStaticCoverImg(url) {
   }
 }
 
+/**
+ * 离开首页时立刻收起 LCP 封面图。
+ * 该节点是 position:fixed，若仍留在 keep-alive 的首页里，路由切换间隙会闪出背景图。
+ */
+export function parkLcpCover() {
+  if (typeof document === 'undefined') return
+  const img = document.getElementById('lcp-cover')
+  if (!img) return
+  img.hidden = true
+  img.style.visibility = 'hidden'
+  img.classList.remove('is-visible', 'cover-layer')
+  const app = document.getElementById('app')
+  if (app && img.parentElement !== document.body) {
+    document.body.insertBefore(img, app)
+  }
+}
+
+/** 挂到首页容器并显示（需在 Home mount / activated 时调用） */
+export function attachLcpCover(host, url) {
+  if (typeof document === 'undefined' || !host) return
+  const img = document.getElementById('lcp-cover')
+  if (!img) return
+  if (url && img.getAttribute('src') !== url) {
+    img.setAttribute('src', url)
+  }
+  img.hidden = false
+  img.style.visibility = ''
+  img.classList.add('cover-layer', 'is-visible')
+  if (img.parentElement !== host) {
+    host.insertBefore(img, host.firstChild)
+  }
+}
+
 function injectPreloadLink(url) {
   if (!url || typeof document === 'undefined') return
   syncStaticCoverImg(url)

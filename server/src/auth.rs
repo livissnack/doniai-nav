@@ -801,6 +801,14 @@ pub fn user_id_from_session(state: &AuthState, headers: &axum::http::HeaderMap) 
         .and_then(|v| v.to_str().ok())
         .map(str::trim)
         .filter(|s| !s.is_empty())?;
+    user_id_from_token(state, token)
+}
+
+pub fn user_id_from_token(state: &AuthState, token: &str) -> Option<u64> {
+    let token = token.trim();
+    if token.is_empty() {
+        return None;
+    }
     let user_id = verify_token(state, token)?;
     let db = state.db.read().unwrap();
     let user = find_user(&db, user_id)?;

@@ -30,7 +30,7 @@ struct NotesStore {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
-struct NotesUserSettings {
+pub struct NotesUserSettings {
     #[serde(default, rename = "deepseekApiKey")]
     deepseek_api_key: String,
 }
@@ -142,7 +142,7 @@ struct ExportProjectMeta {
 
 /// v1: 单项目；v2: 全量备份
 #[derive(Debug, Clone, Serialize, Deserialize)]
-struct ExportBundle {
+pub struct ExportBundle {
     format: String,
     #[serde(rename = "exportedAt")]
     exported_at: u64,
@@ -1003,6 +1003,11 @@ async fn export_all(State(state): State<NotesState>, headers: HeaderMap) -> Note
         Ok(id) => id,
         Err(r) => return r,
     };
+    ok_export("ok", build_full_export_bundle(&state, user_id))
+}
+
+/// 供统一备份模块调用
+pub fn build_full_export_bundle(state: &NotesState, user_id: u64) -> ExportBundle {
     let mut store = state.inner.write().unwrap();
     let data = ensure_user(&mut store, user_id);
     let mut projects = Vec::with_capacity(data.projects.len());
@@ -1014,17 +1019,98 @@ async fn export_all(State(state): State<NotesState>, headers: HeaderMap) -> Note
             pages: pages_to_export(&data.pages, project.id),
         });
     }
+    ExportBundle {
+        format: "doniai-notes-v2".into(),
+        exported_at: now_ts(),
+        project: None,
+        pages: Vec::new(),
+        projects,
+    }
+}
 
-    ok_export(
-        "ok",
-        ExportBundle {
-            format: "doniai-notes-v2".into(),
-            exported_at: now_ts(),
-            project: None,
-            pages: Vec::new(),
-            projects,
-        },
-    )
+pub fn export_user_settings(state: &NotesState, user_id: u64) -> NotesUserSettings {
+    let mut store = state.inner.write().unwrap();
+    let data = ensure_user(&mut store, user_id);
+    data.settings.clone()
+}
+
+pub fn apply_user_settings(state: &NotesState, user_id: u64, settings: NotesUserSettings) {
+    let mut store = state.inner.write().unwrap();
+    let data = ensure_user(&mut store, user_id);
+    data.settings = settings;
+    save_store(&store);
+}
+
+/// 导入笔记备份，返回 (项目数, 页面数)
+pub fn import_export_bundle(
+    state: &NotesState,
+    user_id: u64,
+    body: ExportBundle,
+) -> Result<(usize, usize), String> {
+    let format = body.format.trim();
+    let mut store = state.inner.write().unwrap();
+    let data = ensure_user(&mut store, user_id);
+    let ts = now_ts();
+
+    let mut project_count = 0usize;
+    let mut page_count = 0usize;
+
+    match format {
+        "doniai-notes-v2" => {
+            if body.projects.is_empty() {
+                return Err("备份中没有项目".into());
+            }
+            for proj in body.projects {
+                let name = proj.name.trim();
+                if name.is_empty() {
+                    continue;
+                }
+                let (_project, n) =
+                    import_one_project(data, name, proj.desc.trim(), proj.pages, ts);
+                project_count += 1;
+                page_count += n;
+            }
+            if project_count == 0 {
+                return Err("没有可导入的有效项目".into());
+            }
+        }
+        "doniai-notes-v1" | "" => {
+            if let Some(p) = body.project {
+                let pages = if !body.pages.is_empty() {
+                    body.pages
+                } else {
+                    p.pages
+                };
+                let name = p.name.trim();
+                if name.is_empty() {
+                    return Err("项目名称不能为空".into());
+                }
+                let (_project, n) = import_one_project(data, name, p.desc.trim(), pages, ts);
+                project_count = 1;
+                page_count = n;
+            } else if !body.projects.is_empty() {
+                for proj in body.projects {
+                    let name = proj.name.trim();
+                    if name.is_empty() {
+                        continue;
+                    }
+                    let (_project, n) =
+                        import_one_project(data, name, proj.desc.trim(), proj.pages, ts);
+                    project_count += 1;
+                    page_count += n;
+                }
+                if project_count == 0 {
+                    return Err("没有可导入的有效项目".into());
+                }
+            } else {
+                return Err("不是有效的笔记备份".into());
+            }
+        }
+        _ => return Err("不支持的导入格式".into()),
+    }
+
+    save_store(&store);
+    Ok((project_count, page_count))
 }
 
 async fn import_notes(
@@ -1037,85 +1123,20 @@ async fn import_notes(
         Err(r) => return r,
     };
 
-    let format = body.format.trim();
-    let mut store = state.inner.write().unwrap();
-    let data = ensure_user(&mut store, user_id);
-    let ts = now_ts();
-
-    let mut project_count = 0usize;
-    let mut page_count = 0usize;
-    let mut last_project: Option<Project> = None;
-
-    match format {
-        "doniai-notes-v2" => {
-            if body.projects.is_empty() {
-                return err("备份中没有项目", StatusCode::BAD_REQUEST);
-            }
-            for proj in body.projects {
-                let name = proj.name.trim();
-                if name.is_empty() {
-                    continue;
-                }
-                let (project, n) =
-                    import_one_project(data, name, proj.desc.trim(), proj.pages, ts);
-                project_count += 1;
-                page_count += n;
-                last_project = Some(project);
-            }
-            if project_count == 0 {
-                return err("没有可导入的有效项目", StatusCode::BAD_REQUEST);
-            }
-        }
-        "doniai-notes-v1" | "" => {
-            if let Some(p) = body.project {
-                let pages = if !body.pages.is_empty() {
-                    body.pages
+    match import_export_bundle(&state, user_id, body) {
+        Ok((project_count, page_count)) => (
+            StatusCode::OK,
+            Json(NotesApiBody {
+                ok: true,
+                message: if project_count > 1 {
+                    format!("成功导入 {} 个项目 / {} 篇笔记", project_count, page_count)
                 } else {
-                    p.pages
-                };
-                let name = p.name.trim();
-                if name.is_empty() {
-                    return err("项目名称不能为空", StatusCode::BAD_REQUEST);
-                }
-                let (project, n) = import_one_project(data, name, p.desc.trim(), pages, ts);
-                project_count = 1;
-                page_count = n;
-                last_project = Some(project);
-            } else if !body.projects.is_empty() {
-                for proj in body.projects {
-                    let name = proj.name.trim();
-                    if name.is_empty() {
-                        continue;
-                    }
-                    let (project, n) =
-                        import_one_project(data, name, proj.desc.trim(), proj.pages, ts);
-                    project_count += 1;
-                    page_count += n;
-                    last_project = Some(project);
-                }
-                if project_count == 0 {
-                    return err("没有可导入的有效项目", StatusCode::BAD_REQUEST);
-                }
-            } else {
-                return err("不是有效的笔记备份", StatusCode::BAD_REQUEST);
-            }
-        }
-        _ => return err("不支持的导入格式", StatusCode::BAD_REQUEST),
+                    format!("导入成功（{} 篇笔记）", page_count)
+                },
+                imported_count: Some(page_count),
+                ..empty_body()
+            }),
+        ),
+        Err(m) => err(&m, StatusCode::BAD_REQUEST),
     }
-
-    save_store(&store);
-    (
-        StatusCode::OK,
-        Json(NotesApiBody {
-            ok: true,
-            message: if project_count > 1 {
-                format!("成功导入 {} 个项目 / {} 篇笔记", project_count, page_count)
-            } else {
-                format!("导入成功（{} 篇笔记）", page_count)
-            },
-            project: last_project,
-            imported_count: Some(page_count),
-            ..empty_body()
-        }),
-    )
 }

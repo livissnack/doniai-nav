@@ -66,6 +66,18 @@ function resolveManualChunk(id) {
     [/[/\\]jszip[/\\]/, 'jszip'],
     [/[/\\]mammoth[/\\]|@xmldom[/\\]/, 'mammoth'],
     [/[/\\]xlsx[/\\]/, 'xlsx'],
+    // Split Univer by product so opening Word doesn't download Sheets+Slides (~9MB monolith).
+    [/[/\\]@univerjs[/\\](preset-sheets|sheets)/, 'univer-sheets'],
+    [/[/\\]@univerjs[/\\](preset-docs|docs)/, 'univer-docs'],
+    [/[/\\]@univerjs[/\\]slides/, 'univer-slides'],
+    [/[/\\]@univerjs[/\\]drawing/, 'univer-drawing'],
+    [/[/\\]@univerjs(-pro)?[/\\]/, 'univer-core'],
+    [/[/\\]rxjs[/\\]/, 'rxjs'],
+    [/[/\\]react-dom[/\\]/, 'react-vendor'],
+    [/[/\\]react[/\\][^/]*$/, 'react-vendor'],
+    [/[/\\]react[/\\]cjs[/\\]/, 'react-vendor'],
+    [/[/\\]react[/\\]index/, 'react-vendor'],
+    [/[/\\]scheduler[/\\]/, 'react-vendor'],
     [/[/\\]hls\.js[/\\]/, 'hls'],
     [/[/\\]flv\.js[/\\]/, 'flv'],
     [/[/\\]html2canvas[/\\]/, 'html2canvas'],
@@ -115,6 +127,10 @@ export default defineConfig(({ mode }) => {
         'vue-router',
         '@oruga-ui/oruga-next',
         '@oruga-ui/theme-bulma',
+        'react',
+        'react-dom',
+        'rxjs',
+        'opentype.js',
       ],
     },
     resolve: {
@@ -167,8 +183,8 @@ export default defineConfig(({ mode }) => {
       target: 'es2020',
       sourcemap: false,
       cssCodeSplit: true,
-      // chart.js 约 200KB，仅在成绩/贷款/点名等页懒加载
-      chunkSizeWarningLimit: 1100,
+      // chart.js 约 200KB；Univer 体积较大，单独拆 chunk
+      chunkSizeWarningLimit: 2500,
       rollupOptions: {
         output: {
           manualChunks: resolveManualChunk,

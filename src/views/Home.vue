@@ -57,7 +57,13 @@ import {
   peekNavData,
   setPrivateNavCache,
 } from '@/services/navData'
-import { getCachedCover, isSharperCover, refreshBingCover } from '@/utils/bingCover'
+import {
+  attachLcpCover,
+  getCachedCover,
+  isSharperCover,
+  parkLcpCover,
+  refreshBingCover,
+} from '@/utils/bingCover'
 
 const VALID_MENU_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 const PRIVATE_MENU_ID = 2
@@ -91,6 +97,12 @@ export default {
       this.syncCoverImg(cached)
     }
   },
+  deactivated() {
+    parkLcpCover()
+  },
+  beforeUnmount() {
+    parkLcpCover()
+  },
   created() {
     localStorage.removeItem('doniaiNavActiveMenuId')
     this.current_active_menu_id = 1
@@ -99,25 +111,13 @@ export default {
   },
   methods: {
     mountStaticCover() {
-      const img = document.getElementById('lcp-cover')
       const host = this.$refs.coverHost
-      if (!img || !host) return
-      img.classList.add('cover-layer', 'is-visible')
-      if (img.parentElement !== host) {
-        host.insertBefore(img, host.firstChild)
-      }
-      if (this.coverBg && img.getAttribute('src') !== this.coverBg) {
-        img.setAttribute('src', this.coverBg)
-      }
+      if (!host) return
+      attachLcpCover(host, this.coverBg)
     },
     syncCoverImg(url) {
       if (!url) return
       this.coverBg = url
-      const img = document.getElementById('lcp-cover')
-      if (!img) return
-      if (img.getAttribute('src') !== url) {
-        img.setAttribute('src', url)
-      }
       this.mountStaticCover()
     },
     loadCoverBg() {

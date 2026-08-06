@@ -30,7 +30,7 @@
         </button>
       </div>
 
-      <div class="dsug-panel" v-show="historyShow">
+      <div class="dsug-panel" v-show="historyShow && historyList.length">
         <div class="history-header">
           <span class="history-title">搜索历史</span>
           <button type="button" class="history-clear" @mousedown.prevent @click="handleClearHistory">
@@ -51,7 +51,7 @@
         </ul>
       </div>
 
-      <div class="dsug-panel" v-show="suggestShow">
+      <div class="dsug-panel" v-show="suggestShow && suggestList.length">
         <ul class="recommend-list">
           <li v-for="(item, index) in suggestList" :key="'s-' + index">
             <button
@@ -161,33 +161,51 @@ export default {
     handleFocusDsug() {
       let res = localStorage.getItem('doniaiNavHistoryHomePageList')
       this.historyList = res ? JSON.parse(res) : []
-      this.historyShow = true
+      // 无历史时不展示空白框
+      this.historyShow = this.historyList.length > 0 && !this.filter.search_text
+      this.suggestShow = false
     },
     handleBlurDsug() {
       setTimeout(() => {
         this.historyShow = false
         this.suggestShow = false
+        this.currentItemIndex = -1
       }, 100)
     },
     async handleChangeKeyword() {
-      let keyword = this.filter.search_text
-      await this.setShowContent(keyword)
-      if(keyword === '') {
+      const keyword = String(this.filter.search_text || '').trim()
+      this.currentItemIndex = -1
+      if (!keyword) {
+        this.suggestList = []
+        this.suggestShow = false
+        const res = localStorage.getItem('doniaiNavHistoryHomePageList')
+        this.historyList = res ? JSON.parse(res) : []
+        this.historyShow = this.historyList.length > 0
         return
       }
-      let response = await fetchJsonp(`https://suggestion.baidu.com/su?wd=${keyword}`, {
-        jsonpCallback: 'cb',
-      })
-      response = await response.json()
-      this.suggestList = response.s
+      this.historyShow = false
+      try {
+        let response = await fetchJsonp(
+          `https://suggestion.baidu.com/su?wd=${encodeURIComponent(keyword)}`,
+          { jsonpCallback: 'cb' },
+        )
+        response = await response.json()
+        const list = Array.isArray(response?.s) ? response.s.filter(Boolean) : []
+        this.suggestList = list
+        // 百度返回空建议时不展示白框，例如 wd=是 → s:[]
+        this.suggestShow = list.length > 0
+      } catch {
+        this.suggestList = []
+        this.suggestShow = false
+      }
     },
     setShowContent(searchValue) {
       if (!isEmpty(searchValue)) {
         this.historyShow = false
-        this.suggestShow = true
       } else {
-        this.historyShow = true
+        this.historyShow = this.historyList.length > 0
         this.suggestShow = false
+        this.suggestList = []
       }
     },
     handleKeyEnter() {

@@ -46,6 +46,10 @@ export const purgeCssOptions = {
       /^ͼ/,
       /^aplayer/,
       /^json-formatter/,
+      // Univer Sheets（运行时生成大量 class / CSS 变量）
+      /^univer-/,
+      /^-univer-/,
+      /^\!univer-/,
       // 站内自定义通知与进度条
       /^doniai-notify/,
       /^notify-/,
@@ -80,7 +84,7 @@ export const purgeCssOptions = {
       /^title/,
       /^subtitle/,
     ],
-    greedy: [/data-oruga/],
+    greedy: [/data-oruga/, /univer/, /radix/],
   },
   keyframes: true,
   fontFace: true,

@@ -12,6 +12,7 @@ import {
   failPageProgress,
 } from '@/utils/pageProgress'
 import { ensureOruga } from '@/plugins/oruga'
+import { parkLcpCover } from '@/utils/bingCover'
 
 let authInitPromise = null
 
@@ -20,6 +21,10 @@ function ensureAuthInit() {
     authInitPromise = initAuth()
   }
   return authInitPromise
+}
+
+function isHomePath(path) {
+  return path === '/' || path === ''
 }
 
 const keepAlive = { keepAlive: true }
@@ -127,9 +132,10 @@ const routes = [
   },
   {
     path: '/utils/node_parse',
-    name: 'projectNodeParse',
-    meta: keepAlive,
-    component: () => import('@/views/utils/NodeParse.vue'),
+    redirect: (to) => ({
+      path: '/utils/clash',
+      query: to.query,
+    }),
   },
   {
     path: '/utils/clash',
@@ -190,6 +196,11 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   if (to.fullPath !== from.fullPath) {
     startPageProgress()
+  }
+
+  // 导航离开首页时立刻收起 fixed 封面，避免工具页/云笔记加载间隙闪背景图
+  if (!isHomePath(to.path)) {
+    parkLcpCover()
   }
 
   const needsProtectedRoute = to.matched.some((r) => r.meta.requiresAuth)

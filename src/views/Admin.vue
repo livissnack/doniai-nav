@@ -47,9 +47,9 @@
                   <span class="panel-id">{{ item.id }}</span>
                 </div>
                 <o-switch
-                  :value="panelState[item.id] !== false"
+                  :model-value="panelState[item.id] !== false"
                   variant="success"
-                  @input="(v) => setPanel(item.id, v)"
+                  @update:model-value="(v) => setPanel(item.id, v)"
                 />
               </div>
             </div>

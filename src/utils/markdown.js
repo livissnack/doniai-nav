@@ -10,6 +10,7 @@ import markdownLang from 'highlight.js/lib/languages/markdown'
 import python from 'highlight.js/lib/languages/python'
 import plaintext from 'highlight.js/lib/languages/plaintext'
 import 'highlight.js/styles/github.css'
+import { emojifyShortcodes } from '@/utils/emojiShortcodes'
 
 hljs.registerLanguage('javascript', javascript)
 hljs.registerLanguage('js', javascript)
@@ -102,7 +103,7 @@ marked.setOptions({
 })
 
 export function renderMarkdown(text) {
-  return marked.parse(text || '')
+  return marked.parse(emojifyShortcodes(text || ''))
 }
 
 export function extractHeadings(text) {
@@ -112,9 +113,10 @@ export function extractHeadings(text) {
     const m = /^(#{1,3})\s+(.+)$/.exec(line.trim())
     if (m) {
       const headingText = m[2].trim()
+      const display = emojifyShortcodes(headingText)
       items.push({
         level: m[1].length,
-        text: headingText,
+        text: display,
         id: slugify(headingText),
       })
     }

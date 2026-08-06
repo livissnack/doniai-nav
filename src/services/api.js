@@ -22,9 +22,15 @@ export async function getMusic() {
   return request('get', `${ApiVersion}/all?type=music`)
 }
 
-/** 经后端 /refresh 代理拉取订阅，避免浏览器直连 CORS */
+/** 经后端 /subscribe 代理拉取订阅，避免浏览器直连 CORS */
 export async function getNodeSubscribe(url) {
-  return request('get', '/refresh', { url })
+  // POST 传 url，避免 query 里二次 ?token= 被截断
+  return request(
+    'post',
+    '/subscribe',
+    { url: String(url || '').trim() },
+    { timeout: 45000 },
+  )
 }
 
 export async function getExchangeRate() {
@@ -40,7 +46,9 @@ export async function getHotelIptvM3u(ip) {
 }
 
 export async function getNodeParse(links) {
-  return request('post', `${ApiVersion}/convert`, links);
+  return request('post', `${ApiVersion}/convert`, String(links ?? ''), {
+    headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+  })
 }
 
 export async function getStudentScore(key) {

@@ -9,10 +9,10 @@
         <span class="settings-hint">关闭后注册页将不可用</span>
       </div>
       <o-switch
-        :value="registrationEnabled"
+        :model-value="registrationEnabled"
         variant="success"
         :disabled="settingsSaving"
-        @input="onRegistrationToggle"
+        @update:model-value="onRegistrationToggle"
       />
     </div>
 

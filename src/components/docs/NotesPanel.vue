@@ -100,20 +100,9 @@
           <AppIcon name="folder-plus" />
         </button>
         <span class="foot-sep" aria-hidden="true" />
-        <button type="button" class="foot-icon" title="导入 / 导出" @click="showBackupModal = true">
-          <AppIcon name="download" />
-        </button>
         <button type="button" class="foot-icon" title="AI 设置" @click="openAiSettings">
           <AppIcon name="cog" />
         </button>
-        <input
-          ref="importInput"
-          type="file"
-          accept="application/json,.json"
-          class="import-input"
-          multiple
-          @change="onImportFiles"
-        />
       </div>
     </aside>
 
@@ -325,47 +314,6 @@
       </div>
     </div>
 
-
-    <!-- 导入导出 -->
-    <div v-if="showBackupModal" class="doc-modal-mask" @click.self="closeBackupModal">
-      <div class="doc-modal doc-modal--wide" role="dialog" aria-labelledby="modal-backup-title">
-        <div class="doc-modal-icon doc-modal-icon--project">
-          <AppIcon name="download" />
-        </div>
-        <h3 id="modal-backup-title" class="doc-modal-title">导入 / 导出</h3>
-        <p class="doc-modal-desc">支持当前项目或全部笔记；可一次选择多个备份文件导入</p>
-
-        <div class="backup-section">
-          <h4 class="backup-section__title">导出</h4>
-          <div class="backup-actions">
-            <button type="button" class="backup-btn" :disabled="backupBusy" @click="doExport('current')">
-              <AppIcon name="file-alt" />
-              <span>导出当前项目</span>
-            </button>
-            <button type="button" class="backup-btn" :disabled="backupBusy" @click="doExport('all')">
-              <AppIcon name="folder" />
-              <span>导出全部笔记</span>
-            </button>
-          </div>
-        </div>
-
-        <div class="backup-section">
-          <h4 class="backup-section__title">导入</h4>
-          <p class="backup-hint">兼容单项目（v1）与全量备份（v2），多文件将逐个导入并让出主线程</p>
-          <div class="backup-actions">
-            <button type="button" class="backup-btn backup-btn--primary" :disabled="backupBusy" @click="triggerImport">
-              <AppIcon name="upload" />
-              <span>{{ backupBusy ? backupProgress : '选择备份文件…' }}</span>
-            </button>
-          </div>
-        </div>
-
-        <div class="doc-modal-foot">
-          <button type="button" class="btn-ghost" :disabled="backupBusy" @click="closeBackupModal">关闭</button>
-        </div>
-      </div>
-    </div>
-
     <!-- DeepSeek AI 秘钥 -->
     <div v-if="showAiSettingsModal" class="doc-modal-mask" @click.self="closeAiSettings">
       <div class="doc-modal" role="dialog" aria-labelledby="modal-ai-title">
@@ -476,9 +424,6 @@ import {
   updatePage,
   deletePage,
   createShare,
-  exportProject,
-  exportAllNotes,
-  importNotes,
   fetchNotesSettings,
   updateNotesSettings,
 } from '@/services/notesApi'
@@ -563,9 +508,6 @@ export default {
       ],
       shareUrl: '',
       sharing: false,
-      showBackupModal: false,
-      backupBusy: false,
-      backupProgress: '',
       showAiSettingsModal: false,
       deepseekApiKey: '',
       aiSettingsSaving: false,
@@ -579,9 +521,22 @@ export default {
         node: null,
       },
       _fileBlobUrls: [],
+      savedContent: '',
+      savedTitle: '',
+      autoSaveStatus: 'idle', // idle | pending | saving | saved | error
+      autoSaveAt: 0,
+      _autoSaving: false,
+      _autoSaveQueued: false,
     }
   },
   computed: {
+    isDirty() {
+      if (!this.activePage || this.activePage.kind !== 'page') return false
+      return (
+        this.editContent !== this.savedContent ||
+        this.editTitle.trim() !== this.savedTitle
+      )
+    },
     filteredPages() {
       const k = this.searchKeyword.trim().toLowerCase()
       if (!k) return this.pages
@@ -641,9 +596,13 @@ export default {
       this.$nextTick(() => this.hydratePreviewFiles())
     },
     editContent() {
+      this.scheduleAutoSave()
       if (this.viewMode === 'edit') return
       clearTimeout(this._hydrateTimer)
       this._hydrateTimer = setTimeout(() => this.hydratePreviewFiles(), 300)
+    },
+    editTitle() {
+      this.scheduleAutoSave()
     },
     headings(list) {
       if (!list.length) this.tocOpen = false
@@ -662,15 +621,116 @@ export default {
     this.loadProjects().then(() => this.openSharedPage())
     this.$emit('view-mode-change', this.viewMode)
     this._onWinClick = () => this.closePopovers()
+    this._onBeforeUnload = (e) => {
+      if (!this.isDirty) return
+      this.flushAutoSave()
+      e.preventDefault()
+      e.returnValue = ''
+    }
+    this._onVisibility = () => {
+      if (document.visibilityState === 'hidden') this.flushAutoSave()
+    }
     window.addEventListener('click', this._onWinClick)
+    window.addEventListener('beforeunload', this._onBeforeUnload)
+    document.addEventListener('visibilitychange', this._onVisibility)
     this.$nextTick(() => this.hydratePreviewFiles())
   },
   beforeUnmount() {
     window.removeEventListener('click', this._onWinClick)
+    window.removeEventListener('beforeunload', this._onBeforeUnload)
+    document.removeEventListener('visibilitychange', this._onVisibility)
     clearTimeout(this._hydrateTimer)
+    clearTimeout(this._autoSaveTimer)
+    this.flushAutoSave()
     this.revokeFileBlobs()
   },
   methods: {
+    emitSaveStatus() {
+      this.$emit('save-status', {
+        status: this.autoSaveStatus,
+        dirty: this.isDirty,
+        at: this.autoSaveAt,
+      })
+    },
+    markCleanFromPage(page) {
+      this.savedContent = page?.content || ''
+      this.savedTitle = String(page?.title || '')
+      this.autoSaveStatus = 'idle'
+      this.autoSaveAt = 0
+      this.emitSaveStatus()
+    },
+    clearAutoSaveTimer() {
+      clearTimeout(this._autoSaveTimer)
+      this._autoSaveTimer = null
+    },
+    scheduleAutoSave() {
+      if (!this.activePage || this.activePage.kind !== 'page') return
+      if (!this.isDirty) {
+        this.clearAutoSaveTimer()
+        if (this.autoSaveStatus === 'pending') {
+          this.autoSaveStatus = 'saved'
+          this.emitSaveStatus()
+        }
+        return
+      }
+      this.autoSaveStatus = 'pending'
+      this.emitSaveStatus()
+      this.clearAutoSaveTimer()
+      // 停顿 2.5s 后再保存，避免边写边打接口
+      this._autoSaveTimer = setTimeout(() => {
+        this.runAutoSave()
+      }, 2500)
+    },
+    async flushAutoSave() {
+      this.clearAutoSaveTimer()
+      if (!this.isDirty) return
+      await this.runAutoSave()
+    },
+    async runAutoSave() {
+      if (!this.activePage || this.activePage.kind !== 'page') return
+      if (!this.isDirty) {
+        this.autoSaveStatus = 'saved'
+        this.emitSaveStatus()
+        return
+      }
+      if (this.saving || this._autoSaving) {
+        this._autoSaveQueued = true
+        return
+      }
+      this._autoSaving = true
+      this.autoSaveStatus = 'saving'
+      this.emitSaveStatus()
+      const pageId = this.activePage.id
+      const payload = {}
+      if (this.editContent !== this.savedContent) payload.content = this.editContent
+      const title = this.editTitle.trim()
+      if (title !== this.savedTitle) payload.title = title || '未命名'
+      try {
+        if (Object.keys(payload).length) {
+          await this.patchPage(payload, pageId)
+        }
+        // 若保存期间用户又改了，只更新已提交的快照
+        if (Number(this.activePage?.id) === Number(pageId)) {
+          if (payload.content !== undefined) this.savedContent = payload.content
+          if (payload.title !== undefined) this.savedTitle = payload.title
+          this.autoSaveAt = Date.now()
+          this.autoSaveStatus = this.isDirty ? 'pending' : 'saved'
+          this.emitSaveStatus()
+        }
+      } catch (e) {
+        this.autoSaveStatus = 'error'
+        this.emitSaveStatus()
+        this.$toast.open({ message: e?.msg || '自动保存失败', type: 'is-danger' })
+      } finally {
+        this._autoSaving = false
+        if (this._autoSaveQueued) {
+          this._autoSaveQueued = false
+          this.scheduleAutoSave()
+        } else if (this.isDirty && this.autoSaveStatus !== 'error') {
+          this.scheduleAutoSave()
+        }
+      }
+    },
     revokeFileBlobs() {
       ;(this._fileBlobUrls || []).forEach((u) => {
         try {
@@ -794,6 +854,7 @@ export default {
     async chooseProject(p) {
       this.projectMenuOpen = false
       if (Number(p.id) === Number(this.currentProjectId)) return
+      await this.flushAutoSave()
       this.currentProjectId = Number(p.id)
       await this.onProjectChange()
     },
@@ -1029,10 +1090,12 @@ export default {
       this.deleteTarget = { id: p.id, title: p.name, kind: 'project' }
       this.showDeleteModal = true
     },
-    closeBackupModal() {
-      if (this.backupBusy) return
-      this.showBackupModal = false
-      this.backupProgress = ''
+    async reloadAfterBackup() {
+      await this.loadProjects()
+      if (this.currentProjectId) {
+        await this.loadPages()
+        this.emitProjectName()
+      }
     },
     async openAiSettings() {
       this.showAiSettingsModal = true
@@ -1070,154 +1133,6 @@ export default {
         this.$toast.open({ message: e?.msg || '保存失败', type: 'is-danger' })
       } finally {
         this.aiSettingsSaving = false
-      }
-    },
-    downloadJson(obj, filename) {
-      const json = JSON.stringify(obj)
-      const blob = new Blob([json], { type: 'application/json;charset=utf-8' })
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = filename
-      a.click()
-      URL.revokeObjectURL(url)
-    },
-    safeFileName(name) {
-      return String(name || 'notes').replace(/[\\/:*?"<>|]/g, '_')
-    },
-    async doExport(scope) {
-      if (this.backupBusy) return
-      this.backupBusy = true
-      this.backupProgress = '导出中…'
-      try {
-        let data
-        let filename
-        if (scope === 'all') {
-          ;({ data } = await exportAllNotes())
-          filename = `doniai-notes-all-${new Date().toISOString().slice(0, 10)}.json`
-        } else {
-          const projectId = normalizeProjectId(this.currentProjectId)
-          if (!projectId) {
-            this.$toast.open({ message: '请先选择项目', type: 'is-warning' })
-            return
-          }
-          ;({ data } = await exportProject(projectId))
-          const name = this.safeFileName(data?.export?.project?.name || this.currentProjectName)
-          filename = `${name}-${new Date().toISOString().slice(0, 10)}.json`
-        }
-        if (!data?.ok || !data.export) {
-          this.$toast.open({ message: data?.message || '导出失败', type: 'is-danger' })
-          return
-        }
-        // 大文件用紧凑 JSON，减小体积与序列化耗时
-        this.downloadJson(data.export, filename)
-        const tip =
-          scope === 'all'
-            ? `已导出全部笔记（${data.export.projects?.length || 0} 个项目）`
-            : '当前项目已导出'
-        this.$toast.open({ message: tip, type: 'is-success' })
-      } catch (e) {
-        this.$toast.open({ message: e?.msg || '导出失败', type: 'is-danger' })
-      } finally {
-        this.backupBusy = false
-        this.backupProgress = ''
-      }
-    },
-    triggerImport() {
-      this.$refs.importInput?.click()
-    },
-    yieldToMain() {
-      return new Promise((resolve) => {
-        if (typeof requestIdleCallback === 'function') {
-          requestIdleCallback(() => resolve(), { timeout: 50 })
-        } else {
-          setTimeout(resolve, 0)
-        }
-      })
-    },
-    isValidBackup(payload) {
-      if (!payload || typeof payload !== 'object') return false
-      if (payload.format === 'doniai-notes-v2') {
-        return Array.isArray(payload.projects) && payload.projects.length > 0
-      }
-      if (payload.format === 'doniai-notes-v1' || !payload.format) {
-        if (payload.project && (Array.isArray(payload.pages) || Array.isArray(payload.project.pages))) {
-          return true
-        }
-        return Array.isArray(payload.projects) && payload.projects.length > 0
-      }
-      return false
-    },
-    async onImportFiles(e) {
-      const files = Array.from(e.target.files || [])
-      e.target.value = ''
-      if (!files.length) return
-
-      this.backupBusy = true
-      let okCount = 0
-      let failCount = 0
-      let lastProjectId = null
-      let totalPages = 0
-
-      try {
-        for (let i = 0; i < files.length; i++) {
-          const file = files[i]
-          this.backupProgress = `导入中 ${i + 1}/${files.length}：${file.name}`
-          await this.yieldToMain()
-          try {
-            // 超过 8MB 的文件分片读会影响体验，这里直接 text；后端 O(n) 导入
-            if (file.size > 30 * 1024 * 1024) {
-              failCount += 1
-              this.$toast.open({ message: `${file.name} 超过 30MB，已跳过`, type: 'is-warning' })
-              continue
-            }
-            const raw = await file.text()
-            await this.yieldToMain()
-            const payload = JSON.parse(raw)
-            if (!this.isValidBackup(payload)) {
-              failCount += 1
-              continue
-            }
-            const { data } = await importNotes(payload)
-            if (data?.ok) {
-              okCount += 1
-              totalPages += Number(data.importedCount || 0)
-              if (data.project?.id) lastProjectId = Number(data.project.id)
-            } else {
-              failCount += 1
-            }
-          } catch {
-            failCount += 1
-          }
-          await this.yieldToMain()
-        }
-
-        await this.loadProjects()
-        if (lastProjectId) {
-          this.currentProjectId = lastProjectId
-          await this.loadPages()
-          this.emitProjectName()
-        } else if (this.currentProjectId) {
-          await this.loadPages()
-        }
-
-        if (okCount && !failCount) {
-          this.$toast.open({
-            message: `成功导入 ${okCount} 个文件（约 ${totalPages} 篇）`,
-            type: 'is-success',
-          })
-          this.showBackupModal = false
-        } else if (okCount) {
-          this.$toast.open({
-            message: `完成：成功 ${okCount}，失败 ${failCount}`,
-            type: 'is-warning',
-          })
-        } else {
-          this.$toast.open({ message: '导入失败，请检查备份文件', type: 'is-danger' })
-        }
-      } finally {
-        this.backupBusy = false
-        this.backupProgress = ''
       }
     },
     async loadPages() {
@@ -1319,11 +1234,31 @@ export default {
     },
     async selectPage(node, options = {}) {
       const id = Number(node.id)
-      this.activePageId = id
+
       if (node.kind === 'folder') {
+        if (this.activePage?.kind === 'page' && this.isDirty) {
+          await this.flushAutoSave()
+        }
+        this.clearAutoSaveTimer()
+        this.activePageId = id
         this.activePage = normalizePage(node)
+        this.editTitle = ''
+        this.editContent = ''
+        this.markCleanFromPage(null)
         return
       }
+
+      // 已在当前页：只切模式，避免重新拉取覆盖未保存内容
+      if (Number(this.activePageId) === id && this.activePage?.kind === 'page') {
+        if (options.mode) this.viewMode = options.mode
+        return
+      }
+
+      if (this.activePage?.kind === 'page' && this.isDirty) {
+        await this.flushAutoSave()
+      }
+      this.clearAutoSaveTimer()
+      this.activePageId = id
       try {
         const { data } = await fetchPage(id)
         if (data?.ok && data.page) {
@@ -1331,6 +1266,7 @@ export default {
           this.activePage = page
           this.editTitle = page.title
           this.editContent = page.content || ''
+          this.markCleanFromPage(page)
           this.viewMode = options.mode || 'preview'
         }
       } catch (e) {
@@ -1339,26 +1275,75 @@ export default {
     },
     async saveMeta() {
       if (!this.activePage || this.activePage.kind !== 'page') return
-      if (this.editTitle.trim() === this.activePage.title) return
-      await this.patchPage({ title: this.editTitle.trim() })
+      if (this.editTitle.trim() === this.savedTitle) return
+      await this.flushAutoSave()
     },
     async saveContent() {
       if (!this.activePage || this.activePage.kind !== 'page') return
+      this.clearAutoSaveTimer()
+      if (!this.isDirty) {
+        this.$toast.open({ message: '已是最新', type: 'is-success' })
+        return
+      }
+      if (this._autoSaving) {
+        this._autoSaveQueued = true
+        return
+      }
       this.saving = true
+      this.autoSaveStatus = 'saving'
+      this.emitSaveStatus()
+      const pageId = this.activePage.id
+      const payload = {}
+      if (this.editContent !== this.savedContent) payload.content = this.editContent
+      const title = this.editTitle.trim()
+      if (title !== this.savedTitle) payload.title = title || '未命名'
       try {
-        await this.patchPage({ content: this.editContent })
+        if (Object.keys(payload).length) {
+          await this.patchPage(payload, pageId)
+        }
+        if (Number(this.activePage?.id) === Number(pageId)) {
+          if (payload.content !== undefined) this.savedContent = payload.content
+          if (payload.title !== undefined) this.savedTitle = payload.title
+          this.autoSaveAt = Date.now()
+          this.autoSaveStatus = this.isDirty ? 'pending' : 'saved'
+          this.emitSaveStatus()
+        }
         this.$toast.open({ message: '已保存', type: 'is-success' })
       } catch (e) {
+        this.autoSaveStatus = 'error'
+        this.emitSaveStatus()
         this.$toast.open({ message: e?.msg || '保存失败', type: 'is-danger' })
       } finally {
         this.saving = false
+        if (this._autoSaveQueued || this.isDirty) {
+          this._autoSaveQueued = false
+          this.scheduleAutoSave()
+        }
       }
     },
-    async patchPage(payload) {
-      const { data } = await updatePage(this.activePage.id, payload)
-      if (data?.ok && data.page) {
-        this.activePage = normalizePage(data.page)
-        await this.loadPages()
+    async patchPage(payload, pageId) {
+      const id = pageId ?? this.activePage?.id
+      if (!id) return
+      const { data } = await updatePage(id, payload)
+      if (!(data?.ok && data.page)) return
+      const page = normalizePage(data.page)
+      if (Number(this.activePage?.id) === Number(id)) {
+        this.activePage = {
+          ...this.activePage,
+          ...page,
+        }
+      }
+      // 本地更新树节点标题，避免每次自动保存都全量拉列表
+      const idx = this.pages.findIndex((p) => Number(p.id) === Number(id))
+      if (idx >= 0) {
+        const prev = this.pages[idx]
+        this.pages.splice(idx, 1, {
+          ...prev,
+          title: page.title,
+          parentId: page.parentId,
+          sort: page.sort,
+          kind: page.kind,
+        })
       }
     },
     scrollToHeading(id) {
