@@ -27,6 +27,10 @@ $ yarn serve
 
 - [浏览器访问 http://localhost:8080](http://localhost:8080)
 
+## 后端（`server/`）
+
+Rust API 与前端同仓维护，见 [server/README.md](./server/README.md)。本地开发时先启动后端，再 `yarn serve`。
+
 ## 部署
 
 ### vue 打包编译

@@ -29,6 +29,8 @@ hljs.registerLanguage('py', python)
 hljs.registerLanguage('plaintext', plaintext)
 hljs.registerLanguage('text', plaintext)
 
+export const DONIAI_FILE_SCHEME = 'doniai-file:'
+
 function slugify(text) {
   return String(text)
     .trim()
@@ -37,10 +39,53 @@ function slugify(text) {
     .replace(/^-+|-+$/g, '') || 'section'
 }
 
+function escapeHtml(s) {
+  return String(s || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+}
+
+function escapeAttr(s) {
+  return escapeHtml(s).replace(/'/g, '&#39;')
+}
+
+export function isDoniaiFileHref(href) {
+  return String(href || '').startsWith(DONIAI_FILE_SCHEME)
+}
+
+export function doniaiFilePath(href) {
+  return String(href || '').slice(DONIAI_FILE_SCHEME.length)
+}
+
+export function toDoniaiFileHref(path) {
+  return `${DONIAI_FILE_SCHEME}${String(path || '').replace(/^\/+/, '')}`
+}
+
 const renderer = new Renderer()
 renderer.heading = function (text, level) {
   const id = slugify(text)
   return `<h${level} id="${id}">${text}</h${level}>`
+}
+
+renderer.image = function (href, title, text) {
+  const alt = escapeAttr(text)
+  const titleAttr = title ? ` title="${escapeAttr(title)}"` : ''
+  if (isDoniaiFileHref(href)) {
+    const path = escapeAttr(doniaiFilePath(href))
+    return `<img data-doniai-file="${path}" alt="${alt}"${titleAttr} class="doniai-file-img" loading="lazy" />`
+  }
+  return `<img src="${escapeAttr(href)}" alt="${alt}"${titleAttr} />`
+}
+
+renderer.link = function (href, title, text) {
+  const titleAttr = title ? ` title="${escapeAttr(title)}"` : ''
+  if (isDoniaiFileHref(href)) {
+    const path = escapeAttr(doniaiFilePath(href))
+    return `<a href="#" data-doniai-file="${path}" class="doniai-file-link"${titleAttr}>${text}</a>`
+  }
+  return `<a href="${escapeAttr(href)}"${titleAttr} target="_blank" rel="noopener noreferrer">${text}</a>`
 }
 
 marked.setOptions({
@@ -75,4 +120,26 @@ export function extractHeadings(text) {
     }
   }
   return items
+}
+
+/** Parse APPLY blocks from AI chat replies */
+export function parseAiApplyBlocks(raw) {
+  const text = String(raw || '')
+  const re = /<<<APPLY\s+mode="(replace|insert|append)">>>\s*([\s\S]*?)<<<END>>>/gi
+  const blocks = []
+  let m
+  while ((m = re.exec(text))) {
+    blocks.push({
+      mode: m[1].toLowerCase(),
+      content: m[2].replace(/^\n+|\n+$/g, ''),
+    })
+  }
+  const display = text
+    .replace(/<<<APPLY\s+mode="(replace|insert|append)">>>\s*([\s\S]*?)<<<END>>>/gi, '')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+  return {
+    display: display || (blocks.length ? '已生成可应用到编辑器的内容' : text),
+    blocks,
+  }
 }

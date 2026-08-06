@@ -1,0 +1,23 @@
+# Rust build
+/target/
+/doniai_nav_api
+/doniai_nav_api.exe
+
+# secrets
+.env
+*.local
+
+# runtime user / cache data (keep templates & docs tracked)
+# 历史上曾用根目录 uploads/，现统一为 data/uploads/
+/uploads/
+/data/uploads/**
+!/data/uploads/.gitkeep
+/auth_users.json
+/notes_store.json
+/monitor_store.json
+/private_nav_store.json
+/data_cache.json
+
+# backup archives
+/backups/*.tar.gz
+/backups/*.tgz

@@ -62,6 +62,7 @@
       </div>
       </template>
 
+      <WeatherMap />
       <LunarTime />
     </div>
   </div>
@@ -71,6 +72,7 @@
 import LunarTime from '@/components/LunarTime.vue'
 import Countdown from '@/components/Countdown.vue'
 import SidebarPanelState from '@/components/SidebarPanelState.vue'
+import WeatherMap from '@/components/WeatherMap.vue'
 import { getWeather } from '@/services/api'
 import { readCache, writeCache } from '@/utils/apiCache'
 
@@ -83,6 +85,7 @@ export default {
     LunarTime,
     Countdown,
     SidebarPanelState,
+    WeatherMap,
   },
   data() {
     return {

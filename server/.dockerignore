@@ -1,0 +1,13 @@
+target
+src
+Cargo.toml
+Cargo.lock
+# 不把用户上传打进镜像；运行时由 data/uploads 卷挂载
+uploads
+data/uploads/*
+!data/uploads/.gitkeep
+.env
+*.md
+.git
+.gitignore
+backups

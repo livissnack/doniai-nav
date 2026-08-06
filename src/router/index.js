@@ -13,8 +13,6 @@ import {
 } from '@/utils/pageProgress'
 import { ensureOruga } from '@/plugins/oruga'
 
-const ORUGA_DEFERRED_ROUTES = new Set(['home'])
-
 let authInitPromise = null
 
 function ensureAuthInit() {
@@ -172,6 +170,11 @@ const routes = [
     component: () => import('@/views/utils/Monitor.vue'),
   },
   {
+    path: '/docs/s/:token',
+    name: 'sharedNote',
+    component: () => import('@/views/docs/SharedNote.vue'),
+  },
+  {
     path: '/docs',
     name: 'docs',
     meta: { requiresAuth: true },
@@ -214,9 +217,7 @@ router.beforeEach(async (to, from, next) => {
     return
   }
 
-  if (!ORUGA_DEFERRED_ROUTES.has(to.name)) {
-    await ensureOruga()
-  }
+  await ensureOruga()
 
   next()
 })

@@ -12,7 +12,7 @@ export function uploadFile(file, path = '') {
   const fd = new FormData()
   fd.append('file', file)
   fd.append('path', path)
-  return request('post', '/files/upload', fd)
+  return request('post', '/files/upload', fd, { timeout: 120000 })
 }
 
 export function uploadBinary(file, path) {
@@ -45,9 +45,21 @@ export function fetchFileBlob(path) {
   })
 }
 
+/** Markdown / preview friendly authenticated raw URL (header still preferred for XHR). */
 export function downloadFileUrl(path) {
   const base = import.meta.env.VITE_SERVER_URL || ''
-  const token = localStorage.getItem('doniaiNavAuthToken') || ''
-  const q = new URLSearchParams({ path })
-  return `${base}files/raw?${q.toString()}&_t=${Date.now()}`
+  const q = new URLSearchParams({ path: String(path || '') })
+  return `${base}files/raw?${q.toString()}`
+}
+
+export function isImageFileName(name = '') {
+  return /\.(png|jpe?g|gif|webp|svg|bmp|ico)$/i.test(name)
+}
+
+export function notesUploadDir() {
+  const d = new Date()
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `notes/${y}${m}${day}`
 }

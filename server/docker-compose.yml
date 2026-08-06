@@ -1,0 +1,30 @@
+# 数据持久化：JSON 在项目根目录，上传文件统一在 data/uploads
+# （容器内路径 /app/uploads，由下方 volume 挂载）
+services:
+  api:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - AUTH_TOKEN=g9PlwDgwiWHxXbyKvHVcAJ3z5WlABNGjS20FGi6g
+      - PORT=3000
+      - UPLOAD_ROOT=/app/uploads
+      - PRIVATE_NAV_DEFAULT_FILE=private_nav_default.json
+      - PRIVATE_NAV_STORE_FILE=private_nav_store.json
+      - NOTES_STORE_FILE=notes_store.json
+      - AUTH_USERS_FILE=auth_users.json
+      - MONITOR_STORE_FILE=monitor_store.json
+    volumes:
+      # 上传目录：绑定到宿主机，重建容器不丢文件
+      - type: bind
+        source: ./data/uploads
+        target: /app/uploads
+        bind:
+          create_host_path: true
+      - ./data_cache.json:/app/data_cache.json
+      - ./auth_users.json:/app/auth_users.json
+      - ./private_nav_store.json:/app/private_nav_store.json
+      - ./private_nav_default.json:/app/private_nav_default.json:ro
+      - ./notes_store.json:/app/notes_store.json
+      - ./monitor_store.json:/app/monitor_store.json
+    restart: always
