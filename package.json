@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite --mode development",
     "serve": "vite --mode development",
-    "build": "vite build --mode production",
+    "build": "vite build --mode production && node scripts/zip-dist.mjs",
+    "zip:dist": "node scripts/zip-dist.mjs",
     "preview": "vite preview --host 0.0.0.0"
   },
   "engines": {
