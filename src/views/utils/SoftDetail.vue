@@ -11,7 +11,7 @@
         </div>
         <div class="software-info">
           <div class="software-imgs">
-            <o-carousel icon-pack="fas" :pause-info="false">
+            <o-carousel icon-pack="fas" :pause-hover="false">
               <o-carousel-item v-for="(carousel, i) in carousels" :key="i">
                 <img :src="carousel.imgUrl" :alt="carousel.title">
               </o-carousel-item>
@@ -63,7 +63,7 @@
             <div class="right-title">
               <o-tooltip variant="white"
                          label="复制ED2K或者BT链接，建议使用专用下载工具下载。下载速度仅与您宽带环壤和工具有关。捐助与否是您自由选择。"
-                         multilined>
+                         max-width="280px">
                 <small>
                   <AppIcon name="question-circle" pack="regular" />
                   如何下载？
@@ -75,7 +75,7 @@
           <div class="software-list">
             <div class="software-li">
               <o-collapse v-for="(software, softwareIndex) in softwareList" :key="softwareIndex" :open="software.isOpen"
-                          class="card" animation="slide" :aria-id="`contentIdFor${software.id}`">
+                          class="card" animation="slide" :content-id="`contentIdFor${software.id}`">
                 <template #trigger="props">
                   <div class="card-header" role="button" :aria-controls="`contentIdFor${software.id}`"
                        :aria-expanded="props.open">
@@ -400,12 +400,8 @@ export default {
         margin-top: 40px;
 
         .software-li {
-          :deep(.card) {
-            :deep(.collapse-content) {
-              :deep(.card-content) {
-                padding-left: 0 !important;
-              }
-            }
+          :deep(.card .card-content) {
+            padding-left: 0 !important;
           }
 
           .soft-content-item {

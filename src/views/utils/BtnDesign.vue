@@ -5,7 +5,7 @@
         <template v-slot:custommenu>
           <div>
             <div class="navbar-menu">
-              <o-dropdown position="bottom-left" teleport aria-role="menu">
+              <o-dropdown :position="['bottom', 'left']" teleport aria-role="menu">
                 <template #trigger>
                   <a class="navbar-item" role="button">
                     <o-icon pack="fab" icon="apple"></o-icon>

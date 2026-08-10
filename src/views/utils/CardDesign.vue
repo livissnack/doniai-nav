@@ -5,7 +5,7 @@
         <template v-slot:custommenu>
           <div>
             <div class="navbar-menu">
-              <o-dropdown position="bottom-left" teleport aria-role="menu">
+              <o-dropdown :position="['bottom', 'left']" teleport aria-role="menu">
                 <template #trigger>
                   <a class="navbar-item" role="button">
                     <o-icon pack="fab" icon="apple"></o-icon>
@@ -1930,7 +1930,7 @@ export default {
         transition-duration: 500ms;
       }
 
-      button:focus:end {
+      button:not(:focus) {
         background-color: #FFFFFF;
         width: 120px;
         height: 40px;

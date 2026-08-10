@@ -6,20 +6,18 @@
 
 <script>
 import 'jszip'
-import Epub from 'epubjs'
-import Navbar from '@/components/Navbar.vue'
-import Sidebar from '@/components/Sidebar.vue'
-import BackTop from '@/components/BackTop.vue'
-import Footer from '@/components/Footer.vue'
-import bookList from "@/services/book.json"export default {
+import { destroyEbookReader, openEbookReader } from '@/utils/ebookReader'
+import bookList from '@/services/book.json'
+
+const defaultBook = bookList[0] || { name: '', url: '' }
+
+export default {
   name: 'ebook',
-  components: {
-    Navbar,
-    Sidebar,
-    Footer
-  },
   mounted() {
     this.init(this.bookUrl)
+  },
+  beforeUnmount() {
+    this.handleDestroy()
   },
   data() {
     return {
@@ -85,11 +83,12 @@ import bookList from "@/services/book.json"export default {
       bookCoverSrc: '',
       rendition: null,
       showDropdown: false,
-      currentBookIndex: 2,
-      bookName: '斗罗大陆1绝世唐门',
-      bookUrl: '斗罗大陆1.epub',
+      currentBookIndex: 0,
+      bookName: defaultBook.name,
+      bookUrl: defaultBook.url,
       bookList: bookList,
-      file: null
+      file: null,
+      loadError: '',
     }
   },
   computed: {
@@ -102,52 +101,48 @@ import bookList from "@/services/book.json"export default {
   },
   methods: {
     async init(path, isLocal = false) {
-      let bookUrl
-      if (isLocal) {
-        bookUrl = path
-      } else {
-        bookUrl = `${this.OBS}${path}`
+      if (!path) return
+      this.loadError = ''
+      this.handleDestroy()
+      try {
+        const result = await openEbookReader({
+          path,
+          isLocal,
+          fontSizeVal: this.fontSizeVal,
+          themeList: this.themeList,
+          currentBookIndex: this.currentBookIndex,
+          onCover: (url) => {
+            this.bookCoverSrc = url
+          },
+        })
+        this.rendition = result.rendition
+        this.directory = result.directory
+        this.currentNav = result.currentNav
+        this.currentBookIndex = result.currentBookIndex
+      } catch (err) {
+        console.error(err)
+        this.directory = []
+        this.loadError = '书籍加载失败，请检查网络或上传本地 .epub。'
       }
-      const BOOK = new Epub(bookUrl)
-      this.rendition = BOOK.renderTo('bookDom', {
-        method: 'default',
-        manager: "default",
-        width: '100%',
-        height: '100%',
-        view: 'iframe',
-        flow: 'scrolled',
-        snap: true,
-        allowScriptedContent: true,
-      })
-      this.rendition.themes.fontSize(this.fontSizeVal)
-      this.rendition.book.coverUrl().then((url) => {
-        this.bookCoverSrc = url
-      })
-      let navigation = await this.rendition.book.loaded.navigation
-      let directory = navigation.toc
-      let curNav = directory[this.currentBookIndex]
-      this.directory = directory
-      this.currentNav = curNav
-      this.rendition.display(curNav.href)
-      this.themeList.forEach((theme) => {
-        this.rendition.themes.register(theme.name, theme.style)
-      })
     },
     handlePrev() {
+      if (!this.rendition) return
       this.currentBookIndex -= 1
       this.rendition.prev()
     },
     handleNext() {
+      if (!this.rendition) return
       this.currentBookIndex += 1
       this.rendition.next()
     },
     jumpPage(item, index) {
+      if (!this.rendition || !item?.href) return
       this.currentBookIndex = index
       this.currentNav = item
       this.rendition.display(item.href)
     },
     changeTheme(name) {
-      this.rendition.themes.select(name)
+      this.rendition?.themes.select(name)
     },
     handlePlusFontSize() {
       this.fontSize += 1
@@ -159,25 +154,29 @@ import bookList from "@/services/book.json"export default {
     },
     changeFontSize(fontSize) {
       this.fontSize = fontSize
-      this.rendition.themes.fontSize(this.fontSizeVal)
+      this.rendition?.themes.fontSize(this.fontSizeVal)
     },
     handleShowDropdownBook() {
       this.showDropdown = !this.showDropdown
     },
     handleDestroy() {
-      this.rendition.destroy()
+      destroyEbookReader(this.rendition)
+      this.rendition = null
     },
     handleChangeBook(book) {
+      this.currentBookIndex = 0
       this.handleDestroy()
+      this.bookName = book.name
       this.init(book.url)
       this.handleShowDropdownBook()
-      this.bookName = book.name
     },
     handleUploadEbook(file) {
+      if (!file) return
+      this.currentBookIndex = 0
       this.handleDestroy()
+      this.bookName = file.name
       this.init(file, true)
       this.handleShowDropdownBook()
-      this.bookName = file.name
     },
   }
 }

@@ -10,7 +10,7 @@
     "preview": "vite preview --host 0.0.0.0"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=22.12.0"
   },
   "dependencies": {
     "@codemirror/lang-markdown": "^6.5.2",
@@ -19,8 +19,9 @@
     "@iconify-json/fa6-regular": "^1.2.4",
     "@iconify-json/fa6-solid": "^1.2.4",
     "@iconify/vue": "^5.0.1",
-    "@oruga-ui/oruga-next": "^0.13.6",
-    "@oruga-ui/theme-bulma": "^0.9.0",
+    "@likecoin/epub-ts": "^0.7.0",
+    "@oruga-ui/oruga-next": "^0.14.0",
+    "@oruga-ui/theme-bulma": "^0.10.0",
     "@univerjs/drawing": "^0.25.1",
     "@univerjs/preset-docs-core": "^0.25.1",
     "@univerjs/preset-sheets-core": "^0.25.1",
@@ -31,7 +32,6 @@
     "chart.js": "^4.4.8",
     "codemirror": "^6.0.2",
     "docx": "^9.7.1",
-    "epubjs": "^0.3.93",
     "fetch-jsonp": "^1.3.0",
     "file-saver": "^2.0.5",
     "flv.js": "^1.6.2",
@@ -43,7 +43,7 @@
     "json-formatter-js": "^2.3.4",
     "jszip": "^3.10.1",
     "mammoth": "^1.6.0",
-    "marked": "^4.3.0",
+    "marked": "^18.0.9",
     "node-emoji": "^2.2.0",
     "number2chinesenumber": "^2.0.0",
     "platform": "^1.3.6",
@@ -54,14 +54,20 @@
     "solarlunar": "^2.0.7",
     "vue": "^3.5.13",
     "vue-codemirror": "^6.1.1",
-    "vue-router": "^4.5.0",
-    "xlsx": "^0.18.5"
+    "vue-router": "^5.2.0",
+    "xlsx": "npm:@keep-lts/xlsx@0.18.6"
   },
   "devDependencies": {
-    "@fullhuman/postcss-purgecss": "^7.0.2",
-    "@vitejs/plugin-vue": "^5.2.1",
+    "@fullhuman/postcss-purgecss": "^8.0.0",
+    "@vitejs/plugin-vue": "^6.0.8",
     "less": "^4.2.1",
     "postcss": "^8.5.3",
-    "vite": "^6.0.7"
+    "vite": "^8.2.0"
+  },
+  "overrides": {
+    "@xmldom/xmldom": "0.9.10"
+  },
+  "volta": {
+    "node": "24.18.0"
   }
 }

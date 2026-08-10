@@ -9,7 +9,7 @@ export function bindOrugaApp(app) {
 
 /**
  * 按需加载 Oruga（应用层配置，非 vite.config.js）。
- * 只注册下方列出的组件插件，不用 OrugaComponentPlugins 全量包。
+ * 只注册下方列出的组件插件，不用全量包。
  * 新增 o-* 组件时，在此补充对应 Plugin 的 import。
  * @see https://oruga-ui.com/documentation/
  */
@@ -47,12 +47,8 @@ export function ensureOruga() {
 
     await import('@oruga-ui/theme-bulma/style.css')
 
-    const oruga = createOruga(
-      {
-        ...bulmaConfig,
-        iconComponent: OrugaIconAdapter,
-      },
-      [
+    const oruga = createOruga()
+    for (const plugin of [
       Button,
       Field,
       Input,
@@ -70,9 +66,15 @@ export function ensureOruga() {
       Taginput,
       Datepicker,
       Upload,
-      ],
-    )
-    vueApp.use(oruga)
+    ]) {
+      oruga.use(plugin)
+    }
+
+    vueApp.use(oruga, {
+      ...bulmaConfig,
+      iconComponent: OrugaIconAdapter,
+      iconPack: 'fas',
+    })
   })()
 
   return installPromise

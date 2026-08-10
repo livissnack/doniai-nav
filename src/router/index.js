@@ -193,7 +193,7 @@ const router = createRouter({
   routes,
 })
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, from) => {
   if (to.fullPath !== from.fullPath) {
     startPageProgress()
   }
@@ -214,23 +214,18 @@ router.beforeEach(async (to, from, next) => {
   }
 
   if (to.matched.some((r) => r.meta.requiresAuth) && !isLoggedIn()) {
-    next({ path: '/login', query: { redirect: to.fullPath } })
-    return
+    return { path: '/login', query: { redirect: to.fullPath } }
   }
 
   if ((to.name === 'login' || to.name === 'register') && isLoggedIn()) {
-    next({ path: '/' })
-    return
+    return { path: '/' }
   }
 
   if (to.name === 'register' && !isRegistrationEnabled()) {
-    next({ path: '/login' })
-    return
+    return { path: '/login' }
   }
 
   await ensureOruga()
-
-  next()
 })
 
 router.afterEach(() => {

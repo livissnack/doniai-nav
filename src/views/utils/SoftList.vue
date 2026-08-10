@@ -5,7 +5,7 @@
         <template v-slot:custommenu>
           <div>
             <div class="navbar-menu">
-              <o-dropdown position="bottom-left" teleport aria-role="menu">
+              <o-dropdown :position="['bottom', 'left']" teleport aria-role="menu">
                 <template #trigger>
                   <a class="navbar-item" role="button">
                     <o-icon pack="fab" icon="apple"></o-icon>
@@ -35,7 +35,7 @@
             </div>
           </div>
           <div>
-            <o-dropdown position="bottom-left" teleport aria-role="menu">
+            <o-dropdown :position="['bottom', 'left']" teleport aria-role="menu">
               <template #trigger>
                 <a class="navbar-item" role="button">
                   <o-icon pack="fab" icon="windows"></o-icon>
@@ -62,7 +62,7 @@
             </o-dropdown>
           </div>
           <div>
-            <o-dropdown position="bottom-left" teleport aria-role="menu">
+            <o-dropdown :position="['bottom', 'left']" teleport aria-role="menu">
               <template #trigger>
                 <a class="navbar-item" role="button">
                   <o-icon pack="fas" icon="gamepad"></o-icon>
@@ -154,7 +154,7 @@
             </div>
           </div>
           <div class="notice-right-box">
-            <o-field grouped group-multiline>
+            <o-field grouped class="is-grouped-multiline">
               <div class="control">
                 <div class="tags has-addons">
                   <o-tag variant="dark">今日发布</o-tag>

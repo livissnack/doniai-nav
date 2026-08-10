@@ -1,6 +1,6 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
-import { purgeCSSPlugin } from '@fullhuman/postcss-purgecss'
+import purgeCSSPlugin from '@fullhuman/postcss-purgecss'
 
 const root = path.dirname(fileURLToPath(import.meta.url))
 

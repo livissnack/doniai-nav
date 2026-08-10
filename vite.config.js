@@ -1,8 +1,11 @@
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
+import { fileURLToPath } from 'url'
 import { createPurgeCssPlugin } from './purgecss.config.js'
 import { createFontDisplayPlugin } from './postcss-font-display.js'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 function resolveHmr(env, port) {
   if (env.VITE_HMR_DISABLE === '1' || env.VITE_HMR_DISABLE === 'true') {
@@ -50,9 +53,7 @@ function createApiProxy(proxyTarget, serviceToken) {
 }
 
 /** 将 node_modules 拆成独立 chunk，避免单个 vendor 超过 500KB */
-function resolveManualChunk(id) {
-  if (!id.includes('node_modules')) return
-
+function createVendorChunkGroups() {
   const rules = [
     [/[/\\]@iconify[/\\]/, 'iconify'],
     [/[/\\]chart\.js[/\\]/, 'chartjs'],
@@ -62,7 +63,7 @@ function resolveManualChunk(id) {
     [/[/\\]@vue[/\\]/, 'vue-vendor'],
     [/[/\\]vue[/\\]dist[/\\]/, 'vue-vendor'],
     [/codemirror|@codemirror|@lezer|@marijn|vue-codemirror/, 'codemirror'],
-    [/[/\\]epubjs[/\\]/, 'epubjs'],
+    [/[/\\](@likecoin[\\/])?epub(-ts|js)[/\\]/, 'epubjs'],
     [/[/\\]jszip[/\\]/, 'jszip'],
     [/[/\\]mammoth[/\\]|@xmldom[/\\]/, 'mammoth'],
     [/[/\\]xlsx[/\\]/, 'xlsx'],
@@ -93,11 +94,20 @@ function resolveManualChunk(id) {
     [/fetch-jsonp/, 'fetch-jsonp'],
   ]
 
-  for (const [pattern, name] of rules) {
-    if (pattern.test(id)) return name
-  }
+  const groups = rules.map(([test, name], index) => ({
+    name,
+    test,
+    // 更具体的规则优先
+    priority: 100 - index,
+  }))
 
-  return 'vendor-misc'
+  groups.push({
+    name: 'vendor-misc',
+    test: /[/\\]node_modules[/\\]/,
+    priority: 1,
+  })
+
+  return groups
 }
 
 export default defineConfig(({ mode }) => {
@@ -185,9 +195,11 @@ export default defineConfig(({ mode }) => {
       cssCodeSplit: true,
       // chart.js 约 200KB；Univer 体积较大，单独拆 chunk
       chunkSizeWarningLimit: 2500,
-      rollupOptions: {
+      rolldownOptions: {
         output: {
-          manualChunks: resolveManualChunk,
+          codeSplitting: {
+            groups: createVendorChunkGroups(),
+          },
         },
       },
     },

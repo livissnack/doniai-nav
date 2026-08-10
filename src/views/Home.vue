@@ -65,7 +65,7 @@ import {
   refreshBingCover,
 } from '@/utils/bingCover'
 
-const VALID_MENU_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+const VALID_MENU_IDS = [1, 2, 3, 4, 5, 7, 8, 9, 10]
 const PRIVATE_MENU_ID = 2
 
 export default {

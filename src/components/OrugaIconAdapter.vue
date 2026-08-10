@@ -1,9 +1,10 @@
 <template>
-  <AppIcon :name="iconName" :pack="iconPack" :size="size || '1em'" :spin="spin" />
+  <AppIcon :name="iconName" :pack="iconPack" :size="iconSize" :spin="spin" />
 </template>
 
 <script>
 import AppIcon from '@/components/AppIcon.vue'
+import { normalizeIconSize } from '@/utils/normalizeIconSize'
 
 export default {
   name: 'OrugaIconAdapter',
@@ -11,6 +12,7 @@ export default {
   props: {
     icon: { type: [String, Array], default: '' },
     size: { type: [String, Number], default: null },
+    customSize: { type: [String, Number], default: null },
     spin: { type: Boolean, default: false },
   },
   computed: {
@@ -23,6 +25,9 @@ export default {
     iconName() {
       const raw = Array.isArray(this.icon) ? this.icon[1] : this.icon
       return String(raw || '').replace(/^fa-/, '')
+    },
+    iconSize() {
+      return normalizeIconSize(this.customSize ?? this.size)
     },
   },
 }

@@ -4,7 +4,6 @@ const MENU_NAV_KEY = {
   3: 'iosData',
   4: 'toolsData',
   5: 'frontendData',
-  6: 'shopData',
   7: 'designData',
   8: 'blogData',
   9: 'foreignData',
@@ -19,7 +18,6 @@ const LOADERS = {
   iosData: () => import('./nav/iosData.json'),
   toolsData: () => import('./nav/toolsData.json'),
   frontendData: () => import('./nav/frontendData.json'),
-  shopData: () => import('./nav/shopData.json'),
   designData: () => import('./nav/designData.json'),
   blogData: () => import('./nav/blogData.json'),
   foreignData: () => import('./nav/foreignData.json'),
@@ -68,7 +66,7 @@ export async function loadNavData(menuId) {
   return promise
 }
 
-const DEFAULT_PREFETCH_IDS = [1, 3, 4, 6]
+const DEFAULT_PREFETCH_IDS = [1, 3, 4]
 
 /** 空闲时预加载常用栏目 JSON，加快顶部菜单切换 */
 export function prefetchNavMenus(menuIds) {

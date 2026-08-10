@@ -9,6 +9,8 @@ import { installDialog } from '@/utils/dialog'
 import { installCopyText } from '@/utils/copyText'
 import BackTop from '@/components/BackTop.vue'
 
+import { getEbookCdnBase } from '@/utils/ebookUrl'
+
 const app = createApp(App)
 
 app.component('back-top', BackTop)
@@ -20,7 +22,7 @@ installNotify(app)
 installDialog(app)
 installCopyText(app)
 
-app.config.globalProperties.OBS = import.meta.env.VITE_OSS_CDN
+app.config.globalProperties.OBS = getEbookCdnBase()
 app.config.globalProperties.$OPENLINK = (url) => {
   const a = document.createElement('a')
   a.setAttribute('href', url)

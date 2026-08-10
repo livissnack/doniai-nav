@@ -58,7 +58,7 @@
                       class="tooltip-remark"
                       variant="danger"
                       :label="`${data.name}同学：最高分（${item.maxScore}）`"
-                      multiline
+                      max-width="240px"
                     >
                       <small>
                         <AppIcon name="question-circle" pack="regular" />

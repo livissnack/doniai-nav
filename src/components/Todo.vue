@@ -37,21 +37,24 @@
 
         <o-dropdown
           class="todo-item__dropdown"
-          position="bottom-right"
-          teleport
+          :position="['bottom', 'left']"
           aria-role="menu"
         >
           <template #trigger>
             <button type="button" class="todo-item__menu" aria-label="操作">
-              <AppIcon name="ellipsis-v"  />
+              <AppIcon name="ellipsis-v" />
             </button>
           </template>
           <o-dropdown-item aria-role="menuitem" @click="switchEditTodo(todo)">
             {{ todo.is_edit ? '完成' : '编辑' }}
           </o-dropdown-item>
           <o-dropdown-item aria-role="menuitem">移动到今天</o-dropdown-item>
-          <o-dropdown-item separator />
-          <o-dropdown-item aria-role="menuitem" variant="danger" @click="deleteTodo(todo)">
+          <hr class="dropdown-divider" />
+          <o-dropdown-item
+            class="todo-item__menu-danger"
+            aria-role="menuitem"
+            @click="deleteTodo(todo)"
+          >
             删除
           </o-dropdown-item>
         </o-dropdown>
@@ -192,6 +195,8 @@ export default {
   max-height: 200px;
   overflow-x: hidden;
   overflow-y: auto;
+  /* 避免裁切 Popover 菜单；fixed 菜单一般不受影响，absolute 时也更稳 */
+  clip-path: none;
 
   &::-webkit-scrollbar {
     width: 4px;
@@ -214,8 +219,11 @@ export default {
   padding: 5px 2px;
   margin: 0;
   min-width: 0;
+  position: relative;
 
-  &:hover {
+  &:hover,
+  &:focus-within {
+    z-index: 5;
     background: #f5f7fa;
   }
 
@@ -245,6 +253,51 @@ export default {
 
 .todo-item__dropdown {
   flex-shrink: 0;
+
+  /* Oruga 0.14：去掉 teleport，菜单留在 .dropdown 内以继承 Bulma 变量 */
+  :deep(.dropdown-menu) {
+    min-width: 8.5rem;
+    z-index: 40;
+    right: 0;
+    left: auto;
+  }
+
+  :deep(.dropdown-content) {
+    padding: 0.35rem 0;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 0;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+  }
+
+  :deep(.dropdown-item) {
+    padding: 0.45rem 0.9rem;
+    font-size: 13px;
+    color: #374151;
+    white-space: nowrap;
+  }
+
+  :deep(.dropdown-item:hover),
+  :deep(.dropdown-item.is-focused) {
+    background: #f3f4f6;
+    color: #111827;
+  }
+
+  :deep(.dropdown-divider) {
+    margin: 0.25rem 0;
+    background: #e5e7eb;
+    height: 1px;
+    border: none;
+  }
+
+  :deep(.todo-item__menu-danger) {
+    color: #dc2626 !important;
+  }
+
+  :deep(.todo-item__menu-danger:hover) {
+    background: #fef2f2 !important;
+    color: #b91c1c !important;
+  }
 }
 
 .todo-item__text {

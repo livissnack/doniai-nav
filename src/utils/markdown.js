@@ -52,6 +52,17 @@ function escapeAttr(s) {
   return escapeHtml(s).replace(/'/g, '&#39;')
 }
 
+function plainHeadingText(token) {
+  if (token?.text != null) return String(token.text)
+  if (!token?.tokens?.length) return ''
+  return token.tokens.map((t) => t.text || t.raw || '').join('')
+}
+
+function highlightCode(code, lang) {
+  const language = lang && hljs.getLanguage(lang) ? lang : 'plaintext'
+  return hljs.highlight(code, { language, ignoreIllegals: true }).value
+}
+
 export function isDoniaiFileHref(href) {
   return String(href || '').startsWith(DONIAI_FILE_SCHEME)
 }
@@ -65,12 +76,23 @@ export function toDoniaiFileHref(path) {
 }
 
 const renderer = new Renderer()
-renderer.heading = function (text, level) {
-  const id = slugify(text)
-  return `<h${level} id="${id}">${text}</h${level}>`
+
+renderer.heading = function ({ tokens, depth }) {
+  const text = this.parser.parseInline(tokens)
+  const id = slugify(plainHeadingText({ tokens }))
+  return `<h${depth} id="${id}">${text}</h${depth}>\n`
 }
 
-renderer.image = function (href, title, text) {
+renderer.code = function ({ text, lang }) {
+  const langString = (lang || '').match(/^\S*/)?.[0] || ''
+  const highlighted = highlightCode(text, langString)
+  const className = langString
+    ? ` class="hljs language-${escapeAttr(langString)}"`
+    : ' class="hljs"'
+  return `<pre><code${className}>${highlighted}</code></pre>\n`
+}
+
+renderer.image = function ({ href, title, text }) {
   const alt = escapeAttr(text)
   const titleAttr = title ? ` title="${escapeAttr(title)}"` : ''
   if (isDoniaiFileHref(href)) {
@@ -80,7 +102,8 @@ renderer.image = function (href, title, text) {
   return `<img src="${escapeAttr(href)}" alt="${alt}"${titleAttr} />`
 }
 
-renderer.link = function (href, title, text) {
+renderer.link = function ({ href, title, tokens }) {
+  const text = this.parser.parseInline(tokens)
   const titleAttr = title ? ` title="${escapeAttr(title)}"` : ''
   if (isDoniaiFileHref(href)) {
     const path = escapeAttr(doniaiFilePath(href))
@@ -89,15 +112,8 @@ renderer.link = function (href, title, text) {
   return `<a href="${escapeAttr(href)}"${titleAttr} target="_blank" rel="noopener noreferrer">${text}</a>`
 }
 
-marked.setOptions({
+marked.use({
   renderer,
-  highlight(code, lang) {
-    const language = lang && hljs.getLanguage(lang) ? lang : null
-    if (language) {
-      return hljs.highlight(code, { language }).value
-    }
-    return hljs.highlight(code, { language: 'plaintext', ignoreIllegals: true }).value
-  },
   breaks: true,
   gfm: true,
 })

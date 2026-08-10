@@ -1,17 +1,22 @@
 [
   {
-    "name": "斗罗大陆1绝世唐门",
-    "author": "唐家三少",
-    "url": "斗罗大陆1.epub"
-  },
-  {
-    "name": "斗罗大陆2绝世唐门",
-    "author": "唐家三少",
-    "url": "斗罗大陆2.epub"
-  },
-  {
     "name": "西游记",
     "author": "吴承恩",
-    "url": "西游记.epub"
+    "url": "https://www.gutenberg.org/ebooks/23962.epub3.images"
+  },
+  {
+    "name": "Alice's Adventures in Wonderland",
+    "author": "Lewis Carroll",
+    "url": "https://www.gutenberg.org/ebooks/11.epub3.images"
+  },
+  {
+    "name": "Pride and Prejudice",
+    "author": "Jane Austen",
+    "url": "https://www.gutenberg.org/ebooks/1342.epub3.images"
+  },
+  {
+    "name": "Moby Dick",
+    "author": "Herman Melville",
+    "url": "https://www.gutenberg.org/ebooks/2701.epub3.images"
   }
 ]

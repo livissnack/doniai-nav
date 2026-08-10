@@ -14,11 +14,6 @@
                 "color": "is-success"
             },
             {
-                "name": "短视频解析",
-                "href": "https://parser.doniai.com",
-                "color": "is-danger"
-            },
-            {
                 "name": "软件下载",
                 "href": "/utils/software",
                 "color": "is-warning",
@@ -62,11 +57,6 @@
                 "name": "Aliyun",
                 "href": "https://cn.aliyun.com",
                 "color": "is-danger"
-            },
-            {
-                "name": "Minio存储",
-                "href": "https://minio.doniai.cn",
-                "color": "is-info"
             },
             {
                 "name": "Api接口文档",
@@ -137,22 +127,6 @@
         ]
     },
     {
-        "id": 5,
-        "title": "茂业本地项目",
-        "items": [
-            {
-                "name": "茂业-后台-开发",
-                "href": "http://www.maomei.com/admin",
-                "color": "is-primary"
-            },
-            {
-                "name": "茂业-接口-开发",
-                "href": "http://www.maomei.com/api",
-                "color": "is-success"
-            }
-        ]
-    },
-    {
         "id": 6,
         "title": "茂业内网项目",
         "items": [
@@ -195,32 +169,6 @@
         ]
     },
     {
-        "id": 8,
-        "title": "小虎外网项目",
-        "items": [
-            {
-                "name": "用户后台管理",
-                "href": "https://uc-admin.ftdj666.com",
-                "color": "is-primary"
-            },
-            {
-                "name": "操盘后台管理",
-                "href": "https://admin.ftdj666.com",
-                "color": "is-success"
-            },
-            {
-                "name": "h5应用",
-                "href": "https://m.ftdj666.com",
-                "color": "is-warning"
-            },
-            {
-                "name": "h5-Live",
-                "href": "http://h5live.ftdj667.com",
-                "color": "is-danger"
-            }
-        ]
-    },
-    {
         "id": 9,
         "title": "相关应用",
         "items": [
@@ -228,16 +176,6 @@
                 "name": "茂业Gitlab",
                 "href": "http://172.29.105.79:8888",
                 "color": "is-primary"
-            },
-            {
-                "name": "茂业禅道",
-                "href": "http://zt.maoye.cn",
-                "color": "is-success"
-            },
-            {
-                "name": "平安云收款",
-                "href": "https://passport.orangebank.com.cn/SSOServer/login?targeturl=https%3A%2F%2Fcloudpaycm.orangebank.com.cn%2Fapi%2Forgan%2Flogin",
-                "color": "is-warning"
             },
             {
                 "name": "茂业Kibana",
