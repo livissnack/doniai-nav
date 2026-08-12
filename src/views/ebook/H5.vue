@@ -382,19 +382,22 @@ export default {
 
 #bookDom {
   min-height: 100vh;
+
   :deep(.epub-container) {
     overflow-x: hidden !important;
-    :deep(.epub-view){
-      padding-top: 40px !important;
-      padding-bottom: 40px !important;
-    }
-    :deep(p) {
-      font-size: 20px !important;
-      line-height: 26px !important;
-      font-family: Microsoft Yahei, Heiti SC, Heiti TC,serif !important;
-      font-weight: normal !important;
-      position: static !important;
-    }
+  }
+
+  :deep(.epub-view) {
+    padding-top: 40px !important;
+    padding-bottom: 40px !important;
+  }
+
+  :deep(p) {
+    font-size: 20px !important;
+    line-height: 26px !important;
+    font-family: Microsoft Yahei, Heiti SC, Heiti TC, serif !important;
+    font-weight: normal !important;
+    position: static !important;
   }
 }
 </style>

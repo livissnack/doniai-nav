@@ -67,12 +67,11 @@ function createVendorChunkGroups() {
     [/[/\\]jszip[/\\]/, 'jszip'],
     [/[/\\]mammoth[/\\]|@xmldom[/\\]/, 'mammoth'],
     [/[/\\]xlsx[/\\]/, 'xlsx'],
-    // Split Univer by product so opening Word doesn't download Sheets+Slides (~9MB monolith).
-    [/[/\\]@univerjs[/\\](preset-sheets|sheets)/, 'univer-sheets'],
-    [/[/\\]@univerjs[/\\](preset-docs|docs)/, 'univer-docs'],
-    [/[/\\]@univerjs[/\\]slides/, 'univer-slides'],
-    [/[/\\]@univerjs[/\\]drawing/, 'univer-drawing'],
-    [/[/\\]@univerjs(-pro)?[/\\]/, 'univer-core'],
+    // Univer 各 preset 之间存在交叉 re-export（如 preset-sheets-core 依赖
+    // preset-docs / core），按产品拆分会产生循环 chunk 依赖，导致同一 chunk
+    // 内出现重复的顶层标识符（"Identifier 'Z' has already been declared"）。
+    // 因此将 @univerjs 全部合并为一个 chunk，消除循环依赖。
+    [/[/\\]@univerjs[/\\]/, 'univer'],
     [/[/\\]rxjs[/\\]/, 'rxjs'],
     [/[/\\]react-dom[/\\]/, 'react-vendor'],
     [/[/\\]react[/\\][^/]*$/, 'react-vendor'],
@@ -193,8 +192,8 @@ export default defineConfig(({ mode }) => {
       target: 'es2020',
       sourcemap: false,
       cssCodeSplit: true,
-      // chart.js 约 200KB；Univer 体积较大，单独拆 chunk
-      chunkSizeWarningLimit: 2500,
+      // chart.js 约 200KB；Univer 体积较大（合并后约 10.5MB / gzip 2.7MB）
+      chunkSizeWarningLimit: 11000,
       rolldownOptions: {
         output: {
           codeSplitting: {
